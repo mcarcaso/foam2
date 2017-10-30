@@ -119,7 +119,12 @@ foam.CLASS({
       expression function when accessed. This makes expressions very efficient
       because the value is only recomputed when actually needed.
     */
-    'expression',
+    {
+      name: 'expression',
+      postSet: function() {
+        this.factory = null;
+      },
+    },
 
     /**
       A getter function which completely replaces the normal
