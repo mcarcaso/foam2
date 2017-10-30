@@ -67,13 +67,31 @@ foam.CLASS({
       by setting it to 'undefined' or cleared with clearProperty()
       will have the default value.
     */
-    'value',
+    {
+      name: 'value',
+      postSet: function(_, n) {
+        if (n) {
+          this.expression = null;
+          this.factory = null;
+          this.getter = null;
+        }
+      },
+    },
 
     /**
       A factory is a function which initializes the property value
       when accessed for the first time, if not already set.
     */
-    'factory',
+    {
+      name: 'factory',
+      postSet: function(_, n) {
+        if (n) {
+          this.expression = null;
+          this.getter = null;
+          this.value = null;
+        }
+      },
+    },
 
     /**
       A function of the form:
@@ -121,8 +139,12 @@ foam.CLASS({
     */
     {
       name: 'expression',
-      postSet: function() {
-        this.factory = null;
+      postSet: function(_, n) {
+        if (n) {
+          this.factory = null;
+          this.getter = null;
+          this.value = null;
+        }
       },
     },
 
@@ -131,7 +153,16 @@ foam.CLASS({
       Property getter process. Whenever the property is accessed, getter is
       called and its value is returned.
     */
-    'getter',
+    {
+      name: 'getter',
+      postSet: function(_, n) {
+        if (n) {
+          this.expression = null;
+          this.factory = null;
+          this.value = null;
+        }
+      },
+    },
 
     /**
       A setter function which completely replaces the normal
