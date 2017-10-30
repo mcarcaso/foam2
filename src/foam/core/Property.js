@@ -119,12 +119,7 @@ foam.CLASS({
       expression function when accessed. This makes expressions very efficient
       because the value is only recomputed when actually needed.
     */
-    {
-      name: 'expression',
-      postSet: function() {
-        this.factory = null;
-      },
-    },
+    'expression',
 
     /**
       A getter function which completely replaces the normal
@@ -327,22 +322,34 @@ foam.CLASS({
       (Property is 'this').
     */
     function installInProto(proto) {
+      var prop = proto.cls_.getAxiomByName(this.name);
+
+      var hasOwnInitializer =
+          prop.hasOwnProperty('factory') ||
+          prop.hasOwnProperty('expression') ||
+          prop.hasOwnProperty('getter') ||
+          prop.hasOwnProperty('value');
+      var getInitializer = function(name) {
+        return hasOwnInitializer ?
+            prop.hasOwnProperty(name) && prop[name] || undefined :
+            prop[name]
+      };
+
       // Take Axiom from class rather than using 'this' directly,
       // since installInClass() may have created a modified version
       // to inherit Property Properties from a super-Property.
-      var prop        = proto.cls_.getAxiomByName(this.name);
       var name        = prop.name;
       var adapt       = prop.adapt
       var assertValue = prop.assertValue;
       var preSet      = prop.preSet;
       var postSet     = prop.postSet;
-      var factory     = prop.factory;
-      var getter      = prop.getter;
-      var value       = prop.value;
+      var factory     = getInitializer('factory');
+      var getter      = getInitializer('getter');
+      var value       = getInitializer('value');
       var hasValue    = typeof value !== 'undefined';
       var slotName    = name + '$';
       var isFinal     = prop.final;
-      var eFactory    = this.exprFactory(prop.expression);
+      var eFactory    = this.exprFactory(getInitializer('expression'));
       var FIP         = factory && ( prop.name + '_fip' ); // Factory In Progress
       var fip         = 0;
 
