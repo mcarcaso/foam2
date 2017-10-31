@@ -29,6 +29,7 @@ foam.CLASS({
     {
       class: 'Map',
       name: 'whitelist_',
+      factory: null,
       expression: function(whitelist) {
         var w = {};
         for ( var i = 0 ; i < whitelist.length ; i++ ) {
