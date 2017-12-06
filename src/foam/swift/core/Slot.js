@@ -24,7 +24,7 @@ foam.CLASS({
       swiftCode: 'fatalError()',
     },
     {
-      name: 'swiftSub',
+      name: 'slotSub',
       args: [
         {
           swiftAnnotations: ['@escaping'],
@@ -71,8 +71,8 @@ let l2 = { () -> Void in
   }
 }
 
-var sub1: Subscription? = s1.swiftSub { (_, _) in l1() }
-var sub2: Subscription? = s2.swiftSub { (_, _) in l2() }
+var sub1: Subscription? = s1.slotSub { (_, _) in l1() }
+var sub2: Subscription? = s2.slotSub { (_, _) in l2() }
 
 l2()
 
@@ -113,7 +113,7 @@ let l = { () -> Void in
   }
 }
 l()
-return other.swiftSub { (_, _) in l() }
+return other.slotSub { (_, _) in l() }
       */},
     },
     {
@@ -135,7 +135,7 @@ let l = { () -> Void in
   self.slotSet(f(other.slotGet()))
 }
 l()
-return other.swiftSub { (_, _) in l() }
+return other.slotSub { (_, _) in l() }
       */},
     },
     {

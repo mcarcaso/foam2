@@ -351,7 +351,7 @@ let detach: Listener = { [unowned self] _,_ in
 }
 <%=this.swiftExpressionSubscriptionName%> = [
   <% for (var i = 0, arg; arg = this.swiftExpressionArgs[i]; i++) { arg = arg.split('$') %>
-  <%=arg[0]%>$<% arg.slice(1).forEach(function(a) { %>.dot("<%=a%>")<% }) %>.swiftSub(detach),
+  <%=arg[0]%>$<% arg.slice(1).forEach(function(a) { %>.dot("<%=a%>")<% }) %>.slotSub(detach),
   <% } %>
 ]
 <%=this.swiftExpressionSubscriptionName%>?.forEach({ s in

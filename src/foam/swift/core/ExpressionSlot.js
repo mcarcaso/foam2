@@ -42,7 +42,7 @@ return code(args.map { (slot) -> Any? in return slot.slotGet() })
       swiftCode: '// NOP',
     },
     {
-      name: 'swiftSub',
+      name: 'slotSub',
       swiftCode: function() {/*
 return sub(topics: ["propertyChange", "value"], listener: listener)
       */},
@@ -58,7 +58,7 @@ return sub(topics: ["propertyChange", "value"], listener: listener)
       swiftCode: function() {/*
 cleanup();
 let subs = slots.map { (slot) -> Subscription in
-  return slot.swiftSub(invalidate_listener)
+  return slot.slotSub(invalidate_listener)
 }
 cleanup_ = Subscription(detach: { for sub in subs { sub.detach() } })
       */},

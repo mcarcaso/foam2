@@ -24,7 +24,7 @@ let updateTextField: Listener = { [weak self] _, _ in
       self!.emptyValue : String(describing: self!.data!)
 }
 viewSub?.detach()
-viewSub = data$.swiftSub(updateTextField)
+viewSub = data$.slotSub(updateTextField)
 updateTextField(viewSub!, [])
 newValue.delegate = self
       */},

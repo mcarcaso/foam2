@@ -27,7 +27,7 @@ class SwiftTestsTests: XCTestCase {
     })
 
     var numPubs3 = 0
-    _ = test.lastName$.swiftSub({ (sub: Subscription, args: [Any?]) -> Void in
+    _ = test.lastName$.slotSub({ (sub: Subscription, args: [Any?]) -> Void in
       numPubs3 += 1
     })
 
@@ -215,10 +215,10 @@ class SwiftTestsTests: XCTestCase {
 
     o.firstName = "Mike"
     o.lastName = "C"
-    XCTAssertEqual(slot.swiftGet() as! String, "Mike C")
+    XCTAssertEqual(slot.slotGet() as! String, "Mike C")
 
     o.lastName = "D"
-    XCTAssertEqual(slot.swiftGet() as! String, "Mike D")
+    XCTAssertEqual(slot.slotGet() as! String, "Mike D")
 
     o.detach()
     slot.detach()
@@ -244,11 +244,11 @@ class SwiftTestsTests: XCTestCase {
     XCTAssertFalse(o.hasOwnProperty("exprProp"))
   }
 
-  func testSwiftSubFire() {
+  func testslotSubFire() {
     let o = Test()
 
     var calls = 0
-    let sub = o.firstName$.swiftSub { (_, _) in
+    let sub = o.firstName$.slotSub { (_, _) in
       calls += 1
     }
 
@@ -266,15 +266,15 @@ class SwiftTestsTests: XCTestCase {
     t.anyProp = t2
 
     let s = t.anyProp$.dot("firstName")
-    XCTAssertEqual(s.swiftGet() as? String, "YO")
+    XCTAssertEqual(s.slotGet() as? String, "YO")
 
     var i = 0
-    _ = s.swiftSub { (_, _) in
+    _ = s.slotSub { (_, _) in
       i += 1
-      XCTAssertEqual(s.swiftGet() as? String, "YO2")
+      XCTAssertEqual(s.slotGet() as? String, "YO2")
     }
     t2.firstName = "YO2"
-    XCTAssertEqual(s.swiftGet() as? String, "YO2")
+    XCTAssertEqual(s.slotGet() as? String, "YO2")
     XCTAssertEqual(i, 1)
   }
 
@@ -282,23 +282,23 @@ class SwiftTestsTests: XCTestCase {
     let t = Test(["firstName": "a"])
 
     var slot = 0
-    let s1 = t.firstName$.swiftSub { (_, _) in
+    let s1 = t.firstName$.slotSub { (_, _) in
       slot += 1
     }
 
     var subSlot = 0
     let t2 = Test(["anyProp": t])
-    let s2 = t2.anyProp$.dot("firstName").swiftSub { (_, _) in
+    let s2 = t2.anyProp$.dot("firstName").slotSub { (_, _) in
       subSlot += 1
     }
 
-    XCTAssertEqual(t2.anyProp$.dot("firstName").swiftGet() as! String, "a")
+    XCTAssertEqual(t2.anyProp$.dot("firstName").slotGet() as! String, "a")
     XCTAssertEqual(slot, 0)
     XCTAssertEqual(subSlot, 0)
 
     t.firstName = "B"
 
-    XCTAssertEqual(t2.anyProp$.dot("firstName").swiftGet() as! String, "B")
+    XCTAssertEqual(t2.anyProp$.dot("firstName").slotGet() as! String, "B")
     XCTAssertEqual(slot, 1)
     XCTAssertEqual(subSlot, 1)
 
@@ -641,4 +641,5 @@ class SwiftTestsTests: XCTestCase {
     t.set(key: "dateProp", value: Date(timeIntervalSince1970: 1234))
     XCTAssertEqual(t.dateProp, Date(timeIntervalSince1970: 1234))
   }
+
 }

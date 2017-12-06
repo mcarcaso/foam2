@@ -60,7 +60,7 @@ foam.CLASS({
       },
       swiftCode: function() {/*
 super.__foamInit__()
-onDetach(data.remaining$.swiftSub(onTick_listener))
+onDetach(data.remaining$.slotSub(onTick_listener))
       */},
     },
   ],

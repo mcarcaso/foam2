@@ -74,7 +74,7 @@ let onVcChange = { [weak self] () -> Void in
       target: self,
       action: #selector(DAOCreateViewController.onSaveButtonPressed))
 }
-self.onDetach(self.vc$.swiftSub({ (_, _) in
+self.onDetach(self.vc$.slotSub({ (_, _) in
   onVcChange()
 }))
 onVcChange()

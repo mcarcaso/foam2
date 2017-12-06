@@ -33,7 +33,7 @@ object?.set(key: propertyName, value: value)
       */},
     },
     {
-      name: 'swiftSub',
+      name: 'slotSub',
       swiftCode: function() {/*
 return object?.sub(topics: ["propertyChange", propertyName], listener: listener) ?? Subscription(detach: {})
       */},
