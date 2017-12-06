@@ -337,7 +337,7 @@ return <%=this.swiftValueName%><% if ( this.swiftRequiresCast ) { %>!<% } %>
 if <%= this.swiftExpressionSubscriptionName %> != nil { return <%= this.swiftValueName %> }
 let valFunc = { [unowned self] () -> <%= this.swiftValueType %> in
   <% for (var i = 0, arg; arg = this.swiftExpressionArgs[i]; i++) { arg = arg.split('$') %>
-  let <%=arg.join('$')%> = self.<%=arg[0]%><% if (arg.length > 1) {%>$<% arg.slice(1).forEach(function(a) { %>.dot("<%=a%>")<% }) %>.swiftGet()<% } %>
+  let <%=arg.join('$')%> = self.<%=arg[0]%><% if (arg.length > 1) {%>$<% arg.slice(1).forEach(function(a) { %>.dot("<%=a%>")<% }) %>.slotGet()<% } %>
   <% } %>
   <%= this.swiftExpression %>
 }

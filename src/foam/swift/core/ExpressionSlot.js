@@ -23,7 +23,7 @@ foam.CLASS({
     {
       name: 'value',
       swiftFactory: function() {/*
-return code(args.map { (slot) -> Any? in return slot.swiftGet() })
+return code(args.map { (slot) -> Any? in return slot.slotGet() })
       */}
     },
     {
@@ -34,7 +34,7 @@ return code(args.map { (slot) -> Any? in return slot.swiftGet() })
 
   methods: [
     {
-      name: 'swiftGet',
+      name: 'slotGet',
       swiftCode: 'return value',
     },
     {

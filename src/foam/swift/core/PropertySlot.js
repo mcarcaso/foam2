@@ -21,7 +21,7 @@ foam.CLASS({
   ],
   methods: [
     {
-      name: 'swiftGet',
+      name: 'slotGet',
       swiftCode: function() {/*
 return object?.get(key: propertyName) ?? nil
       */},

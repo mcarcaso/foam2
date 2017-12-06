@@ -93,11 +93,11 @@ public protocol MethodInfo: Axiom, GetterAxiom, SlotGetterAxiom {
 }
 extension MethodInfo {
   public func call(_ obj: FObject, args: [Any?] = []) throws -> Any? {
-    let callback = obj.getSlot(key: name)!.swiftGet() as! ([Any?]) throws -> Any?
+    let callback = obj.getSlot(key: name)!.slotGet() as! ([Any?]) throws -> Any?
     return try callback(args)
   }
   public func get(_ obj: FObject) -> Any? {
-    return obj.getSlot(key: name)!.swiftGet()
+    return obj.getSlot(key: name)!.slotGet()
   }
 }
 
@@ -144,7 +144,7 @@ public class Context {
     if let slot = slotMap[key] {
       return slot
     } else if let slot = slotMap[toSlotName(name: key)] {
-      return slot.swiftGet()
+      return slot.slotGet()
     }
     return parent?[key]
   }
