@@ -82,7 +82,7 @@ return __context__["<%=this.key%>"]<%= this.swiftCast %>
       name: 'valueSetter',
       args: [],
       template: function() {/*
-self.<%=this.name%>$?.swiftSet(value)
+self.<%=this.name%>$?.slotSet(value)
       */},
     },
     {

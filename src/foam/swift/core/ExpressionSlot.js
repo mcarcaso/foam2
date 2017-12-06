@@ -38,7 +38,7 @@ return code(args.map { (slot) -> Any? in return slot.slotGet() })
       swiftCode: 'return value',
     },
     {
-      name: 'swiftSet',
+      name: 'slotSet',
       swiftCode: '// NOP',
     },
     {

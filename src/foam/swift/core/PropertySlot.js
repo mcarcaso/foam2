@@ -27,7 +27,7 @@ return object?.get(key: propertyName) ?? nil
       */},
     },
     {
-      name: 'swiftSet',
+      name: 'slotSet',
       swiftCode: function() {/*
 object?.set(key: propertyName, value: value)
       */},

@@ -14,7 +14,7 @@ foam.CLASS({
       swiftCode: 'fatalError()',
     },
     {
-      name: 'swiftSet',
+      name: 'slotSet',
       args: [
         {
           swiftType: 'Any?',
@@ -54,8 +54,8 @@ let l1 = { () -> Void in
 
   if !FOAM_utils.equals(s1.slotGet(), s2.slotGet()) {
     feedback1 = true
-    s2.swiftSet(s1.slotGet())
-    if !FOAM_utils.equals(s1.slotGet(), s2.slotGet()) { s1.swiftSet(s2.slotGet()) }
+    s2.slotSet(s1.slotGet())
+    if !FOAM_utils.equals(s1.slotGet(), s2.slotGet()) { s1.slotSet(s2.slotGet()) }
     feedback1 = false
   }
 }
@@ -65,8 +65,8 @@ let l2 = { () -> Void in
 
   if !FOAM_utils.equals(s1.slotGet(), s2.slotGet()) {
     feedback2 = true
-    s1.swiftSet(s2.slotGet())
-    if !FOAM_utils.equals(s1.slotGet(), s2.slotGet()) { s2.swiftSet(s1.slotGet()) }
+    s1.slotSet(s2.slotGet())
+    if !FOAM_utils.equals(s1.slotGet(), s2.slotGet()) { s2.slotSet(s1.slotGet()) }
     feedback2 = false
   }
 }
@@ -109,7 +109,7 @@ return other.linkFrom(self)
       swiftCode: function() {/*
 let l = { () -> Void in
   if !FOAM_utils.equals(self.slotGet(), other.slotGet()) {
-    self.swiftSet(other.slotGet())
+    self.slotSet(other.slotGet())
   }
 }
 l()
@@ -132,7 +132,7 @@ return other.swiftSub { (_, _) in l() }
       swiftReturns: 'Subscription',
       swiftCode: function() {/*
 let l = { () -> Void in
-  self.swiftSet(f(other.slotGet()))
+  self.slotSet(f(other.slotGet()))
 }
 l()
 return other.swiftSub { (_, _) in l() }

@@ -48,7 +48,7 @@ return nil
     },
 
     {
-      name: 'swiftSet',
+      name: 'slotSet',
       swiftCode: function() {/*
 if let o = parentSlot.slotGet() as? FObject { o.set(key: name, value: value) }
       */},
