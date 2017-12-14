@@ -53,6 +53,7 @@ var classes = [
   'foam.box.NamedBox',
   'foam.box.HTTPBox',
   'foam.box.HTTPReplyBox',
+  'foam.nanos.app.AppConfig',
   'foam.nanos.http.WebAgent',
   'com.google.foam.demos.appengine.TestService',
   'com.google.foam.demos.heroes.Hero',
@@ -78,6 +79,7 @@ var classes = [
   'foam.dao.ClientDAO',
   'foam.dao.ClientSink',
   'foam.dao.ResetSink',
+  'foam.dao.DAOSink',
   'foam.dao.MergedResetSink',
   'foam.dao.Sink',
   'foam.dao.ArraySink',
@@ -207,10 +209,27 @@ var blacklist = [
   'foam.core.Property',
   'foam.core.String',
 
-  // TODO: These are missing java impls.
-  'foam.mlang.order.ThenBy',
+  // These have hand written java impls so we don't want to clobber them.
+  // TODO: Change gen.sh to prefer hand written java files over generated.
+  'foam.dao.AbstractDAO',
+  'foam.dao.FilteredDAO',
+  'foam.dao.LimitedDAO',
+  'foam.dao.NullDAO',
+  'foam.dao.OrderedDAO',
+  'foam.dao.SkipDAO',
+
+  // TODO: These models currently don't compile in java but could be updated to
+  // compile properly.
   'foam.blob.BlobBlob',
+  'foam.dao.CompoundDAODecorator',
+  'foam.dao.DAODecorator',
+  'foam.dao.EasyDAO',
   'foam.dao.FlowControl',
+  'foam.dao.PromisedDAO',
+  'foam.dao.sync.SyncRecord',
+  'foam.dao.sync.VersionedSyncRecord',
+  'foam.mlang.order.ThenBy',
+  'foam.nanos.menu.MenuBar',
 ];
 
 module.exports = {

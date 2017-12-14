@@ -817,7 +817,7 @@ foam.CLASS({
     ['javaType', 'String'],
     ['javaInfoType', 'foam.core.AbstractStringPropertyInfo'],
     ['javaJSONParser', 'new foam.lib.json.StringParser()'],
-    ['javaCSVParser', 'foam.lib.json.StringParser'],
+    ['javaCSVParser', 'foam.lib.csv.CSVStringParser'],
     {
       name: 'sqlType',
       expression: function (width) {
@@ -1180,8 +1180,8 @@ foam.CLASS({
         return props.length === 1 ? 'Object' : 'foam.core.CompoundKey';
       }
     },
-    ['javaJSONParser', 'new foam.lib.parse.Fail()'],
-    ['javaInfoType', 'foam.core.AbstractObjectPropertyInfo']
+    [ 'javaJSONParser', 'new foam.lib.parse.Fail()' ],
+    [ 'javaInfoType',   'foam.core.AbstractMultiPartIDPropertyInfo' ]
   ],
 
   methods: [
@@ -1315,7 +1315,7 @@ foam.CLASS({
     {
       name: 'javaReturns',
       expression: function(javaPath) {
-        return this.lookup(javaPath).model_.name;
+        return this.lookup(javaPath).model_.id;
       },
     },
   ]

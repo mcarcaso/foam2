@@ -6,7 +6,7 @@
 
 package foam.core;
 
-public interface ContextFactory<T> {
-  public T getInstance(java.util.Map<String, Object> args, X x);
+public abstract class AbstractMultiPartIDPropertyInfo
+  extends AbstractObjectPropertyInfo
+{
 }
-
