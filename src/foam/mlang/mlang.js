@@ -1265,7 +1265,7 @@ foam.CLASS({
   documentation: 'Unary Predicate for generic keyword search (searching all String properties for argument substring).',
 
   requires: [
-    'foam.core.String'
+    { path: 'foam.core.String', javaPath: '' },
   ],
 
   methods: [

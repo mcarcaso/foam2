@@ -12,5 +12,6 @@ public class ContextAwareSupport
   protected X x_;
 
   public X    getX() { return x_; }
+  public X    getY() { return x_; }
   public void setX(X x) { x_ = x; }
 }

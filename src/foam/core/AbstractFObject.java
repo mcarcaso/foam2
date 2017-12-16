@@ -89,4 +89,14 @@ public abstract class AbstractFObject
     PropertyInfo property = (PropertyInfo) getClassInfo().getAxiomByName(prop);
     return property != null && property.isDefaultValue(this);
   }
+
+  X y_ = null;
+  public X getY() {
+    if (y_ == null) {
+      List exports = getClassInfo().getAxiomsByClass(ExportInfo.class);
+      y_ = getX();
+      // TODO: Init with exports.
+    }
+    return y_;
+  }
 }

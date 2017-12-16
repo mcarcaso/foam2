@@ -6,8 +6,6 @@
 
 package foam.core;
 
-public interface ContextAware {
-  public X    getX();
-  public X    getY();
-  public void setX(X x);
+public interface Listener {
+  void apply(foam.core.Detachable sub, java.util.List args);
 }

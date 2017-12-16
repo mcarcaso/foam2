@@ -126,6 +126,7 @@ FOAM_FILES([
   { name: "foam/java/Skeleton", flags: ['java'] },
   { name: "foam/java/JavaImport", flags: ['java'] },
   { name: "foam/java/refinements", flags: ['java'] },
+  { name: "foam/java/CodeTools", flags: ['java'] },
 
   // TODO: Move createChildMethod_ to core.
   { name: "foam/java/JavaSwiftRefines", flags: ['swift'] },
@@ -482,5 +483,5 @@ FOAM_FILES([
   { name: "foam/dao/pg/ConnectionPool" },
   { name: "foam/lib/json/OutputterMode" },
   { name: "foam/lib/parse/Parser" },
-  { name: "foam/lib/parse/PStream" }
+  { name: "foam/lib/parse/PStream" },
 ]);

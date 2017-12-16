@@ -10,6 +10,7 @@ foam.CLASS({
   extends: 'foam.swift.core.Slot',
   properties: [
     {
+      class: 'FObjectProperty',
       name: 'object',
       swiftType: 'FObject?',
       swiftWeak: true,
@@ -25,11 +26,17 @@ foam.CLASS({
       swiftCode: function() {/*
 return object?.get(key: propertyName) ?? nil
       */},
+      javaCode: function() {/*
+return getObject().getProperty(getPropertyName());
+      */},
     },
     {
       name: 'slotSet',
       swiftCode: function() {/*
 object?.set(key: propertyName, value: value)
+      */},
+      javaCode: function() {/*
+getObject().setProperty(getPropertyName(), value);
       */},
     },
     {

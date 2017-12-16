@@ -28,6 +28,10 @@ public class WebSocketServer
     return x;
   }
 
+  public X getY() {
+    return x;
+  }
+
   protected foam.nanos.box.NanoServiceRouter router_ = null;
 
   protected foam.nanos.box.NanoServiceRouter getRouter() {

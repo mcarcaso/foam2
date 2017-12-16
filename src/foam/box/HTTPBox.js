@@ -23,11 +23,13 @@ foam.CLASS({
       name: 'Parser',
       path: 'foam.json.Parser',
       swiftPath: 'foam.swift.parse.json.FObjectParser',
+      javaPath: '',
     },
     {
       name: 'HTTPRequest',
       path: 'foam.net.web.HTTPRequest',
       swiftPath: '',
+      javaPath: '',
     },
     {
       name: 'Outputter',

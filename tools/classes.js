@@ -134,6 +134,7 @@ var classes = [
   'foam.nanos.menu.SubMenuView',
   'foam.nanos.menu.TabsMenu',
   'foam.nanos.menu.ViewMenu',
+  'foam.nanos.socket.NanoSocketServer',
   'foam.nanos.notification.email.EmailMessage',
   'foam.nanos.notification.email.EmailService',
   'foam.nanos.notification.email.EmailTemplate',
@@ -170,7 +171,11 @@ var classes = [
   'foam.nanos.geocode.GoogleMapsGeocodeResponse',
   'foam.nanos.geocode.GoogleMapsGeocodeResult',
   'foam.nanos.geocode.GoogleMapsGeometry',
-  'foam.nanos.geocode.GoogleMapsBoundary'
+  'foam.nanos.geocode.GoogleMapsBoundary',
+
+  'foam.swift.core.ConstantSlot',
+  'foam.swift.core.PropertySlot',
+  'foam.swift.core.SubSlot',
 ];
 
 var abstractClasses = [
@@ -214,7 +219,6 @@ var blacklist = [
   'foam.dao.AbstractDAO',
   'foam.dao.FilteredDAO',
   'foam.dao.LimitedDAO',
-  'foam.dao.NullDAO',
   'foam.dao.OrderedDAO',
   'foam.dao.SkipDAO',
 

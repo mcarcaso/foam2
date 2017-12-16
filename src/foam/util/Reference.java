@@ -4,10 +4,11 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package foam.core;
+package foam.util;
 
-public interface ContextAware {
-  public X    getX();
-  public X    getY();
-  public void setX(X x);
+public class Reference<T> {
+  public T value;
+  public Reference(T value) {
+    this.value = value;
+  }
 }

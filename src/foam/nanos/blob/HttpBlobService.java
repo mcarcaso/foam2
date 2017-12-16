@@ -65,6 +65,11 @@ public class HttpBlobService
   }
 
   @Override
+  public foam.core.X getY() {
+    return getX();
+  }
+
+  @Override
   public void setX(foam.core.X x) {
     x_ = x;
   }

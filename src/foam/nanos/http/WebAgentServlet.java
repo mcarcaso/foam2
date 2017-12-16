@@ -28,6 +28,7 @@ public class WebAgentServlet
   }
 
   public X    getX()    { return x_; }
+  public X    getY() { return getX(); }
   public void setX(X x) { x_ = x; }
 
   @Override

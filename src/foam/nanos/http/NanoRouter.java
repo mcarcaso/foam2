@@ -39,7 +39,7 @@ public class NanoRouter
   {
     String      path       = req.getRequestURI();
     String[]    urlParams  = path.split("/");
-    String      serviceKey = urlParams[2];
+    String      serviceKey = urlParams[1];
     Object      service    = getX().get(serviceKey);
     DAO         nSpecDAO   = (DAO) getX().get("nSpecDAO");
     NSpec       spec       = (NSpec) nSpecDAO.find(serviceKey);
@@ -126,6 +126,9 @@ public class NanoRouter
   public X getX() {
     return x_;
   }
+
+  @Override
+  public X getY() { return getX(); }
 
   @Override
   public void setX(X x) {

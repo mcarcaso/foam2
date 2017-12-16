@@ -95,6 +95,7 @@ foam.CLASS({
       var capitalized = foam.String.capitalize(this.name);
       var constantize = foam.String.constantize(this.name);
       var isSet       = this.name + 'IsSet_';
+      var slot        = this.name + '$_';
       var factoryName = capitalized + 'Factory_';
 
       cls.
@@ -152,6 +153,31 @@ foam.CLASS({
 
       var info = cls.getField('classInfo_');
       if ( info ) info.addAxiom(cls.name + '.' + constantize);
+
+      if ( info ) {
+        cls.field({
+          name: slot,
+          type: 'foam.swift.core.Slot',
+          visibility: 'private',
+        })
+        cls.method({
+          name: 'get' + capitalized + '$',
+          type: 'foam.swift.core.Slot',
+          visibility: 'public',
+          body: `
+if ( ${slot} == null ) {
+  // Note this will break for DAOs because they are not FObjects in java.
+  // TODO: Make DAOs FObjects in java.
+  final foam.core.FObject self = (foam.core.FObject)this;
+  ${slot} = getY().create(foam.swift.core.PropertySlot.class, ${foam.java.CodeTools.t().map({
+    object: 'self',
+    propertyName: `"${this.name}"`,
+  })});
+}
+return ${slot};
+          `,
+        })
+      }
     }
   ]
 });
@@ -1318,5 +1344,30 @@ foam.CLASS({
         return this.lookup(javaPath).model_.id;
       },
     },
+  ],
+
+  methods: [
+    function buildJavaClass(cls) {
+      if ( ! this.javaPath ) return;
+      if ( ! this.lookup(this.javaPath, true) ) return;
+      if (foam.core.InterfaceModel.isInstance(this.lookup(this.javaPath).model_)) {
+        return;
+      }
+
+      cls.method({
+        name: this.name + '_create',
+        type: this.javaReturns,
+        visibility: 'public',
+	body: `
+return getY().create(${this.javaReturns}.class, args);
+        `,
+        args: [
+          foam.java.Argument.create({
+            name: 'args',
+            type: 'java.util.Map<String, Object>',
+          }),
+        ],
+      });
+    }
   ]
 });

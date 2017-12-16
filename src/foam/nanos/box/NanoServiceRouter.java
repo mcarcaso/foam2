@@ -107,6 +107,10 @@ public class NanoServiceRouter
     return x_;
   }
 
+  public X getY() {
+    return getX();
+  }
+
   @Override
   public void setX(X x) {
     x_ = x;
