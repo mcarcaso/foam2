@@ -1135,6 +1135,40 @@ foam.CLASS({
 
 
 foam.CLASS({
+  refines: 'foam.pattern.Singleton',
+
+  properties: [
+    {
+      name: 'javaName',
+      value: 'Singleton',
+    },
+    {
+      name: 'javaInfoName',
+      expression: function(javaName) {
+        return foam.String.constantize(javaName);
+      },
+    },
+  ],
+
+  methods: [
+    function buildJavaClass(cls) {
+      this.SUPER(cls);
+      var info = cls.getField('classInfo_');
+      if ( info ) info.addAxiom(cls.name + '.' + this.javaInfoName);
+
+      cls.field({
+        name: this.javaInfoName,
+        visibility: 'public',
+        static: true,
+        type: 'foam.core.SingletonInfo',
+        initializer: `new foam.core.SingletonInfo("${this.javaName}", ${cls.name}.class);`,
+      });
+    }
+  ]
+});
+
+
+foam.CLASS({
   refines: 'foam.pattern.Multiton',
 
   properties: [
@@ -1145,7 +1179,7 @@ foam.CLASS({
     {
       name: 'javaInfoName',
       expression: function(javaName) {
-        return foam.String.constantize(this.javaName);
+        return foam.String.constantize(javaName);
       },
     },
   ],
