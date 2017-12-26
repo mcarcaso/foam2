@@ -17,8 +17,13 @@ import foam.mlang.sink.*;
  */
 public class MLang
 {
-  public static final Predicate TRUE = new True();
-  public static final Predicate FALSE = new False();
+  // TODO: Should this be modifiable?
+  private static final foam.core.X x = foam.core.EmptyX.instance();
+
+  // TODO: Does it make sense to change TRUE/FALSE into functions so the context
+  // can be changed?
+  public  static final Predicate TRUE  = x.create(True.class);
+  public  static final Predicate FALSE = x.create(False.class);
 
   public static Expr prepare(Object o) {
     return o instanceof Expr ? (Expr) o :
