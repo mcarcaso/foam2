@@ -27,6 +27,7 @@ foam.CLASS({
     'foam.dao.LoggingDAO',
     'foam.json2.Deserializer',
     'foam.json2.Serializer',
+    'foam.tools.AppConfig',
   ],
 
   implements: [
@@ -49,8 +50,10 @@ foam.CLASS({
       value: 'TESTOUTPUT/',
     },
     {
-      name: 'modelId',
-      value: 'foam.tools.Build',
+      name: 'appConfig',
+      factory: function() {
+        return this.AppConfig.create({ requires: ['foam.tools.Build'] });
+      },
     },
     {
       class: 'StringArray',
@@ -209,25 +212,30 @@ foam.CLASS({
 
   actions: [
     function execute() {
-      var srcDAO = this.FindInDAO.create({
-        delegate: this.DecoratedDAO.create({
-          decorator: this.SerializeDeserializeDAODecorator.create(),
-          delegate: this.OrDAO.create({
-            primary: this.ModelLookupDAO.create(),
-            delegate: this.classloader.modelDAO,
+      var self = this;
+
+      var srcDAO = self.FindInDAO.create({
+        delegate: self.DecoratedDAO.create({
+          decorator: self.SerializeDeserializeDAODecorator.create(),
+          delegate: self.OrDAO.create({
+            primary: self.ModelLookupDAO.create(),
+            delegate: self.classloader.modelDAO,
           })
         })
       });
 
-      var destDAO = this.DepPutModelDAO.create({
+      var destDAO = self.DepPutModelDAO.create({
         modelDAO: srcDAO,
         delegate: foam.isServer ?
-            this.DecoratedDAO.create({decorator: this.JSON2FileWriteDAODecorator.create({root: this.root})}) :
-            this.LoggingDAO.create({logger: this.log.bind(this)}),
+            self.DecoratedDAO.create({decorator: self.JSON2FileWriteDAODecorator.create({root: self.root})}) :
+            self.LoggingDAO.create({logger: self.log.bind(self)}),
       })
 
-      srcDAO.where(this.IN(this.Model.ID, [this.modelId]))
-          .select(this.DAOSink.create({dao: destDAO}))
+      var models = self.appConfig.refines.concat(self.appConfig.requires);
+      return self.appConfig.load().then(function() {
+        return srcDAO.where(self.IN(self.Model.ID, models))
+            .select(self.DAOSink.create({dao: destDAO}))
+      })
     }
   ]
 });
