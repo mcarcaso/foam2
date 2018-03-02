@@ -27,7 +27,6 @@ foam.CLASS({
     'foam.dao.LoggingDAO',
     'foam.json2.Deserializer',
     'foam.json2.Serializer',
-    'foam.tools.AppConfig',
   ],
 
   implements: [
@@ -50,10 +49,7 @@ foam.CLASS({
       value: 'TESTOUTPUT/',
     },
     {
-      name: 'appConfig',
-      factory: function() {
-        return this.AppConfig.create({ requires: ['foam.tools.Build'] });
-      },
+      name: 'appConfigId',
     },
     {
       class: 'StringArray',
@@ -231,11 +227,20 @@ foam.CLASS({
             self.LoggingDAO.create({logger: self.log.bind(self)}),
       })
 
-      var models = self.appConfig.refines.concat(self.appConfig.requires);
-      return self.appConfig.load().then(function() {
-        return srcDAO.where(self.IN(self.Model.ID, models))
-            .select(self.DAOSink.create({dao: destDAO}))
-      })
+      self.classloader.load(self.appConfigId)
+        .then(function() {
+          return foam.lookup(self.appConfigId).create().load();
+        })
+        .then(function(models) {
+
+          models = models.map(function(m) {
+            return m.model_.id;
+          })
+          models.push(self.appConfigId);
+
+          return srcDAO.where(self.IN(self.Model.ID, models))
+              .select(self.DAOSink.create({dao: destDAO}))
+        })
     }
   ]
 });
