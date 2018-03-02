@@ -23,6 +23,7 @@ public class FileService
 {
   protected DAO fileDAO_;
   protected DAO userDAO_;
+  protected DAO sessionDAO_;
 
   public FileService(X x, BlobService delegate) {
     super(x, delegate);
@@ -30,10 +31,12 @@ public class FileService
     // use the user dao instead of local user dao
     // so that we get the authentication decoration
     userDAO_ = (DAO) x.get("userDAO");
+    sessionDAO_ = (DAO) x.get("sessionDAO");
   }
 
   @Override
   protected void download(X x) {
+    Blob blob = null;
     OutputStream os = null;
     HttpServletRequest  req  = x.get(HttpServletRequest.class);
     HttpServletResponse resp = x.get(HttpServletResponse.class);
@@ -58,7 +61,7 @@ public class FileService
       // get blob and blob size
       // TODO: figure out why delegate is not being set for IdentifiedBlob
       String blobId = ((IdentifiedBlob) file.getData()).getId();
-      Blob blob = getDelegate().find_(x, blobId);
+      blob = getDelegate().find_(x, blobId);
       long size = blob.getSize();
 
       // set response status, content type, content length
@@ -72,9 +75,9 @@ public class FileService
       blob.read(os, 0, size);
       os.close();
     } catch (Throwable t) {
-      t.printStackTrace();
       throw new RuntimeException(t);
     } finally {
+      IOUtils.closeQuietly(blob);
       IOUtils.closeQuietly(os);
     }
   }
