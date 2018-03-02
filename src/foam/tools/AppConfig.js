@@ -23,8 +23,12 @@ foam.CLASS({
         return self.classloader.load(r);
       };
 
-      return Promise.all(self.refines.map(load)).then(function() {
+      var refineModels;
+      return Promise.all(self.refines.map(load)).then(function(ms) {
+        refineModels = ms;
         return Promise.all(self.requires.map(load));
+      }).then(function(models) {
+        return refineModels.concat(models);
       });
     }
   ]
