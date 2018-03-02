@@ -9,9 +9,11 @@ var classloader = foam.__context__.classloader;
 
 classloader.addClassPath(dir + '/src');
 
-classloader.load('foam.tools.Build').then(function() {
+Promise.all([
+  classloader.load('foam.tools.Build'),
+]).then(function() {
   var b = foam.tools.Build.create({
-    modelId: 'demo.build.ModelToBuild',
+    appConfigId: 'demo.build.AppConfig',
     root: dir + '/build/',
   });
   b.execute();

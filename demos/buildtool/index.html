@@ -9,7 +9,9 @@
       var l = document.location;
       cl.addClassPath(l.protocol + '//' + l.host + l.pathname + 'build', true);
 
-      cl.load('demo.build.ModelToBuild').then(function() {
+      cl.load('demo.build.AppConfig').then(function() {
+        return demo.build.AppConfig.create().load();
+      }).then(function() {
         foam.u2.DetailView.create({
           data: demo.build.ModelToBuild.create(),
         }).write()
@@ -17,4 +19,3 @@
     </script>
   </body>
 </html>
-
