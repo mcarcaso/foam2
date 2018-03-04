@@ -16,19 +16,16 @@ foam.CLASS({
   ],
   methods: [
     function load() {
-
       var self = this;
 
       var load = function(r) {
         return self.classloader.load(r);
       };
 
-      var refineModels;
-      return Promise.all(self.refines.map(load)).then(function(ms) {
-        refineModels = ms;
+      return Promise.all(self.refines.map(load)).then(function() {
         return Promise.all(self.requires.map(load));
       }).then(function(models) {
-        return refineModels.concat(models);
+        return self.refines.concat(self.requires);
       });
     }
   ]

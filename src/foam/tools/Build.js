@@ -232,10 +232,6 @@ foam.CLASS({
           return foam.lookup(self.appConfigId).create().load();
         })
         .then(function(models) {
-
-          models = models.map(function(m) {
-            return m.model_.id;
-          })
           models.push(self.appConfigId);
 
           return srcDAO.where(self.IN(self.Model.ID, models))
