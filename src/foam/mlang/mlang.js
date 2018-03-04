@@ -818,6 +818,34 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.mlang.predicate',
+  name: 'EndsWith',
+  extends: 'foam.mlang.predicate.Binary',
+  implements: [ 'foam.core.Serializable' ],
+
+  documentation: 'Predicate returns true iff arg1 ends with arg2 or if arg1 is an array, if an element starts with arg2.',
+
+  methods: [
+    {
+      name: 'f',
+      code: function(o) {
+        var arg1 = this.arg1.f(o);
+        var arg2 = this.arg2.f(o);
+
+        if ( Array.isArray(arg1) ) {
+          return arg1.some(function(arg) {
+            return arg.endsWith(arg2);
+          });
+        }
+
+        return arg1.endsWith(arg2);
+      }
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'foam.mlang.predicate',
   name: 'ArrayBinary',
   extends: 'foam.mlang.predicate.Binary',
   abstract: true,
@@ -833,7 +861,13 @@ foam.CLASS({
       adapt: function(old, nu, prop) {
         var value = prop.adaptValue(nu);
         var arg1 = this.arg1;
-        if ( foam.mlang.Constant.isInstance(value) && arg1 && arg1.adapt ) {
+
+        // Adapt constant array elements when:
+        // (1) Value is a constant (array);
+        // (2) Value is truthy (empty arrays can be serialized as undefined);
+        // (3) Arg1 has an adapt().
+        if ( foam.mlang.Constant.isInstance(value) && value.value &&
+             arg1 && arg1.adapt ) {
           var arrayValue = value.value;
           for ( var i = 0; i < arrayValue.length; i++ ) {
             arrayValue[i] = arg1.adapt.call(null, old && old[i], arrayValue[i], arg1);
@@ -1291,7 +1325,7 @@ foam.CLASS({
     {
       name: 'String',
       path: 'foam.core.String',
-      swiftPath: null,
+      flags: ['js'],
     },
   ],
 
@@ -1890,6 +1924,7 @@ foam.CLASS({
     'foam.mlang.predicate.Or',
     'foam.mlang.predicate.StartsWith',
     'foam.mlang.predicate.StartsWithIC',
+    'foam.mlang.predicate.EndsWith',
     'foam.mlang.predicate.True',
     'foam.mlang.sink.Count',
     'foam.mlang.sink.Explain',
@@ -1935,6 +1970,7 @@ foam.CLASS({
     function KEYWORD(a) { return this._unary_("Keyword", a); },
     function STARTS_WITH(a, b) { return this._binary_("StartsWith", a, b); },
     function STARTS_WITH_IC(a, b) { return this._binary_("StartsWithIC", a, b); },
+    function ENDS_WITH(a, b) { return this._binary_("EndsWith", a, b); },
     function FUNC(fn) { return this.Func.create({ fn: fn }); },
     function DOT(a, b) { return this._binary_("Dot", a, b); },
     function MUL(a, b) { return this._binary_("Mul", a, b); },
