@@ -229,11 +229,6 @@ foam.CLASS({
 
       self.appConfig.load()
         .then(function(models) {
-
-          models = models.map(function(m) {
-            return m.model_.id;
-          })
-
           return srcDAO.where(self.IN(self.Model.ID, models))
               .select(self.DAOSink.create({dao: destDAO}))
         })
