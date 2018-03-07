@@ -7,10 +7,11 @@
       var cl = foam.__context__.classloader;
 
       var l = document.location;
-      cl.addClassPath(l.protocol + '//' + l.host + l.pathname + 'build', true);
+      var demoPath = l.protocol + '//' + l.host + '/demos/buildtool/';
+      cl.addClassPath(demoPath + 'build', true);
 
-      cl.load('demo.build.AppConfig').then(function() {
-        return demo.build.AppConfig.create().load();
+      cl.load('foam.tools.WebAppConfigLoader').then(function(cls) {
+        return cls.create().load(demoPath + 'config.js')
       }).then(function() {
         foam.u2.DetailView.create({
           data: demo.build.ModelToBuild.create(),

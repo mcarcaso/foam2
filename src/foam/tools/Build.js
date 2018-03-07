@@ -49,7 +49,7 @@ foam.CLASS({
       value: 'TESTOUTPUT/',
     },
     {
-      name: 'appConfigId',
+      name: 'appConfig',
     },
     {
       class: 'StringArray',
@@ -227,16 +227,12 @@ foam.CLASS({
             self.LoggingDAO.create({logger: self.log.bind(self)}),
       })
 
-      self.classloader.load(self.appConfigId)
-        .then(function() {
-          return foam.lookup(self.appConfigId).create().load();
-        })
+      self.appConfig.load()
         .then(function(models) {
 
           models = models.map(function(m) {
             return m.model_.id;
           })
-          models.push(self.appConfigId);
 
           return srcDAO.where(self.IN(self.Model.ID, models))
               .select(self.DAOSink.create({dao: destDAO}))
