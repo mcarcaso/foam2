@@ -3,7 +3,7 @@ foam.CLASS({
   name: 'WebAppConfigLoader',
   requires: [
     'foam.json2.Deserializer',
-    'foam.net.HTTPRequest',
+    'foam.net.web.HTTPRequest',
   ],
   properties: [
     {
@@ -12,17 +12,27 @@ foam.CLASS({
     },
   ],
   methods: [
-    function load(path) {
+    function load() {
       var self = this;
-      return self.HTTPRequest.create({
-        method: 'GET',
-        url: path
-      }).send().then(function(payload) {
-        return payload.resp.text();
-      }).then(function(payload) {
-        return self.d.aparseString(self, payload);
-      }).then(function(config) {
-        return config.load();
+
+      var promises = [];
+      for ( var i = 0; i < arguments.length; i++ ) {
+        promises.push(self.HTTPRequest.create({
+          method: 'GET',
+          url: arguments[i],
+        }).send().then(function(p) {
+          return p.resp.text();
+        }).then(function(p) {
+          return self.d.aparseString(self, p);
+        }));
+      }
+
+      return Promise.all(promises).then(function(configs) {
+        var c = configs.shift();
+        while ( configs.length ) {
+          c = c.concat(configs.shift());
+        }
+        return c.load();
       });
     },
   ]

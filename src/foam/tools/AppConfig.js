@@ -25,8 +25,14 @@ foam.CLASS({
       return Promise.all(self.refines.map(load)).then(function() {
         return Promise.all(self.requires.map(load));
       }).then(function(models) {
-        return self.refines.concat(self.requires);
+        return self.refines.concat(self.requires, self.model_.id);
       });
-    }
+    },
+    function concat(appConfig) {
+      return this.cls_.create({
+        refines: this.refines.concat(appConfig.refines),
+        requires: this.requires.concat(appConfig.requires),
+      });
+    },
   ]
 });
