@@ -20,5 +20,37 @@ foam.CLASS({
         return deps;
       }
     },
+    {
+      name: 'filterAxiomsByFlags',
+      code: function(flags) {
+        var filter = foam.util.flagFilter(flags);
+        var self = this;
+
+        var m = {};
+        var queue = self.cls_.getAxiomsByClass(foam.core.Property).map(function(p) {
+          return [self, m, p];
+        });
+
+        while ( queue.length ) {
+          var o = queue.pop();
+          var src = o[0];
+          var dest = o[1];
+          var a = o[2];
+
+          if ( ! src.hasOwnProperty(a.name) ) continue;
+          var type = foam.typeOf(src[a.name]);
+
+          if ( type == foam.Array ) {
+            dest[a.name] = src[a.name].filter(filter).map(function(o) {
+              if ( ! foam.core.Model.isInstance(o) ) return o;
+              return o.filterAxiomsByFlags(flags)
+            });
+          } else {
+            dest[a.name] = src[a.name];
+          }
+        }
+        return self.cls_.create(m);
+      },
+    },
   ],
 });
