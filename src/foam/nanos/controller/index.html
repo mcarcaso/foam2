@@ -5,6 +5,14 @@
     <script language="javascript" src="../../support/support.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" rel="stylesheet">
   </head>
+  <script>
+var cl = foam.__context__.classloader;
+cl.addClassPath('http://localhost:8080/service/static/NANO_BUILD', true);
+
+var d = cl.modelDAO.delegate;
+cl.modelDAO.delegate = cl.modelDAO.primary;
+cl.modelDAO.primary = d;
+  </script>
   <body>
     <foam 
       class="foam.nanos.controller.ApplicationController" 
