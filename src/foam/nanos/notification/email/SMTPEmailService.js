@@ -42,6 +42,7 @@ foam.CLASS({
   axioms: [
     {
       name: 'javaExtras',
+      flags: ['java'],
       buildJavaClass: function (cls) {
         cls.extras.push(foam.java.Code.create({
           data:
