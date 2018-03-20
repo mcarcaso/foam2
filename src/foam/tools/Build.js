@@ -38,7 +38,6 @@ foam.CLASS({
   ],
 
   exports: [
-    'flags',
     'json2Deserializer',
     'json2Serializer',
   ],
@@ -118,17 +117,18 @@ foam.CLASS({
       ]
     },
     {
-      name: 'SerializeDeserializeDAODecorator',
+      name: 'ModelFlagStripDAODecorator',
       extends: 'foam.dao.AbstractDAODecorator',
       documentation: `
         A decorator that serializes and deserializes objects that are read. This
         is useful for stripping objects based on flags.
       `,
+      properties: [
+        'flags',
+      ],
       methods: [
         function read(X, dao, obj) {
-          var s = X.json2Serializer;
-          var d = X.json2Deserializer;
-          return d.aparseString(X, s.stringify(X, obj))
+          return obj.filterAxiomsByFlags(this.flags);
         },
       ],
     },
@@ -212,7 +212,7 @@ foam.CLASS({
 
       var srcDAO = self.FindInDAO.create({
         delegate: self.DecoratedDAO.create({
-          decorator: self.SerializeDeserializeDAODecorator.create(),
+          decorator: self.ModelFlagStripDAODecorator.create({flags: self.flags}),
           delegate: self.OrDAO.create({
             primary: self.ModelLookupDAO.create(),
             delegate: self.classloader.modelDAO,
