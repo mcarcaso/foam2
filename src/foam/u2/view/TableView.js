@@ -1,240 +1,34 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2018 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-foam.INTERFACE({
-  package: 'foam.u2.view',
-  name: 'Formatter',
-  methods: [
-    {
-      name: 'format',
-      args: ['e', 'value', 'obj', 'axiom']
-    }
-  ]
-});
-
 foam.CLASS({
-  package: 'foam.u2.view',
-  name: 'FnFormatter',
-  implements: [ 'foam.u2.view.Formatter' ],
-  properties: [
-    {
-      class: 'Function',
-      name: 'f'
-    }
+  package: "foam.u2.view",
+  name: "TableView",
+  extends: "foam.u2.Element",
+  implements: [
+    "foam.mlang.Expressions"
   ],
-  methods: [
-    function format(e, value, obj, axiom) {
-      this.f.call(e, value, obj, axiom);
-    }
-  ]
-});
-
-
-foam.CLASS({
-  package: 'foam.u2.view',
-  name: 'TableCellFormatter',
-  extends: 'FObjectProperty',
-  properties: [
-    {
-      name: 'of',
-      value: 'foam.u2.view.Formatter'
-    },
-    {
-      name: 'adapt',
-      value: function(o, f, prop) {
-        if ( foam.Function.isInstance(f) ) {
-          return foam.u2.view.FnFormatter.create({
-            f: f
-          });
-        }
-        return foam.core.FObjectProperty.ADAPT.value.call(this, o, f, prop);
-      }
-    },
-    {
-      name: 'value',
-      adapt: function(_, v) {
-        return this.adapt.call(this, _, v, this);
-      }
-    }
-  ]
-});
-
-foam.CLASS({
-  package: 'foam.u2.view',
-  name: 'TableCellPropertyRefinement',
-
-  refines: 'foam.core.Property',
-
-  properties: [
-    {
-      name: 'tableHeaderFormatter',
-      value: function(axiom) {
-        this.add(axiom.label);
-      }
-    },
-    {
-      class: 'foam.u2.view.TableCellFormatter',
-      name: 'tableCellFormatter',
-      adapt: function(o, f, prop) {
-        if ( foam.Function.isInstance(f) ) {
-          return foam.u2.view.FnFormatter.create({
-            f: f
-          });
-        }
-        return foam.core.FObjectProperty.ADAPT.value.call(this, o, f, prop);
-      },
-      factory: function() {
-        return foam.u2.view.FnFormatter.create({
-          class: 'foam.u2.view.FnFormatter',
-          f: function(value, obj, axiom) {
-            this.add(value);
-          }
-        })
-      }
-    },
-    {
-      class: 'Int',
-      name: 'tableWidth'
-    }
-  ]
-});
-
-
-foam.CLASS({
-  refines: 'foam.core.Action',
-
-  properties: [
-    {
-      class: 'foam.u2.view.TableCellFormatter',
-      name: 'tableCellFormatter',
-      value: function(_, obj, axiom) {
-        this.
-          startContext({ data: obj }).
-          add(axiom).
-          endContext();
-      }
-    },
-    {
-      name: 'tableHeaderFormatter',
-      value: function(axiom) {
-        this.add(axiom.label);
-      }
-    }
-  ]
-});
-
-
-foam.CLASS({
-  refines: 'foam.core.Enum',
-
-  properties: [
-    {
-      class: 'foam.u2.view.TableCellFormatter',
-      name: 'tableCellFormatter',
-      value: function(value) {
-        this.add(value.label)
-      }
-    }
-  ]
-});
-
-
-foam.CLASS({
-  refines: 'foam.core.FObjectProperty',
-
-  properties: [ [ 'tableCellFormatter', null ] ]
-});
-
-
-foam.CLASS({
-  refines: 'foam.core.Currency',
-
-  properties: [
-    {
-      class: 'foam.u2.view.TableCellFormatter',
-      name: 'tableCellFormatter',
-      value: function(value) {
-        this.start()
-          .style({'text-align': 'left', 'padding-right': '20px'})
-          .add('$' + (value/100).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'))
-        .end();
-      }
-    }
-  ]
-});
-
-
-foam.CLASS({
-  refines: 'foam.core.Date',
-
-  properties: [
-    {
-      class: 'foam.u2.view.TableCellFormatter',
-      name: 'tableCellFormatter',
-      value: function(date) {
-        if ( date ) this.add(date.toLocaleDateString());
-      }
-    }
-  ]
-});
-
-
-foam.CLASS({
-  refines: 'foam.core.DateTime',
-
-  properties: [
-    {
-      class: 'foam.u2.view.TableCellFormatter',
-      name: 'tableCellFormatter',
-      value: function(date) {
-        if ( date ) this.add(date.toLocaleString());
-      }
-    }
-  ]
-});
-
-
-foam.CLASS({
-  package: 'foam.u2.view',
-  name: 'TableView',
-  extends: 'foam.u2.Element',
-
-  implements: [ 'foam.mlang.Expressions' ],
-
   requires: [
-    'foam.u2.view.EditColumnsView',
-    'foam.u2.md.OverlayDropdown'
+    "foam.u2.view.EditColumnsView",
+    "foam.u2.md.OverlayDropdown"
   ],
-
   exports: [
-    'columns',
-    'selection',
-    'hoverSelection'
+    "columns",
+    "selection",
+    "hoverSelection"
   ],
-
   imports: [
-    'dblclick?',
-    'editRecord?',
-    'selection? as importSelection'
+    "dblclick?",
+    "editRecord?",
+    "selection? as importSelection"
   ],
-
   axioms: [
-    foam.u2.CSS.create({
-      code: function CSS() {/*
+    {
+      class: "foam.u2.CSS",
+      code: `
         ^ {
           border-spacing: 14px 8px;
         }
@@ -267,35 +61,35 @@ foam.CLASS({
           -ms-user-select: none;
           user-select: none;
         }
-    */}
-    })
+    `,
+      name: "CSS-17"
+    }
   ],
-
   properties: [
     {
-      class: 'Class',
-      name: 'of'
+      class: "Class",
+      name: "of"
     },
     {
-      class: 'foam.dao.DAOProperty',
-      name: 'data',
-      postSet: function(_, data) {
+      class: "foam.dao.DAOProperty",
+      name: "data",
+      postSet: function (_, data) {
         if ( ! this.of && data ) this.of = data.of;
       }
     },
     {
-      class: 'foam.dao.DAOProperty',
-      name: 'orderedDAO',
-      expression: function(data, order) {
+      class: "foam.dao.DAOProperty",
+      name: "orderedDAO",
+      expression: function (data, order) {
         return data ? data.orderBy(order) : foam.dao.NullDAO.create();
       }
     },
     {
-      name: 'order'
+      name: "order"
     },
     {
-      name: 'columns_',
-      expression: function(columns, of) {
+      name: "columns_",
+      expression: function (columns, of) {
         var of = this.of;
         if ( ! of ) return [];
 
@@ -313,8 +107,8 @@ foam.CLASS({
       }
     },
     {
-      name: 'columns',
-      expression: function(of) {
+      name: "columns",
+      expression: function (of) {
         var of = this.of;
         if ( ! of ) return [];
 
@@ -328,48 +122,46 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
-      name: 'editColumnsEnabled',
+      class: "Boolean",
+      name: "editColumnsEnabled",
       value: true,
-      documentation: 'Set this to true to let the user select columns.'
+      documentation: "Set this to true to let the user select columns."
     },
     {
-      name: 'ascIcon',
-      documentation: 'HTML entity representing unicode Up-Pointing Triangle',
-      factory: function() {
+      name: "ascIcon",
+      documentation: "HTML entity representing unicode Up-Pointing Triangle",
+      factory: function () {
         return this.Entity.create({ name: '#9650' });
       }
     },
     {
-      name: 'descIcon',
-      documentation: 'HTML entity representing unicode Down-Pointing Triangle',
-      factory: function() {
+      name: "descIcon",
+      documentation: "HTML entity representing unicode Down-Pointing Triangle",
+      factory: function () {
         return this.Entity.create({ name: '#9660' });
       }
     },
     {
-      name: 'vertMenuIcon',
-      documentation: 'HTML entity representing unicode Vertical Ellipsis',
-      factory: function() {
+      name: "vertMenuIcon",
+      documentation: "HTML entity representing unicode Vertical Ellipsis",
+      factory: function () {
         return this.Entity.create({ name: '#8942' });
       }
     },
     {
-      name: 'selection',
-      expression: function(importSelection) { return importSelection || null; },
+      name: "selection",
+      expression: function (importSelection) { return importSelection || null; }
     },
-    'hoverSelection',
-    'dropdownOrigin',
-    'overlayOrigin'
+    "hoverSelection",
+    "dropdownOrigin",
+    "overlayOrigin"
   ],
-
   methods: [
     function sortBy(column) {
       this.order = this.order === column ?
         this.DESC(column) :
         column;
     },
-
     function createColumnSelection() {
       var editor = this.EditColumnsView.create({
         columns: this.columns,
@@ -379,7 +171,6 @@ foam.CLASS({
 
       return this.OverlayDropdown.create().add(editor);
     },
-
     function positionOverlayDropdown(columnSelectionE) {
       /** Adds offset for edit columns overlay dropdown
        * OverlayDropdown adds element to top right of parent container.
@@ -395,7 +186,6 @@ foam.CLASS({
 
       columnSelectionE.style({ top: boundingBox.top - dropdownMenu.top + 'px'});
     },
-
     function initE() {
       var view = this;
       var columnSelectionE;
