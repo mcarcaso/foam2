@@ -19,7 +19,20 @@ foam.CLASS({
   package: 'foam.graphics',
   name: 'Transform',
 
-  documentation: 'Affine transform.',
+  documentation: `
+    Affine transform.
+    /*
+    a : 1 // H scale
+    b : 0 // V skew
+    c : 3821.142407877334 // H move
+    d : 0 // H skew
+    e : 1 // V scale
+    f : -6796.176219640322 // V move
+    g : 0
+    h : 0
+    i : 1
+    */
+  `,
 
   properties: [
     { class: 'Simple', name: 'a' },
@@ -400,10 +413,16 @@ foam.CLASS({
     'foam.graphics.Transform'
   ],
 
-  // Fires when this CView is invalidated and needs a repaint.
-  // Is listened to a foam.u2.Canvas() if one was created for
-  // this CView.
-  topics: [ 'invalidated' ],
+  topics: [
+    {
+      documentation: `
+        Fires when this CView is invalidated and needs a repaint.
+        Is listened to a foam.u2.Canvas() if one was created for
+        this CView.
+      `,
+      name: 'invalidated',
+    }
+  ],
 
   properties: [
     {
@@ -538,10 +557,12 @@ foam.CLASS({
       }
     },
     {
-      // If set to true, then this CView will automatically repaint
-      // whenever a child is added or removed, a property changes, or
-      // a property of a child changes. Only works if this CView has
-      // an associated Canvas (by calling toE()).
+      documentation: `
+        If set to true, then this CView will automatically repaint
+        whenever a child is added or removed, a property changes, or
+        a property of a child changes. Only works if this CView has
+        an associated Canvas (by calling toE()).
+      `,
       class: 'Boolean',
       name: 'autoRepaint',
       hidden: true,
@@ -555,8 +576,8 @@ foam.CLASS({
       name: 'invalidate_',
       transient: true,
       hidden: true,
-      // TODO: Would be more efficient to be a factory, but doesn't work. Investigate.
       getter: function() {
+        // TODO: Would be more efficient to be a factory, but doesn't work. Investigate.
         return this.parent ? this.parent.invalidate_ :
           this.autoRepaint ? this.invalidated.pub    :
           null ;
@@ -612,8 +633,8 @@ foam.CLASS({
       if ( this.hitTest(p) ) return this;
     },
 
-    // p must be in local coordinates.
     function hitTest(p) {
+      // p must be in local coordinates.
       return p.x >= 0 && p.y >= 0 && p.x < this.width && p.y < this.height;
     },
 
@@ -986,7 +1007,7 @@ foam.CLASS({
       class: 'Float'
     },
     {
-      // TODO: rename this
+      documentation: 'TODO: rename this',
       name: 'arcWidth',
       class: 'Float'
     },
@@ -1076,7 +1097,10 @@ foam.CLASS({
   name: 'Ellipse',
   extends: 'foam.graphics.CView',
 
-  documentation: 'A CView for drawing an ellipse.',
+  documentation: `
+    A CView for drawing an ellipse.
+    // TODO: implement intersects()
+  `,
 
   properties: [
     {
@@ -1145,8 +1169,6 @@ foam.CLASS({
         x.stroke();
       }
     }
-
-    // TODO: implement intersects()
   ]
 });
 
@@ -1155,8 +1177,9 @@ foam.CLASS({
   package: 'foam.graphics',
   name: 'Point',
 
-  // TODO: where/how is this used?
-  // documentation: '',
+  documentation: `
+    // TODO: where/how is this used?
+  `,
 
   properties: [
     {
@@ -1279,8 +1302,9 @@ foam.CLASS({
   package: 'foam.graphics',
   name: 'Gradient',
 
-  // TODO: where/how is this used?
-//   documentation: '',
+  documentation: `
+    // TODO: where/how is this used?
+  `,
 
   properties: [
     'x0', 'y0', 'r0',
@@ -1381,15 +1405,3 @@ foam.CLASS({
     }
   ]
 });
-
-/*
-a : 1 // H scale
-b : 0 // V skew
-c : 3821.142407877334 // H move
-d : 0 // H skew
-e : 1 // V scale
-f : -6796.176219640322 // V move
-g : 0
-h : 0
-i : 1
-*/
