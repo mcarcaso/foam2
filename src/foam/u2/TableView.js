@@ -310,9 +310,9 @@ foam.CLASS({
       }
     },
     {
-      // TODO: remove when all code ported
       name: 'properties',
       setter: function(_, ps) {
+        // TODO: remove when all code ported
         console.warn("Deprecated use of TableView.properties. Use 'columns' instead.");
         this.columns = ps;
       }
@@ -332,9 +332,11 @@ foam.CLASS({
       }
     },
     {
-      name: 'config'
-      // Map of property-name: {map of property overrides} for configuring properties
-      // values include 'label', 'units', and 'view'
+      name: 'config',
+      documentation: `
+        Map of property-name: {map of property overrides} for configuring properties
+        values include 'label', 'units', and 'view'
+      `,
     },
     {
       class: 'foam.dao.DAOProperty',
