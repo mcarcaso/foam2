@@ -380,11 +380,12 @@ foam.CLASS({
       return this.OverlayDropdown.create().add(editor);
     },
 
-    /** Adds offset for edit columns overlay dropdown
-     * OverlayDropdown adds element to top right of parent container.
-     * We want the table dropdown to appear below the dropdown icon.
-     */
     function positionOverlayDropdown(columnSelectionE) {
+      /** Adds offset for edit columns overlay dropdown
+       * OverlayDropdown adds element to top right of parent container.
+       * We want the table dropdown to appear below the dropdown icon.
+       */
+
       // Dynamic position calculation
       var origin  = this.dropdownOrigin.el();
       var current = this.overlayOrigin.el();
