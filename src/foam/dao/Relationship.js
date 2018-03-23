@@ -142,7 +142,7 @@ foam.CLASS({
   ],
 
   methods: [
-    function init() {
+    function initRelationship() {
       var sourceProp;
       var targetProp;
       var cardinality   = this.cardinality;
@@ -258,6 +258,7 @@ foam.LIB({
       var r = foam.dao.Relationship.create(m, opt_ctx);
 
       r.validate && r.validate();
+      r.initRelationship();
       foam.package.registerClass(r);
 
       return r;
