@@ -13,6 +13,7 @@ foam.CLASS({
   properties: [
     ['refines', []],
     ['requires', []],
+    ['relationships', []],
   ],
   methods: [
     function load() {
@@ -23,16 +24,18 @@ foam.CLASS({
       };
 
       return Promise.all(self.refines.map(load)).then(function() {
-        return Promise.all(self.requires.map(load));
-      }).then(function(models) {
-        return self.refines.concat(self.requires, self.model_.id);
+        return Promise.all(self.relationships.map(load))
+      }).then(function() {
+        return Promise.all(self.requires.map(load))
+      }).then(function() {
+        return [].concat(
+          self.refines,
+          self.relationships,
+          self.requires,
+          self.model_.id
+        );
       });
-    },
-    function concat(appConfig) {
-      return this.cls_.create({
-        refines: this.refines.concat(appConfig.refines),
-        requires: this.requires.concat(appConfig.requires),
-      });
+
     },
   ]
 });
