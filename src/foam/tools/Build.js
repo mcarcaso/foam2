@@ -119,6 +119,9 @@ foam.CLASS({
     {
       name: 'ModelFlagStripDAODecorator',
       extends: 'foam.dao.AbstractDAODecorator',
+      requires: [
+        'foam.core.Model',
+      ],
       documentation: `
         A decorator that serializes and deserializes objects that are read. This
         is useful for stripping objects based on flags.
@@ -128,6 +131,7 @@ foam.CLASS({
       ],
       methods: [
         function read(X, dao, obj) {
+          if ( ! this.Model.isInstance(obj) ) return obj;
           return obj.filterAxiomsByFlags(this.flags);
         },
       ],
@@ -184,11 +188,13 @@ foam.CLASS({
         function put_(x, o) {
           if ( ! this.puts[o.id] ) {
             var self = this;
-            this.puts[o.id] = this.delegate.put_(x, o).then(function(o) {
-              var json = JSON.parse(x.json2Serializer.stringify(x, o));
-              var deps = json['$DEPS$'].concat(o.getClassDeps());
-              return self.modelDAO.where(self.IN(self.Model.ID, deps))
-                  .select(self.DAOSink.create({dao: self}))
+            self.puts[o.id] = self.delegate.put_(x, o).then(function(o) {
+              if ( self.Model.isInstance(o) ) {
+                var json = JSON.parse(x.json2Serializer.stringify(x, o));
+                var deps = json['$DEPS$'].concat(o.getClassDeps());
+                return self.modelDAO.where(self.IN(self.Model.ID, deps))
+                    .select(self.DAOSink.create({dao: self}))
+              }
             }).then(function() {
               return o;
             });
