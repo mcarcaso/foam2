@@ -27,6 +27,10 @@ foam.CLASS({
 
   documentation: 'An Axiom for defining Relationships between models.',
 
+  imports: [
+    'classloader',
+  ],
+
   requires: [
     'foam.dao.RelationshipDAO',
     'foam.dao.ManyToManyRelationshipDAO',
@@ -143,6 +147,16 @@ foam.CLASS({
 
   methods: [
     function initRelationship() {
+      if ( this.lookup(this.sourceModel, true) &&
+           this.lookup(this.targetModel, true) ) {
+        return Promise.resolve(this.initRelationship_());
+      }
+      return Promise.all([
+        this.classloader.load(this.sourceModel),
+        this.classloader.load(this.targetModel),
+      ]).then(this.initRelationship_.bind(this));
+    },
+    function initRelationship_() {
       var sourceProp;
       var targetProp;
       var cardinality   = this.cardinality;
@@ -246,6 +260,7 @@ foam.CLASS({
         };
       }
       */
+      return this;
     }
   ]
 });

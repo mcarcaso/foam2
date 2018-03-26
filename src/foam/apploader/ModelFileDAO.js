@@ -56,19 +56,12 @@ foam.CLASS({
           };
 
           context.foam.RELATIONSHIP = function(r) {
-            var references = foam.json.references(x, r);
-
-            relationship = Promise.all(references.concat([
-              x.classloader.load(r.sourceModel),
-              x.classloader.load(r.targetModel),
-            ])).then(function() {
+            relationship = Promise.all(foam.json.references(x, r)).then(function() {
               var obj = foam.dao.Relationship.create(r, x);
-
               obj.validate && obj.validate();
-              obj.initRelationship();
-
+              return obj.initRelationship();
+            }).then(function(obj) {
               foam.package.registerClass(obj);
-
               return obj;
             });
           };
