@@ -40,11 +40,13 @@ foam.CLASS({
     'foam.nanos.auth.User',
     'foam.nanos.auth.resetPassword.ResetView',
     'foam.nanos.u2.navigation.TopNavigation',
+    'foam.tools.WebAppConfigLoader',
     'foam.u2.stack.Stack',
     'foam.u2.stack.StackView'
   ],
 
   imports: [
+    'classloader',
     'installCSS',
     'sessionSuccess',
     'window'
@@ -99,6 +101,10 @@ foam.CLASS({
       },
     },
     {
+      class: 'String',
+      name: 'appConfigPath',
+    },
+    {
       name: 'stack',
       factory: function() { return this.Stack.create(null, this.__subSubContext__); }
     },
@@ -137,11 +143,12 @@ foam.CLASS({
   ],
 
   methods: [
-    function init() {
-      this.SUPER();
-
+    function initE() {
       var self = this;
-      self.clientPromise.then(function(client) {
+      self.WebAppConfigLoader.create().load(self.appConfigPath).then(function() {
+        return self.clientPromise;
+      }).then(function(client) {
+
         self.__subSubContext__ = client.__subContext__;
         self.getCurrentUser();
 
@@ -156,12 +163,7 @@ foam.CLASS({
         };
 
         window.onpopstate();
-      });
-    },
 
-    function initE() {
-      var self = this;
-      self.clientPromise.then(function() {
         self
           .addClass(self.myClass())
           .tag({class: 'foam.nanos.u2.navigation.TopNavigation'})
