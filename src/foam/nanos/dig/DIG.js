@@ -46,13 +46,13 @@ foam.CLASS({
       class: 'Enum',
       of: 'foam.nanos.dig.Command',
       name: 'cmd',
-      value: foam.nanos.dig.Command.SELECT
+      value: 'SELECT'
     },
     {
       class: 'Enum',
       of: 'foam.nanos.dig.Format',
       name: 'format',
-      value: foam.nanos.dig.Format.JSON
+      value: 'JSON'
     },
     {
         class: 'String',
