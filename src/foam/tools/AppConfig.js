@@ -25,6 +25,10 @@ foam.CLASS({
 
       return Promise.all(self.refines.map(load)).then(function() {
         return Promise.all(self.relationships.map(load))
+      }).then(function(relationships) {
+        return Promise.all(relationships.map(function(r) {
+          return r.initRelationship();
+        }))
       }).then(function() {
         return Promise.all(self.requires.map(load))
       }).then(function() {
