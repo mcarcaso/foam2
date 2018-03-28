@@ -10,12 +10,21 @@
       var demoPath = l.protocol + '//' + l.host + '/demos/buildtool/';
       cl.addClassPath(demoPath + 'build', true);
 
+      // Load from json2 first.
+      var d = cl.modelDAO.delegate;
+      cl.modelDAO.delegate = cl.modelDAO.primary;
+      cl.modelDAO.primary = d;
+
       cl.load('foam.tools.WebAppConfigLoader').then(function(cls) {
         return cls.create().load(demoPath + 'config.js')
       }).then(function() {
-        foam.u2.DetailView.create({
-          data: demo.build.ModelToBuild.create(),
-        }).write()
+        var m = demo.build.ModelToBuild.create();
+        var stack = foam.u2.stack.StackView.create(null, m);
+        stack.data.push({
+          class: 'foam.u2.DetailView',
+          data: m,
+        }, m);
+        stack.write()
       });
     </script>
   </body>

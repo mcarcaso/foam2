@@ -11,6 +11,11 @@ foam.CLASS({
       flags: ['js'],
     },
   ],
+  exports: [
+    'studentDAO',
+    'courseDAO',
+    'studentCourseJunctionDAO',
+  ],
   properties: [
     {
       name: 'jsProp',
@@ -19,6 +24,36 @@ foam.CLASS({
     {
       name: 'swiftProp',
       flags: ['swift'],
+    },
+    {
+      class: 'foam.dao.DAOProperty',
+      name: 'studentDAO',
+      factory: function() {
+        return this.EasyDAO.create({
+          of: 'foam.nanos.demo.relationship.Student',
+          daoType: 'MDAO',
+        });
+      },
+    },
+    {
+      class: 'foam.dao.DAOProperty',
+      name: 'courseDAO',
+      factory: function() {
+        return this.EasyDAO.create({
+          of: 'foam.nanos.demo.relationship.Course',
+          daoType: 'MDAO',
+        });
+      },
+    },
+    {
+      class: 'foam.dao.DAOProperty',
+      name: 'studentCourseJunctionDAO',
+      factory: function() {
+        return this.EasyDAO.create({
+          of: 'foam.nanos.demo.relationship.StudentCourseJunction',
+          daoType: 'MDAO',
+        });
+      },
     },
   ],
 });
