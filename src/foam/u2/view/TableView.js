@@ -25,46 +25,35 @@ foam.CLASS({
     "editRecord?",
     "selection? as importSelection"
   ],
-  axioms: [
-    {
-      class: "foam.u2.CSS",
-      code: `
-        ^ {
-          border-spacing: 14px 8px;
-        }
-
-        ^ th {
-          text-align: left;
-          white-space: nowrap;
-        }
-
-        ^row:hover {
-          background: #eee;
-          cursor: pointer;
-        }
-
-        ^selected {
-          background: #eee;
-        }
-
-        ^vertDots {
-          font-size: 20px;
-          font-weight: bold;
-          padding-right: 12px;
-        }
-
-        ^noselect {
-          -webkit-touch-callout: none;
-          -webkit-user-select: none;
-          -khtml-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-        }
-    `,
-      name: "CSS-17"
+  css: `
+    ^ {
+      border-spacing: 14px 8px;
     }
-  ],
+    ^ th {
+      text-align: left;
+      white-space: nowrap;
+    }
+    ^row:hover {
+      background: #eee;
+    }
+    ^selected {
+      background: #eee;
+      outline: 1px solid #f00;
+    }
+    ^vertDots {
+      font-size: 20px;
+      font-weight: bold;
+      padding-right: 10px;
+    }
+    ^noselect {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  `,
   properties: [
     {
       class: "Class",

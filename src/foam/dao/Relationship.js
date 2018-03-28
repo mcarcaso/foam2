@@ -495,6 +495,7 @@ foam.CLASS({
     ['tableCellFormatter', null],
     ['cloneProperty', function(value, map){}],
     ['javaCloneProperty', '//noop'],
+    ['javaDiffProperty', '//noop'],
     {
       class: 'String',
       name: 'targetPropertyName',
@@ -550,6 +551,7 @@ foam.CLASS({
     ['tableCellFormatter', null],
     ['cloneProperty', function(value, map) {}],
     ['javaCloneProperty', '//noop'],
+    ['javaDiffProperty', '//noop'],
     ['view', { class: 'foam.u2.DetailView', showActions: true } ],
     {
       class: 'Class',
