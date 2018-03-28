@@ -170,6 +170,7 @@ foam.CLASS({
       extends: 'foam.dao.ProxyDAO',
       requires: [
         'foam.core.Model',
+        'foam.dao.Relationship',
         'foam.dao.DAOSink',
       ],
       implements: [
@@ -193,6 +194,9 @@ foam.CLASS({
                 var json = JSON.parse(x.json2Serializer.stringify(x, o));
                 var deps = json['$DEPS$'].concat(o.getClassDeps());
                 return self.modelDAO.where(self.IN(self.Model.ID, deps))
+                    .select(self.DAOSink.create({dao: self}))
+              } else if ( self.Relationship.isInstance(o) ) {
+                return self.modelDAO.where(self.IN(self.Model.ID, [o.targetModel, o.sourceModel]))
                     .select(self.DAOSink.create({dao: self}))
               }
             }).then(function() {
