@@ -93,6 +93,10 @@ foam.CLASS({
                 for ( var i = 0 ; i < keys.length ; i++ ) {
                   if ( foam.Undefined.isInstance(v[keys[i]]) ) continue;
 
+                  if ( keys[i] === 'class' && foam.String.isInstance(v[keys[i]]) ) {
+                    this.deps[v[keys[i]]] = true;
+                  }
+
                   out.key(keys[i]);
                   this.output(x, v[keys[i]]);
                 }
