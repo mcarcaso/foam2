@@ -228,9 +228,6 @@ foam.LIB({
             model.package = p
           }
           foam.REFINES[model.id] = model;
-
-          // Register refinement id in global context.
-          foam.register(cls, model.id);
         }
 
         return cls;
