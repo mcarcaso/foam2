@@ -195,6 +195,7 @@ foam.LIB({
           (3) Construct and validate the new class.
           @method CLASS
           @memberof module:foam */
+      foam.REFINES   = {};
       foam.CLASS = function(m, skipRegistration) {
         var cls   = m.class ? foam.lookup(m.class) : foam.core.Model;
         var model = cls.create(m);
@@ -212,15 +213,25 @@ foam.LIB({
 
           // Register the class in the global package path.
           foam.package.registerClass(cls);
-        } else if ( m.name ) {
+        } else {
+          if ( ! m.name ) {
+            // TODO(markdittmer): Identify and name anonymous refinements with:
+            //   console.warn('Refinement without unique id', cls);
+            //   debugger;
+            var n = new RegExp('(.*)\\.(.*)?$').exec(m.refines)
+            var p = n ? n[1] : 'foam.core';
+            n = (n ? n[2] : m.refines) + '_Refine';
+            while ( foam.REFINES[p + '.' + n] ) {
+              n = n + '_';
+            }
+            model.name = n;
+            model.package = p
+          }
+          foam.REFINES[model.id] = model;
+
           // Register refinement id in global context.
-          foam.register(cls, ( m.package || 'foam.core' ) + '.' + m.name);
+          foam.register(cls, model.id);
         }
-        // TODO(markdittmer): Identify and name anonymous refinements with:
-        // else {
-        //   console.warn('Refinement without unique id', cls);
-        //   debugger;
-        // }
 
         return cls;
       };
