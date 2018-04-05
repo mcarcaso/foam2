@@ -9,6 +9,7 @@
       var l = document.location;
       var demoPath = l.protocol + '//' + l.host + '/demos/buildtool/';
       cl.addClassPath(demoPath + 'build', true);
+      cl.modelDAO = cl.modelDAO.delegate; // Only use json2 dao.
 
       cl.load('foam.tools.WebAppConfigLoader').then(function(cls) {
         return cls.create().load(demoPath + 'config.js')
