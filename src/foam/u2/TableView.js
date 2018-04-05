@@ -71,7 +71,6 @@ foam.CLASS({
     'foam.mlang.predicate.Not',
     'foam.mlang.predicate.Or',
     'foam.u2.CheckBox',
-    'foam.u2.TableCellRefinement'
   ],
 
   imports: [

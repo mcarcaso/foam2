@@ -28,7 +28,7 @@ foam.CLASS({
       name: 'cmd',
       class: 'Enum',
       of: 'foam.nanos.http.Command',
-      value: foam.nanos.http.Command.SELECT,
+      value: 'SELECT',
       adapt: function(old, nu) {
         if ( nu instanceof String ) {
           switch( nu.toUpperCase() ) {
@@ -53,7 +53,7 @@ foam.CLASS({
       name: 'format',
       class: 'Enum',
       of: 'foam.nanos.http.Format',
-      value: foam.nanos.http.Format.JSON,
+      value: 'JSON',
       adapt: function(old, nu) {
         if ( nu instanceof String ) {
           switch( nu.toUpperCase() ) {
