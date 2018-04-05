@@ -103,15 +103,20 @@ foam.CLASS({
         {
           name: 'find_',
           code: function(x, id) {
-            return new Promise(function(ret) {
-              var cls = foam.lookup(id, true);
-              var m = cls && cls.model_;
-
-              ret(
-                ( m ) &&
-                ( m.id == id || ( m.name == id && m.package == 'foam.core' ) ) ?
-                  m : undefined);
-            });
+            var cls = foam.lookup(id, true);
+            return Promise.resolve(cls && cls.model_);
+          }
+        }
+      ]
+    },
+    {
+      name: 'RefineLookupDAO',
+      extends: 'foam.dao.AbstractDAO',
+      methods: [
+        {
+          name: 'find_',
+          code: function(x, id) {
+            return Promise.resolve(foam.REFINES[id]);
           }
         }
       ]
@@ -119,6 +124,9 @@ foam.CLASS({
     {
       name: 'ModelFlagStripDAODecorator',
       extends: 'foam.dao.AbstractDAODecorator',
+      requires: [
+        'foam.core.Model'
+      ],
       documentation: `
         A decorator that serializes and deserializes objects that are read. This
         is useful for stripping objects based on flags.
@@ -128,7 +136,7 @@ foam.CLASS({
       ],
       methods: [
         function read(X, dao, obj) {
-          return obj.filterAxiomsByFlags(this.flags);
+          return this.Model.isInstance(obj) ? obj.filterAxiomsByFlags(this.flags) : obj;
         },
       ],
     },
@@ -210,13 +218,23 @@ foam.CLASS({
     function execute() {
       var self = this;
 
+      var daos = [
+        self.RefineLookupDAO.create(),
+        self.ModelLookupDAO.create(),
+        self.classloader.modelDAO,
+      ];
+      var orDAO = daos.pop();
+      while ( daos.length ) {
+        orDAO = self.OrDAO.create({
+          primary: daos.pop(),
+          delegate: orDAO,
+        });
+      }
+
       var srcDAO = self.FindInDAO.create({
         delegate: self.DecoratedDAO.create({
           decorator: self.ModelFlagStripDAODecorator.create({flags: self.flags}),
-          delegate: self.OrDAO.create({
-            primary: self.ModelLookupDAO.create(),
-            delegate: self.classloader.modelDAO,
-          })
+          delegate: orDAO,
         })
       });
 
@@ -229,7 +247,14 @@ foam.CLASS({
 
       self.appConfig.load()
         .then(function(models) {
-          return srcDAO.where(self.IN(self.Model.ID, models))
+          var ms = {};
+          models.concat(
+            Object.keys(foam.USED),
+            Object.keys(foam.UNUSED),
+            Object.keys(foam.REFINES)).forEach(function(m) {
+              ms[m] = true;
+            })
+          return srcDAO.where(self.IN(self.Model.ID, Object.keys(ms)))
               .select(self.DAOSink.create({dao: destDAO}))
         })
     }

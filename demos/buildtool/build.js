@@ -3,6 +3,12 @@
 var dir = __dirname;
 var root = dir + '/../..';
 
+FOAM_FLAGS = {
+  web: true,
+  loader: true,
+  build: true,
+}
+
 require(root + '/src/foam.js');
 
 var classloader = foam.__context__.classloader;
