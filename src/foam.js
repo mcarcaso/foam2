@@ -21,11 +21,11 @@
   var isServer = ( ! isWorker ) && typeof window === 'undefined';
 
   var flags    = this.FOAM_FLAGS || {};
-  flags.web    = ! isServer,
-  flags.node   = isServer;
-  flags.loader = ! isServer;
-  if ( ! flags.hasOwnProperty('debug') ) flags.debug = true;
-  if ( ! flags.hasOwnProperty('js')    ) flags.js    = true;
+  if ( ! flags.hasOwnProperty('web')    ) flags.web    = ! isServer;
+  if ( ! flags.hasOwnProperty('node')   ) flags.node   = isServer;
+  if ( ! flags.hasOwnProperty('loader') ) flags.loader = ! isServer;
+  if ( ! flags.hasOwnProperty('debug')  ) flags.debug  = true;
+  if ( ! flags.hasOwnProperty('js')     ) flags.js     = true;
 
   function createLoadBrowser() {
     var path = document.currentScript && document.currentScript.src;
