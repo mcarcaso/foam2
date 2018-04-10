@@ -56,20 +56,16 @@ foam.CLASS({
           };
 
           context.foam.RELATIONSHIP = function(r) {
-            var references = foam.json.references(x, r);
-
-            Promise.all(references.concat([
-              foam.package.waitForClass(r.sourceModel),
-              foam.package.waitForClass(r.targetModel)
-            ])).then(function() {
+            relationship = Promise.all(foam.json.references(x, r)).then(function() {
               var obj = foam.dao.Relationship.create(r, x);
-
               obj.validate && obj.validate();
-              foam.package.registerClass(obj);
+              return obj;
             });
           };
 
           with ( context ) { eval(text); }
+
+          if ( ! json && relationship ) return relationship;
 
           if ( ! json ) {
             throw new Error('No model found for ' + id);
