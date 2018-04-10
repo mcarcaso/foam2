@@ -22,7 +22,8 @@ foam.CLASS({
 
   requires: [
     'foam.dao.ArraySink',
-    'foam.dao.BoxDAOListener'
+    // TODO: BoxDAOListener isn't a thing, fix this class.
+    // 'foam.dao.BoxDAOListener'
   ],
   imports: [ 'registry' ],
 
