@@ -39,13 +39,16 @@ foam.CLASS({
       documentation: 'When true, $$DOC{ref:".data"} is updated on every ' +
           'keystroke, rather than on blur.',
     },
+    {
+      name: 'css',
+      value: { 'white-space': 'pre' },
+    },
   ],
 
   methods: [
     function initE() {
       this.SUPER();
       this.addClass(this.myClass());
-      this.style({'white-space': 'pre'});
       this.attrs({rows: this.rows, cols: this.cols});
 
       // This is required because textarea accepts setting the 'value'
