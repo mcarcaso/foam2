@@ -24,9 +24,9 @@ foam.CLASS({
     'foam.core.Model',
     'foam.dao.DAOSink',
     'foam.dao.DecoratedDAO',
-    'foam.dao.LoggingDAO',
     'foam.json2.Deserializer',
     'foam.json2.Serializer',
+    'foam.tools.AppConfig',
   ],
 
   implements: [
@@ -48,7 +48,10 @@ foam.CLASS({
       value: 'TESTOUTPUT/',
     },
     {
+      class: 'FObjectProperty',
+      of: 'foam.tools.AppConfig',
       name: 'appConfig',
+      factory: function() { return this.AppConfig.create() },
     },
     {
       class: 'StringArray',
@@ -58,7 +61,8 @@ foam.CLASS({
     {
       class: 'String',
       name: 'output',
-      view: { class: 'foam.u2.tag.TextArea', rows: 16 },
+      visibility: 'RO',
+      view: { class: 'foam.u2.tag.TextArea', rows: 16, css: { 'white-space': 'pre-wrap' } },
     },
     {
       name: 'json2Serializer',
@@ -110,6 +114,18 @@ foam.CLASS({
       ]
     },
     {
+      name: 'RelationshipLookupDAO',
+      extends: 'foam.dao.AbstractDAO',
+      methods: [
+        {
+          name: 'find_',
+          code: function(x, id) {
+            return Promise.resolve(foam.RELATIONSHIPS[id]);
+          }
+        }
+      ]
+    },
+    {
       name: 'RefineLookupDAO',
       extends: 'foam.dao.AbstractDAO',
       methods: [
@@ -141,31 +157,21 @@ foam.CLASS({
       ],
     },
     {
-      name: 'JSON2FileWriteDAODecorator',
-      extends: 'foam.dao.AbstractDAODecorator',
+      name: 'MapDAO',
+      extends: 'foam.dao.AbstractDAO',
       properties: [
         {
-          name: 'root',
+          class: 'Map',
+          name: 'map',
         },
       ],
       methods: [
-        function write(x, dao, o) {
-          var sep = require('path').sep;
-          var dir = this.root + o.package.replace(/\./g, sep);
-          var file = `${dir}${sep}${o.name}.js`;
-
-          var fs = require('fs');
-          var dirs = dir.split(sep);
-          dir = '';
-          while ( dirs.length ) {
-            dir = dir + dirs.shift() + sep;
-            if( ! fs.existsSync(dir) ){
-              fs.mkdirSync(dir)
-            }
-          }
-          fs.writeFileSync(file, x.json2Serializer.stringify(x, o), 'utf8');
-
+        function put_(x, o) {
+          this.map[o.id] = o;
           return Promise.resolve(o);
+        },
+        function find_(x, id) {
+          return Promise.resolve(this.map[id]);
         },
       ]
     },
@@ -175,6 +181,7 @@ foam.CLASS({
       requires: [
         'foam.core.Model',
         'foam.dao.DAOSink',
+        'foam.dao.Relationship',
       ],
       implements: [
         'foam.mlang.Expressions',
@@ -193,10 +200,15 @@ foam.CLASS({
           if ( ! this.puts[o.id] ) {
             var self = this;
             this.puts[o.id] = this.delegate.put_(x, o).then(function(o) {
-              var json = JSON.parse(x.json2Serializer.stringify(x, o));
-              var deps = json['$DEPS$'].concat(o.getClassDeps());
-              return self.modelDAO.where(self.IN(self.Model.ID, deps))
-                  .select(self.DAOSink.create({dao: self}))
+              if ( self.Model.isInstance(o) ) {
+                var json = JSON.parse(x.json2Serializer.stringify(x, o));
+                var deps = json['$DEPS$'].concat(o.getClassDeps());
+                return self.modelDAO.where(self.IN(self.Model.ID, deps))
+                    .select(self.DAOSink.create({dao: self}))
+              } else if ( self.Relationship.isInstance(o) ) {
+                return self.modelDAO.where(self.IN(self.Model.ID, [o.targetModel, o.sourceModel]))
+                    .select(self.DAOSink.create({dao: self}))
+              }
             }).then(function() {
               return o;
             });
@@ -220,6 +232,7 @@ foam.CLASS({
 
       var daos = [
         self.RefineLookupDAO.create(),
+        self.RelationshipLookupDAO.create(),
         self.ModelLookupDAO.create(),
         self.classloader.modelDAO,
       ];
@@ -240,23 +253,30 @@ foam.CLASS({
 
       var destDAO = self.DepPutModelDAO.create({
         modelDAO: srcDAO,
-        delegate: foam.isServer ?
-            self.DecoratedDAO.create({decorator: self.JSON2FileWriteDAODecorator.create({root: self.root})}) :
-            self.LoggingDAO.create({logger: self.log.bind(self)}),
+        delegate: self.MapDAO.create(),
       })
 
-      self.appConfig.load()
-        .then(function(models) {
-          var ms = {};
-          models.concat(
-            Object.keys(foam.USED),
-            Object.keys(foam.UNUSED),
-            Object.keys(foam.REFINES)).forEach(function(m) {
-              ms[m] = true;
-            })
-          return srcDAO.where(self.IN(self.Model.ID, Object.keys(ms)))
-              .select(self.DAOSink.create({dao: destDAO}))
-        })
+      var ac = self.appConfig;
+      Promise.all(ac.refines.map(function(r) {
+        return self.classloader.load(r);
+      })).then(function() {
+        var ms = {};
+        [].concat(
+          ac.refines,
+          ac.relationships,
+          ac.requires,
+          Object.keys(foam.USED),
+          Object.keys(foam.UNUSED),
+          Object.keys(foam.RELATIONSHIPS),
+          Object.keys(foam.REFINES)).forEach(function(m) {
+            ms[m] = true;
+          })
+        return srcDAO.where(self.IN(self.Model.ID, Object.keys(ms)))
+            .select(self.DAOSink.create({dao: destDAO})).then(function() {
+              self.output = self.json2Serializer.stringify(self, destDAO.delegate);
+              foam.isServer && console.log(self.output);
+            });
+      })
     }
   ]
 });
