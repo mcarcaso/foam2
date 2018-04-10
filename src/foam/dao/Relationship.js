@@ -291,6 +291,8 @@ foam.INTERFACE({
       name: 'add',
       returns: 'Promise',
       javaReturns: 'void',
+      swiftReturns: 'Void',
+      swiftThrows: true,
       args: [
         { name: 'target', of: 'foam.core.FObject' }
       ]
@@ -299,6 +301,8 @@ foam.INTERFACE({
       name: 'remove',
       returns: 'Promise',
       javaReturns: 'void',
+      swiftReturns: 'Void',
+      swiftThrows: true,
       args: [
         { name: 'target', of: 'foam.core.FObject' }
       ]
@@ -350,12 +354,14 @@ foam.CLASS({
     {
       class: 'Object',
       javaType: 'foam.core.PropertyInfo',
+      swiftType: 'PropertyInfo',
       name: 'targetProperty',
       hidden: true
     },
     {
       class: 'Object',
       javaType: 'foam.core.PropertyInfo',
+      swiftType: 'PropertyInfo',
       name: 'sourceProperty',
       hidden: true
     },
@@ -376,7 +382,15 @@ foam.CLASS({
     setRelationship(this).
     setDelegate((foam.dao.DAO)getX().get(getTargetDAOKey())).
     build()).
-  build();`
+  build();`,
+
+      swiftFactory:
+`return __context__.create(ReadOnlyDAO.self, args: [
+  "delegate": __context__.create(ManyToManyRelationshipDAO.self, args: [
+    "relationship": self,
+    "delegate": __context__[targetDAOKey]
+  ])
+])`
     },
     {
       class: 'foam.dao.DAOProperty',
@@ -385,7 +399,8 @@ foam.CLASS({
       factory: function() {
         return this.__context__[this.junctionDAOKey];
       },
-      javaFactory: 'return (foam.dao.DAO)getX().get(getJunctionDAOKey());'
+      javaFactory: 'return (foam.dao.DAO)getX().get(getJunctionDAOKey());',
+      swiftFactory: 'return __context__[junctionDAOKey] as? (DAO & FObject)'
     },
     {
       class: 'foam.dao.DAOProperty',
@@ -394,7 +409,8 @@ foam.CLASS({
       factory: function() {
         return this.__context__[this.targetDAOKey];
       },
-      javaFactory: 'return (foam.dao.DAO)getX().get(getTargetDAOKey());'
+      javaFactory: 'return (foam.dao.DAO)getX().get(getTargetDAOKey());',
+      swiftFactory: 'return __context__[targetDAOKey] as? (DAO & FObject)'
     }
   ],
   methods: [
@@ -402,6 +418,7 @@ foam.CLASS({
       name: 'add',
       args: [ { name: 'target', of: 'foam.core.FObject' } ],
       javaCode: 'getJunctionDAO().put(createJunction(((foam.core.Identifiable)target).getPrimaryKey()));',
+      swiftCode: 'try junctionDAO!.put(createJunction((target as? Identifiable)?.getPrimaryKey()))',
       code: function add(target) {
         return this.junctionDAO.put(this.createJunction(target.id));
       }
@@ -409,6 +426,7 @@ foam.CLASS({
     {
       name: 'remove',
       javaCode: 'getJunctionDAO().remove(createJunction(((foam.core.Identifiable)target).getPrimaryKey()));',
+      swiftCode: 'try junctionDAO!.remove(createJunction((target as? Identifiable)?.getPrimaryKey()))',
       code: function remove(target) {
         return this.junctionDAO.remove(this.createJunction(target.id));
       }
@@ -430,14 +448,19 @@ foam.CLASS({
       javaCode: `foam.core.FObject junction = (foam.core.FObject)getX().create(getJunction().getObjClass());
 getTargetProperty().set(junction, targetId);
 getSourceProperty().set(junction, getSourceId());
-return junction;
-`
+return junction;`,
+
+      swiftCode: `let junction: FObject = self.junction.create(x: __context__) as! FObject
+targetProperty.set(junction, value: targetId)
+sourceProperty.set(junction, value: sourceId)
+return junction`
     },
     {
       // TODO: Should we remove this, or maybe just the java portion?
       name: 'getDAO',
       returns: 'foam.dao.DAO',
       javaCode: 'return getDao();',
+      swiftCode: 'return dao!',
       code: function getDAO() { return this.dao; }
     }
   ],
@@ -608,6 +631,20 @@ foam.CLASS({
   setJunctionDAOKey("${this.junctionDAOKey}").
   setJunction(${this.junction.id}.getOwnClassInfo()).
   build();
+`;
+      }
+    },
+    {
+      name: 'swiftFactory',
+      factory: function () {
+        return `return __context__.create(ManyToManyRelationshipImpl.self, args: [
+      "sourceId": id,
+      "sourceProperty": ${this.sourceProperty.sourceCls_.name}.${foam.String.constantize(this.sourceProperty.name)}(),
+      "targetProperty": ${this.sourceProperty.sourceCls_.name}.${foam.String.constantize(this.targetProperty.name)}(),
+      "targetDAOKey": "${this.targetDAOKey}",
+      "junctionDAOKey": "${this.junctionDAOKey}",
+      "junction": ${this.sourceProperty.sourceCls_.name}.classInfo()
+    ]);
 `;
       }
     }
