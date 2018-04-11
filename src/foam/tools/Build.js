@@ -44,10 +44,6 @@ foam.CLASS({
 
   properties: [
     {
-      name: 'root',
-      value: 'TESTOUTPUT/',
-    },
-    {
       class: 'FObjectProperty',
       of: 'foam.tools.AppConfig',
       name: 'appConfig',
