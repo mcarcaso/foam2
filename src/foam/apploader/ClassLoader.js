@@ -181,6 +181,8 @@ have multiple classloaders running alongside eachother`
           cls.validate();
 
           if ( ! model.refines ) {
+            foam.USED[model.id] = true;
+
             // Register class in global context.
             foam.register(cls);
 
