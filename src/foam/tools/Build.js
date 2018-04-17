@@ -27,6 +27,7 @@ foam.CLASS({
     'foam.json2.Deserializer',
     'foam.json2.Serializer',
     'foam.tools.AppConfig',
+    'foam.json2.JSON2MapDAO',
   ],
 
   implements: [
@@ -38,7 +39,6 @@ foam.CLASS({
   ],
 
   exports: [
-    'json2Deserializer',
     'json2Serializer',
   ],
 
@@ -56,6 +56,7 @@ foam.CLASS({
     },
     {
       class: 'String',
+      flags: ['web'],
       name: 'output',
       visibility: 'RO',
       view: { class: 'foam.u2.tag.TextArea', rows: 16, css: { 'white-space': 'pre-wrap' } },
@@ -65,13 +66,6 @@ foam.CLASS({
       hidden: true,
       factory: function() {
         return this.Serializer.create()
-      },
-    },
-    {
-      name: 'json2Deserializer',
-      hidden: true,
-      factory: function() {
-        return this.Deserializer.create({parseFunctions: true})
       },
     },
   ],
@@ -90,7 +84,13 @@ foam.CLASS({
           }
           var self = this;
           var promises = predicate.arg2.value.map(function(id) {
-            return self.find_(x, id).then(function(m) { sink.put(m) });
+            return self.find_(x, id).then(function(m) {
+              if ( ! m ) {
+                console.log('Could not find ' + id + ' in modelDAO');
+                return;
+              }
+              sink.put(m);
+            });
           });
           return Promise.all(promises).then(function() { return sink });
         }
@@ -153,25 +153,6 @@ foam.CLASS({
       ],
     },
     {
-      name: 'MapDAO',
-      extends: 'foam.dao.AbstractDAO',
-      properties: [
-        {
-          class: 'Map',
-          name: 'map',
-        },
-      ],
-      methods: [
-        function put_(x, o) {
-          this.map[o.id] = o;
-          return Promise.resolve(o);
-        },
-        function find_(x, id) {
-          return Promise.resolve(this.map[id]);
-        },
-      ]
-    },
-    {
       name: 'DepPutModelDAO',
       extends: 'foam.dao.ProxyDAO',
       requires: [
@@ -223,6 +204,19 @@ foam.CLASS({
   ],
 
   actions: [
+    {
+      name: 'build',
+      flags: ['web'],
+      code: function build() {
+        var self = this;
+        self.execute().then(function(out) {
+          self.output = out;
+        });
+      },
+    },
+  ],
+
+  methods: [
     function execute() {
       var self = this;
 
@@ -249,11 +243,11 @@ foam.CLASS({
 
       var destDAO = self.DepPutModelDAO.create({
         modelDAO: srcDAO,
-        delegate: self.MapDAO.create(),
+        delegate: self.JSON2MapDAO.create(),
       })
 
       var ac = self.appConfig;
-      Promise.all(ac.refines.map(function(r) {
+      return Promise.all(ac.refines.map(function(r) {
         return self.classloader.load(r);
       })).then(function() {
         var ms = {};
@@ -268,11 +262,10 @@ foam.CLASS({
             ms[m] = true;
           })
         return srcDAO.where(self.IN(self.Model.ID, Object.keys(ms)))
-            .select(self.DAOSink.create({dao: destDAO})).then(function() {
-              self.output = self.json2Serializer.stringify(self, destDAO.delegate);
-              foam.isServer && console.log(self.output);
-            });
-      })
+            .select(self.DAOSink.create({dao: destDAO}))
+      }).then(function() {
+        return self.json2Serializer.stringify(self, destDAO.delegate);
+      });
     }
   ]
 });
