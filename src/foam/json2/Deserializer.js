@@ -7,6 +7,12 @@
 foam.CLASS({
   package: 'foam.json2',
   name: 'Deserializer',
+  requires: [
+    {
+      path: 'foam.net.web.HTTPRequest',
+      flags: ['web'],
+    }
+  ],
   imports: [
     'classloader',
   ],
@@ -18,6 +24,21 @@ foam.CLASS({
     }
   ],
   methods: [
+    {
+      name: 'aparseUrl',
+      flags: ['web'],
+      code: function(x, url, opt_method) {
+        var self = this;
+        return self.HTTPRequest.create({
+          method: opt_method || 'GET',
+          url: url,
+        }).send().then(function(p) {
+          return p.resp.text();
+        }).then(function(p) {
+          return self.aparseString(x, p);
+        })
+      },
+    },
     function aparseString(x, str) {
       return this.aparse(x, JSON.parse(str));
     },
