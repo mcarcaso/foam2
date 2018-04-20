@@ -184,6 +184,11 @@ foam.LIB({
 
         return cls;
       };
+
+      foam.SCRIPT = function(f, opt_args) {
+        var args = opt_args || {};
+        if ( FLAG_FILTER(args) ) f();
+      };
     },
 
     /** Start second phase of bootstrap process. */

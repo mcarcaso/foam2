@@ -77,23 +77,26 @@
       createLoadBrowser();
   }
 
+  // TODO: Did this to reuse it in Boot.js. Is there a better place?
+  this.FLAG_FILTER = function(f) {
+    if ( f.flags ) {
+      for ( var i = 0; i < f.flags.length; i++ ) {
+        if ( ! flags[f.flags[i]] ) return false;
+      }
+    }
+    if ( f.notFlags ) {
+      for ( var i = 0; i < f.notFlags.length; i++ ) {
+        if ( flags[f.notFlags[i]] ) return false;
+      }
+    }
+    return true;
+  }
+
   this.FOAM_FILES = function(files) {
     var load = getLoader();
 
     files.
-      filter(function(f) {
-        if ( f.flags ) {
-          for ( var i = 0; i < f.flags.length; i++ ) {
-            if ( ! flags[f.flags[i]] ) return false;
-          }
-        }
-        if ( f.notFlags ) {
-          for ( var i = 0; i < f.notFlags.length; i++ ) {
-            if ( flags[f.notFlags[i]] ) return false;
-          }
-        }
-        return true;
-      }).
+      filter(this.FLAG_FILTER).
       map(function(f) { return f.name; }).
       forEach(load);
 

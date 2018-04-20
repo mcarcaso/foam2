@@ -69,4 +69,6 @@ foam.CLASS({
   ]
 });
 
-foam.u2.FoamTagLoader.create();
+foam.SCRIPT(function() {
+  foam.u2.FoamTagLoader.create();
+}, { notFlags: ['build'] });
