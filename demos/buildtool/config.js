@@ -7,11 +7,10 @@
       "$CLS$": "foam.tools.AppConfig"
     },
     "refines": [
-      "demo.build.ModelToBuildRefine"
     ],
     "requires": [
-      "foam.tools.WebAppConfigLoader",
-      "demo.build.ModelToBuild"
+      "demo.ClassDisplayer",
+      "foam.util.Timer"
     ]
   }
 }

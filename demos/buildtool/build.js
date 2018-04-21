@@ -10,12 +10,10 @@ FOAM_FLAGS = {
 }
 
 require(root + '/src/foam.js');
+require(root + '/src/foam/nanos/nanos.js');
 
 var classloader = foam.__context__.classloader;
 classloader.addClassPath(dir + '/src');
-
-var buildPath = dir + '/build/';
-require('child_process').execSync('rm -rf ' + buildPath, {stdio:[0,1,2]});
 
 var configPath = dir + '/config.js';
 var config = require('fs').readFileSync(configPath, 'utf8');
@@ -25,8 +23,10 @@ Promise.all([
   classloader.load('foam.tools.Build'),
   deserializer.aparseString(foam.__context__, config),
 ]).then(function(args) {
-  args[0].create({
+  return args[0].create({
     appConfig: args[1],
-    root: buildPath,
   }).execute();
+}).then(function(output) {
+  console.log(dir + 'dao.js');
+  require('fs').writeFileSync(dir + '/dao.js', output, 'utf8');
 });

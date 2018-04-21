@@ -1,23 +1,9 @@
 <html>
   <head>
     <script src="/src/foam.js"></script>
+    <script src="/demos/buildtool/src/demo/BuildDemo.js"></script>
   </head>
   <body>
-    <script>
-      var cl = foam.__context__.classloader;
-
-      var l = document.location;
-      var demoPath = l.protocol + '//' + l.host + '/demos/buildtool/';
-      cl.addClassPath(demoPath + 'build', true);
-      cl.modelDAO = cl.modelDAO.delegate; // Only use json2 dao.
-
-      cl.load('foam.tools.WebAppConfigLoader').then(function(cls) {
-        return cls.create().load(demoPath + 'config.js')
-      }).then(function() {
-        foam.u2.DetailView.create({
-          data: demo.build.ModelToBuild.create(),
-        }).write()
-      });
-    </script>
+    <foam class="demo.BuildDemo"></foam>
   </body>
 </html>

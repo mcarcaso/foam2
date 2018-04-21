@@ -36,7 +36,7 @@ foam.CLASS({
   ],
 
   imports: [
-    'classloader',
+    'classloader?',
   ],
 
   properties: [

@@ -87,9 +87,8 @@ FOAM_FILES([
   { name: "foam/nanos/auth/AuthService" },
   { name: "foam/nanos/auth/ProxyAuthService" },
   { name: "foam/nanos/auth/ClientAuthService" },
-  { name: "foam/nanos/pm/PMInfo" },
-  { name: "foam/nanos/pm/PMTableView", flags:['web'] },
   { name: "foam/nanos/pm/TemperatureCView" },
+  { name: "foam/nanos/pm/PMTableView", flags:['web'] },
   { name: 'foam/nanos/notification/email/EmailMessage' },
   { name: 'foam/nanos/notification/email/EmailService' },
   { name: 'foam/nanos/notification/email/EmailTemplate' },
@@ -109,5 +108,6 @@ FOAM_FILES([
   { name: 'foam/nanos/demo/relationship/Course' },
   { name: 'foam/nanos/demo/relationship/Professor' },
   { name: 'foam/nanos/demo/relationship/Student' },
-  { name: 'foam/nanos/demo/relationship/Controller' }
+  { name: 'foam/nanos/demo/relationship/Controller' },
+  { name: "foam/nanos/http/DefaultHttpParameters" },
 ]);
