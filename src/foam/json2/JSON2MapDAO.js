@@ -3,6 +3,7 @@ foam.CLASS({
   name: 'JSON2MapDAO',
   extends: 'foam.dao.AbstractDAO',
   requires: [
+    'foam.dao.ArraySink',
     'foam.json2.Deserializer',
     'foam.json2.Serializer',
   ],
@@ -35,6 +36,32 @@ foam.CLASS({
       return this.map[id] ?
         this.d.aparseString(x, this.map[id]) :
         Promise.resolve();
+    },
+    function select_(x, sink, skip, limit, order, predicate) {
+      var self = this;
+      return new Promise(function(resolve, reject) {
+        sink = sink || self.ArraySink.create();
+        dSink= self.decorateSink_(sink, skip, limit, order, predicate);
+
+        var detached = false;
+        var sub = { detach: function() { detached = true } };
+
+        var ks = Object.keys(self.map);
+        var i = 0;
+        var next = function() {
+          self.find_(x, ks[i]).then(function(m) {
+            dSink.put(m, sub);
+            i++;
+            if ( detached || i == ks.length ) {
+              dSink.eof();
+              resolve(sink);
+            } else {
+              next();
+            }
+          });
+        }
+        next();
+      });
     },
   ]
 });
