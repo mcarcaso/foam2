@@ -36,7 +36,7 @@ foam.CLASS({
     'name',
     {
       name: 'flags',
-      factory: function() { return {}; }
+      documentation: 'An array of flags that are typically used to filter the model out when building.',
     },
     {
       name: 'label',
