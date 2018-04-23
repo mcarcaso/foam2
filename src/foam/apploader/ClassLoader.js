@@ -24,7 +24,9 @@ have multiple classloaders running alongside eachother`
 ],*/
   requires: [
     'foam.classloader.OrDAO',
+    'foam.core.Model',
     'foam.dao.Relationship',
+    'foam.mlang.predicate.Has',
   ],
   properties: [
     {
@@ -193,6 +195,19 @@ have multiple classloaders running alongside eachother`
           return cls;
         });
       }
-    }
+    },
+    {
+      name: 'loadRefines',
+      code: function() {
+        var self = this;
+        self.modelDAO.where(self.Has.create({arg1: self.Model.REFINES})).select().then(function(a) {
+          return Promise.all(a.a.
+            map(function(r) { return r.id }).
+            filter(function(r) { return ! foam.REFINES[r] }).
+            map(self.load.bind(self))
+          );
+        });
+      },
+    },
   ]
 });
