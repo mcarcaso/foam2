@@ -24,7 +24,6 @@ foam.CLASS({
     'foam.core.Model',
     'foam.dao.DAOSink',
     'foam.dao.DecoratedDAO',
-    'foam.json2.Deserializer',
     'foam.json2.Serializer',
     'foam.tools.AppConfig',
     'foam.json2.JSON2MapDAO',
@@ -72,31 +71,6 @@ foam.CLASS({
 
   classes: [
     {
-      name: 'FindInDAO',
-      extends: 'foam.dao.ProxyDAO',
-      requires: [
-        'foam.mlang.predicate.In',
-      ],
-      methods: [
-        function select_(x, sink, _, _, _, predicate) {
-          if ( ! this.In.isInstance(predicate) ) {
-            throw 'Only supports selecting with an "In" predicate';
-          }
-          var self = this;
-          var promises = predicate.arg2.value.map(function(id) {
-            return self.find_(x, id).then(function(m) {
-              if ( ! m ) {
-                console.log('Could not find ' + id + ' in modelDAO');
-                return;
-              }
-              sink.put(m);
-            });
-          });
-          return Promise.all(promises).then(function() { return sink });
-        }
-      ]
-    },
-    {
       name: 'ModelLookupDAO',
       extends: 'foam.dao.AbstractDAO',
       methods: [
@@ -133,74 +107,6 @@ foam.CLASS({
         }
       ]
     },
-    {
-      name: 'ModelFlagStripDAODecorator',
-      extends: 'foam.dao.AbstractDAODecorator',
-      requires: [
-        'foam.core.Model'
-      ],
-      documentation: `
-        A decorator that serializes and deserializes objects that are read. This
-        is useful for stripping objects based on flags.
-      `,
-      properties: [
-        'flags',
-      ],
-      methods: [
-        function read(X, dao, obj) {
-          return this.Model.isInstance(obj) ? obj.filterAxiomsByFlags(this.flags) : obj;
-        },
-      ],
-    },
-    {
-      name: 'DepPutModelDAO',
-      extends: 'foam.dao.ProxyDAO',
-      requires: [
-        'foam.core.Model',
-        'foam.dao.DAOSink',
-        'foam.dao.Relationship',
-      ],
-      implements: [
-        'foam.mlang.Expressions',
-      ],
-      properties: [
-        {
-          name: 'modelDAO',
-        },
-        {
-          name: 'puts',
-          factory: function() { return {} },
-        },
-      ],
-      methods: [
-        function put_(x, o) {
-          if ( ! this.puts[o.id] ) {
-            var self = this;
-            this.puts[o.id] = this.delegate.put_(x, o).then(function(o) {
-              if ( self.Model.isInstance(o) ) {
-                var json = JSON.parse(x.json2Serializer.stringify(x, o));
-                var deps = json['$DEPS$'].concat(o.getClassDeps());
-                return self.modelDAO.where(self.IN(self.Model.ID, deps))
-                    .select(self.DAOSink.create({dao: self}))
-              } else if ( self.Relationship.isInstance(o) ) {
-                return self.modelDAO.where(self.IN(self.Model.ID, [o.targetModel, o.sourceModel]))
-                    .select(self.DAOSink.create({dao: self}))
-              }
-            }).then(function() {
-              return o;
-            });
-          }
-          return this.puts[o.id];
-        },
-      ],
-    },
-  ],
-
-  methods: [
-    function log(_, m) {
-      var s = m.id;
-      this.output = this.output ? this.output + '\n' + s : s
-    },
   ],
 
   actions: [
@@ -234,17 +140,7 @@ foam.CLASS({
         });
       }
 
-      var srcDAO = self.FindInDAO.create({
-        delegate: self.DecoratedDAO.create({
-          decorator: self.ModelFlagStripDAODecorator.create({flags: self.flags}),
-          delegate: orDAO,
-        })
-      });
-
-      var destDAO = self.DepPutModelDAO.create({
-        modelDAO: srcDAO,
-        delegate: self.JSON2MapDAO.create(),
-      })
+      var destDAO = self.JSON2MapDAO.create()
 
       var ac = self.appConfig;
       return Promise.all(ac.refines.map(function(r) {
@@ -261,10 +157,23 @@ foam.CLASS({
           Object.keys(foam.REFINES)).forEach(function(m) {
             ms[m] = true;
           })
-        return srcDAO.where(self.IN(self.Model.ID, Object.keys(ms)))
-            .select(self.DAOSink.create({dao: destDAO}))
+        return Object.keys(ms);
+      }).then(function(models) {
+        return Promise.all(models.map(function(m) {
+          return orDAO.find(m);
+        }));
+      }).then(function(models) {
+        return models.filter(foam.util.flagFilter(self.flags));
+      }).then(function(models) {
+        return models.map(function(obj) {
+          return self.Model.isInstance(obj) ? obj.filterAxiomsByFlags(self.flags) : obj;
+        });
+      }).then(function(models) {
+        return Promise.all(models.map(function(m) {
+          return destDAO.put(m);
+        }));
       }).then(function() {
-        return self.json2Serializer.stringify(self, destDAO.delegate);
+        return self.json2Serializer.stringify(self, destDAO);
       });
     }
   ]
