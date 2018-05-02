@@ -15,6 +15,7 @@ foam.CLASS({
     {
       name: 's',
       hidden: true,
+      transient: true,
       factory: function() {
         return this.Serializer.create()
       },
@@ -22,6 +23,7 @@ foam.CLASS({
     {
       name: 'd',
       hidden: true,
+      transient: true,
       factory: function() {
         return this.Deserializer.create({parseFunctions: true})
       },
