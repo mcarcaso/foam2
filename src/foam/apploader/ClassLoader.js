@@ -25,7 +25,9 @@ have multiple classloaders running alongside eachother`
   requires: [
     'foam.classloader.OrDAO',
     'foam.core.Model',
+    'foam.dao.PromisedDAO',
     'foam.dao.Relationship',
+    'foam.json2.Deserializer',
     'foam.mlang.predicate.Has',
   ],
   properties: [
@@ -43,6 +45,17 @@ have multiple classloaders running alongside eachother`
     }
   ],
   methods: [
+    {
+      name: 'useJSON2DAO',
+      code: function(path) {
+        var self = this;
+        var d = self.Deserializer.create();
+        return d.aparseUrl(self, path).then(function(dao) {
+          self.modelDAO = dao;
+          return dao;
+        })
+      }
+    },
     {
       name: 'addClassPath',
       code: function(path, json2) {
@@ -200,12 +213,23 @@ have multiple classloaders running alongside eachother`
       name: 'loadRefines',
       code: function() {
         var self = this;
-        self.modelDAO.where(self.Has.create({arg1: self.Model.REFINES})).select().then(function(a) {
+        return self.modelDAO.where(self.Has.create({arg1: self.Model.REFINES})).select().then(function(a) {
           return Promise.all(a.a.
             map(function(r) { return r.id }).
             filter(function(r) { return ! foam.REFINES[r] }).
             map(self.load.bind(self))
           );
+        });
+      },
+    },
+    {
+      name: 'loadRelationships',
+      code: function() {
+        var self = this;
+        return self.modelDAO.where(self.Has.create({arg1: self.Relationship.SOURCE_MODEL})).select().then(function(a) {
+          return Promise.all(a.a.map(function(r) {
+            return r.initRelationship()
+          }));
         });
       },
     },
