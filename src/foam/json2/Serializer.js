@@ -160,9 +160,31 @@ foam.CLASS({
 
       if ( this.transient ) return;
 
+      // Property views are special because they're not actual instances but
+      // ViewSpecs need the class of the view to exist so we need a special case
+      // here. TODO: Kill this special case. Ideas are:
+      // - Make ViewSpecs able to load views that aren't already loaded.
+      //   ViewSpecs aren't currently async so this could be an issue.
+      // - Make classloader load views when loading a class that has a property
+      //   with a view property. This moves the problem from before building to
+      //   after building. Downside here is that the deps may not make
+      //   themselves inton the model dao if it happens this late.
+      // - Require any custom view properties in the model itself. This adds
+      //   extra work for the developer that should just be figured out by the
+      //   system.
+      // - Automatically add requires for views in a postSet. This could be a
+      //   little weird though.
+      // - Get rid of ViewSpecs or store an actual object here instead of a map.
+      var v = this.f(obj);
+      if ( foam.core.Property.isInstance(obj) && this.name == 'view' ) {
+        if ( foam.Object.isInstance(v) && v.class ) {
+          outputter.deps[v.class] = true;
+        }
+      }
+
       out.key(this.name);
 
-      outputter.output(x, this.f(obj), out);
+      outputter.output(x, v, out);
     }
   ]
 });
