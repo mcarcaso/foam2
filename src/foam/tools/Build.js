@@ -80,19 +80,18 @@ foam.CLASS({
             var cls = foam.lookup(id, true);
             return Promise.resolve(cls && cls.model_);
           }
-        }
+        },
       ]
     },
     {
       name: 'RelationshipLookupDAO',
-      extends: 'foam.dao.AbstractDAO',
       methods: [
         {
           name: 'find_',
           code: function(x, id) {
             return Promise.resolve(foam.RELATIONSHIPS[id]);
           }
-        }
+        },
       ]
     },
     {
@@ -104,8 +103,87 @@ foam.CLASS({
           code: function(x, id) {
             return Promise.resolve(foam.REFINES[id]);
           }
+        },
+      ]
+    },
+    {
+      name: 'DependencySelectDAO',
+      extends: 'foam.dao.ProxyDAO',
+      requires: [
+        'foam.core.Model',
+        'foam.dao.Relationship',
+      ],
+      methods: [
+        function select_(x, sink, skip, limit, order, predicate) {
+          var self = this;
+          return new Promise(function(resolve) {
+            var queue = [].concat(
+              Object.keys(foam.RELATIONSHIPS),
+              Object.keys(foam.USED),
+              Object.keys(foam.UNUSED),
+              Object.keys(foam.REFINES),
+            );
+            var models = {};
+            var next = function() {
+              if ( ! queue.length ) {
+                sink = sink || self.ArraySink.create();
+                dSink= self.decorateSink_(sink, skip, limit, order, predicate);
+
+                var detached = false;
+                var sub = { detach: function() { detached = true } };
+                models = Object.values(models);
+                while ( models.length ) {
+                  dSink.put(models.pop(), sub);
+                  if ( detached ) {
+                    break;
+                  }
+                }
+                dSink.eof();
+                resolve(sink);
+                return;
+              }
+              var id = queue.pop();
+              if ( models[id] ) {
+                next();
+                return;
+              }
+              self.delegate.find(id).then(function(m) {
+                models[id] = m;
+                // Don't include dependencies for models that will be filtered
+                // out by the predicate later.
+                if ( predicate && predicate.f(m) ) {
+                  var deps;
+                  if ( self.Model.isInstance(m) ) {
+                    deps = m.getClassDeps();
+                  } else if ( self.Relationship.isInstance(m) ) {
+                    deps = [m.targetModel, m.sourceModel];
+                  }
+                  queue = queue.concat(deps);
+                }
+                next();
+              });
+            }
+            next();
+          })
         }
       ]
+    },
+    {
+      name: 'ModelFlagStripDAODecorator',
+      extends: 'foam.dao.AbstractDAODecorator',
+      requires: [
+        'foam.core.Model'
+      ],
+      properties: [
+        'flags',
+      ],
+      methods: [
+        function read(X, dao, obj) {
+          return this.Model.isInstance(obj) ?
+              obj.filterAxiomsByFlags(this.flags) :
+              obj;
+        },
+      ],
     },
   ],
 
@@ -139,42 +217,20 @@ foam.CLASS({
           delegate: orDAO,
         });
       }
-
-      var destDAO = self.JSON2MapDAO.create()
-
-      var ac = self.appConfig;
-      return Promise.all(ac.refines.map(function(r) {
-        return self.classloader.load(r);
-      })).then(function() {
-        var ms = {};
-        [].concat(
-          ac.refines,
-          ac.relationships,
-          ac.requires,
-          Object.keys(foam.USED),
-          Object.keys(foam.UNUSED),
-          Object.keys(foam.RELATIONSHIPS),
-          Object.keys(foam.REFINES)).forEach(function(m) {
-            ms[m] = true;
-          })
-        return Object.keys(ms);
-      }).then(function(models) {
-        return Promise.all(models.map(function(m) {
-          return orDAO.find(m);
-        }));
-      }).then(function(models) {
-        return models.filter(foam.util.flagFilter(self.flags));
-      }).then(function(models) {
-        return models.map(function(obj) {
-          return self.Model.isInstance(obj) ? obj.filterAxiomsByFlags(self.flags) : obj;
-        });
-      }).then(function(models) {
-        return Promise.all(models.map(function(m) {
-          return destDAO.put(m);
-        }));
-      }).then(function() {
-        return self.json2Serializer.stringify(self, destDAO);
+      var srcDAO = self.DependencySelectDAO.create({
+        delegate: self.DecoratedDAO.create({
+          decorator: self.ModelFlagStripDAODecorator.create({flags: self.flags}),
+          delegate: orDAO,
+        })
       });
+
+      var destDAO = self.JSON2MapDAO.create();
+
+      return srcDAO
+        .where(self.FUNC(foam.util.flagFilter(self.flags)))
+        .select(self.DAOSink.create({dao: destDAO})).then(function() {
+          return self.json2Serializer.stringify(self, destDAO);
+        })
     }
   ]
 });
