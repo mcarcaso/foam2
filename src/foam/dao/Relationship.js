@@ -36,7 +36,7 @@ foam.CLASS({
   ],
 
   imports: [
-    'classloader',
+    'classloader?',
   ],
 
   properties: [
@@ -151,9 +151,12 @@ foam.CLASS({
            this.lookup(this.targetModel, true) ) {
         return Promise.resolve(this.initRelationship_());
       }
+      var wait = this.classloader ?
+        this.classloader.load.bind(this.classloader) :
+        foam.package.waitForClass;
       return Promise.all([
-        this.classloader.load(this.sourceModel),
-        this.classloader.load(this.targetModel),
+        wait(this.sourceModel),
+        wait(this.targetModel),
       ]).then(this.initRelationship_.bind(this));
     },
     function initRelationship_() {
@@ -276,7 +279,7 @@ foam.LIB({
 
       r.validate && r.validate();
       r.initRelationship();
-      foam.package.registerClass(r);
+      //foam.package.registerClass(r);
 
       return r;
     }

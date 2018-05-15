@@ -592,6 +592,7 @@ return sink;
   ],
   axioms: [
     {
+      flags: ['java'],
       buildJavaClass: function(cls) {
         cls.extras.push(`
 public final static long MAX_SAFE_INTEGER = 9007199254740991l;

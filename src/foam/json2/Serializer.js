@@ -176,7 +176,7 @@ foam.CLASS({
       //   little weird though.
       // - Get rid of ViewSpecs or store an actual object here instead of a map.
       var v = this.f(obj);
-      if ( foam.core.Property.isInstance(obj) && this.name == 'view' ) {
+      if ( outputter.deps && foam.core.Property.isInstance(obj) && this.name == 'view' ) {
         if ( foam.Object.isInstance(v) && v.class ) {
           outputter.deps[v.class] = true;
         }

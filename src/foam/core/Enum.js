@@ -205,6 +205,8 @@ foam.CLASS({
         for ( var i = 0 ; i < v.length ; i++ ) {
           var def = v[i];
 
+          if ( def.definition ) def = def.definition;
+
           if ( foam.String.isInstance(def) ) {
             def = { label: def, name: foam.String.constantize(def) };
           }

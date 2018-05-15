@@ -1,61 +1,106 @@
 /**
  * @license
  * Copyright 2018 The FOAM Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  */
 
 foam.CLASS({
   package: 'foam.json2',
   name: 'Test',
   requires: [
-    'foam.test.AllProperties'
+    'foam.json2.Outputter',
   ],
   methods: [
-    function init() {
-      var o1 = this.AllProperties.create({
-        str: 'str',
-        n: 12,
-        function: function(asdfasdf) { console.log("arg is:", asdfasdf); }
-      });
+    function stringify(x, v) {
+      var serializer = this.InnerSerializer.create();
+      serializer.output(x, v);
+      return serializer.getString();
+    }
+  ],
+  classes: [
+    {
+      name: 'InnerSerializer',
+      requires: [
+        'foam.json2.Outputter'
+      ],
+      properties: [
+        {
+          class: 'FObjectProperty',
+          of: 'foam.json2.Outputter',
+          name: 'out',
+          factory: function() {
+            return this.Outputter.create();
+          }
+        }
+      ],
+      methods: [
+        function getString() {
+          return this.out.str;
+        },
+        function output(x, v) {
+          var out = this.out;
+          var type = foam.typeOf(v);
 
-      var o2 = foam.json2.Deserializer.create({ parseFunctions: true }).aparseString(
-        foam.__context__,
-        foam.json2.Serializer.create().stringify(
-          foam.__context__,
-          o1));
+          if ( type == foam.Number ) {
+            out.n(v);
+          } else if ( type == foam.String ) {
+            out.s(v);
+          } else if ( type == foam.Undefined ) {
+            debugger;
+          } else if ( type == foam.Null ) {
+            out.nul();
+          } else if ( type == foam.Boolean ) {
+            out.b(v);
+          } else if ( type == foam.Array ) {
+            out.array();
+            for ( var i = 0 ; i < v.length ; i++ ) {
+              this.output(x, v[i])
+            }
+            out.end()
+          } else if ( type == foam.Date ) {
+            debugger;
+          } else if ( type == foam.Object ) {
+            if ( foam.core.FObject.isSubClass(v) ) { // Is an actual class
+              if ( v.id.indexOf('AnonymousClass') == 0 ) {
+                debugger;
+              } else {
+                out.s(v.id);
+              }
+            } else {
+              out.obj();
+              var keys = Object.keys(v);
+              for ( var i = 0 ; i < keys.length ; i++ ) {
+                if ( foam.Undefined.isInstance(v[keys[i]]) ) continue;
+                out.key(keys[i]);
+                this.output(x, v[keys[i]]);
+              }
+              out.end();
+            }
+          } else if ( type == foam.core.FObject ) {
+            out.obj();
+            var cls = v.cls_;
+            var axioms = v.cls_.getAxioms();
 
-      console.log("o1 equals o2?", o1.equals(o2));
+            out.key("class");
+            this.output(x, cls);
 
-      if ( ! o1.equals(o2) ) {
-        console.log("Diff:", o1.diff(o2));
-      }
+            for ( var i = 0 ; i < axioms.length ; i++ ) {
+              var a = axioms[i];
+              if ( a.outputPropertyJSON2 ) a.outputPropertyJSON2(x, v, this, out);
+            }
 
-      o2.function("foo");
-
-      var m1 = this.AllProperties.model_;
-
-      var m2 = foam.json2.Deserializer.create({ parseFunctions: true }).aparseString(
-        foam.__context__,
-        foam.json2.Serializer.create().stringify(
-          foam.__context__,
-          m1));
-
-      console.log("m1 equals m2?", m1.equals(m2));
-
-      if ( ! m1.equals(m2) ) {
-        console.log("Diff:", m1.diff(m2));
-      }
+            out.end();
+          } else if ( type == foam.Function ) {
+            var breakdown = foam.Function.breakdown(v);
+            out.e();
+            out.n(`
+function(${breakdown.args.join(', ')}) {
+  ${breakdown.body}
+}
+            `.trim());
+          }
+        }
+      ]
     }
   ]
 });

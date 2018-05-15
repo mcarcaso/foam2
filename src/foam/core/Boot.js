@@ -185,7 +185,8 @@ foam.LIB({
         return cls;
       };
 
-      foam.SCRIPT = function(f, opt_args) {
+      foam.SCRIPT = function(o) {
+        o = foam.core.Script.create(o);
         var args = opt_args || {};
         if ( FLAG_FILTER(args) ) f();
       };
@@ -225,7 +226,17 @@ foam.LIB({
             //   debugger;
             var n = new RegExp('(.*)\\.(.*)?$').exec(m.refines)
             var p = n ? n[1] : 'foam.core';
-            n = (n ? n[2] : m.refines) + '_Refine';
+            n = (n ? n[2] : m.refines) + [
+              'properties',
+              'methods',
+              'actions',
+              'listeners',
+            ].map(function(p) {
+              if ( ! m[p] ) return;
+              return m[p].map(function(a) {
+                return a.name || '';
+              }).join('');
+            }).join('');
             while ( foam.REFINES[p + '.' + n] ) {
               n = n + '_';
             }

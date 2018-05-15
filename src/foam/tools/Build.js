@@ -27,6 +27,7 @@ foam.CLASS({
     'foam.json2.Serializer',
     'foam.tools.AppConfig',
     'foam.json2.JSON2MapDAO',
+    'foam.json2.Test',
   ],
 
   implements: [
@@ -154,7 +155,8 @@ foam.CLASS({
                 if ( predicate && predicate.f(m) ) {
                   var deps;
                   if ( self.Model.isInstance(m) ) {
-                    deps = m.getClassDeps();
+                    var json = JSON.parse(x.json2Serializer.stringify(x, m));
+                    deps = json['$DEPS$'].concat(m.getClassDeps());
                   } else if ( self.Relationship.isInstance(m) ) {
                     deps = [m.targetModel, m.sourceModel];
                   }
@@ -229,8 +231,61 @@ foam.CLASS({
       return srcDAO
         .where(self.FUNC(foam.util.flagFilter(self.flags)))
         .select(self.DAOSink.create({dao: destDAO})).then(function() {
-          return self.json2Serializer.stringify(self, destDAO);
+          return self.toFoamClass(destDAO);
         })
-    }
+    },
+    function toFoamClass(dao) {
+      var seen = {FObject: true};
+      var output = [];
+      var self = this;
+
+      return dao.select().then(function(a) {
+        var models = a.a;
+        var map = {};
+        a.a.forEach(function(m) { map[m.id] = m });
+
+        var f = function(n) {
+          if ( seen[n] ) return;
+          seen[n] = true;
+
+          var deps = [];
+          var m = map[n];
+          if ( !m ) {
+            console.log('WARNING! Cannot find', n);
+            return;
+          }
+          if ( foam.core.Model.isInstance(m) ) {
+            var json = JSON.parse(self.json2Serializer.stringify(self, m));
+            deps = json['$DEPS$'].concat(m.getClassDeps());
+          } else if ( foam.dao.Relationship.isInstance(m) ) {
+            deps = [m.targetModel, m.sourceModel];
+          }
+
+          for ( var i = 0, d; d = deps[i]; i++ ) {
+            f(d);
+          }
+
+          output.push(m);
+        }
+        Object.keys(map).forEach(f);
+
+        var s = self.Test.create();
+        return output.map(function(m) {
+          var f = foam.dao.Relationship.isInstance(m) ? 'RELATIONSHIP' : 'CLASS';
+          var b = [
+            'foam.USED',
+            'foam.REFINES',
+            'foam.RELATIONSHIPS',
+            'foam.UNUSED',
+          ].map(function(map) {
+            return `${map}['${m.id}']`
+          }).join(' || ');
+          return `
+if ( ! ( ${b} || foam.lookup('${m.id}', true) ) ) {
+  foam.${f}(${s.stringify(self, m)});
+}`;
+        }).join(';\n');
+      });
+    },
   ]
 });

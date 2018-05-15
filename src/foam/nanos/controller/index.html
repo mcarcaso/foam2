@@ -1,16 +1,36 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <script>FOAM_FLAGS = {files_lite: true}</script>
     <script language="javascript" src="../../../foam.js"></script>
-    <script language="javascript" src="../../support/support.js"></script>
+    <script>
+      if ( false && FOAM_FLAGS['files_lite'] ) {
+        // Create a second classloader context and make the original classloader's
+        // modelDAO wait for the seeded modelDAO to come from the network.
+        var path = 'http://localhost:8080/service/static/demos/buildtool/dao.js';
+        var c = foam.__context__.classloader;
+
+        var x = foam.apploader.ClassLoaderContext.create();
+        x.classloader.modelDAO = c.modelDAO;
+        c.modelDAO = foam.dao.PromisedDAO.create({
+          promise: x.classloader.useJSON2DAO(path).then(function(d) {
+            return x.classloader.loadRefines();
+          }).then(function() {
+            return x.classloader.loadRelationships();
+          }).then(function() {
+            return x.classloader.modelDAO.clone(c);
+          })
+        });
+      }
+    </script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" rel="stylesheet">
   </head>
   <body>
-    <foam 
-      class="foam.nanos.controller.ApplicationController" 
-      logo="foam_red.png" 
-      webApp="FOAM" 
-      id="ctrl" 
+    <foam
+      class="foam.nanos.controller.ApplicationController"
+      logo="foam_red.png"
+      webApp="FOAM"
+      id="ctrl"
       signUpEnabled="true"
       primaryColor="#093649"
       secondaryColor="#59aadd"
