@@ -14,6 +14,7 @@ foam.CLASS({
     'foam.build.DepComparator',
     'foam.build.JsCodeFileSink',
     'foam.build.DirCrawlModelDAO',
+    'foam.build.FlagStripSink',
   ],
   classes: [
     {
@@ -38,9 +39,13 @@ foam.CLASS({
       var dao = self.DirCrawlModelDAO.create();
       dao.orderBy(self.DepComparator.create()).select(
         self.AxiomBuildHack.create({
-          delegate: self.JsCodeFileSink.create()
+          delegate: self.FlagStripSink.create({
+            flags: ['web'],
+            delegate: self.JsCodeFileSink.create(),
+          })
         })
       ).then(function(s) {
+        s = s.delegate;
         s = s.delegate;
         require('fs').writeFileSync('BUILD_CODE.js', s.output, 'utf8');
       });
