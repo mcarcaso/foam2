@@ -48,7 +48,6 @@ foam.CLASS({
     'name',
     {
       name: 'flags',
-      factory: function() { return {}; }
     },
     {
       name: 'label',

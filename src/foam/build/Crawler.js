@@ -16,6 +16,15 @@ foam.CLASS({
     'foam.build.DirCrawlModelDAO',
     'foam.build.FlagStripSink',
   ],
+  implements: [
+    'foam.mlang.Expressions',
+  ],
+  properties: [
+    {
+      name: 'flags',
+      value: ['web'],
+    },
+  ],
   classes: [
     {
       name: 'AxiomBuildHack',
@@ -37,18 +46,21 @@ foam.CLASS({
     function execute() {
       var self = this;
       var dao = self.DirCrawlModelDAO.create();
-      dao.orderBy(self.DepComparator.create()).select(
-        self.AxiomBuildHack.create({
-          delegate: self.FlagStripSink.create({
-            flags: ['web'],
-            delegate: self.JsCodeFileSink.create(),
+      dao
+        .where(self.FUNC(foam.util.flagFilter(self.flags)))
+        .orderBy(self.DepComparator.create())
+        .select(
+          self.AxiomBuildHack.create({
+            delegate: self.FlagStripSink.create({
+              flags: ['web'],
+              delegate: self.JsCodeFileSink.create(),
+            })
           })
-        })
-      ).then(function(s) {
-        s = s.delegate;
-        s = s.delegate;
-        require('fs').writeFileSync('BUILD_CODE.js', s.output, 'utf8');
-      });
+        ).then(function(s) {
+          s = s.delegate;
+          s = s.delegate;
+          require('fs').writeFileSync('BUILD_CODE.js', s.output, 'utf8');
+        });
     },
   ],
 });
