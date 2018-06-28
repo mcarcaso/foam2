@@ -91,13 +91,8 @@ foam.CLASS({
 
             out.end();
           } else if ( type == foam.Function ) {
-            var breakdown = foam.Function.breakdown(v);
             out.e();
-            out.n(`
-function(${breakdown.args.join(', ')}) {
-  ${breakdown.body}
-}
-            `.trim());
+            out.n(v.toString());
           }
         }
       ]
