@@ -52,8 +52,8 @@ have multiple classloaders running alongside eachother`
 
         if ( this.modelDAO ) {
           modelDAO = this.OrDAO.create({
-            primary: modelDAO,
-            delegate: this.modelDAO
+            primary: this.modelDAO,
+            delegate: modelDAO
           });
         }
         this.modelDAO = modelDAO;

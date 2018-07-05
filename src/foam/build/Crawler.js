@@ -8,10 +8,6 @@ foam.CLASS({
   package: 'foam.build',
   name: 'Crawler',
   requires: [
-    'foam.core.Script',
-    'foam.dao.Relationship',
-    'foam.build.DepComparator',
-    'foam.build.JsCodeFileSink',
     'foam.build.FileTreeSink',
     'foam.build.DirCrawlModelDAO',
     'foam.build.FlagStripSink',
