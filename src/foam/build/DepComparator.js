@@ -33,36 +33,12 @@ foam.CLASS({
       if ( o2o1 ) return -1;
       return o1.id < o2.id ? -1 : o1.id > o2.id ? 1 : 0;
     },
-    function getDeps(o) {
-      var deps = {};
-      var queue = o.cls_.getAxioms();
-      while ( queue.length ) {
-        var o = queue.pop();
-        var type = foam.typeOf(o);
-        if ( type == foam.Array ) {
-          queue = queue.concat(o);
-        } else if ( type == foam.Object ) {
-          if ( foam.core.FObject.isSubClass(o) ) { // Is an actual class
-            if ( o.id.indexOf('AnonymousClass') == 0 ) {
-              debugger;
-            } else {
-              deps[o.id] = true;
-            }
-          } else {
-            queue.push(Object.values(o));
-          }
-        } else if ( type == foam.core.FObject ) {
-          queue.push(o.cls_);
-        }
-      }
-      return Object.keys(deps);
-    },
     function hasDep(o1, o2) {
       if ( this.Model.isInstance(o1) ) {
         if ( o1.getClassDeps().includes(o2.id) ) {
           return true;
         }
-        if ( this.getDeps(o1).includes(o2.id) ) {
+        if ( foam.util.getDeps(o1).includes(o2.id) ) {
           debugger;
           return true;
         }

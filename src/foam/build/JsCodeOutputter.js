@@ -8,13 +8,19 @@ foam.CLASS({
   package: 'foam.build',
   name: 'JsCodeOutputter',
   requires: [
+    'foam.core.Script',
+    'foam.dao.Relationship',
     'foam.json2.Outputter',
   ],
   methods: [
     function stringify(x, v) {
+      var f = this.Relationship.isInstance(v) ? 'RELATIONSHIP' :
+        this.Script.isInstance(v) ? 'SCRIPT' :
+        'CLASS';
+
       var serializer = this.InnerSerializer.create();
       serializer.output(x, v);
-      return serializer.getString();
+      return `foam.${f}(${serializer.getString()});`;
     }
   ],
   classes: [
@@ -62,7 +68,7 @@ foam.CLASS({
           } else if ( type == foam.Object ) {
             if ( foam.core.FObject.isSubClass(v) ) { // Is an actual class
               if ( v.id.indexOf('AnonymousClass') == 0 ) {
-                debugger;
+                this.output(x, v.model_);
               } else {
                 out.s(v.id);
               }

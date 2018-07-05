@@ -11,7 +11,6 @@ foam.CLASS({
 
   requires: [
     'foam.build.JsCodeOutputter',
-    'foam.dao.Relationship',
   ],
 
   properties: [
@@ -29,10 +28,10 @@ foam.CLASS({
     {
       name: 'put',
       code: function(o) {
-        var f = this.Relationship.isInstance(o) ? 'RELATIONSHIP' : 'CLASS';
         this.output += (`
 if ( ! foam.lookup('${o.id}', true) ) {
-  foam.${f}(${this.o.stringify(this.__context__, o)});
+  console.log('Using stripped ${o.id}');
+  ${this.o.stringify(this.__context__, o)}
 }
         `);
       },

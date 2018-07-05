@@ -9,10 +9,10 @@ foam.CLASS({
   name: 'Crawler',
   requires: [
     'foam.core.Script',
-    'foam.dao.ArrayDAO',
     'foam.dao.Relationship',
     'foam.build.DepComparator',
     'foam.build.JsCodeFileSink',
+    'foam.build.FileTreeSink',
     'foam.build.DirCrawlModelDAO',
     'foam.build.FlagStripSink',
   ],
@@ -22,7 +22,7 @@ foam.CLASS({
   properties: [
     {
       name: 'flags',
-      value: ['web'],
+      value: ['js', 'web'],
     },
   ],
   classes: [
@@ -48,12 +48,13 @@ foam.CLASS({
       var dao = self.DirCrawlModelDAO.create();
       dao
         .where(self.FUNC(foam.util.flagFilter(self.flags)))
-        .orderBy(self.DepComparator.create())
         .select(
           self.AxiomBuildHack.create({
             delegate: self.FlagStripSink.create({
-              flags: ['web'],
-              delegate: self.JsCodeFileSink.create(),
+              flags: self.flags,
+              delegate: self.FileTreeSink.create({
+                dir: 'STRIPPED',
+              }),
             })
           })
         ).then(function(s) {

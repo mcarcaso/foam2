@@ -905,6 +905,33 @@ foam.LIB({
           return false;
         }
       },
+      function getDeps(o, d) {
+        var deps = d || {};
+        var type = foam.typeOf(o);
+        if ( type == foam.Array ) {
+          o.forEach(function(o) {
+            foam.util.getDeps(o, deps);
+          })
+        } else if ( type == foam.Object ) {
+          if ( foam.core.FObject.isSubClass(o) ) { // Is an actual class
+            if ( ! deps[o.id] ) {
+            deps[o.id] = true;
+            foam.util.getDeps(o.getAxioms(), deps);
+            }
+          } else {
+            foam.util.getDeps(Object.values(o), deps);
+          }
+        } else if ( foam.core.Model.isInstance(o) ) {
+          foam.util.getDeps(o.buildClass(), deps);
+        } else if ( type == foam.core.FObject ) {
+          foam.util.getDeps(o.cls_, deps);
+          o.cls_.getAxiomsByClass(foam.core.Property).forEach(function(a) {
+            if ( o.hasOwnProperty(a.name) ) foam.util.getDeps(o[a.name], deps);
+          });
+        }
+
+        return Object.keys(deps);
+      },
     ]
   });
 })();

@@ -10,22 +10,23 @@ foam.CLASS({
   extends: 'foam.dao.PromisedDAO',
   requires: [
     'foam.core.Script',
-    'foam.dao.ArrayDAO',
+    'foam.dao.EasyDAO',
     'foam.dao.Relationship',
     'foam.build.DepComparator',
     'foam.build.JsCodeFileSink',
+  ],
+  imports: [
+    'classloader',
   ],
   properties: [
     {
       name: 'blacklist',
       value: [
-        // TODO this is blacklisted because it encounters https://github.com/foam-framework/foam2/issues/1169
-        // Fix issue and uncomment.
-        'src/foam/java/Class.js',
-
+        // Not models.
         'src/foam/nanos/nanos.js',
         'src/files.js',
 
+        // Core that's always already loaded.
         'src/foam/core/poly.js',
         'src/foam/core/lib.js',
         'src/foam/core/stdlib.js',
@@ -41,25 +42,28 @@ foam.CLASS({
         'src/foam/core/EndBoot.js',
         'src/foam.js',
 
+        // Dirs we don't care about.
         'src/com/*',
         'src/apps/*',
 
+        // Files that have model dependencies that aren't in their own files.
         'src/foam/box/pipeline/PipelineManagerNonRPC.js',
         'src/foam/box/pipeline/RunnableRPCBox.js',
         'src/foam/box/pipeline/PipelineBuilder.js',
         'src/foam/box/pipeline/PipelineManager.js',
         'src/foam/box/pipeline/PipelineNode.js',
+        'src/foam/dao/BatchMutationIDBDAO.js',
+        'src/foam/dao/JDAOJava.js',
+        'src/foam/dao/JDAO.js',
 
+        // Test files.
         'src/lib/dao_test.js',
-        'src/foam/core/lib.js',
-
-        // TODO Move this to test dir?
         'src/foam/box/node/forkScript.js',
       ],
     },
     {
       name: 'delegate',
-      factory: function() { return this.ArrayDAO.create(); },
+      factory: function() { return this.EasyDAO.create({daoType: 'MDAO', of: 'foam.core.Model'}); },
     },
     {
       name: 'promise',
@@ -107,7 +111,13 @@ foam.CLASS({
       };
 
       context.foam.RELATIONSHIP = function(m) {
-        //promises.push(dao.put(self.Relationship.create(m)));
+        var r = self.Relationship.create(m);
+        promises.push(Promise.all([
+          self.classloader.load(r.sourceModel),
+          self.classloader.load(r.targetModel)
+        ]).then(function() {
+          return dao.put(r);
+        }))
       };
 
       var self = this;
