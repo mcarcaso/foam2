@@ -12,8 +12,6 @@ foam.CLASS({
     'foam.core.Script',
     'foam.dao.EasyDAO',
     'foam.dao.Relationship',
-    'foam.build.DepComparator',
-    'foam.build.JsCodeFileSink',
   ],
   imports: [
     'classloader',
