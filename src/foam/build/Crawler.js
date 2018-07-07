@@ -8,9 +8,11 @@ foam.CLASS({
   package: 'foam.build',
   name: 'Crawler',
   requires: [
-    'foam.build.FileTreeSink',
     'foam.build.DirCrawlModelDAO',
+    'foam.build.FileTreeSink',
     'foam.build.FlagStripSink',
+    'foam.core.Model',
+    'foam.core.Script',
   ],
   implements: [
     'foam.mlang.Expressions',
@@ -19,6 +21,24 @@ foam.CLASS({
     {
       name: 'flags',
       value: ['js', 'web'],
+    },
+    {
+      name: 'outDir',
+      value: 'STRIPPED',
+    },
+    {
+      name: 'dao',
+      factory: function() {
+        return this.DirCrawlModelDAO.create();
+      },
+    },
+    {
+      name: 'fs',
+      factory: function() { return require('fs'); }
+    },
+    {
+      name: 'sep',
+      factory: function() { return require('path').sep; }
     },
   ],
   classes: [
@@ -41,22 +61,56 @@ foam.CLASS({
   methods: [
     function execute() {
       var self = this;
-      var dao = self.DirCrawlModelDAO.create();
-      dao
+      self.writeToDir();
+      self.printRefines();
+      self.printScripts();
+    },
+    function printRefines() {
+      var self = this;
+      return self.dao
+        .where(self.AND(
+          self.FUNC(foam.util.flagFilter(self.flags)),
+          self.HAS(self.Model.REFINES),
+        ))
+        .select()
+        .then(function(s) {
+          self.fs.writeFileSync(
+            self.outDir + self.sep + 'refines.txt',
+            s.a.map(function(m) { return m.id }).join('\n')
+          );
+        });
+    },
+    function printScripts() {
+      var self = this;
+      return self.dao
+        .where(self.AND(
+          self.FUNC(foam.util.flagFilter(self.flags)),
+          self.HAS(self.Script.CODE),
+        ))
+        .select()
+        .then(function(s) {
+          self.fs.writeFileSync(
+            self.outDir + self.sep + 'scripts.txt',
+            s.a.map(function(m) { return m.id }).join('\n')
+          );
+        });
+    },
+    function writeToDir() {
+      var self = this;
+      return self.dao
         .where(self.FUNC(foam.util.flagFilter(self.flags)))
         .select(
           self.AxiomBuildHack.create({
             delegate: self.FlagStripSink.create({
               flags: self.flags,
               delegate: self.FileTreeSink.create({
-                dir: 'STRIPPED',
+                dir: self.outDir,
               }),
             })
           })
-        ).then(function(s) {
-          s = s.delegate;
-          s = s.delegate;
-          require('fs').writeFileSync('BUILD_CODE.js', s.output, 'utf8');
+        )
+        .then(function(s) {
+          console.log('Done writing to', self.outDir);
         });
     },
   ],
