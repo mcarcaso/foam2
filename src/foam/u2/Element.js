@@ -557,7 +557,6 @@ foam.CLASS({
 
   requires: [
     'foam.u2.AttrSlot',
-    'foam.u2.DefaultValidator',
     'foam.u2.Entity',
     'foam.u2.ViewSpec'
   ],
@@ -593,6 +592,7 @@ foam.CLASS({
 
     {
       name: 'DEFAULT_VALIDATOR',
+      of: 'foam.u2.DefaultValidator',
       factory: function() { return foam.u2.DefaultValidator.create(); }
     },
 
@@ -604,6 +604,7 @@ foam.CLASS({
         to try and mutate the Element while in the OUTPUT state.
       `,
       name: 'OUTPUT',
+      of: 'foam.u2.OutputElementState',
       factory: function() { return foam.u2.OutputElementState.create(); }
     },
 
@@ -613,6 +614,7 @@ foam.CLASS({
         A Loaded Element should be visible in the DOM.
       `,
       name: 'LOADED',
+      of: 'foam.u2.LoadedElementState',
       factory: function() { return foam.u2.LoadedElementState.create(); }
     },
 
@@ -622,6 +624,7 @@ foam.CLASS({
         An unloaded Element can be readded to the DOM.
       `,
       name: 'UNLOADED',
+      of: 'foam.u2.UnloadedElementState',
       factory: function() { return foam.u2.UnloadedElementState.create(); }
     },
 
@@ -630,6 +633,7 @@ foam.CLASS({
         Initial state of an Element before it has been added to the DOM.
       `,
       name: 'INITIAL',
+      of: 'foam.u2.InitialElementState',
       factory: function() { return foam.u2.InitialElementState.create(); }
     },
 
