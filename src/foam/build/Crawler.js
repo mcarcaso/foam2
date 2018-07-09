@@ -13,6 +13,7 @@ foam.CLASS({
     'foam.build.FlagStripSink',
     'foam.core.Model',
     'foam.core.Script',
+    'foam.dao.Relationship',
   ],
   implements: [
     'foam.mlang.Expressions',
@@ -64,6 +65,7 @@ foam.CLASS({
       self.writeToDir();
       self.printRefines();
       self.printScripts();
+      self.printRelationships();
     },
     function printRefines() {
       var self = this;
@@ -76,7 +78,7 @@ foam.CLASS({
         .then(function(s) {
           self.fs.writeFileSync(
             self.outDir + self.sep + 'refines.txt',
-            s.a.map(function(m) { return m.id }).join('\n')
+            s.array.map(function(m) { return m.id }).join('\n')
           );
         });
     },
@@ -91,7 +93,22 @@ foam.CLASS({
         .then(function(s) {
           self.fs.writeFileSync(
             self.outDir + self.sep + 'scripts.txt',
-            s.a.map(function(m) { return m.id }).join('\n')
+            s.array.map(function(m) { return m.id }).join('\n')
+          );
+        });
+    },
+    function printRelationships() {
+      var self = this;
+      return self.dao
+        .where(self.AND(
+          self.FUNC(foam.util.flagFilter(self.flags)),
+          self.HAS(self.Relationship.SOURCE_MODEL),
+        ))
+        .select()
+        .then(function(s) {
+          self.fs.writeFileSync(
+            self.outDir + self.sep + 'relationships.txt',
+            s.array.map(function(m) { return m.id }).join('\n')
           );
         });
     },
