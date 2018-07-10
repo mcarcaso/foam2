@@ -27,6 +27,7 @@ foam.CLASS({
     {
       name: 'InnerSerializer',
       requires: [
+        'foam.core.Model',
         'foam.json2.Outputter'
       ],
       properties: [
@@ -44,6 +45,13 @@ foam.CLASS({
           return this.out.str;
         },
         function output(x, v) {
+          if ( this.Model.isInstance(v) && v.hasOwnProperty('refines') && ! v.hasOwnProperty('name') ) {
+            v = v.clone();
+            var id = v.id.split('.');
+            v.name = id.pop();
+            v.package = id.join('.');
+          }
+
           var out = this.out;
           var type = foam.typeOf(v);
 
@@ -85,14 +93,20 @@ foam.CLASS({
           } else if ( type == foam.core.FObject ) {
             out.obj();
             var cls = v.cls_;
-            var axioms = v.cls_.getAxioms();
+            var axioms = v.cls_.getAxiomsByClass(foam.core.Property);
 
             out.key("class");
             this.output(x, cls);
 
             for ( var i = 0 ; i < axioms.length ; i++ ) {
               var a = axioms[i];
-              if ( a.outputPropertyJSON2 ) a.outputPropertyJSON2(x, v, this, out);
+              if ( v.hasDefaultValue(a.name) ) continue;
+
+              if ( a.transient ) continue;
+
+              out.key(a.name);
+
+              this.output(x, a.f(v));
             }
 
             out.end();
