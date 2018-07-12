@@ -190,6 +190,10 @@ foam.CLASS({
   name: 'EnumModel',
   extends: 'Model',
 
+  requires: [
+    'foam.core.internal.EnumValueAxiom',
+  ],
+
   documentation: 'Model for defining Enum(erations).',
 
   properties: [
@@ -213,9 +217,9 @@ foam.CLASS({
             def = { label: def, name: foam.String.constantize(def) };
           }
 
-          if ( ! foam.core.internal.EnumValueAxiom.isInstance(def) ) {
-            def = foam.core.internal.EnumValueAxiom.create({definition: def});
-          }
+          def = this.EnumValueAxiom.isInstance(def) ? def :
+            def.class ? this.lookup(def.class).create(def) :
+            this.EnumValueAxiom.create({definition: def});
 
           v[i] = def;
 
