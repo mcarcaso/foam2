@@ -4,7 +4,6 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-debugger;
 foam.CLASS({
   package: 'foam.build',
   name: 'FileTreeSink',
