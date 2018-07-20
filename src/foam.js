@@ -100,5 +100,5 @@
   //  delete this.FOAM_FILES;
   };
 
-  getLoader()(flags.lite ? 'files_lite' : 'files');
+  getLoader()('files');
 })();
