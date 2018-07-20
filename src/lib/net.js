@@ -17,10 +17,17 @@
 
 foam.SCRIPT({
   package: 'foam.net',
-  name: 'LibScript',
-  // TODO: flags/requires?
+  name: 'WebLibScript',
+  flags: ['web'],
+  requires: [
+    'foam.net.web.HTTPRequest',
+    'foam.net.web.HTTPRequestScript', // For BaseHTTPRequest
+    'foam.net.web.HTTPResponse',
+    'foam.net.web.WebSocket',
+    'foam.net.web.WebSocketService',
+  ],
   code: function() {
-  var pkg = 'foam.net.' + (foam.isServer ? 'node' : 'web');
+  var pkg = 'foam.net.web';
   var clss = [
     'BaseHTTPRequest',
     'HTTPRequest',
@@ -29,10 +36,6 @@ foam.SCRIPT({
     'WebSocketService'
   ];
 
-  // For each class with a "web" (browser) and "node" (Node JS)
-  // implementation, register "foam.net.[environment].[class]" as
-  // "foam.net.[class]".
-  //
   // TODO: This should be provided via a sort of "ContextFactory" or similar.
   for ( var i = 0; i < clss.length; i++ ) {
     foam.register(foam.lookup(pkg + '.' + clss[i]), 'foam.net.' + clss[i]);

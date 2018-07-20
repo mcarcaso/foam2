@@ -9,6 +9,7 @@ foam.CLASS({
   name: 'JsCodeOutputter',
   requires: [
     'foam.core.Script',
+    'foam.build.Lib',
     'foam.dao.Relationship',
     'foam.json2.Outputter',
   ],
@@ -16,11 +17,18 @@ foam.CLASS({
     function stringify(x, v) {
       var f = this.Relationship.isInstance(v) ? 'RELATIONSHIP' :
         this.Script.isInstance(v) ? 'SCRIPT' :
+        this.Lib.isInstance(v) ? 'LIB' :
         'CLASS';
 
       var serializer = this.InnerSerializer.create();
-      serializer.output(x, v);
-      return `foam.${f}(${serializer.getString()});`;
+      serializer.output(x, this.Lib.isInstance(v) ? v.json : v);
+      return `
+if ( ! foam.lookup('${v.id}', true) ) {
+  foam.${f}(${serializer.getString()});
+} else {
+  debugger;
+}
+      `;
     }
   ],
   classes: [
@@ -45,6 +53,7 @@ foam.CLASS({
           return this.out.str;
         },
         function output(x, v) {
+          // TODO why?
           if ( this.Model.isInstance(v) && v.hasOwnProperty('refines') && ! v.hasOwnProperty('name') ) {
             v = v.clone();
             var id = v.id.split('.');
@@ -111,7 +120,6 @@ foam.CLASS({
 
             out.end();
           } else if ( type == foam.Function ) {
-            out.e();
             out.n(v.toString());
           }
         }

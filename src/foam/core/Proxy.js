@@ -88,6 +88,11 @@ foam.CLASS({
   name: 'Proxy',
   extends: 'Property',
 
+  requires: [
+    'foam.core.ProxiedMethod',
+    'foam.core.ProxySub',
+  ],
+
   properties: [
     { name: 'of', required: true },
     {

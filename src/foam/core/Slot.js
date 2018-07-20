@@ -19,6 +19,10 @@ foam.CLASS({
   package: 'foam.core',
   name: 'Slot', // ???: Rename AbstractSlot or make an Interface
 
+  requires: [
+    'foam.core.internal.SubSlot'
+  ],
+
   documentation: `
     Slots are observable values which can change over time.
 

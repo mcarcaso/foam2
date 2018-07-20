@@ -6,6 +6,7 @@
 
 foam.CLASS({
   refines: 'foam.core.AbstractMethod',
+  flags: ['java_swift'],
 
   methods: [
     function createChildMethod_(child) {

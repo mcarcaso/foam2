@@ -142,6 +142,7 @@ foam.LIB = function LIB(model) {
         typeof m === 'object' || typeof m === 'function',
         'Methods must be a map of a function');
 
+      if ( ! m.code && m.codeFactory ) m.code = m.codeFactory();
       foam.assert(
          typeof m !== 'object' || typeof m.code === 'function',
         'Methods must have a code key which is a function');

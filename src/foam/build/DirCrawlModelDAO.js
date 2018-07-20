@@ -9,6 +9,7 @@ foam.CLASS({
   name: 'DirCrawlModelDAO',
   extends: 'foam.dao.PromisedDAO',
   requires: [
+    'foam.build.Lib',
     'foam.core.Script',
     'foam.dao.EasyDAO',
     'foam.dao.Relationship',
@@ -21,42 +22,41 @@ foam.CLASS({
       name: 'blacklist',
       value: [
         // Not models.
-        'src/foam/nanos/nanos.js',
-        'src/files.js',
+        'src/foam/nanos/nanos\\.js',
+        'src/files\\.js',
 
         // Core that's always already loaded.
-        'src/foam/core/poly.js',
-        'src/foam/core/lib.js',
-        'src/foam/core/stdlib.js',
-        'src/foam/core/events.js',
-        'src/foam/core/Context.js',
-        'src/foam/core/Boot.js',
-        'src/foam/core/FObject.js',
-        'src/foam/core/Model.js',
-        'src/foam/core/Property.js',
-        'src/foam/core/Method.js',
-        'src/foam/core/Boolean.js',
-        'src/foam/core/AxiomArray.js',
-        'src/foam/core/EndBoot.js',
-        'src/foam.js',
+        'src/foam/core/poly\\.js',
+        'src/foam/core/lib\\.js',
+        'src/foam/core/stdlib\\.js',
+        'src/foam/core/events\\.js',
+        'src/foam/core/Context\\.js',
+        'src/foam/core/Boot\\.js',
+        'src/foam/core/FObject\\.js',
+        'src/foam/core/Model\\.js',
+        'src/foam/core/Method\\.js',
+        'src/foam/core/Boolean\\.js',
+        'src/foam/core/AxiomArray\\.js',
+        'src/foam/core/EndBoot\\.js',
+        'src/foam\\.js',
 
         // Dirs we don't care about.
         'src/com/*',
         'src/apps/*',
 
         // Files that have model dependencies that aren't in their own files.
-        'src/foam/box/pipeline/PipelineManagerNonRPC.js',
-        'src/foam/box/pipeline/RunnableRPCBox.js',
-        'src/foam/box/pipeline/PipelineBuilder.js',
-        'src/foam/box/pipeline/PipelineManager.js',
-        'src/foam/box/pipeline/PipelineNode.js',
-        'src/foam/dao/BatchMutationIDBDAO.js',
-        'src/foam/dao/JDAOJava.js',
-        'src/foam/dao/JDAO.js',
+        'src/foam/box/pipeline/PipelineManagerNonRPC\\.js',
+        'src/foam/box/pipeline/RunnableRPCBox\\.js',
+        'src/foam/box/pipeline/PipelineBuilder\\.js',
+        'src/foam/box/pipeline/PipelineManager\\.js',
+        'src/foam/box/pipeline/PipelineNode\\.js',
+        'src/foam/dao/BatchMutationIDBDAO\\.js',
+        'src/foam/dao/JDAOJava\\.js',
+        'src/foam/dao/JDAO\\.js',
 
         // Test files.
-        'src/lib/dao_test.js',
-        'src/foam/box/node/forkScript.js',
+        'src/lib/dao_test\\.js',
+        'src/foam/box/node/forkScript\\.js',
       ],
     },
     {
@@ -83,8 +83,14 @@ foam.CLASS({
         foam: Object.create(foam)
       };
 
+      var libCnt = 0;
       context.foam.LIB = function(m) {
-        console.log('LIB ENCOUNTERED');
+        promises.push(dao.put(self.Lib.create({
+          package: 'lib',
+          name: 'Lib' + libCnt,
+          json: m,
+        })));
+        libCnt++;
       };
 
       context.foam.SCRIPT = function(m) {

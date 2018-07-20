@@ -59,7 +59,17 @@ foam.CLASS({
 
   properties: [
     { name: 'name', required: true },
-    { name: 'code', required: false },
+    {
+      name: 'code',
+      required: false,
+      expression: function(codeFactory) {
+        return codeFactory && codeFactory() || null;
+      },
+    },
+    {
+      name: 'codeFactory',
+      required: false,
+    },
     'documentation',
     'returns',
     {
