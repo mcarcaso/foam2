@@ -213,6 +213,7 @@ foam.CLASS({
 foam.SCRIPT({
   package: 'foam.core',
   name: 'WindowScript',
+  flags: ['__core2__'],
   requires: [
     'foam.core.Window',
   ],

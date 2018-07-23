@@ -41,7 +41,14 @@ foam.CLASS({
         'foam/core/AxiomArray',
         'foam/core/EndBoot',
       ],
-    }
+    },
+    {
+      name: 'CORE_FLAGS',
+      value: [
+        '__core1__',
+        '__core2__',
+      ],
+    },
   ],
   properties: [
     {
@@ -63,6 +70,7 @@ foam.CLASS({
     {
       name: 'dao',
       expression: function(flags, dirDAO) {
+        flags = flags.concat(this.CORE_FLAGS);
         var self = this;
         return self.PromisedDAO.create({
           promise: new Promise(function(r) {
@@ -112,27 +120,15 @@ foam.CLASS({
       var self = this;
 
       self.writeToDir().then(function() {
-        return Promise.all([
-          self.getTreeHead(self.IN(self.Model.ID, [
-            'foam.core.ConstantSlot',
-            'foam.core.ModelConstantRefine',
-            'foam.core.ImportExportModelRefine',
-            'foam.core.ModelRequiresRefines',
-            'foam.core.ImplementsModelRefine',
-          ])),
-          self.getTreeHead(self.IN(self.Model.ID, [
-            'foam.core.DebugDescribeScript',
-          ])),
-          self.getTreeHead(self.IN(self.Model.ID, [
-            'foam.core.WindowScript',
-          ])),
-          self.getTreeHead(self.IN(self.Model.ID, [
-            'foam.net.WebLibScript',
-          ])),
-          self.getTreeHead(self.HAS(self.Script.CODE)),
-          self.getTreeHead(self.HAS(self.Model.REFINES)),
-          self.getTreeHead(self.HAS(self.Relationship.SOURCE_MODEL)),
-        ])
+        return Promise.all(
+          self.CORE_FLAGS.map(function(f) {
+            return self.getTreeHead(self.CONTAINS(self.Model.FLAGS, f));
+          }).concat([
+            self.getTreeHead(self.HAS(self.Script.CODE)),
+            self.getTreeHead(self.HAS(self.Model.REFINES)),
+            self.getTreeHead(self.HAS(self.Relationship.SOURCE_MODEL)),
+          ])
+        )
       }).then(function(args) {
         return Promise.all([
           self.getLibs()

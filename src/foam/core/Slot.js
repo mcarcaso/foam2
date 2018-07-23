@@ -341,7 +341,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'ConstantSlot',
-
+  flags: ['__core1__'],
   implements: [ 'foam.core.Slot' ],
 
   documentation: 'An immutable constant valued Slot.',

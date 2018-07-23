@@ -18,7 +18,7 @@
 foam.SCRIPT({
   package: 'foam.net',
   name: 'WebLibScript',
-  flags: ['web'],
+  flags: ['web', '__core2__'],
   requires: [
     'foam.net.web.HTTPRequest',
     'foam.net.web.HTTPRequestScript', // For BaseHTTPRequest
