@@ -209,10 +209,6 @@ foam.CLASS({
         for ( var i = 0 ; i < v.length ; i++ ) {
           var def = v[i];
 
-          if ( foam.Object.isInstance(def) && def.class ) {
-            def = this.lookup(def.class).create(def);
-          }
-
           if ( foam.String.isInstance(def) ) {
             def = { label: def, name: foam.String.constantize(def) };
           }
