@@ -60,7 +60,6 @@ FOAM_FILES([
   { name: "foam/core/ContextMethod" },
   { name: "foam/core/Window" },
   { name: "foam/core/ContextMultipleInheritence" },
-  { name: "foam/classloader/ClassLoader" },
   { name: "foam/core/Argument" },
   { name: "foam/core/MultiMethod" },
   { name: "foam/core/debug", flags: ['debug'] },
