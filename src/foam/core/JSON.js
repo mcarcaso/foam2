@@ -436,42 +436,40 @@ foam.CLASS({
 
     {
       name: 'output',
-      codeFactory: function() {
-        return foam.mmethod({
-          // JSON doesn't support sending 'undefined'
-          Undefined: function(o) { this.out('null'); },
-          Null:      function(o) { this.out('null'); },
-          String:    function(o) { this.outputString(o); },
-          Number:    function(o) { this.out(o); },
-          Boolean:   function(o) { this.out(o); },
-          Date:      function(o) { this.outputDate(o); },
-          Function:  function(o) { this.outputFunction(o); },
-          FObject: function(o, opt_cls) { this.outputFObject(o, opt_cls); },
-          Array: function(o, opt_cls) {
-            this.start('[');
-            var cls = this.getCls(opt_cls);
-            for ( var i = 0 ; i < o.length ; i++ ) {
-              this.output(o[i], cls);
-              if ( i < o.length-1 ) this.out(',').nl().indent();
-            }
-            //this.nl();
-            this.end(']');
-          },
-          Object: function(o) {
-            if ( o.outputJSON ) {
-              o.outputJSON(this);
-            } else {
-              this.start('{');
-              if ( this.sortObjectKeys ) {
-                this.outputSortedObjectKeyValues_(o);
-              } else {
-                this.outputObjectKeyValues_(o);
-              }
-              this.end('}');
-            }
+      code: foam.mmethod({
+        // JSON doesn't support sending 'undefined'
+        Undefined: function(o) { this.out('null'); },
+        Null:      function(o) { this.out('null'); },
+        String:    function(o) { this.outputString(o); },
+        Number:    function(o) { this.out(o); },
+        Boolean:   function(o) { this.out(o); },
+        Date:      function(o) { this.outputDate(o); },
+        Function:  function(o) { this.outputFunction(o); },
+        FObject: function(o, opt_cls) { this.outputFObject(o, opt_cls); },
+        Array: function(o, opt_cls) {
+          this.start('[');
+          var cls = this.getCls(opt_cls);
+          for ( var i = 0 ; i < o.length ; i++ ) {
+            this.output(o[i], cls);
+            if ( i < o.length-1 ) this.out(',').nl().indent();
           }
-        })
-      },
+          //this.nl();
+          this.end(']');
+        },
+        Object: function(o) {
+          if ( o.outputJSON ) {
+            o.outputJSON(this);
+          } else {
+            this.start('{');
+            if ( this.sortObjectKeys ) {
+              this.outputSortedObjectKeyValues_(o);
+            } else {
+              this.outputObjectKeyValues_(o);
+            }
+            this.end('}');
+          }
+        }
+      })
     },
 
     function stringify(o, opt_cls) {
@@ -487,51 +485,49 @@ foam.CLASS({
 
     {
       name: 'objectify',
-      codeFactory: function() {
-        return foam.mmethod({
-          Date: function(o) {
-            return this.formatDatesAsNumbers ? o.valueOf() : o;
-          },
-          Function: function(o) {
-            return this.formatFunctionsAsStrings ? o.toString() : o;
-          },
-          FObject: function(o, opt_cls) {
-            var m = {};
-            var cls = this.getCls(opt_cls);
-            if ( this.outputClassNames && o.cls_ !== cls ) {
-              m.class = o.cls_.id;
-            }
-            var ps = o.cls_.getAxiomsByClass(foam.core.Property);
-            for ( var i = 0 ; i < ps.length ; i++ ) {
-              var p = ps[i];
-              if ( ! this.propertyPredicate(o, p) ) continue;
-              if ( ! this.outputDefaultValues && p.isDefaultValue(o[p.name]) )
-                continue;
-
-              m[p.name] = this.objectify(p.toJSON(o[p.name], this), p.of);
-            }
-            return m;
-          },
-          Array: function(o, opt_cls) {
-            var a = [];
-            var cls = this.getCls(opt_cls);
-            for ( var i = 0 ; i < o.length ; i++ ) {
-              a[i] = this.objectify(o[i], cls);
-            }
-            return a;
-          },
-          Object: function(o) {
-            var ret = {};
-            for ( var key in o ) {
-              // NOTE: Could lazily construct "ret" first time
-              // this.objectify(o[key]) !== o[key].
-              if ( o.hasOwnProperty(key) ) ret[key] = this.objectify(o[key]);
-            }
-            return ret;
-          }
+      code: foam.mmethod({
+        Date: function(o) {
+          return this.formatDatesAsNumbers ? o.valueOf() : o;
         },
-        function(o) { return o; })
+        Function: function(o) {
+          return this.formatFunctionsAsStrings ? o.toString() : o;
+        },
+        FObject: function(o, opt_cls) {
+          var m = {};
+          var cls = this.getCls(opt_cls);
+          if ( this.outputClassNames && o.cls_ !== cls ) {
+            m.class = o.cls_.id;
+          }
+          var ps = o.cls_.getAxiomsByClass(foam.core.Property);
+          for ( var i = 0 ; i < ps.length ; i++ ) {
+            var p = ps[i];
+            if ( ! this.propertyPredicate(o, p) ) continue;
+            if ( ! this.outputDefaultValues && p.isDefaultValue(o[p.name]) )
+              continue;
+
+            m[p.name] = this.objectify(p.toJSON(o[p.name], this), p.of);
+          }
+          return m;
+        },
+        Array: function(o, opt_cls) {
+          var a = [];
+          var cls = this.getCls(opt_cls);
+          for ( var i = 0 ; i < o.length ; i++ ) {
+            a[i] = this.objectify(o[i], cls);
+          }
+          return a;
+        },
+        Object: function(o) {
+          var ret = {};
+          for ( var key in o ) {
+            // NOTE: Could lazily construct "ret" first time
+            // this.objectify(o[key]) !== o[key].
+            if ( o.hasOwnProperty(key) ) ret[key] = this.objectify(o[key]);
+          }
+          return ret;
+        }
       },
+      function(o) { return o; })
     },
 
     function getCls(opt_cls) {
@@ -669,45 +665,43 @@ foam.LIB({
     {
       // TODO: why is this called parse when it's really objectify?
       name: 'parse',
-      codeFactory: function() {
-        return foam.mmethod({
-          Array: function(o, opt_class, opt_ctx) {
-            var a = new Array(o.length);
-            for ( var i = 0 ; i < o.length ; i++ ) {
-              a[i] = this.parse(o[i], opt_class, opt_ctx);
-            }
+      code: foam.mmethod({
+        Array: function(o, opt_class, opt_ctx) {
+          var a = new Array(o.length);
+          for ( var i = 0 ; i < o.length ; i++ ) {
+            a[i] = this.parse(o[i], opt_class, opt_ctx);
+          }
 
-            return a;
-          },
-          FObject: function(o) { return o; },
-          Object: function(json, opt_class, opt_ctx) {
-            var cls = json.class || opt_class;
+          return a;
+        },
+        FObject: function(o) { return o; },
+        Object: function(json, opt_class, opt_ctx) {
+          var cls = json.class || opt_class;
 
-            if ( cls ) {
-              var c = typeof cls === 'string' ? ( opt_ctx || foam ).lookup(cls) : cls;
-              // TODO(markdittmer): Turn into static method: "parseJSON" once
-              // https://github.com/foam-framework/foam2/issues/613 is fixed.
-              if ( c.PARSE_JSON ) return c.PARSE_JSON(json, opt_class, opt_ctx);
-
-              for ( var key in json ) {
-                var prop = c.getAxiomByName(key);
-                if ( prop ) {
-                  json[key] = prop.fromJSON(json[key], opt_ctx, prop, this);
-                }
-              }
-
-              return c.create(json, opt_ctx);
-            }
+          if ( cls ) {
+            var c = typeof cls === 'string' ? ( opt_ctx || foam ).lookup(cls) : cls;
+            // TODO(markdittmer): Turn into static method: "parseJSON" once
+            // https://github.com/foam-framework/foam2/issues/613 is fixed.
+            if ( c.PARSE_JSON ) return c.PARSE_JSON(json, opt_class, opt_ctx);
 
             for ( var key in json ) {
-              var o = json[key];
-              json[key] = this.parse(json[key], null, opt_ctx);
+              var prop = c.getAxiomByName(key);
+              if ( prop ) {
+                json[key] = prop.fromJSON(json[key], opt_ctx, prop, this);
+              }
             }
 
-            return json;
+            return c.create(json, opt_ctx);
           }
-        }, function(o) { return o; })
-      }
+
+          for ( var key in json ) {
+            var o = json[key];
+            json[key] = this.parse(json[key], null, opt_ctx);
+          }
+
+          return json;
+        }
+      }, function(o) { return o; })
     },
 
     {
