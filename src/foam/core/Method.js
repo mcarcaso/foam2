@@ -59,30 +59,12 @@ foam.CLASS({
 
   properties: [
     { name: 'name', required: true },
-    {
-      name: 'code',
-      required: false,
-      expression: function(codeFactory) {
-        return codeFactory && codeFactory() || null;
-      },
-    },
-    {
-      name: 'codeFactory',
-      required: false,
-    },
+    { name: 'code', required: false },
     'documentation',
     'returns',
     {
       name: 'args',
-      factory: function() {
-        if ( this.code )
-          try {
-            return foam.Function.args(this.code)
-          } catch(e) {
-            console.warn('Unable to parse args:', e);
-          }
-        return [];
-      }
+      factory: function() { return this.code ? foam.Function.args(this.code) : []; }
     }
   ],
 
