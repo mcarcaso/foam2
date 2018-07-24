@@ -139,6 +139,8 @@ FOAM_FILES([
   { name: "foam/java/JavaSwiftRefines", flags: ['swift'] },
   { name: "foam/java/JavaSwiftRefines", flags: ['java'] },
   { name: "foam/util/Timer" },
+  { name: "foam/util/EmailTest" },
+  { name: "foam/util/PasswordTest" },
   { name: "foam/log/LogLevel" },
   { name: "foam/log/Logger" },
   { name: "foam/log/ConsoleLogger" },
@@ -514,6 +516,9 @@ FOAM_FILES([
   { name: "foam/lib/parse/PStream" },
   { name: "foam/crypto/hash/Hasher" },
   { name: "foam/crypto/hash/Hashable" },
+  { name: "foam/crypto/hash/HashableTest" },
   { name: "foam/crypto/sign/Signer" },
   { name: "foam/crypto/sign/Signable" },
+  { name: "foam/crypto/sign/SignableTest" },
+  { name: "foam/test/TestObj" },
 ]);
