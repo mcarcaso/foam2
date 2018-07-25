@@ -145,7 +145,7 @@ foam.CLASS({
       var axioms = [];
       for ( var i = 0 ; i < forwards.length ; i++ ) {
         var method = forwards[i];
-        axioms.push(foam.core.ProxiedMethod.create({
+        axioms.push(this.ProxiedMethod.create({
           name: method.name,
           returns: method.returns,
           property: name,
@@ -155,7 +155,7 @@ foam.CLASS({
 
       for ( var i = 0 ; i < delegates.length ; i++ ) {
         var method = delegates[i];
-        axioms.push(foam.core.ProxiedMethod.create({
+        axioms.push(this.ProxiedMethod.create({
           name: method.name,
           returns: method.returns,
           property: name,
@@ -165,7 +165,7 @@ foam.CLASS({
       }
 
       if ( ! this.topics || this.topics.length ) {
-        axioms.push(foam.core.ProxySub.create({
+        axioms.push(this.ProxySub.create({
           topics: this.topics,
           prop:   this.name
         }));

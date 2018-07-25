@@ -64,7 +64,7 @@ foam.CLASS({
       along the chain changes.
     */
     function dot(name) {
-      return foam.core.internal.SubSlot.create({
+      return this.SubSlot.create({
         parent: this,
         name:   name
       });
