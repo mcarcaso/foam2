@@ -22,13 +22,7 @@ foam.CLASS({
 
       var serializer = this.InnerSerializer.create();
       serializer.output(x, this.Lib.isInstance(v) ? v.json : v);
-      return `
-if ( ! foam.lookup('${v.id}', true) ) {
-  foam.${f}(${serializer.getString()});
-} else {
-  debugger;
-}
-      `;
+      return `foam.${f}(${serializer.getString()});`;
     }
   ],
   classes: [
