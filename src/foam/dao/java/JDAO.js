@@ -10,6 +10,7 @@ foam.CLASS({
   extends: 'foam.dao.ProxyDAO',
 
   javaImports: [
+    'foam.dao.*',
     'foam.core.ClassInfo',
     'foam.core.FObject',
     'foam.core.X',
