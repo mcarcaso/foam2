@@ -5,7 +5,7 @@
  */
 
 foam.CLASS({
-  package: 'foam.dao',
+  package: 'foam.dao.java',
   name: 'JDAO',
   extends: 'foam.dao.ProxyDAO',
 
