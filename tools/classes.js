@@ -178,6 +178,7 @@ var classes = [
   'foam.nanos.logger.LogsView',
   'foam.nanos.menu.Menu',
   'foam.nanos.menu.DAOMenu',
+  'foam.nanos.menu.LinkMenu',
   'foam.nanos.menu.ListMenu',
   'foam.nanos.menu.MenuBar',
   'foam.nanos.menu.PopupMenu',
@@ -268,6 +269,7 @@ var classes = [
   'foam.util.EmailTest',
   'foam.util.PasswordTest',
   'foam.test.TestObj',
+  'foam.core.FObjectTest',
 ];
 
 var abstractClasses = [
