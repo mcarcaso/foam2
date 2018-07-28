@@ -119,6 +119,7 @@ foam.CLASS({
             'foam.core.ImportExportModelRefine',
             'foam.core.ModelRequiresRefines',
             'foam.core.ImplementsModelRefine',
+            'foam.core.ListenerModelRefine',
           ])),
           self.getTreeHead(self.IN(self.Model.ID, [
             'foam.core.DebugDescribeScript',
