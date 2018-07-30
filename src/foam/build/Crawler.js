@@ -45,6 +45,19 @@ foam.CLASS({
   ],
   properties: [
     {
+      name: 'required',
+      value: [
+        'foam.blob.AbstractBlobService',
+        'foam.blob.RestBlobService',
+        'foam.box.PromisedBox',
+        'foam.box.RPCReturnBox',
+        'foam.box.SocketConnectBox',
+        'foam.dao.JDAO',
+        'foam.dao.PromisedDAO',
+        'foam.nanos.notification.Notification',
+      ],
+    },
+    {
       name: 'flags',
       value: ['js', 'web', 'debug'],
     },
@@ -120,6 +133,10 @@ foam.CLASS({
             'foam.core.ModelRequiresRefines',
             'foam.core.ImplementsModelRefine',
             'foam.core.ListenerModelRefine',
+            'foam.core.ModelRefinestopics',
+            'foam.core.Promised',
+            'foam.core.__Property__',
+            'foam.core.__Class__',
           ])),
           self.getTreeHead(self.IN(self.Model.ID, [
             'foam.core.DebugDescribeScript',
@@ -129,10 +146,12 @@ foam.CLASS({
           ])),
           self.getTreeHead(self.IN(self.Model.ID, [
             'foam.net.WebLibScript',
+            'foam.core.ModelRefinescss'
           ])),
           self.getTreeHead(self.HAS(self.Script.CODE)),
           self.getTreeHead(self.HAS(self.Model.REFINES)),
           self.getTreeHead(self.HAS(self.Relationship.SOURCE_MODEL)),
+          self.getTreeHead(self.IN(self.Model.ID, self.required)),
         ])
       }).then(function(args) {
         return Promise.all([

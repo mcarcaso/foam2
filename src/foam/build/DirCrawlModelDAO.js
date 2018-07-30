@@ -44,16 +44,6 @@ foam.CLASS({
         'src/com/*',
         'src/apps/*',
 
-        // Files that have model dependencies that aren't in their own files.
-        'src/foam/box/pipeline/PipelineManagerNonRPC\\.js',
-        'src/foam/box/pipeline/RunnableRPCBox\\.js',
-        'src/foam/box/pipeline/PipelineBuilder\\.js',
-        'src/foam/box/pipeline/PipelineManager\\.js',
-        'src/foam/box/pipeline/PipelineNode\\.js',
-        'src/foam/dao/BatchMutationIDBDAO\\.js',
-        'src/foam/dao/JDAOJava\\.js',
-        'src/foam/dao/JDAO\\.js',
-
         // Test files.
         'src/lib/dao_test\\.js',
         'src/foam/box/node/forkScript\\.js',

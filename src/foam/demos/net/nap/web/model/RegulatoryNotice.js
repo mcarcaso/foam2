@@ -88,7 +88,6 @@ foam.CLASS({
       name: 'data',
       label: 'Attachments',
       documentation: 'Additional documents for RegulatoryNotice',
-      view: { class: 'net.nanopay.invoice.ui.InvoiceFileUploadView', data:this.data$}
     }
   ]
 });
