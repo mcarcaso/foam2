@@ -99,7 +99,7 @@ out.append("\"")
           name: 'out',
         },
         {
-          swiftType: 'Bool',
+          of: 'BooleanType',
           name: 'data',
         },
       ],

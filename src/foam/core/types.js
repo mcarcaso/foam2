@@ -571,3 +571,9 @@ foam.CLASS({
     { class: 'String', name: 'shortName' }
   ]
 });
+
+foam.CLASS({
+  package: 'foam.core',
+  name: 'BooleanType',
+  swiftName: 'Bool',
+});
