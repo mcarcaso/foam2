@@ -15,6 +15,11 @@
  * limitations under the License.
  */
 
+foam.SCRIPT({
+  package: 'foam.core',
+  name: 'LibScript',
+  code: function() {
+
 /**
  * Top-Level of foam package
  */
@@ -25,7 +30,8 @@ foam = {
     /* Return a unique id. */
     var id = 1;
     return function next$UID() { return id++; };
-  })()
+  })(),
+  SCRIPT: foam.SCRIPT,
 };
 
 
@@ -154,3 +160,6 @@ foam.LIB = function LIB(model) {
   }
 };
 global.foam.__LIBS__ = {};
+
+  }
+});
