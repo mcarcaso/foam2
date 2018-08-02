@@ -326,6 +326,14 @@ foam.CLASS({
       class: 'FObjectArray',
       of: 'foam.core.Argument',
       name: 'args',
+      factory: function() {
+        return [
+          this.Argument.create({
+            name: 'sub',
+            javaType: 'foam.core.Detachable'
+          })
+        ];
+      }
     }
   ]
 });

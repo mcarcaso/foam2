@@ -21,6 +21,9 @@ foam.CLASS({
     {
       name: 'blacklist',
       value: [
+        // Contains a view of something that doesn't actually exist.
+        'src/foam/demos/net/nap/web/model/RegulatoryNotice.js',
+
         // Not models.
         'src/foam/nanos/nanos\\.js',
         'src/files\\.js',
@@ -119,21 +122,56 @@ foam.CLASS({
       var files = require('child_process')
         .execSync('find src')
         .toString('utf-8')
-        .split('\n')
+        .split('\n');
+
+      var jsFiles = files
         .filter(function(o) {
           return o.endsWith('.js');
         })
+
+      var evalFiles = jsFiles
         .filter(function(o) {
           return !blacklistExp.exec(o)
         })
 
+      var scriptFiles = jsFiles
+        .filter(function(o) {
+          return blacklistExp.exec(o)
+        })
+
+      // TODO: Do something with java files?
+      var javaFiles = files
+        .filter(function(o) {
+          return o.endsWith('.java');
+        })
+
       var fs = require('fs');
-      files.forEach(function(f) {
+      var sep = require('path').sep;
+      evalFiles.forEach(function(f) {
         var o = fs.readFileSync(f, 'utf-8');
         try {
           with ( context ) { eval(o) };
         } catch(e) {
           console.log(e);
+        }
+      });
+
+      scriptFiles.forEach(function(f) {
+        var o = fs.readFileSync(f, 'utf-8');
+        var tokens = f.split(sep);
+
+        // Remove extension and append 'Script' to name.
+        var n = tokens.pop().split('.').shift() + 'Script';
+
+        tokens.shift(); // Remove src.
+        var p = tokens.join('.');
+
+        with ( context ) {
+          foam.SCRIPT({
+            package: p,
+            name: n,
+            code: new Function(o),
+          });
         }
       });
 

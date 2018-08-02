@@ -25,21 +25,21 @@ foam.CLASS({
   ],
   constants: [
     {
-      name: 'CORE_FILES',
+      name: 'CORE_MODELS',
       value: [
-        'foam/core/poly',
-        'foam/core/lib',
-        'foam/core/stdlib',
-        'foam/core/events',
-        'foam/core/Context',
-        'foam/core/Boot',
-        'foam/core/FObject',
-        'foam/core/Model',
-        'foam/core/Property',
-        'foam/core/Method',
-        'foam/core/Boolean',
-        'foam/core/AxiomArray',
-        'foam/core/EndBoot',
+        'foam.core.polyScript',
+        'foam.core.libScript',
+        'foam.core.stdlibScript',
+        'foam.core.eventsScript',
+        'foam.core.ContextScript',
+        'foam.core.BootScript',
+        'foam.core.FObjectScript',
+        'foam.core.ModelScript',
+        'foam.core.PropertyScript',
+        'foam.core.MethodScript',
+        'foam.core.BooleanScript',
+        'foam.core.AxiomArrayScript',
+        'foam.core.EndBootScript',
       ],
     }
   ],
@@ -162,8 +162,7 @@ foam.CLASS({
           })
         ));
       }).then(function(args) {
-        args.unshift(self.CORE_FILES);
-        var files = [].concat.apply([], args).map(function(o) {
+        var files = [].concat.apply([], self.CORE_MODELS.concat(args)).map(function(o) {
           return `{ name: "${o.replace(/\./g, '/')}" },`;
         });
 
@@ -190,14 +189,12 @@ FOAM_FILES([
     },
     function copyCoreFilesToOutDir() {
       var self = this;
-      self.CORE_FILES.concat('foam').forEach(function(f) {
-        f = f + '.js';
-        self.fs.writeFileSync(
-          self.outDir + self.sep + f,
-          self.fs.readFileSync(self.srcDir + self.sep + f, 'utf-8'),
-          'utf-8',
-        )
-      });
+      var f = 'foam.js';
+      self.fs.writeFileSync(
+        self.outDir + self.sep + f,
+        self.fs.readFileSync(self.srcDir + self.sep + f, 'utf-8'),
+        'utf-8',
+      )
     },
     function orderDepTree(head) {
       var self = this;
