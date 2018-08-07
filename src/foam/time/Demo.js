@@ -71,5 +71,9 @@ foam.CLASS({
       },
     },
   ],
+  actions: [
+    function now() {
+      this.timestamp.epoch = Date.now() / 1000;
+    },
+  ],
 });
-
