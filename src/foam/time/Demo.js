@@ -25,49 +25,67 @@ foam.CLASS({
     {
       class: 'Short',
       name: 'year',
-      visibility: 'RO',
       expression: function(timeZone, timestamp$epoch) {
         return timeZone.getYear(this.timestamp);
+      },
+      postSet: function(_, n, p) {
+        this.timeZone.setYear(this.timestamp, n);
+        this.clearProperty(p.name);
       },
     },
     {
       class: 'Short',
       name: 'month',
-      visibility: 'RO',
       expression: function(timeZone, timestamp$epoch) {
         return timeZone.getMonth(this.timestamp);
+      },
+      postSet: function(_, n, p) {
+        this.timeZone.setMonth(this.timestamp, n);
+        this.clearProperty(p.name);
       },
     },
     {
       class: 'Short',
       name: 'day',
-      visibility: 'RO',
       expression: function(timeZone, timestamp$epoch) {
         return timeZone.getDay(this.timestamp);
+      },
+      postSet: function(_, n, p) {
+        this.timeZone.setDay(this.timestamp, n);
+        this.clearProperty(p.name);
       },
     },
     {
       class: 'Short',
       name: 'hour',
-      visibility: 'RO',
       expression: function(timeZone, timestamp$epoch) {
         return timeZone.getHour(this.timestamp);
+      },
+      postSet: function(_, n, p) {
+        this.timeZone.setHour(this.timestamp, n);
+        this.clearProperty(p.name);
       },
     },
     {
       class: 'Short',
       name: 'minute',
-      visibility: 'RO',
       expression: function(timeZone, timestamp$epoch) {
         return timeZone.getMinute(this.timestamp);
+      },
+      postSet: function(_, n, p) {
+        this.timeZone.setMinute(this.timestamp, n);
+        this.clearProperty(p.name);
       },
     },
     {
       class: 'Short',
       name: 'second',
-      visibility: 'RO',
       expression: function(timeZone, timestamp$epoch) {
         return timeZone.getSecond(this.timestamp);
+      },
+      postSet: function(_, n, p) {
+        this.timeZone.setSecond(this.timestamp, n);
+        this.clearProperty(p.name);
       },
     },
   ],

@@ -53,5 +53,59 @@ foam.CLASS({
         return d.getUTCSeconds();
       },
     },
+    {
+      name: 'setYear',
+      code: function(timestamp, value) {
+        var d = new Date(0);
+        d.setUTCSeconds(timestamp.epoch);
+        d.setUTCFullYear(value)
+        timestamp.epoch = d.getTime() / 1000;
+      },
+    },
+    {
+      name: 'setMonth',
+      code: function(timestamp, value) {
+        var d = new Date(0);
+        d.setUTCSeconds(timestamp.epoch);
+        d.setUTCMonth(value - 1);
+        timestamp.epoch = d.getTime() / 1000;
+      },
+    },
+    {
+      name: 'setDay',
+      code: function(timestamp, value) {
+        var d = new Date(0);
+        d.setUTCSeconds(timestamp.epoch);
+        d.setUTCDate(value);
+        timestamp.epoch = d.getTime() / 1000;
+      },
+    },
+    {
+      name: 'setHour',
+      code: function(timestamp, value) {
+        var d = new Date(0);
+        d.setUTCSeconds(timestamp.epoch);
+        d.setUTCHours(value);
+        timestamp.epoch = d.getTime() / 1000;
+      },
+    },
+    {
+      name: 'setMinute',
+      code: function(timestamp, value) {
+        var d = new Date(0);
+        d.setUTCSeconds(timestamp.epoch);
+        d.setUTCMinutes(value);
+        timestamp.epoch = d.getTime() / 1000;
+      },
+    },
+    {
+      name: 'setSecond',
+      code: function(timestamp, value) {
+        var d = new Date(0);
+        d.setUTCSeconds(timestamp.epoch);
+        d.setUTCSeconds(value);
+        timestamp.epoch = d.getTime() / 1000;
+      },
+    },
   ],
 });
