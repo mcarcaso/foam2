@@ -34,7 +34,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'Short',
+      class: 'Byte',
       name: 'month',
       expression: function(timeZone, timestamp$epoch) {
         return timeZone.getMonth(this.timestamp);
@@ -45,7 +45,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'Short',
+      class: 'Byte',
       name: 'day',
       expression: function(timeZone, timestamp$epoch) {
         return timeZone.getDay(this.timestamp);
@@ -56,7 +56,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'Short',
+      class: 'Byte',
       name: 'hour',
       expression: function(timeZone, timestamp$epoch) {
         return timeZone.getHour(this.timestamp);
@@ -67,7 +67,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'Short',
+      class: 'Byte',
       name: 'minute',
       expression: function(timeZone, timestamp$epoch) {
         return timeZone.getMinute(this.timestamp);
@@ -78,7 +78,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'Short',
+      class: 'Byte',
       name: 'second',
       expression: function(timeZone, timestamp$epoch) {
         return timeZone.getSecond(this.timestamp);
