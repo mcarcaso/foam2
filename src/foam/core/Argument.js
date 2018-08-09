@@ -320,7 +320,6 @@ foam.CLASS({
 });
 
 foam.CLASS({
-<<<<<<< HEAD
   refines: 'foam.core.Listener',
   properties: [
     {
