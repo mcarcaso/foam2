@@ -321,25 +321,6 @@ foam.CLASS({
 });
 
 foam.CLASS({
-  refines: 'foam.core.Listener',
-  properties: [
-    {
-      class: 'FObjectArray',
-      of: 'foam.core.Argument',
-      name: 'args',
-      factory: function() {
-        return [
-          this.Argument.create({
-            name: 'sub',
-            javaType: 'foam.core.Detachable'
-          })
-        ];
-      }
-    }
-  ]
-});
-
-foam.CLASS({
   refines: 'foam.core.AbstractMethod',
   package: 'foam.core',
   name: 'CreateChildRefines',
