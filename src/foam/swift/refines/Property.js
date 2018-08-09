@@ -777,6 +777,7 @@ foam.CLASS({
   methods: [
     function writeToSwiftClass(cls, parentCls) {
       this.SUPER(cls, parentCls);
+      if ( ! parentCls.hasOwnAxiom(this.name) ) return;
       cls.method(this.Method.create({
         name: `find${foam.String.capitalize(this.name)}`,
         visibility: 'public',
