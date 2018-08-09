@@ -56,6 +56,8 @@ foam.CLASS({
         'foam.dao.JDAO',
         'foam.dao.PromisedDAO',
         'foam.nanos.notification.Notification',
+        'foam.u2.search.TextSearchView',
+        'foam.comics.DAOUpdateControllerView',
       ],
     },
     {
@@ -141,6 +143,7 @@ foam.CLASS({
             'foam.core.MethodArgumentRefine',
           ])),
           self.getTreeHead(self.IN(self.Model.ID, [
+            'foam.core.ContextMultipleInheritenceScript',
             'foam.core.DebugDescribeScript',
           ])),
           self.getTreeHead(self.IN(self.Model.ID, [
