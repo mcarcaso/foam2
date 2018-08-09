@@ -18,6 +18,14 @@ foam.CLASS({
       class: 'String',
       value: '"',
     },
+    {
+      swiftType: '((foam_core_FObject, PropertyInfo) -> Bool)',
+      swiftRequiresEscaping: true,
+      name: 'propertyPredicate',
+      swiftValue: `{ (_: foam_core_FObject, p: PropertyInfo) -> Bool in
+        return !p.transient
+      }`,
+    },
   ],
   methods: [
     {
@@ -205,6 +213,8 @@ out.append("\"\(formatter.string(from: data))\"")
       swiftCode: function() {/*
 if let data = data as? JSONOutputter {
   data.toJSON(outputter: self, out: &out)
+} else if let data = data as? ClassInfo {
+  outputClassInfo(&out, data)
 } else if let data = data as? PropertyInfo {
   outputPropertyInfo(&out, data)
 } else if let data = data as? String {
@@ -225,6 +235,31 @@ if let data = data as? JSONOutputter {
   NSLog("Unable to output %@", (data as AnyObject).description)
   outputNil(&out)
 }
+      */},
+    },
+    {
+      name: 'outputClassInfo',
+      args: [
+        {
+          swiftAnnotations: ['inout'],
+          swiftType: 'String',
+          name: 'out',
+        },
+        {
+          swiftType: 'ClassInfo',
+          name: 'data',
+        },
+      ],
+      swiftCode: function() {/*
+out.append("{");
+outputString(&out, "class");
+out.append(":");
+outputString(&out, "__Class__");
+out.append(",");
+outputString(&out, "forClass_");
+out.append(":");
+outputString(&out, data.id);
+out.append("}");
       */},
     },
     {
@@ -280,7 +315,8 @@ out.append(":")
 outputString(&out, info.id)
 
 for p in info.axioms(byType: PropertyInfo.self) {
-  if !p.transient && data.hasOwnProperty(p.name) {
+  if !data.hasOwnProperty(p.name) { continue }
+  if propertyPredicate(data, p) {
     out.append(",")
     outputProperty(&out, data, p)
   }
