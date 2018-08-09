@@ -750,6 +750,9 @@ return Swift.type(of: self).${targetProperty.swiftAxiomName}().set(self, value: 
 foam.CLASS({
   refines: 'foam.core.Reference',
   flags: [ 'swift' ],
+  requires: [
+    'foam.swift.ProtocolMethod'
+  ],
   properties: [
     {
       // TODO: copied from java refinements.
@@ -778,7 +781,7 @@ foam.CLASS({
     function writeToSwiftClass(cls, parentCls) {
       this.SUPER(cls, parentCls);
       if ( ! parentCls.hasOwnAxiom(this.name) ) return;
-      cls.method(this.Method.create({
+      var methodInfo = {
         name: `find${foam.String.capitalize(this.name)}`,
         visibility: 'public',
         returnType: this.of.model_.swiftName,
@@ -790,11 +793,16 @@ foam.CLASS({
             type: 'Context'
           })
         ],
-        body: `
+      }
+      if ( foam.core.AbstractInterface.isSubClass(parentCls) ) {
+        cls.method(this.ProtocolMethod.create(methodInfo))
+        return;
+      }
+      methodInfo.body = `
 let dao = x["${this.targetDAOKey}"] as! foam_dao_DAO
 return try dao.find_(x, ${this.swiftVarName}) as! ${this.of.model_.swiftName}
-        `
-      }));
+      `
+      cls.method(this.Method.create(methodInfo));
     }
   ]
 });
