@@ -19,16 +19,8 @@ foam.CLASS({
   ],
   properties: [
     {
-      name: 'blacklist',
+      name: 'unwrappedScripts',
       value: [
-        // Contains a view of something that doesn't actually exist.
-        'src/foam/demos/net/nap/web/model/RegulatoryNotice.js',
-
-        // Not models.
-        'src/foam/nanos/nanos\\.js',
-        'src/files\\.js',
-
-        // Core that's always already loaded.
         'src/foam/core/poly\\.js',
         'src/foam/core/lib\\.js',
         'src/foam/core/stdlib\\.js',
@@ -41,6 +33,18 @@ foam.CLASS({
         'src/foam/core/Boolean\\.js',
         'src/foam/core/AxiomArray\\.js',
         'src/foam/core/EndBoot\\.js',
+      ],
+    },
+    {
+      name: 'blacklist',
+      value: [
+        // Contains a view of something that doesn't actually exist.
+        'src/foam/demos/net/nap/web/model/RegulatoryNotice.js',
+
+        // Not models.
+        'src/foam/nanos/nanos\\.js',
+        'src/files\\.js',
+
         'src/foam\\.js',
 
         // Dirs we don't care about.
@@ -119,6 +123,7 @@ foam.CLASS({
 
       var self = this;
       var blacklistExp = new RegExp(self.blacklist.join('|'));
+      var scriptFilesExp = new RegExp(self.unwrappedScripts.join('|'));
       var files = require('child_process')
         .execSync('find src')
         .toString('utf-8')
@@ -131,12 +136,12 @@ foam.CLASS({
 
       var evalFiles = jsFiles
         .filter(function(o) {
-          return !blacklistExp.exec(o)
+          return !blacklistExp.exec(o) && !scriptFilesExp.exec(o)
         })
 
       var scriptFiles = jsFiles
         .filter(function(o) {
-          return blacklistExp.exec(o)
+          return scriptFilesExp.exec(o)
         })
 
       // TODO: Do something with java files?

@@ -35,7 +35,8 @@ foam.CLASS({
         'foam.core.BootScript',
         'foam.core.FObjectScript',
         'foam.core.ModelScript',
-        'foam.core.PropertyScript',
+        'foam.core.Property',
+        'foam.core.Simple',
         'foam.core.MethodScript',
         'foam.core.BooleanScript',
         'foam.core.AxiomArrayScript',
@@ -137,6 +138,7 @@ foam.CLASS({
             'foam.core.Promised',
             'foam.core.__Property__',
             'foam.core.__Class__',
+            'foam.core.MethodArgumentRefine',
           ])),
           self.getTreeHead(self.IN(self.Model.ID, [
             'foam.core.DebugDescribeScript',
