@@ -11,7 +11,10 @@ foam.CLASS({
     'foam.core.Script',
     'foam.build.Lib',
     'foam.dao.Relationship',
+
+    // TODO: These shouldn't need to be listed here.
     'foam.json2.Outputter',
+    'foam.json2.PrettyOutputterOutput',
   ],
   methods: [
     function stringify(x, v) {
@@ -30,7 +33,8 @@ foam.CLASS({
       name: 'InnerSerializer',
       requires: [
         'foam.core.Model',
-        'foam.json2.Outputter'
+        'foam.json2.Outputter',
+        'foam.json2.PrettyOutputterOutput',
       ],
       properties: [
         {
@@ -38,13 +42,15 @@ foam.CLASS({
           of: 'foam.json2.Outputter',
           name: 'out',
           factory: function() {
-            return this.Outputter.create();
+            return this.Outputter.create({
+              out: this.PrettyOutputterOutput.create()
+            });
           }
         }
       ],
       methods: [
         function getString() {
-          return this.out.str;
+          return this.out.out.output();
         },
         function output(x, v) {
           // TODO why?
