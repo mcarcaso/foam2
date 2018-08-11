@@ -37,6 +37,8 @@ foam.CLASS({
         'foam.core.ModelScript',
         'foam.core.Property',
         'foam.core.Simple',
+        'foam.core.AbstractMethod',
+        'foam.core.Method',
         'foam.core.MethodScript',
         'foam.core.BooleanScript',
         'foam.core.AxiomArrayScript',
@@ -125,47 +127,44 @@ foam.CLASS({
   ],
   methods: [
     function execute() {
+      require('child_process').execSync('rm -rf ' + this.outDir)
+
       var self = this;
 
       self.writeToDir().then(function() {
         return Promise.all([
-          self.getTreeHead(self.IN(self.Model.ID, [
-            'foam.core.ConstantSlot',
-            'foam.core.ModelConstantRefine',
-            'foam.core.ImportExportModelRefine',
-            'foam.core.ModelRequiresRefines',
-            'foam.core.ImplementsModelRefine',
-            'foam.core.ListenerModelRefine',
-            'foam.core.ModelRefinestopics',
-            'foam.core.Promised',
-            'foam.core.__Property__',
-            'foam.core.__Class__',
-            'foam.core.MethodArgumentRefine',
-          ])),
-          self.getTreeHead(self.IN(self.Model.ID, [
-            'foam.core.ContextMultipleInheritenceScript',
-            'foam.core.DebugDescribeScript',
-          ])),
-          self.getTreeHead(self.IN(self.Model.ID, [
-            'foam.core.WindowScript',
-          ])),
-          self.getTreeHead(self.IN(self.Model.ID, [
-            'foam.net.WebLibScript',
-            'foam.core.ModelRefinescss'
-          ])),
-          self.getTreeHead(self.HAS(self.Script.CODE)),
-          self.getTreeHead(self.HAS(self.Model.REFINES)),
-          self.getTreeHead(self.HAS(self.Relationship.SOURCE_MODEL)),
-          self.getTreeHead(self.IN(self.Model.ID, self.required)),
+            self.getTreeHead(self.IN(self.Model.ID, self.CORE_MODELS)),
+            self.getLibs(),
+            self.getTreeHead(self.IN(self.Model.ID, [
+              'foam.core.DebugDescribeScript',
+            ])),
+            self.getTreeHead(self.IN(self.Model.ID, [
+              'foam.core.ContextMultipleInheritenceScript',
+              'foam.core.ImplementsModelRefine',
+              'foam.core.ImportExportModelRefine',
+              'foam.core.ListenerModelRefine',
+              'foam.core.MethodArgumentRefine',
+              'foam.core.ModelConstantRefine',
+              'foam.core.ModelRefinestopics',
+              'foam.core.ModelRequiresRefines',
+              'foam.core.Promised',
+              'foam.core.__Class__',
+              'foam.core.__Property__',
+            ])),
+            self.getTreeHead(self.IN(self.Model.ID, [
+              'foam.core.WindowScript',
+              'foam.net.WebLibScript',
+              'foam.core.ModelRefinescss'
+            ])),
+            self.getTreeHead(self.HAS(self.Script.CODE)),
+            self.getTreeHead(self.HAS(self.Model.REFINES)),
+            self.getTreeHead(self.HAS(self.Relationship.SOURCE_MODEL)),
+            self.getTreeHead(self.IN(self.Model.ID, self.required)),
         ])
       }).then(function(args) {
-        return Promise.all([
-          self.getLibs()
-        ].concat(
-          args.map(function(a) {
-            return self.orderDepTree(a);
-          })
-        ));
+        return Promise.all(
+          args.map(function(a) { return self.orderDepTree(a) })
+        );
       }).then(function(args) {
         var files = [].concat.apply([], self.CORE_MODELS.concat(args)).map(function(o) {
           return `{ name: "${o.replace(/\./g, '/')}" },`;
@@ -194,12 +193,16 @@ FOAM_FILES([
     },
     function copyCoreFilesToOutDir() {
       var self = this;
-      var f = 'foam.js';
-      self.fs.writeFileSync(
-        self.outDir + self.sep + f,
-        self.fs.readFileSync(self.srcDir + self.sep + f, 'utf-8'),
-        'utf-8',
-      )
+      [
+        'foam.js',
+        'foam/nanos/controller/index.html',
+      ].forEach(function(f) {
+        self.fs.writeFileSync(
+          self.outDir + self.sep + f,
+          self.fs.readFileSync(self.srcDir + self.sep + f, 'utf-8'),
+          'utf-8',
+        )
+      });
     },
     function orderDepTree(head) {
       var self = this;
@@ -230,7 +233,9 @@ FOAM_FILES([
       return self.dao.where(self.OR(
         self.HAS(self.Lib.JSON),
       )).select().then(function(m) {
-        return m.array.map(function(l) { return l.id });
+        var o = {};
+        m.array.forEach(function(l) { o[l.id] = {} });
+        return o;
       })
     },
     function writeToDir() {
