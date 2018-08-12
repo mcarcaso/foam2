@@ -36,9 +36,6 @@ foam.CLASS({
     {
       name: 'blacklist',
       value: [
-        // Contains a view of something that doesn't actually exist.
-        'src/foam/demos/net/nap/web/model/RegulatoryNotice.js',
-
         // Not models.
         'src/foam/nanos/nanos\\.js',
         'src/files\\.js',
