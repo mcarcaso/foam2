@@ -64,6 +64,9 @@ foam.CLASS({
         });
       },
     },
+    {
+      name: 'srcDir',
+    },
   ],
   methods: [
     function fillDAO(dao) {
@@ -120,7 +123,7 @@ foam.CLASS({
       var blacklistExp = new RegExp(self.blacklist.join('|'));
       var scriptFilesExp = new RegExp(self.unwrappedScripts.join('|'));
       var files = require('child_process')
-        .execSync('find src')
+        .execSync(`find ${self.srcDir}`)
         .toString('utf-8')
         .split('\n');
 

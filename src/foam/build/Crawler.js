@@ -19,6 +19,11 @@ foam.CLASS({
     'foam.dao.PromisedDAO',
     'foam.dao.Relationship',
     'foam.build.DepTreeSink',
+    'foam.classloader.OrDAO',
+    'foam.dao.NullDAO',
+  ],
+  imports: [
+    'classloader',
   ],
   implements: [
     'foam.mlang.Expressions',
@@ -70,12 +75,27 @@ foam.CLASS({
       value: 'STRIPPED/src',
     },
     {
-      name: 'srcDir',
-      value: 'src',
+      name: 'srcDirs',
+      value: [
+        'src',
+        '../nanopay/src',
+      ],
     },
     {
       name: 'modelDAO',
-      factory: function() { return this.DirCrawlModelDAO.create() },
+      expression: function(srcDirs) {
+        var self = this;
+        var dao = self.NullDAO.create();
+        srcDirs.forEach(function(srcDir) {
+          dao = self.OrDAO.create({
+            primary: dao,
+            delegate: self.DirCrawlModelDAO.create({
+              srcDir: srcDir,
+            })
+          })
+        })
+        return dao
+      },
     },
     {
       name: 'strippedModelDAO',
@@ -106,6 +126,7 @@ foam.CLASS({
   methods: [
     function execute() {
       var self = this;
+      self.classloader.addClassPath('../nanopay/src');
       self.writeToDir().then(function() {
         return self.writeFilesJs()
       }).then(function() {
@@ -193,16 +214,17 @@ ${files.join('\n  ')}
     },
     function copyCoreFilesToOutDir() {
       var self = this;
-      var f = 'foam.js';
       self.fs.writeFileSync(
-        self.outDir + self.sep + f,
-        self.fs.readFileSync(self.srcDir + self.sep + f, 'utf-8'),
+        self.outDir + self.sep + '/foam.js',
+        self.fs.readFileSync(global.FOAM_ROOT + self.sep + 'foam.js', 'utf-8'),
         'utf-8')
     },
     function writeToDir() {
       var self = this;
       require('child_process').execSync('rm -rf ' + self.outDir)
-      require('child_process').execSync(`rsync -a --exclude='*.js' ${self.srcDir}/ ${self.outDir}/`)
+      self.srcDirs.forEach(function(srcDir) {
+        require('child_process').execSync(`rsync -a --exclude='*.js' ${srcDir}/ ${self.outDir}/`)
+      })
       return self.strippedModelDAO.select(self.FileTreeSink.create({
         dir: self.outDir,
       })).then(function(s) {
