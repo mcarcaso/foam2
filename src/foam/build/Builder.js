@@ -48,6 +48,7 @@ foam.CLASS({
       })).then(function() {
         return self.FilesJsGen.create({
           required: self.required,
+          srcDir: self.outDir,
         }).getFilesJs()
       }).then(function(filesJs) {
         // Write files.js and copy foam.js to destDir.

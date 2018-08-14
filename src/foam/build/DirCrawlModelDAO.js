@@ -166,7 +166,7 @@ foam.CLASS({
         var o = fs.readFileSync(f, 'utf-8');
 
         // Remove extension and append 'Script' to name.
-        var n = f.split(sep).pop() + 'Script';
+        var n = f.split(sep).pop().replace(/\.js$/, '') + 'Script';
 
         with ( context ) {
           foam.SCRIPT({
