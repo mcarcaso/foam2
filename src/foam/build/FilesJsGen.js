@@ -83,13 +83,10 @@ foam.CLASS({
         'foam.net.WebLibScript',
       ],
     },
-  ],
-  properties: [
     {
-      name: 'required',
+      name: 'NANOS_MODELS',
       documentation: `
-        These are the models to be loaded when files.js is finished loading.
-        The default value are the models needed to boot nanos.
+        These are the models needed for booting nanos.
       `,
       value: [
         'foam.blob.AbstractBlobService',
@@ -102,6 +99,15 @@ foam.CLASS({
         'foam.nanos.notification.Notification',
         'foam.u2.search.TextSearchView',
       ],
+    },
+  ],
+  properties: [
+    {
+      name: 'required',
+      documentation: `
+        These are the models to be loaded when files.js is finished loading.
+      `,
+      factory: function() { return this.NANOS_MODELS },
     },
     {
       name: 'srcDir',
@@ -168,7 +174,7 @@ foam.CLASS({
         var filesJs = `
 if ( typeof window !== 'undefined' ) global = window;
 FOAM_FILES([
-${files.join('\n  ')}
+  ${files.join('\n  ')}
 ]);
         `.trim();
         return filesJs

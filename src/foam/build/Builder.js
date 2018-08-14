@@ -22,6 +22,10 @@ foam.CLASS({
       name: 'outDir',
       value: 'STRIPPED/src',
     },
+    {
+      name: 'required',
+      factory: function() { return this.FilesJsGen.NANOS_MODELS },
+    },
   ],
   methods: [
     function execute() {
@@ -43,7 +47,7 @@ foam.CLASS({
         }).execute();
       })).then(function() {
         return self.FilesJsGen.create({
-          // TODO: args.
+          required: self.required,
         }).getFilesJs()
       }).then(function(filesJs) {
         // Write files.js and copy foam.js to destDir.
