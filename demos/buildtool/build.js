@@ -15,5 +15,6 @@ foam.__context__.classloader.load('foam.build.Builder').then(function(cls) {
     required: [
       'demo.build.ModelToBuild',
     ],
+    flags: ['js', 'web'],
   }).execute();
 });

@@ -23,6 +23,10 @@ foam.CLASS({
       value: 'STRIPPED/src',
     },
     {
+      name: 'flags',
+      value: ['js', 'web', 'debug'],
+    },
+    {
       name: 'required',
       factory: function() { return this.FilesJsGen.NANOS_MODELS },
     },
@@ -42,6 +46,7 @@ foam.CLASS({
 
       Promise.all(self.srcDirs.map(function(srcDir) {
         return self.DirWriter.create({
+          flags: self.flags,
           srcDir: srcDir,
           outDir: self.outDir,
         }).execute();
