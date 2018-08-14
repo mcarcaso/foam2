@@ -66,6 +66,9 @@ foam.CLASS({
     },
     {
       name: 'srcDir',
+      adapt: function(_, n) {
+        return n.replace(/\/$/, '');
+      },
     },
   ],
   methods: [
@@ -161,17 +164,13 @@ foam.CLASS({
 
       scriptFiles.forEach(function(f) {
         var o = fs.readFileSync(f, 'utf-8');
-        var tokens = f.split(sep);
 
         // Remove extension and append 'Script' to name.
-        var n = tokens.pop().split('.').shift() + 'Script';
-
-        tokens.shift(); // Remove src.
-        var p = tokens.join('.');
+        var n = f.split(sep).pop() + 'Script';
 
         with ( context ) {
           foam.SCRIPT({
-            package: p,
+            package: 'foam.core',
             name: n,
             code: new Function(o),
           });
