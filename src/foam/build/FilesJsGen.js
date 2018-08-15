@@ -16,9 +16,6 @@ foam.CLASS({
     'foam.core.Script',
     'foam.dao.Relationship',
   ],
-  imports: [
-    'classloader',
-  ],
   implements: [
     'foam.mlang.Expressions',
   ],
@@ -65,6 +62,7 @@ foam.CLASS({
         'foam.core.ModelConstantRefine',
         'foam.core.ModelRefinestopics',
         'foam.core.ModelRequiresRefines',
+        'foam.core.ModelActionRefine',
         'foam.core.Promised',
         'foam.core.__Class__',
         'foam.core.__Property__',
@@ -138,8 +136,8 @@ foam.CLASS({
           getTreeHead(self.IN(self.Model.ID, self.PHASE_1)),
           getTreeHead(self.IN(self.Model.ID, self.PHASE_2)),
           getTreeHead(self.HAS(self.Script.CODE)),
-          getTreeHead(self.HAS(self.Model.REFINES)),
           getTreeHead(self.HAS(self.Relationship.SOURCE_MODEL)),
+          getTreeHead(self.HAS(self.Model.REFINES)),
           getTreeHead(self.IN(self.Model.ID, self.required)),
       ]).then(function(args) {
         return Promise.all(
