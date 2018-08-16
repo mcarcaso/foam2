@@ -21,9 +21,6 @@ foam.CLASS({
     {
       name: 'unwrappedScripts',
       value: [
-        // Core files.
-        'src/foam/core/poly\\.js',
-        'src/foam/core/lib\\.js',
         'src/foam/core/stdlib\\.js',
         'src/foam/core/events\\.js',
         'src/foam/core/Boot\\.js',
@@ -32,12 +29,19 @@ foam.CLASS({
         'src/foam/core/Boolean\\.js',
         'src/foam/core/AxiomArray\\.js',
         'src/foam/core/EndBoot\\.js',
+      ],
+    },
+    {
+      name: 'blacklist',
+      value: [
+        // Boot files that cannot be wrapped in foam.SCRIPT
+        'src/foam\\.js',
+        'src/foam/core/poly\\.js',
+        'src/foam/core/lib\\.js',
 
         // Not models.
         'src/foam/nanos/nanos\\.js',
         'src/files\\.js',
-
-        'src/foam\\.js',
 
         // Dirs we don't care about.
         'src/com/*',
@@ -121,6 +125,7 @@ foam.CLASS({
 
       var self = this;
       var scriptFilesExp = new RegExp(self.unwrappedScripts.join('|'));
+      var blacklistExp = new RegExp(self.blacklist.join('|'));
       var files = require('child_process')
         .execSync(`find ${self.srcDir}`)
         .toString('utf-8')
@@ -133,12 +138,12 @@ foam.CLASS({
 
       var evalFiles = jsFiles
         .filter(function(o) {
-          return !scriptFilesExp.exec(o)
+          return !scriptFilesExp.exec(o) && !blacklistExp.exec(o)
         })
 
       var scriptFiles = jsFiles
         .filter(function(o) {
-          return scriptFilesExp.exec(o)
+          return scriptFilesExp.exec(o) && !blacklistExp.exec(o)
         })
 
       // TODO: Do something with java files?

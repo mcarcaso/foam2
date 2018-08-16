@@ -16,20 +16,8 @@ foam.CLASS({
     'foam.json2.Outputter',
     'foam.json2.PrettyOutputterOutput',
   ],
-  constants: [
-    {
-      name: 'UNWRAP_SCRIPTS',
-      value: [
-        'foam.core.polyScript',
-        'foam.core.libScript',
-      ],
-    },
-  ],
   methods: [
     function stringify(x, v) {
-      if ( this.UNWRAP_SCRIPTS.indexOf(v.id) != -1 ) {
-        return v.code.toString()
-      }
       var f = this.Relationship.isInstance(v) ? 'RELATIONSHIP' :
         this.Script.isInstance(v) ? 'SCRIPT' :
         this.Lib.isInstance(v) ? 'LIB' :

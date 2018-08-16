@@ -35,14 +35,23 @@ foam.CLASS({
       }
     },
     {
-      name: 'CORE_MODELS',
+      name: 'BOOT_FILES',
       documentation: `
-        The following models must be added to files.js first and in this
+        The following files must be added to files.js first and in this
         specific order.
       `,
       value: [
-        'foam.core.polyScript',
-        'foam.core.libScript',
+        'foam/core/poly',
+        'foam/core/lib',
+      ],
+    },
+    {
+      name: 'CORE_MODELS',
+      documentation: `
+        The following models must be added to files.js after boot and in this
+        specific order.
+      `,
+      value: [
         'foam.core.stdlibScript',
         'foam.core.eventsScript',
         'foam.core.ContextScript',
@@ -143,10 +152,7 @@ foam.CLASS({
           .where(pred)
           .select()
           .then(function(s) {
-            debugger;
-            var m = {};
-            s.array.forEach(function(o) { m[o.id] = o });
-            return self.getDepsTree(m)
+            return self.getDepsTree(s.array)
           });
       };
       return Promise.all([
@@ -179,9 +185,14 @@ foam.CLASS({
           })
         );
       }).then(function(args) {
-        var files = [].concat.apply([], self.CORE_MODELS.concat(args)).map(function(o) {
-          return `{ name: "${o.replace(/\./g, '/')}" },`;
-        });
+        // Flatten args.
+        args = [].concat.apply([], args);
+        var files = [].concat(
+          self.BOOT_FILES,
+          self.CORE_MODELS,
+          args).map(function(o) {
+            return `{ name: "${o.replace(/\./g, '/')}" },`;
+          });
 
         // Remove duplicates.
         files = files.filter(function(id, i) {

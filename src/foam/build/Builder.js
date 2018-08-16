@@ -11,6 +11,16 @@ foam.CLASS({
     'foam.build.DirWriter',
     'foam.build.FilesJsGen',
   ],
+  constants: [
+    {
+      name: 'BOOT_FILES',
+      value: [
+        'foam.js',
+        'foam/core/poly.js',
+        'foam/core/lib.js',
+      ],
+    },
+  ],
   properties: [
     {
       name: 'srcDirs',
@@ -56,13 +66,31 @@ foam.CLASS({
           srcDir: self.outDir,
         }).getFilesJs()
       }).then(function(filesJs) {
-        // Write files.js and copy foam.js to destDir.
+        // Write files.js and copy boot files to destDir.
         var sep = require('path').sep;
         var fs = require('fs');
         fs.writeFileSync(self.outDir + sep + 'files.js', filesJs, 'utf8');
+
+        self.BOOT_FILES.forEach(function(f) {
+          fs.writeFileSync(
+            self.outDir + sep + f,
+            fs.readFileSync(global.FOAM_ROOT + sep + f, 'utf-8'),
+            'utf-8')
+        });
+
+        // Concat all files.js into foam-bin.js
+        var foamBin = [];
+        var env = {
+          FOAM_FILES: function(files) {
+            files.forEach(function(f) {
+              foamBin.push(fs.readFileSync(self.outDir + sep + f.name + '.js').toString());
+            })
+          }
+        }
+        with (env) { eval(filesJs) }
         fs.writeFileSync(
-          self.outDir + sep + '/foam.js',
-          fs.readFileSync(global.FOAM_ROOT + sep + 'foam.js', 'utf-8'),
+          self.outDir + sep + '/foam-bin.js',
+          foamBin.join('\n'),
           'utf-8')
       });
     },
