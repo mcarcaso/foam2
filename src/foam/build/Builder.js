@@ -79,7 +79,25 @@ foam.CLASS({
         });
 
         // Concat all files.js into foam-bin.js
-        var foamBin = [];
+        var foamBin = [`
+var path = document.currentScript && document.currentScript.src;
+
+// document.currentScript isn't supported on all browsers, so the following
+// hack gets the job done on those browsers.
+if ( ! path ) {
+  debugger;
+  var scripts = document.getElementsByTagName('script');
+  for ( var i = 0 ; i < scripts.length ; i++ ) {
+    if ( scripts[i].src.match(/\\/foam-bin.js$/) ) {
+      path = scripts[i].src;
+      break;
+    }
+  }
+}
+
+path = path.substring(0, path.lastIndexOf('src/')+4);
+window.FOAM_ROOT = path;
+        `];
         var env = {
           FOAM_FILES: function(files) {
             files.forEach(function(f) {
