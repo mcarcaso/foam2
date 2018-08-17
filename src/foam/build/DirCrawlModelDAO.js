@@ -70,6 +70,9 @@ foam.CLASS({
       adapt: function(_, n) {
         return n.replace(/\/$/, '');
       },
+      factory: function() {
+        return global.FOAM_ROOT;
+      },
     },
   ],
   methods: [
@@ -83,20 +86,11 @@ foam.CLASS({
       };
 
       context.foam.LIB = function(m) {
-        var p, n;
-        if ( m.id ) {
-          var ts = m.id.split('.');
-          n = ts.pop();
-          p = ts.join('.');
-        } else {
-          p = 'lib'
-          n = 'Lib' + Date.now()
-          m.id = p + '.' + n
+        if ( ! m.id ) {
+          m.id = 'lib.Lib' + Date.now()
         }
         promises.push(dao.put(self.Lib.create({
           id: m.id,
-          package: p,
-          name: n,
           json: m,
         })));
       };
@@ -188,6 +182,11 @@ foam.CLASS({
       });
 
       return Promise.all(promises);
+    },
+    function execute() {
+      this.select().then(function(a) {
+        console.log(a.array.map(function(o) { return o.id }).join('\n'));
+      });
     },
   ],
 });
