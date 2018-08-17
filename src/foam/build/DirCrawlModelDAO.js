@@ -82,14 +82,23 @@ foam.CLASS({
         foam: Object.create(foam)
       };
 
-      var libCnt = 0;
       context.foam.LIB = function(m) {
+        var p, n;
+        if ( m.id ) {
+          var ts = m.id.split('.');
+          n = ts.pop();
+          p = ts.join('.');
+        } else {
+          p = 'lib'
+          n = 'Lib' + Date.now()
+          m.id = p + '.' + n
+        }
         promises.push(dao.put(self.Lib.create({
-          package: 'lib',
-          name: 'Lib' + libCnt,
+          id: m.id,
+          package: p,
+          name: n,
           json: m,
         })));
-        libCnt++;
       };
 
       context.foam.SCRIPT = function(m) {

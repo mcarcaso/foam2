@@ -62,7 +62,7 @@ foam.CLASS({
         'foam.core.Simple',
         'foam.core.AbstractMethod',
         'foam.core.Method',
-        'foam.core.MethodScript',
+        'foam.core.BootPhase2',
         'foam.core.BooleanScript',
         'foam.core.AxiomArrayScript',
         'foam.core.EndBootScript',

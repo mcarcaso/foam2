@@ -83,7 +83,7 @@ foam.CLASS({
           } else if ( type == foam.Date ) {
             debugger;
           } else if ( type == foam.Object ) {
-            if ( foam.core.FObject.isSubClass(v) ) { // Is an actual class
+            if ( v['getAxioms'] ) { // Is an actual class
               if ( v.id.indexOf('AnonymousClass') == 0 ) {
                 this.output(x, v.model_);
               } else {

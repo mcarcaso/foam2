@@ -17,6 +17,12 @@ foam.CLASS({
       class: 'String',
       name: 'name'
     },
+    {
+      name: 'flags',
+      expression: function(json) {
+        return json.flags || null;
+      },
+    },
     'json'
   ],
 });
