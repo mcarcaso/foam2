@@ -53,7 +53,10 @@ foam.CLASS({
           return this.out.out.output();
         },
         function output(x, v) {
-          // TODO why?
+          // When encountering a refinement without a name set, manually set it
+          // to ensure the ID is consistent before/after writing out the JS code
+          // because it can change depending on the order of axioms that are
+          // printed out.
           if ( this.Model.isInstance(v) && v.hasOwnProperty('refines') && ! v.hasOwnProperty('name') ) {
             v = v.clone();
             var id = v.id.split('.');
