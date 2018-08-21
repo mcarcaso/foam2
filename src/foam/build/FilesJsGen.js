@@ -143,7 +143,7 @@ foam.CLASS({
   ],
   methods: [
     function execute() {
-      this.getFilesJs().then(console.log);
+      this.getFilesJs().then(console.log.bind(console));
     },
     function getFilesJs() {
       var self = this;
@@ -157,11 +157,11 @@ foam.CLASS({
       };
       return Promise.all([
           getTreeHead(self.IN(self.Model.ID, self.CORE_MODELS)),
-          getTreeHead(self.HAS(self.Lib.JSON)),
+          getTreeHead(self.INSTANCE_OF(self.Lib)),
           getTreeHead(self.IN(self.Model.ID, self.PHASE_1)),
           getTreeHead(self.IN(self.Model.ID, self.PHASE_2)),
-          getTreeHead(self.HAS(self.Script.CODE)),
-          getTreeHead(self.HAS(self.Relationship.SOURCE_MODEL)),
+          getTreeHead(self.INSTANCE_OF(self.Script)),
+          getTreeHead(self.INSTANCE_OF(self.Relationship)),
           getTreeHead(self.HAS(self.Model.REFINES)),
           getTreeHead(self.IN(self.Model.ID, self.required)),
       ]).then(function(args) {
@@ -176,7 +176,8 @@ foam.CLASS({
                 order.unshift(k)
               });
             }
-            // Remove anyting not in the DAO.
+            // Remove anyting not in the DAO. This can happen for inner classes
+            // and enums. TODO: Would be nice if we didn't have to do this.
             return Promise.all(order.map(function(id) {
               return self.modelDAO.find(id);
             })).then(function(models) {
@@ -218,7 +219,12 @@ FOAM_FILES([
           return self.getDepsTree(i, seen, head);
         })).then(function() { return head });
       } else if ( foam.Object.isInstance(o) ) {
-        if ( foam.core.FObject.isSubClass(o) ) { // Is an actual class.
+        // Check if it's an actual class. foam.core.FObject.isSubClass
+        // should work but doesn't:
+        // https://github.com/foam-framework/foam2/issues/1023
+        if ( o && o.prototype &&
+             ( foam.core.FObject.prototype === o.prototype ||
+               foam.core.FObject.prototype.isPrototypeOf(o.prototype) ) ) {
           return self.modelDAO.find(o.id).then(function(m) {
             return self.getDepsTree(m, seen, head);
           });
