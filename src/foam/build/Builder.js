@@ -70,7 +70,6 @@ foam.CLASS({
         var sep = require('path').sep;
         var fs = require('fs');
         fs.writeFileSync(self.outDir + sep + 'files.js', filesJs, 'utf8');
-
         self.BOOT_FILES.forEach(function(f) {
           fs.writeFileSync(
             self.outDir + sep + f,
@@ -78,14 +77,15 @@ foam.CLASS({
             'utf-8')
         });
 
-        // Concat all files.js into foam-bin.js
+        // Concat all files.js into foam-bin.js. Prepend it with an exerpt from
+        // foam.js that sets up FOAM_ROOT because that's needed by the
+        // ClassLoaderContextScript which is essential for loading classes.
         var foamBin = [`
 var path = document.currentScript && document.currentScript.src;
 
 // document.currentScript isn't supported on all browsers, so the following
 // hack gets the job done on those browsers.
 if ( ! path ) {
-  debugger;
   var scripts = document.getElementsByTagName('script');
   for ( var i = 0 ; i < scripts.length ; i++ ) {
     if ( scripts[i].src.match(/\\/foam-bin.js$/) ) {
