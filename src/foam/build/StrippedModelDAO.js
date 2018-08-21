@@ -13,7 +13,6 @@ foam.CLASS({
     'foam.build.FlagStripSink',
     'foam.dao.DAOSink',
     'foam.dao.EasyDAO',
-    'foam.dao.PromisedDAO',
   ],
   implements: [
     'foam.mlang.Expressions',
@@ -25,7 +24,7 @@ foam.CLASS({
     },
     {
       name: 'srcDir',
-      value: 'src',
+      factory: function() { return global.FOAM_ROOT },
     },
     {
       name: 'modelDAO',
@@ -47,6 +46,13 @@ foam.CLASS({
             })).then(function() { r(dest) });
         });
       },
+    },
+  ],
+  methods: [
+    function execute() {
+      this.select().then(function(a) {
+        console.log(a.array.map(function(o) { return o.id }).join('\n'));
+      });
     },
   ],
 });
