@@ -759,7 +759,7 @@ foam.LIB({
                 key == 'sourceModel' ||
                 key == 'targetModel' ||
                 key == 'refines' ) &&
-                        foam.String.isInstance(o[key]) ) {
+                        foam.String.isInstance(o[key]) && o[key] ) {
               r.push(x.classloader.maybeLoad(o[key]));
               continue;
             }
