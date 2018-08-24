@@ -15,6 +15,9 @@ foam.CLASS({
     {
       name: 'jsProp',
       flags: ['js'],
+      tableCellFormatter: function() {
+        // Don't strip me!
+      },
     },
     {
       name: 'swiftProp',
