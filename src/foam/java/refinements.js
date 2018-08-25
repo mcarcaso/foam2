@@ -24,7 +24,16 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'generateJava',
-      value: true
+      factory: function() {
+        var b = true;
+        if ( this.flags && global.FOAM_FLAGS ) {
+          b = false;
+          for ( var i = 0 ; !b && i < this.flags.length ; i++ ) {
+            if ( global.FOAM_FLAGS[this.flags[i]] ) b = true;
+          }
+        }
+        return b;
+      },
     },
     {
       class: 'String',
