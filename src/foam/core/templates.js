@@ -210,6 +210,10 @@ foam.CLASS({
   name: 'TemplateAxiom',
   extends: 'Method',
 
+  requires: [
+    'foam.templates.TemplateUtil',
+  ],
+
   properties: [
     {
       name: 'template',
