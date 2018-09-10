@@ -84,10 +84,6 @@ foam.CLASS({
   package: 'foam.i18n',
   name: 'PropertyI18nRefine',
   refines: 'foam.core.Property',
-  imports: [
-    'locale?',
-    'translationDAO?',
-  ],
   properties: [
     {
       name: 'label',
@@ -96,9 +92,12 @@ foam.CLASS({
           this.labelMessage.message :
           foam.String.labelize(this.name);
       },
-      setter: function(_, n) {
+      setter: function(n) {
         this.labelMessage = {
-          en: n
+          description: `Label for ${this.name}`,
+          messageMap: {
+            en: n
+          }
         }
       },
     },
@@ -108,22 +107,6 @@ foam.CLASS({
         if ( foam.core.FObject.isInstance(n) ) return n;
         return foam.lookup(n.class || 'foam.i18n.MessageAxiom').create(n);
       },
-    },
-    {
-      name: 'labelMessageId',
-      postSet: function() {
-        if ( ! this.locale$ ) return;
-        this.locale$.sub(this.onLocaleChange);
-        this.onLocaleChange();
-      },
     }
-  ],
-  listeners: [
-    function onLocaleChange() {
-      var self = this;
-      self.translationDAO.find(self.labelMessageId).then(function(m) {
-        if ( m ) self.label = m.message;
-      });
-    },
   ],
 });

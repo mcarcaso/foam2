@@ -2,7 +2,6 @@ foam.CLASS({
   package: 'demo',
   name: 'ModelToDisplay',
   imports: [
-    'translationDAO',
     'locale',
   ],
   messages: [
@@ -17,25 +16,16 @@ foam.CLASS({
   properties: [
     {
       class: 'String',
-      name: 'stringId',
-      value: 'demo.ModelToDisplay.PROP_LABEL',
-    },
-    {
-      class: 'String',
       name: 'language',
       value: 'en',
+      label: 'The label for language',
       postSet: function(_, n) {
         this.locale = n;
       },
     },
     {
       class: 'String',
-      name: 'string',
-      labelMessageId: 'demo.ModelToDisplay.PROP_LABEL',
-    },
-    {
-      class: 'String',
-      name: 'string2',
+      name: 'stringWithLabel',
       labelMessage: {
         messageMap: {
           en: 'Im English',
@@ -44,28 +34,10 @@ foam.CLASS({
       }
     },
   ],
-  reactions: [
-    [ 'stringId', null, 'onUpdate' ],
-    [ 'locale', null, 'onUpdate' ]
-  ],
   actions: [
-    function printLabel() {
+    function printStrings() {
       alert(this.STRING2.label);
-    },
-  ],
-  methods: [
-    function init() { this.onUpdate() },
-  ],
-  listeners: [
-    function onUpdate() {
-      var self = this;
-      self.translationDAO.find(self.stringId).then(function(m) {
-        self.string = m ?
-          m.message ?
-            m.message :
-            'No translation found' :
-          'MessageID not found';
-      });
+      alert(this.PROP_LABEL);
     },
   ],
 });
