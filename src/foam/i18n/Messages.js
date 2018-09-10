@@ -54,7 +54,7 @@ foam.CLASS({
         cls,
         this.name,
         {
-          value: this.message,
+          get: function() { return this.message }.bind(this),
           configurable: false
         });
     },
