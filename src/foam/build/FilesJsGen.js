@@ -167,15 +167,29 @@ foam.CLASS({
       ]).then(function(args) {
         return Promise.all(
           args.map(function(head) {
+
+            var depthMap = {};
+            var fillDepth = function(node, depth, seen) {
+              var keys = Object.keys(node);
+              for ( var i = 0 ; i < keys.length ; i++ ) {
+                var k = keys[i];
+                if ( seen[k] ) continue;
+                if ( ( depthMap[k] || 0 ) > depth ) continue;
+                depthMap[k] = depth;
+                seen[k] = true;
+                fillDepth(node[k], depth + 1, seen);
+                delete seen[k];
+              }
+            };
+            fillDepth(head, 0, {});
             var order = [];
-            var queue = [head];
-            while ( queue.length ) {
-              var n = queue.pop();
-              Object.keys(n).forEach(function(k) {
-                if ( order.indexOf(k) == -1 ) queue.unshift(n[k]);
-                order.unshift(k)
-              });
-            }
+            Object.keys(depthMap).forEach(function(k) {
+              order[depthMap[k]] = order[depthMap[k]] || [];
+              order[depthMap[k]].push(k);
+            });
+            order.reverse();
+            order = [].concat.apply([], order);
+
             // Remove anyting not in the DAO. This can happen for inner classes
             // and enums. TODO: Would be nice if we didn't have to do this.
             return Promise.all(order.map(function(id) {

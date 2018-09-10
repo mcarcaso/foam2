@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-foam.locale = foam.locale || 'en';
-
 foam.CLASS({
   package: 'foam.i18n',
   name: 'MessageAxiom',
-
+  imports: [
+    'locale?',
+  ],
   properties: [
     {
       class: 'String',
@@ -39,8 +39,8 @@ foam.CLASS({
     {
       class: 'String',
       name: 'message',
-      getter: function() { return this.message_ || this.messageMap[foam.locale]; },
-      setter: function(m) { this.message_ = this.messageMap[foam.locale] = m; }
+      getter: function() { return this.message_ || this.messageMap[this.locale || 'en']; },
+      setter: function(m) { this.message_ = this.messageMap[this.locale || 'en'] = m; }
     },
     {
       class: 'Simple',
@@ -78,4 +78,32 @@ foam.CLASS({
       of: 'foam.i18n.MessageAxiom'
     }
   ]
+});
+
+foam.CLASS({
+  package: 'foam.i18n',
+  name: 'PropertyI18nRefine',
+  refines: 'foam.core.Property',
+  imports: [
+    'locale?',
+    'translationDAO?',
+  ],
+  properties: [
+    {
+      name: 'labelMessageId',
+      postSet: function() {
+        if ( ! this.locale$ ) return;
+        this.locale$.sub(this.onLocaleChange);
+        this.onLocaleChange();
+      },
+    }
+  ],
+  listeners: [
+    function onLocaleChange() {
+      var self = this;
+      self.translationDAO.find(self.labelMessageId).then(function(m) {
+        if ( m ) self.label = m.message;
+      });
+    },
+  ],
 });
