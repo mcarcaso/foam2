@@ -90,6 +90,26 @@ foam.CLASS({
   ],
   properties: [
     {
+      name: 'label',
+      getter: function() {
+        return this.labelMessage ?
+          this.labelMessage.message :
+          foam.String.labelize(this.name);
+      },
+      setter: function(_, n) {
+        this.labelMessage = {
+          en: n
+        }
+      },
+    },
+    {
+      name: 'labelMessage',
+      adapt: function(_, n) {
+        if ( foam.core.FObject.isInstance(n) ) return n;
+        return foam.lookup(n.class || 'foam.i18n.MessageAxiom').create(n);
+      },
+    },
+    {
       name: 'labelMessageId',
       postSet: function() {
         if ( ! this.locale$ ) return;

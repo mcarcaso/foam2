@@ -33,10 +33,25 @@ foam.CLASS({
       name: 'string',
       labelMessageId: 'demo.ModelToDisplay.PROP_LABEL',
     },
+    {
+      class: 'String',
+      name: 'string2',
+      labelMessage: {
+        messageMap: {
+          en: 'Im English',
+          fr: 'Im french',
+        },
+      }
+    },
   ],
   reactions: [
     [ 'stringId', null, 'onUpdate' ],
     [ 'locale', null, 'onUpdate' ]
+  ],
+  actions: [
+    function printLabel() {
+      alert(this.STRING2.label);
+    },
   ],
   methods: [
     function init() { this.onUpdate() },
