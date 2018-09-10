@@ -36,7 +36,7 @@ foam.CLASS({
   ],
   actions: [
     function printStrings() {
-      alert(this.STRING2.label);
+      alert(this.STRING_WITH_LABEL.label);
       alert(this.PROP_LABEL);
     },
   ],
