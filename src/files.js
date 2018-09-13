@@ -113,7 +113,6 @@ FOAM_FILES([
   { name: "foam/swift/refines/String", flags: ['swift'] },
   { name: "foam/swift/refines/Multiton", flags: ['swift'] },
   { name: "foam/swift/refines/Singleton", flags: ['swift'] },
-  { name: "foam/swift/SwiftJava", flags: ['java'] },
   { name: "foam/swift/Field", flags: ['swift']},
   { name: "foam/swift/Method", flags: ['swift']},
 
@@ -159,8 +158,6 @@ FOAM_FILES([
   { name: "foam/u2/AttrSlot" },
   { name: "foam/u2/ViewSpec" },
   { name: "foam/u2/Visibility"},
-  { name: "foam/u2/NoSwift", notFlags: ['swift'] },
-  { name: "foam/u2/NoJava", flags: ['js','debug'] },
   { name: "foam/u2/ElementJava", flags: ['java'] },
   { name: "foam/u2/RowFormatter" },
 //  { name: "foam/u2/AttrSlot", flags: ['web'] },
