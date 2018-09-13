@@ -144,7 +144,6 @@ foam.CLASS({
           try {
             with ( context ) { eval(o) };
           } catch(e) {
-            debugger;
             console.log(e);
           }
         } else if ( path.endsWith('.java') ) {
