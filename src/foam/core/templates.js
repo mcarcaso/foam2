@@ -59,7 +59,8 @@ foam.CLASS({
   axioms: [ foam.pattern.Singleton.create() ],
 
   requires: [
-    'foam.parse.ImperativeGrammar as Grammar'
+    'foam.parse.ImperativeGrammar as Grammar',
+    'foam.templates.TemplateOutput',
   ],
 
   constants: {

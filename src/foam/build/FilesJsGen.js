@@ -102,6 +102,7 @@ foam.CLASS({
         'foam.core.ModelRefinescss',
         'foam.core.WindowScript',
         'foam.net.WebLibScript',
+        'foam.i18n.PropertyI18nRefine',
       ],
     },
     {
@@ -155,16 +156,42 @@ foam.CLASS({
             return self.getDepsTree(s.array)
           });
       };
-      return Promise.all([
-          getTreeHead(self.IN(self.Model.ID, self.CORE_MODELS)),
-          getTreeHead(self.INSTANCE_OF(self.Lib)),
-          getTreeHead(self.IN(self.Model.ID, self.PHASE_1)),
-          getTreeHead(self.IN(self.Model.ID, self.PHASE_2)),
-          getTreeHead(self.INSTANCE_OF(self.Script)),
-          getTreeHead(self.INSTANCE_OF(self.Relationship)),
-          getTreeHead(self.HAS(self.Model.REFINES)),
-          getTreeHead(self.IN(self.Model.ID, self.required)),
-      ]).then(function(args) {
+
+
+
+      // Get all dependencies.
+      return getTreeHead(self.IN(self.Model.ID, self.required)).then(function(a) {
+        var deps = {
+          'foam.core.FObject': true,
+          'foam.core.Model': true
+        };
+        var q = [a];
+        while ( q.length ) {
+          var n = q.pop();
+          Object.keys(n).forEach(function(k) {
+            if ( deps[k] ) return;
+            deps[k] = true;
+            q.push(n[k]);
+          });
+        }
+        return Object.keys(deps);
+      }).then(function(deps) {
+        return Promise.all([
+            getTreeHead(self.IN(self.Model.ID, self.CORE_MODELS)),
+            getTreeHead(self.INSTANCE_OF(self.Lib)),
+            getTreeHead(self.IN(self.Model.ID, self.PHASE_1)),
+            getTreeHead(self.IN(self.Model.ID, self.PHASE_2)),
+            getTreeHead(self.INSTANCE_OF(self.Script)),
+            getTreeHead(
+              self.OR(
+                self.IN(self.Relationship.SOURCE_MODEL, deps),
+                self.IN(self.Relationship.TARGET_MODEL, deps)
+              ),
+            ),
+            getTreeHead(self.IN(self.Model.REFINES, deps)),
+            getTreeHead(self.IN(self.Model.ID, self.required)),
+        ])
+      }).then(function(args) {
         return Promise.all(
           args.map(function(head) {
 

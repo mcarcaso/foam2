@@ -84,21 +84,22 @@ foam.CLASS({
   package: 'foam.i18n',
   name: 'PropertyI18nRefine',
   refines: 'foam.core.Property',
+  requires: [
+    'foam.i18n.MessageAxiom',
+  ],
   properties: [
     {
       name: 'label',
-      getter: function() {
-        return this.labelMessage ?
-          this.labelMessage.message :
-          foam.String.labelize(this.name);
+      expression: function(labelMessage$message) {
+        return labelMessage$message;
       },
-      setter: function(n) {
+      postSet: function(_, n) {
         this.labelMessage = {
-          description: `Label for ${this.name}`,
           messageMap: {
             en: n
           }
         }
+        this.clearProperty('label');
       },
     },
     {
@@ -106,6 +107,14 @@ foam.CLASS({
       adapt: function(_, n) {
         if ( foam.core.FObject.isInstance(n) ) return n;
         return foam.lookup(n.class || 'foam.i18n.MessageAxiom').create(n);
+      },
+      expression: function(name) {
+        return this.MessageAxiom.create({
+          description: `Label for ${name}`,
+          messageMap: {
+            en: foam.String.labelize(name),
+          }
+        });
       },
     }
   ],

@@ -89,10 +89,14 @@ if ( ! path ) {
 path = path.substring(0, path.lastIndexOf('src/')+4);
 window.FOAM_ROOT = path;
         `];
+        var fileSizes = {};
         var env = {
           FOAM_FILES: function(files) {
             files.forEach(function(f) {
-              foamBin.push(fs.readFileSync(self.outDir + sep + f.name + '.js').toString());
+              var fileName = self.outDir + sep + f.name + '.js';
+              var contents = fs.readFileSync(fileName).toString();
+              foamBin.push(contents);
+              fileSizes[fileName] = contents.length;
             })
           }
         }
@@ -101,6 +105,9 @@ window.FOAM_ROOT = path;
           self.outDir + sep + '/foam-bin.js',
           foamBin.join('\n'),
           'utf-8')
+        Object.keys(fileSizes).forEach(function(k) {
+          console.log(`${k}\t${fileSizes[k]}`);
+        });
       });
     },
   ],
