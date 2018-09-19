@@ -10,20 +10,23 @@ foam.CLASS({
   requires: [
     'foam.core.Script',
     'foam.build.Lib',
-    'foam.build.InnerSerializer',
-    'foam.build.RequiresCompressSerializer',
-    'foam.build.ImplementsCompressSerializer',
+    'foam.build.output.CodeSerializerImpl',
+    'foam.build.output.ValueReplacingSerializer',
     'foam.dao.Relationship',
+    'foam.core.EnumModel',
+    'foam.core.InterfaceModel',
   ],
   methods: [
     function stringify(x, v) {
       var f = this.Relationship.isInstance(v) ? 'RELATIONSHIP' :
+        this.EnumModel.isInstance(v) ? 'ENUM' :
+        this.InterfaceModel.isInstance(v) ? 'INTERFACE' :
         this.Script.isInstance(v) ? 'SCRIPT' :
         this.Lib.isInstance(v) ? 'LIB' :
         'CLASS';
 
-      var serializer = this.ImplementsCompressSerializer.create({
-        delegate: this.InnerSerializer.create()
+      var serializer = this.ValueReplacingSerializer.create({
+        delegate: this.CodeSerializerImpl.create()
       });
       x = x.createSubContext({out: serializer})
       serializer.output(x, this.Lib.isInstance(v) ? v.json : v);

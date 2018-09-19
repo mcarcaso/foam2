@@ -102,7 +102,6 @@ foam.CLASS({
         'foam.core.ModelRefinescss',
         'foam.core.WindowScript',
         'foam.net.WebLibScript',
-        'foam.i18n.PropertyI18nRefine',
       ],
     },
     {
@@ -157,9 +156,7 @@ foam.CLASS({
           });
       };
 
-
-
-      // Get all dependencies.
+      // Get all dependencies of models that are required.
       return getTreeHead(self.IN(self.Model.ID, self.required)).then(function(a) {
         var deps = {
           'foam.core.FObject': true,
