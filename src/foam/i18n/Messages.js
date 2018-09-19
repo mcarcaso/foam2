@@ -39,13 +39,14 @@ foam.CLASS({
     {
       class: 'String',
       name: 'message',
-      getter: function() { return this.message_ || this.messageMap[this.locale || 'en']; },
-      setter: function(m) { this.message_ = this.messageMap[this.locale || 'en'] = m; }
+      expression: function(locale, messageMap) {
+        return messageMap[locale || 'en'] || messageMap['en'];
+      },
+      postSet: function(_, n) {
+        this.messageMap = { en: n }
+        this.clearProperty('message');
+      }
     },
-    {
-      class: 'Simple',
-      name: 'message_'
-    }
   ],
 
   methods: [

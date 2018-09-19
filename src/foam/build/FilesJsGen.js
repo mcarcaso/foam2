@@ -102,6 +102,7 @@ foam.CLASS({
         'foam.core.ModelRefinescss',
         'foam.core.WindowScript',
         'foam.net.WebLibScript',
+        'foam.i18n.PropertyI18nRefine',
       ],
     },
     {

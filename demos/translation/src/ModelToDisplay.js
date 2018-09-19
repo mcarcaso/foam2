@@ -18,7 +18,7 @@ foam.CLASS({
       class: 'String',
       name: 'language',
       value: 'en',
-      label: 'The label for language',
+      label: 'The label for language. This is only in english',
       postSet: function(_, n) {
         this.locale = n;
       },
@@ -27,6 +27,7 @@ foam.CLASS({
       class: 'String',
       name: 'stringWithLabel',
       labelMessage: {
+        description: 'This is a description for stringWithLabel',
         messageMap: {
           en: 'Im English',
           fr: 'Im french',
