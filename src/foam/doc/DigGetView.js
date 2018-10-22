@@ -10,10 +10,11 @@ foam.CLASS({
     'user',
   ],
   requires: [
+    'foam.doc.CodeTabs',
+    'foam.u2.Tab',
     'foam.doc.dao.AxiomDAO',
     'foam.doc.PropertyAxiom',
     'foam.doc.CodeTab',
-    'foam.doc.TabbedCodeView',
     'foam.flow.PromiseSlot',
     'foam.u2.DetailView',
     'foam.nanos.dig.DIG',
@@ -24,6 +25,7 @@ foam.CLASS({
       name: 'digProperties',
       factory: function() {
         return [
+          'daoKey',
           'format',
           'q',
         ];
@@ -40,32 +42,42 @@ foam.CLASS({
     function initE() {
       var self = this;
       this.
-      start('h1').add(this.data$).end().
       add(this.slot(function(data, url, user, digProperties) {
         var dig = self.DIG.create({
           daoKey: data,
           cmd: 'SELECT',
         }, self);
-        var code = [
-          self.CodeTab.create({
-            title: 'CURL',
-            code$: dig.slot(function(digURL) {
-              return `
+        return this.E().
+          callIf(this.__context__[data], function() {
+            this.
+              start(self.DetailView, {
+                data: dig,
+                properties: digProperties.map(function(p) {
+                  return self.DIG.getAxiomByName(p);
+                })
+              }).
+              end().
+              start(self.CodeTabs).
+                start(self.Tab, { label: 'CURL' }).
+                  start('code').
+                    add(dig.slot(function(digURL) {
+                      return `
 curl -X GET \\
   '${url.replace(/\/$/,'') + digURL}' \\
   -u '${user.email}' \\
   -H 'accept: application/json' \\
   -H 'cache-control: no-cache' \\
   -H 'content-type: application/json'
-              `.trim();
-            })
-          }),
-          self.CodeTab.create({
-            title: 'Node',
-            code$: dig.slot(function(digURL) {
-              var u = new URL(url);
-              var protocol = u.protocol.slice(0, -1)
-              return `
+                    `.trim();
+                    })).
+                  end().
+                end().
+                start(self.Tab, { label: 'Node' }).
+                  start('code').
+                    add(dig.slot(function(digURL) {
+                      var u = new URL(url);
+                      var protocol = u.protocol.slice(0, -1)
+                      return `
 var password = 'REPLACE_WITH_PASSWORD';
 
 const ${protocol} = require('${protocol}');
@@ -95,21 +107,25 @@ var req = ${protocol}.request({
 
 req.write('');
 req.end();
-              `.trim();
-            })
-          }),
-        ]
-        return this.E().
-          callIf(this.__context__[data], function() {
-            this.
-              start(self.DetailView, {
-                data: dig,
-                properties: digProperties.map(function(p) {
-                  return self.DIG.getAxiomByName(p);
-                })
-              }).
-              end().
-              start(self.TabbedCodeView, { data: code }).
+                      `.trim();
+                    })).
+                  end().
+                end().
+                start(self.Tab, { label: 'URL' }).
+                  add(this.slot(function(digURL) {
+                    var u = url.replace(/\/$/,'') + digURL;
+                    return this.E().
+                      start('code').
+                        start('a').
+                          add(u).
+                          attrs({
+                            href: u,
+                            target: '_blank',
+                          }).
+                        end().
+                      end()
+                  }, dig.digURL$)).
+                end().
               end()
           })
       }))
