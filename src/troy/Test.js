@@ -6,11 +6,16 @@ foam.CLASS({
   ],
   exports: [
     'foo',
+    'bar',
   ],
   properties: [
     {
       class: 'Boolean',
       name: 'foo',
+    },
+    {
+      class: 'Boolean',
+      name: 'bar',
     },
     {
       class: 'FObjectProperty',

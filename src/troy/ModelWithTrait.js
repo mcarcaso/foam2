@@ -4,12 +4,15 @@ foam.CLASS({
   implements: [
     'troy.TraitWithImport',
   ],
+  imports: [
+    'bar',
+  ],
   properties: [
     {
       class: 'String',
       name: 'modelWithTraitFooDesc',
-      expression: function(foo) {
-        return foo ? 'Foo is true!' : 'Foo is false.';
+      expression: function(foo, bar) {
+        return `Foo ${foo}. Bar ${bar}`
       },
     },
   ],
