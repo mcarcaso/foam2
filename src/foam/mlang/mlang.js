@@ -1620,6 +1620,11 @@ foam.CLASS({
     },
 
     function putInGroup_(sub, key, obj) {
+      if ( foam.Date.isInstance(key) ) {
+        // TODO: Is this the right place? Should arrays/maps get handled too?
+        key = key.getTime();
+      }
+
       var group = this.groups.hasOwnProperty(key) && this.groups[key];
       if ( ! group ) {
         group = this.arg2.clone();

@@ -1,4 +1,72 @@
 foam.CLASS({
+  refines: 'foam.core.Property',
+  properties: [
+    {
+      name: 'chartJsFormatter',
+      value: function(v) {
+        return v;
+      },
+    },
+  ]
+});
+
+foam.CLASS({
+  refines: 'foam.core.Currency',
+  properties: [
+    {
+      name: 'chartJsFormatter',
+      value: function(v) {
+        return this.displayFormatter(v);
+      },
+    },
+  ]
+});
+
+foam.CLASS({
+  refines: 'foam.mlang.sink.Count',
+  properties: [
+    {
+      name: 'chartJsFormatter',
+      value: function(v) {
+        return v;
+      },
+    },
+  ]
+});
+
+foam.CLASS({
+  refines: 'foam.mlang.sink.Sum',
+  properties: [
+    {
+      name: 'chartJsFormatter',
+      value: function(v) {
+        return this.arg1.chartJsFormatter(v);
+      },
+    },
+  ]
+});
+
+foam.CLASS({
+  refines: 'foam.core.Date',
+  properties: [
+    {
+      name: 'chartJsFormatter',
+      value: function(d) {
+        if ( ! foam.Date.isInstance(d) ) {
+          d = new Date(isNaN(parseInt(d)) ? d : parseInt(d))
+        }
+        var month = d.getMonth() + 1
+        if ( month < 10 ) month = '0' + month
+        var day = d.getDate()
+        if ( day < 10 ) day = '0' + day
+        var year = d.getFullYear()
+        return `${year}-${month}-${day}`;
+      }
+    }
+  ]
+});
+
+foam.CLASS({
   package: 'org.chartjs',
   name: 'AbstractChartCView',
   extends: 'foam.graphics.CView',
@@ -12,6 +80,41 @@ foam.CLASS({
     'colors',
     'data',
     {
+      name: 'yAxisFormatter',
+      value: function(label) {
+        if ( this.GroupBy.isInstance(this.data.arg2) ) {
+          return this.data.arg2.arg2.chartJsFormatter(label)
+        } else {
+          return this.data.arg2.chartJsFormatter(label)
+        }
+      }
+    },
+    {
+      name: 'xAxisFormatter',
+      value: function(label) {
+        if ( this.GroupBy.isInstance(this.data.arg2) ) {
+          return this.data.arg2.arg1.chartJsFormatter(label)
+        } else {
+          return this.data.arg1.chartJsFormatter(label)
+        }
+      }
+    },
+    {
+      name: 'tooltipLabelFormatter',
+      value: function(tooltipItem, data) {
+        var yLabel = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+        if ( foam.Object.isInstance(yLabel) ) yLabel = yLabel.y
+        return data.datasets[tooltipItem.datasetIndex].label +
+          ': ' + this.yAxisFormatter(yLabel)
+      }
+    },
+    {
+      name: 'tooltipTitleFormatter',
+      value: function(tooltipItem, data) {
+        return tooltipItem[0].xLabel;
+      }
+    },
+    {
       name: 'config',
       factory: function() {
         return {
@@ -19,7 +122,29 @@ foam.CLASS({
           datasets: [{}],
           options: {
             responsive: false,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            tooltips: {
+              callbacks: {
+                title: this.tooltipTitleFormatter.bind(this),
+                label: this.tooltipLabelFormatter.bind(this),
+              }
+            },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    callback: this.yAxisFormatter.bind(this),
+                  },
+                }
+              ],
+              xAxes: [
+                {
+                  ticks: {
+                    callback: this.xAxisFormatter.bind(this),
+                  },
+                }
+              ]
+            }
           }
         };
       }
