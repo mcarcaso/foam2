@@ -247,10 +247,6 @@ foam.CLASS({
                       if ( view.editRecord$ ) view.editRecord(obj);
                     });
                   }).
-                  addClass(view.slot(function(selection) {
-                    return selection && foam.util.equals(obj.id, selection.id) ?
-                        view.myClass('selected') : '';
-                  })).
                   addClass(view.myClass('row')).
                   forEach(columns_, function(column) {
                     this.
