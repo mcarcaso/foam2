@@ -1345,7 +1345,7 @@ foam.CLASS({
           self.addClass_(lastValue, v);
           lastValue = v;
         };
-        cls.sub(l);
+        this.onunload.sub(cls.sub(l).detach);
         l();
       } else if ( typeof cls === 'string' ) {
         this.addClass_(null, cls);
