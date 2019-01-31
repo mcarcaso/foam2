@@ -17,6 +17,21 @@
 
 foam.INTERFACE({
   package: 'foam.core',
-  name: 'Exception',
-  swiftImplements: ['Error'],
+  name: 'Exception'
+});
+
+foam.INTERFACE({
+  package: 'foam.core',
+  name: 'RetryableException',
+  implements: [
+    'foam.core.Exception'
+  ]
+});
+
+foam.INTERFACE({
+  package: 'foam.core',
+  name: 'ExternalException',
+  implements: [
+    'foam.core.RetryableException'
+  ]
 });

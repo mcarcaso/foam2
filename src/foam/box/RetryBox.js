@@ -54,7 +54,7 @@ foam.CLASS({
   name: 'RetryReplyBox',
   extends: 'foam.box.ProxyBox',
   requires: [
-    'foam.core.Exception'
+    'foam.core.RetryableException'
   ],
   properties: [
     {
@@ -75,7 +75,7 @@ foam.CLASS({
     {
       name: 'send',
       code: function send(msg) {
-        if ( this.Exception.isInstance(msg.object) &&
+        if ( this.RetryableException.isInstance(msg.object) &&
              ( this.maxAttempts == -1 || this.attempt < this.maxAttempts ) ) {
           this.attempt++;
           this.destination.send(this.message);
