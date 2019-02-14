@@ -14,10 +14,19 @@ public class RulerDAOTest extends Test {
   DAO ruleDAO, userDAO;
 
   public void runTest(X x) {
-    ruleDAO = ((DAO) x.get("ruleDAO"));
+    ruleDAO = new foam.dao.SequenceNumberDAO.Builder(x)
+      .setDelegate(new foam.dao.MapDAO(foam.nanos.ruler.Rule.getOwnClassInfo()))
+       // MDAO FAILS BUT WHY??
+      //.setDelegate(new foam.dao.MDAO(foam.nanos.ruler.Rule.getOwnClassInfo()))
+      .build();
+    x = x.put("ruleDAO", ruleDAO);
+
     createRule(x);
-    userDAO = new RulerDAO(x, (DAO)x.get("localUserDAO"), "localUserDAO");
-    x = x.put(userDAO, "localUserDAO");
+
+    // This MUST happen after createRule(x). Is this order dependency bad?
+    userDAO = new RulerDAO(x, new foam.dao.MapDAO(foam.nanos.auth.User.getOwnClassInfo()), "localUserDAO");
+    x = x.put("localUserDAO", userDAO);
+
     testUsers(x);
     removeData(x);
   }
