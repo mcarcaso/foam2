@@ -122,6 +122,12 @@ foam.CLASS({
       class: 'String',
       name: 'detailView',
       value: 'foam.u2.DetailView'
+    },
+    {
+      class: 'FObjectArray',
+      of: 'foam.comics.CannedQuery',
+      name: 'cannedQueries',
+      view: { class: 'foam.u2.view.JSONTextView' }
     }
   ],
 
@@ -141,6 +147,7 @@ foam.CLASS({
         exportEnabled: this.exportEnabled,
         exportCSVEnabled: this.exportCSVEnabled,
         selectEnabled: this.selectEnabled,
+        cannedQueries: this.cannedQueries,
         toggleEnabled: this.toggleEnabled
       };
 

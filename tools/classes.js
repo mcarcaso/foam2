@@ -335,6 +335,7 @@ var classes = [
   'foam.nanos.ruler.RuleHistory',
   'foam.nanos.ruler.RuleHistoryStatus',
   'foam.comics.SearchMode',
+  'foam.comics.CannedQuery',
 
   // Support Files
   'foam.support.model.TicketMessage',

@@ -17,6 +17,10 @@ foam.CLASS({
     'foam.u2.dialog.Popup'
   ],
 
+  implements: [
+    'foam.mlang.Expressions'
+  ],
+
   imports: [
     'createControllerView? as importedCreateControllerView',
     'data? as importedData',
@@ -80,6 +84,20 @@ foam.CLASS({
   properties: [
     {
       class: 'FObjectProperty',
+      of: 'foam.mlang.predicate.Predicate',
+      name: 'searchPredicate'
+    },
+    {
+      class: 'FObjectProperty',
+      of: 'foam.mlang.predicate.Predicate',
+      name: 'selectedCannedQuery',
+      expression: function(data$cannedQueries) {
+        return data$cannedQueries.length ?
+          data$cannedQueries[0].predicate : null;
+      }
+    },
+    {
+      class: 'FObjectProperty',
       of: 'foam.comics.DAOController',
       name: 'data',
       expression: function(importedData) {
@@ -124,7 +142,9 @@ foam.CLASS({
     ['data', 'edit', 'onEdit'],
     ['data', 'action.findRelatedObject', 'onFindRelated'],
     ['data', 'finished', 'onFinished'],
-    ['data', 'export', 'onExport']
+    ['data', 'export', 'onExport'],
+    ['', 'propertyChange.searchPredicate', 'updatePredicate'],
+    ['', 'propertyChange.selectedCannedQuery', 'updatePredicate']
   ],
 
   methods: [
@@ -160,6 +180,22 @@ foam.CLASS({
               }
             })
           .end()
+          .add(this.slot(function(selectedCannedQuery, data$cannedQueries) {
+            return this.E().forEach(data$cannedQueries, function(q) {
+                    debugger;
+              this
+                .start()
+                  .callIf(selectedCannedQuery == q.predicate, function() {
+                    debugger;
+                    this.style({'font-weight': 'bold'});
+                  })
+                  .add(q.name)
+                  .on('click', function() {
+                    self.selectedCannedQuery = q.predicate;
+                  })
+                .end();
+            });
+          }))
           .start()
             .addClass(this.myClass('container'))
             .callIf(this.data.searchMode === this.SearchMode.FULL, function() {
@@ -255,6 +291,14 @@ foam.CLASS({
         class: 'foam.u2.ExportModal',
         exportData: dao.src.filteredDAO
       }));
+    },
+
+    function updatePredicate() {
+      this.data.predicate = [
+        this.searchPredicate,
+        this.selectedCannedQuery
+      ].filter(a => a)
+       .reduce((prev, cur) => prev ? this.AND(prev, cur) : cur);
     }
   ]
 });

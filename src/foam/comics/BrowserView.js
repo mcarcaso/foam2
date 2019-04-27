@@ -101,6 +101,11 @@ foam.CLASS({
       documentation: 'True to enable the toggle filters button.'
     },
     {
+      class: 'FObjectArray',
+      of: 'foam.comics.CannedQuery',
+      name: 'cannedQueries'
+    },
+    {
       name: 'controller',
       expression: function(
         data,
@@ -116,7 +121,8 @@ foam.CLASS({
         exportEnabled,
         exportCSVEnabled,
         toggleEnabled,
-        detailView
+        detailView,
+        cannedQueries
       ) {
         var config = {};
 
@@ -132,6 +138,7 @@ foam.CLASS({
         config.exportCSVEnabled = exportCSVEnabled;
         config.selectEnabled = selectEnabled;
         config.toggleEnabled = toggleEnabled;
+        config.cannedQueries = cannedQueries;
 
         if ( customDAOController ) {
           var controller = this.__context__.lookup(customDAOController).create(config, this);

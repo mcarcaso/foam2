@@ -9,7 +9,7 @@ foam.CLASS({
   name: 'JSONTextView',
   extends: 'foam.u2.View',
   requires: [
-    'foam.u2.tag.TextArea'
+    'io.c9.ace.Editor'
   ],
   properties: [
     {
@@ -38,7 +38,7 @@ foam.CLASS({
   methods: [
     function initE() {
       this
-        .start(this.TextArea, {
+        .start(this.Editor, {
           data$: this.data_$,
           mode$: this.mode$,
           rows: this.rows,

@@ -472,6 +472,7 @@ FOAM_FILES([
   { name: "foam/u2/view/SimpleSearch", flags: ['web'] },
   { name: "foam/comics/SearchMode", flags: ['web'] },
   { name: "foam/comics/DAOController" },
+  { name: "foam/comics/CannedQuery" },
   { name: "foam/comics/DAOControllerView", flags: ['web'] },
   { name: "foam/comics/InlineDAOControllerView", flags: ['web'] },
   { name: "foam/comics/DAOCreateController" },

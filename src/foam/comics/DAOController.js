@@ -172,6 +172,24 @@ foam.CLASS({
       class: 'String',
       name: 'detailView',
       value: 'foam.u2.DetailView'
+    },
+    {
+      class: 'FObjectArray',
+      of: 'foam.comics.CannedQuery',
+      name: 'cannedQueries',
+      factory: function() {
+        var E = foam.mlang.ExpressionsSingleton.create();
+        return [
+          foam.comics.CannedQuery.create({
+            name: 'All',
+            predicate: E.TRUE
+          }),
+          foam.comics.CannedQuery.create({
+            name: 'None',
+            predicate: E.FALSE
+          })
+        ];
+      }
     }
   ],
 
