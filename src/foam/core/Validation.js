@@ -125,3 +125,38 @@ foam.CLASS({
     foam.core.internal.Errors.create()
   ]
 });
+
+foam.CLASS({
+  package: 'foam.core',
+  name: 'ValidationStringRefinement',
+  refines: 'foam.core.String',
+  properties: [
+    'min',
+    'max',
+    {
+      name: 'validateObj',
+      expression: function(label, name, min, max) {
+        var hasMin = ! ( foam.Undefined.isInstance(min) || foam.Null.isInstance(min) );
+        var hasMax = ! ( foam.Undefined.isInstance(max) || foam.Null.isInstance(max) );
+        if ( ! hasMin && ! hasMax ) return null;
+
+        // TODO: Re-evaluate because these strings aren't translatable.
+        var errorMsg;
+        if ( hasMin && hasMax )
+          errorMsg = `${label} must be between ${min} and ${max} characters.`;
+        else if ( hasMin )
+          errorMsg = `${label} must be more than ${min} character${min == 1 ? '' : 's'}.`;
+        else
+          errorMsg = `${label} must be less than ${max} character${max == 1 ? '' : 's'}.`;
+
+        min = hasMin ? min : 0;
+        max = hasMax ? max : Number.MAX_SAFE_INTEGER;
+        return [[name],
+          function(value) {
+            return min <= value.length && value.length <= max ? null : errorMsg;
+          }
+        ];
+      }
+    }
+  ]
+});
