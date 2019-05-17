@@ -69,13 +69,13 @@ foam.LIB({
       // change events, etc.).
       obj.instance_ = {};
 
-      // initArgs() is the standard argument extraction method.
-      obj.initArgs(args, opt_parent);
-
       var axioms = this.getInitAgents();
       for ( var i = 0 ; i < axioms.length ; i++ ) {
         axioms[i].initObject(obj);
       }
+
+      // initArgs() is the standard argument extraction method.
+      obj.initArgs(args, opt_parent);
 
       // init() is called when object is created.
       // This is where class-specific initialization code should
