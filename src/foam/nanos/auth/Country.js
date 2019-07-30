@@ -35,7 +35,16 @@ foam.CLASS({
       class: 'StringArray',
       name: 'alternativeNames',
       documentation: `A list of known alternative country names.`,
-    }
+    },
+    {
+      class: 'Date',
+      name: 'date',
+      preSet: function(_, n) {
+        if ( n.getTime() > Date.now() ) return new Date();
+        return n;
+      },
+      postSet: function() { window.MIKE = this }
+    },
   ],
   methods: [{
     name: 'toString',
