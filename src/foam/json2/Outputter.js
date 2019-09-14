@@ -1,18 +1,7 @@
 /**
  * @license
  * Copyright 2018 The FOAM Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  */
 
 foam.CLASS({
@@ -63,7 +52,7 @@ foam.CLASS({
   methods: [
     {
       name: 'obj',
-      returns: 'foam.json2.Outputter',
+      type: 'foam.json2.Outputter',
       code: function() {
         this.e();
         this.out.startObj()
@@ -85,7 +74,7 @@ foam.CLASS({
     },
     {
       name: 'array',
-      returns: 'foam.json2.Outputter',
+      type: 'foam.json2.Outputter',
       code: function() {
         this.e();
         this.out.startArray();
@@ -109,7 +98,7 @@ foam.CLASS({
     },
     {
       name: 'top',
-      swiftReturns: 'State',
+      swiftType: 'State',
       code: function() {
         return this.state[this.state.length - 1];
       },
@@ -117,8 +106,8 @@ foam.CLASS({
     },
     {
       name: 'key',
-      args: [{ name: 's', swiftType: 'String' }],
-      returns: 'foam.json2.Outputter',
+      args: [{ name: 's', type: 'String' }],
+      type: 'foam.json2.Outputter',
       code: function(s) {
         if ( this.top().comma ) this.out.comma();
         else this.top().comma = true;
@@ -155,8 +144,8 @@ foam.CLASS({
     },
     {
       name: 'string',
-      args: [{ name: 's', swiftType: 'String' }],
-      swiftReturns: 'String',
+      args: [{ name: 's', type: 'String' }],
+      type: 'String',
       code: function(s) {
         return '"' + s.
           replace(/\\/g, '\\\\').
@@ -169,13 +158,14 @@ foam.CLASS({
       },
       swiftCode: `
         // TODO handle more stuff
+        let s = s!
         return "\\"" + s.replacingOccurrences(of: "\\"", with: "\\\\\\"") + "\\""
       `,
     },
     {
       name: 's',
-      args: [{ name: 's', swiftType: 'String' }],
-      returns: 'foam.json2.Outputter',
+      args: [{ name: 's', type: 'String' }],
+      type: 'foam.json2.Outputter',
       code: function(s) {
         this.e();
         this.out.out(this.string(s));
@@ -190,7 +180,7 @@ foam.CLASS({
     {
       name: 'n',
       args: [{ name: 'n', swiftType: 'NSNumber' }],
-      returns: 'foam.json2.Outputter',
+      type: 'foam.json2.Outputter',
       code: function(n) {
         this.e();
         this.out.out(n);
@@ -204,8 +194,8 @@ foam.CLASS({
     },
     {
       name: 'b',
-      args: [{ name: 'b', swiftType: 'Bool' }],
-      returns: 'foam.json2.Outputter',
+      args: [{ name: 'b', type: 'Boolean' }],
+      type: 'foam.json2.Outputter',
       code: function(b) {
         this.e();
         this.out.out(b);
@@ -219,7 +209,7 @@ foam.CLASS({
     },
     {
       name: 'nul',
-      returns: 'foam.json2.Outputter',
+      type: 'foam.json2.Outputter',
       code: function() {
         this.e();
         this.out.out('null');
@@ -233,7 +223,7 @@ foam.CLASS({
     },
     {
       name: 'end',
-      returns: 'foam.json2.Outputter',
+      type: 'foam.json2.Outputter',
       code: function() {
         var s = this.state.pop();
         if ( s.endObj ) this.out.endObj();
@@ -246,6 +236,11 @@ foam.CLASS({
         if s.endArray { out.endArray() }
         return self
       `
+    },
+    {
+      name: 'getString',
+      type: 'String',
+      code: function() { return this.out.str; }
     }
   ]
 });

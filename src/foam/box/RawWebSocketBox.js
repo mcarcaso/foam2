@@ -26,12 +26,12 @@ foam.CLASS({
     {
       name: 'me',
       key: 'me',
-      javaType: 'foam.box.Box'
+      type: 'foam.box.Box'
     },
     {
       key: 'registry',
       name: 'registry',
-      javaType: 'foam.box.BoxRegistry',
+      type: 'foam.box.BoxRegistry',
     }
   ],
 
@@ -72,16 +72,6 @@ foam.CLASS({
       name: 'send',
       code: function send(msg) {
         var replyBox = msg.attributes.replyBox;
-        if ( replyBox ) {
-          // TODO: Should replyBox just be a property on message with
-          // custom serialization?
-
-          // TODO: Add one-time service policy
-
-          msg.attributes.replyBox =
-            this.__context__.registry.register(null, null, msg.attributes.replyBox);
-        }
-
         var payload = this.JSONOutputter.create().copyFrom(foam.json.Network).stringify(msg);
 
         try {
@@ -91,11 +81,11 @@ foam.CLASS({
         }
       },
       javaCode: `
-foam.lib.json.Outputter outputter = new Outputter();
+foam.lib.json.Outputter outputter = new Outputter(getX());
 outputter.setX(getX());
 
 // TODO: Clone message or something when it clones safely.
-foam.box.Box replyBox = (foam.box.Box)message.getAttributes().get("replyBox");
+foam.box.Box replyBox = (foam.box.Box)msg.getAttributes().get("replyBox");
 
 if ( replyBox != null ) {
   foam.box.SubBox export = (foam.box.SubBox)getRegistry().register(null, null, replyBox);
@@ -103,9 +93,9 @@ if ( replyBox != null ) {
   replyBox = new foam.box.ReplyBox(getX(), export.getName(), replyBox);
 }
 
-String payload = outputter.stringify(message);
+String payload = outputter.stringify(msg);
 
-message.getAttributes().put("replyBox", replyBox);
+msg.getAttributes().put("replyBox", replyBox);
 
 try {
   getSocket().send(payload);
@@ -125,8 +115,9 @@ try {
         cls.extras.push(foam.java.Code.create({
           data: `
 protected class Outputter extends foam.lib.json.Outputter {
-  public Outputter() {
-    super(foam.lib.json.OutputterMode.NETWORK);
+  public Outputter(foam.core.X x) {
+    super(x);
+    setPropertyPredicate(new foam.lib.AndPropertyPredicate(x, new foam.lib.PropertyPredicate[] {new foam.lib.NetworkPropertyPredicate(), new foam.lib.PermissionedPropertyPredicate()}));
   }
 
   protected void outputFObject(foam.core.FObject o) {

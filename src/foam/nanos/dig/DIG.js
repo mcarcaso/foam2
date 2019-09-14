@@ -11,6 +11,8 @@ foam.CLASS({
 
   documentation: 'Data Integration Gateway - Perform DAO operations against a web service',
 
+  requires: ['foam.net.web.HTTPRequest'],
+
   tableColumns: [
     'id',
     'daoKey',
@@ -20,6 +22,14 @@ foam.CLASS({
   ],
 
   searchColumns: [],
+
+  constants: [
+    {
+      name: 'MAX_URL_SIZE',
+      value: 2000,
+      type: 'Integer'
+    }
+  ],
 
   properties: [
     'id',
@@ -32,12 +42,14 @@ foam.CLASS({
         return foam.u2.view.ChoiceView.create({
           dao: X.nSpecDAO
             .where(E.ENDS_WITH(foam.nanos.boot.NSpec.ID, 'DAO'))
+            .where(E.EQ(foam.nanos.boot.NSpec.SERVE, E.TRUE))
             .orderBy(foam.nanos.boot.NSpec.ID),
           objToChoice: function(nspec) {
             return [nspec.id, nspec.id];
           }
         });
-      }
+      },
+      value: 'accountDAO'
     },
     'cmd',
     'format',
@@ -65,20 +77,29 @@ foam.CLASS({
       name: 'email'
     },
     {
-      class: 'EMail',
+      class: 'String',
       displayWidth: 100,
       name: 'subject'
     },
     'data',
     {
+      class: 'foam.nanos.fs.FileProperty',
+      name: 'dataFile',
+      label: 'DataFile',
+      documentation: 'dig file to put data',
+      view: { class: 'foam.nanos.dig.DigFileUploadView', data: this.dataFile$ },
+    },
+    {
       class: 'URL',
-      // TODO: appears not to work if named 'url', find out why.
-      name: 'digURL',
-      label: 'URL',
-      displayWidth: 120,
-      view: 'foam.nanos.dig.LinkView',
-      setter: function() {}, // Prevent from ever getting set
-      expression: function(key, data, email, subject, daoKey, cmd, format, q) {
+      name: 'postURL',
+      hidden: true
+    },
+    {
+      name: 'snippet',
+      label: 'Snippet',
+      documentation: 'show a specific type of request would look like in a given language.',
+      view: { class: 'foam.nanos.dig.DigSnippetView' },
+      expression: function(key, data, email, subject, daoKey, cmd, format, q, dataFile) {
         var query = false;
         var url = "/service/dig";
 
@@ -102,11 +123,6 @@ foam.CLASS({
           query = true;
           url += "id=" + key;
         }
-        if ( data ) {
-          url += query ? "&" : "?";
-          query = true;
-          url += "data=" + data;
-        }
         if ( email ) {
           url += query ? "&" : "?";
           query = true;
@@ -115,19 +131,65 @@ foam.CLASS({
         if ( subject ) {
           url += query ? "&" : "?";
           query = true;
-          url += "subject=" + subject;
+          url += "subject=" + encodeURIComponent(subject);
         }
         if ( q ) {
           url += query ? "&" : "?";
           query = true;
-          url += "q=" + q;
+          url += "q=" + encodeURIComponent(q);
+        }
+        this.postURL = url;
+
+
+        if ( dataFile ) {
+          url += query ? "&" : "?";
+          query = true;
+          url += "&fileaddress=" + encodeURIComponent(dataFile.address);
+        }
+        if ( data ) {
+          if ( data.length + url.length < this.MAX_URL_SIZE ) {
+            url += query ? "&" : "?";
+            query = true;
+            url += "data=" + encodeURIComponent(data);
+          }
         }
 
-        return encodeURI(url);
+        return url;
       }
+    },
+    {
+      class: 'String',
+      name: 'result',
+      value: 'No Request Sent Yet.',
+      view: { class: 'foam.u2.tag.TextArea', rows: 5, cols: 120 },
+      visibility: 'RO'
     }
   ],
 
-  methods: [
+  actions: [
+    {
+      name: 'postButton',
+      label: 'Send Request',
+      code: async function() {
+        var req = this.HTTPRequest.create({
+          url: window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + this.postURL + "&sessionId=" + localStorage.defaultSession,
+          method: 'POST',
+          payload: this.data,
+        }).send();
+
+        var resp = await req.then(async function(resp) {
+          var temp = await resp.payload.then(function(result) {
+            return result;
+          });
+          return temp;
+        }, async function(error) {
+          var temp = await error.payload.then(function(result) {
+            return result;
+          });
+          return temp;
+        });
+        this.result = resp;
+      }
+    }
   ]
 });

@@ -1,21 +1,27 @@
+/**
+ * @license
+ * Copyright 2019 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package foam.nanos.fs;
 
-public class Storage {
-  private java.io.File root_;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Set;
 
-  public Storage() {
-    this(new java.io.File(""));
-  }
+public interface Storage {
 
-  public Storage(String root) {
-    this(new java.io.File(root));
-  }
+  java.io.File get(String name);
 
-  public Storage(java.io.File root) {
-    root_ = root.getAbsoluteFile();
-  }
+  byte[] getBytes(String name);
 
-  public java.io.File get(String name) {
-    return new java.io.File(root_, name).getAbsoluteFile();
-  }
+  OutputStream getOutputStream(String name);
+
+  InputStream getInputStream(String name);
+
+  Set<String> getAvailableFiles(String name);
+
+  Set<String> getAvailableFiles(String name, String glob);
+
 }

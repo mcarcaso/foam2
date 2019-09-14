@@ -164,6 +164,15 @@ foam.CLASS({
     'required',
 
     /**
+      When set to true, model.permission.property is needed for read / write on this property
+     */
+    {
+      class: 'Boolean',
+      name: 'permissionRequired',
+      value: false
+    },
+
+    /**
       When set, marks the property with the given flags. This can be used for
       things like stripping out platform specific properties when serializing.
      */
@@ -215,7 +224,8 @@ foam.CLASS({
         return function compare(o1, o2) {
           return comparePropertyValues(f(o1), f(o2));
         };
-      }
+      },
+
     },
     // FUTURE: Move to refinement?
     {
@@ -246,6 +256,25 @@ foam.CLASS({
       name: 'forClass_',
       transient: true
     },
+    {
+      /**
+        Identifies properties that contain Personally identifiable information,
+        which may fall within the ambit of privacy regulations.
+      */
+      class: 'Boolean',
+      name: 'containsPII'
+    },
+    {
+      /**
+        Identifies properties that contain Personally identifiable information which
+        may be eligible for deletion on request.
+      */
+      class: 'Boolean',
+      name: 'containsDeletablePII'
+    },
+    {
+      name: 'type',
+    }
   ],
 
   methods: [
@@ -279,6 +308,10 @@ foam.CLASS({
       if ( this.forClass_ && this.forClass_ !== c.id && prop === this ) {
         // Clone this property if it's been installed before.
         prop = this.clone();
+
+        // sourceCls_ isn't a real property so it gets lost during the clone.
+        prop.sourceCls_ = c; 
+
         c.axiomMap_[prop.name] = prop;
       }
 
@@ -336,6 +369,14 @@ foam.CLASS({
       // since installInClass() may have created a modified version
       // to inherit Property Properties from a super-Property.
       var prop        = proto.cls_.getAxiomByName(this.name);
+      if ( prop !== this ) {
+        // Delegate to the installInProto found in the class in case it
+        // has custom behaviour it wants to do.  See Class property for
+        // and example.
+        prop.installInProto(proto);
+        return;
+      }
+
       var name        = prop.name;
       var adapt       = prop.adapt
       var assertValue = prop.assertValue;
@@ -564,7 +605,7 @@ foam.CLASS({
           }
         }
         var ret = e.apply(this, args);
-        if ( ret === undefined ) this.warn('Expression returned undefined: ', e);
+        if ( ret === undefined ) this.__context__.warn('Expression returned undefined: ', e, this.name);
         return ret;
       };
     },
@@ -593,7 +634,7 @@ foam.CLASS({
            child.cls_ !== this.cls_ )
       {
         if ( this.cls_ !== foam.core.Property ) {
-          this.warn('Unsupported change of property type from', this.cls_.id, 'to', child.cls_.id);
+          this.__context__.warn('Unsupported change of property type from', this.cls_.id, 'to', child.cls_.id, 'property name', this.name);
         }
 
         return child;

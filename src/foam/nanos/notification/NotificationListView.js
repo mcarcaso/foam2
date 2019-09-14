@@ -15,10 +15,11 @@ foam.CLASS({
   ],
 
   imports: [
+    'currentMenu',
+    'group',
     'notificationDAO',
     'stack',
-    'user',
-    'currentMenu',
+    'user'
   ],
 
   requires: [
@@ -80,7 +81,7 @@ foam.CLASS({
       line-height: 1;
       letter-spacing: 0.3px;
       text-align: left;
-      color: #093649;
+      color: /*%BLACK%*/ #1e1f21;
     }
      ^ .unread .foam-u2-DAOList > div {
       background-color: rgba(89, 165, 213, 0.3)
@@ -96,7 +97,7 @@ foam.CLASS({
             this.EQ(this.Notification.READ, true),
              this.OR(
               this.EQ(this.Notification.USER_ID, this.user.id),
-              this.EQ(this.Notification.GROUP_ID, this.user.group),
+              this.EQ(this.Notification.GROUP_ID, this.group.id),
               this.EQ(this.Notification.BROADCASTED, true)
             ),
             this.NOT(this.IN(
@@ -118,7 +119,7 @@ foam.CLASS({
             this.EQ(this.Notification.READ, false),
              this.OR(
               this.EQ(this.Notification.USER_ID, this.user.id),
-              this.EQ(this.Notification.GROUP_ID, this.user.group),
+              this.EQ(this.Notification.GROUP_ID, this.group.id),
               this.EQ(this.Notification.BROADCASTED, true)
             ),
             this.NOT(this.IN(

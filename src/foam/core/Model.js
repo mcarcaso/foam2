@@ -28,20 +28,8 @@ foam.CLASS({
       hidden: true,
       transient: true,
       getter: function() {
-        if ( this.refines && ! this.name ) {
-          // No ID for the refinement so give it one. These names should be
-          // consistent regardless of how this is being run (e.g. node, web,
-          // debug, etc) so the first axiom name is used.
-          var n = new RegExp('(.*)\\.(.*)?$').exec(this.refines)
-          var p = n ? n[1] : 'foam.core';
-          n = (n ? n[2] : this.refines) + 'Refines';
-          if ( this.axioms_.length ) {
-            n = n + this.axioms_[0].name;
-          }
-          return p + '.' + n;
-        }
         return this.package ? this.package + '.' + this.name : this.name;
-      }
+      },
     },
     'package',
     'abstract',
@@ -59,6 +47,7 @@ foam.CLASS({
     },
     [ 'extends', 'FObject' ],
     'refines',
+    'order',
     { name: 'documentation', adapt: function(_, d) { return typeof d === 'function' ? foam.String.multiline(d).trim() : d; } },
     {
       // List of all axioms, including methods, properties, listeners,
@@ -73,7 +62,18 @@ foam.CLASS({
       name: 'axioms',
       hidden: true,
       factory: function() { return []; },
-      postSet: function(_, a) { this.axioms_.push.apply(this.axioms_, a); }
+      postSet: function(_, a) { this.axioms_.push.apply(this.axioms_, a); },
+      adapt: function(_, v) {
+        if ( ! Array.isArray(v) ) return v;
+        var copy;
+        for ( var i = 0 ; i < v.length ; i++ ) {
+          if ( v[i].class ) {
+            if ( ! copy ) copy = v.slice();
+            copy[i] = foam.lookup(v[i].class).create(v[i]);
+          }
+        }
+        return copy || v;
+      }
     },
     {
       // Is upgraded to an AxiomArray later.
@@ -87,5 +87,7 @@ foam.CLASS({
     }
   ],
 
-  methods: [ foam.boot.buildClass ]
+  methods: [
+    foam.boot.buildClass
+  ]
 });

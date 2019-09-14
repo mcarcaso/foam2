@@ -43,10 +43,12 @@ foam.CLASS({
     'foam.dao.QuickSink',
     'foam.u2.ViewSpec'
   ],
+
   imports: [
     'selection as importedSelection',
     'selectionEnabled as importedSelectionEnabled'
   ],
+
   // Provide most state to inner controller and views.
   exports: [
     'anchorDAOIdx_',
@@ -205,7 +207,7 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.u2.Element',
       name: 'sentinel_',
-      documentatin: `Absolutely positioned single pixel that establishes the
+      documentation: `Absolutely positioned single pixel that establishes the
           height of the scroll container.`,
       factory: function() {
         return this.E('div').style({

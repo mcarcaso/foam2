@@ -11,51 +11,58 @@ import foam.core.Detachable;
 import foam.core.FObject;
 import foam.core.PropertyInfo;
 import foam.dao.AbstractSink;
-import org.apache.commons.io.IOUtils;
-
+import foam.lib.PropertyPredicate;
+import foam.lib.PermissionedPropertyPredicate;
+import foam.util.SafetyUtil;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.*;
+
+import org.apache.commons.io.IOUtils;
 
 public class Outputter
   extends AbstractSink
-  implements foam.lib.Outputter
-{
-  protected ThreadLocal<SimpleDateFormat> sdf = new ThreadLocal<SimpleDateFormat>() {
+  implements foam.lib.Outputter {
+  
+  protected static ThreadLocal<SimpleDateFormat> sdf = new ThreadLocal<SimpleDateFormat>() {
     @Override
     protected SimpleDateFormat initialValue() {
-      SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
+      SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
       df.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
       return df;
     }
   };
 
-  protected PrintWriter   writer_;
-  protected OutputterMode mode_;
+  protected foam.core.X x_;
+  public PrintWriter   writer_;
   protected StringWriter  stringWriter_        = null;
+  protected boolean       outputShortNames_    = false;
   protected boolean       outputDefaultValues_ = false;
+  protected boolean       multiLineOutput_     = false;
   protected boolean       outputClassNames_    = true;
+  protected boolean       outputReadableDates_ = true;
+  protected PropertyPredicate propertyPredicate_;
+  protected Map<String, List<PropertyInfo>> propertyMap_ = new HashMap<>();
 
-  public Outputter() {
-    this(OutputterMode.FULL);
+
+  public Outputter(foam.core.X x) {
+    this(x, (PrintWriter) null);
   }
 
-  public Outputter(OutputterMode mode) {
-    this((PrintWriter) null, mode);
+  public Outputter(foam.core.X x, File file) throws FileNotFoundException {
+    this(x, new PrintWriter(file));
   }
 
-  public Outputter(File file, OutputterMode mode) throws FileNotFoundException {
-    this(new PrintWriter(file), mode);
-  }
-
-  public Outputter(PrintWriter writer, OutputterMode mode) {
+  public Outputter(foam.core.X x, PrintWriter writer) {
     if ( writer == null ) {
       stringWriter_ = new StringWriter();
-      writer = new PrintWriter(stringWriter_);
+      writer        = new PrintWriter(stringWriter_);
     }
 
-    this.mode_   = mode;
+    this.x_ = x;
     this.writer_ = writer;
   }
 
@@ -74,9 +81,13 @@ public class Outputter
   protected void initWriter() {
     if ( stringWriter_ == null ) {
       stringWriter_ = new StringWriter();
-      writer_ = new PrintWriter(stringWriter_);
+      writer_       = new PrintWriter(stringWriter_);
     }
     stringWriter_.getBuffer().setLength(0);
+  }
+
+  public void setWriter(PrintWriter writer) {
+    writer_ = writer;
   }
 
   protected void outputUndefined() {
@@ -85,18 +96,30 @@ public class Outputter
   protected void outputNull() {
   }
 
-  protected void outputString(String s) {
-    writer_.append("\"");
-    writer_.append(escape(s));
-    writer_.append("\"");
+  public void outputString(String s) {
+    if ( multiLineOutput_ && s.indexOf('\n') >= 0 ) {
+      writer_.append("\n");
+      writer_.append("\"\"\"");
+      writer_.append(escapeMultiline(s));
+      writer_.append("\"\"\"");
+    }
+    else {
+      writer_.append("\"");
+      writer_.append(escape(s));
+      writer_.append("\"");
+    }
   }
 
   public String escape(String s) {
-    return s
-      .replace("\\", "\\\\")
-      .replace("\"", "\\\"")
-      .replace("\t", "\\t")
-      .replace("\n","\\n");
+    return s.replace("\\", "\\\\")
+            .replace("\"", "\\\"")
+            .replace("\t", "\\t")
+            .replace("\r","\\r")
+            .replace("\n","\\n");
+  }
+
+  public String escapeMultiline(String s) {
+    return s.replace("\\", "\\\\");
   }
 
   protected void outputNumber(Number value) {
@@ -114,6 +137,19 @@ public class Outputter
       if ( i < array.length - 1 ) writer_.append(",");
     }
     writer_.append("]");
+  }
+
+  protected void outputByteArray(byte[][] array) {
+    writer_.append("[");
+    for ( int i = 0 ; i < array.length ; i++ ) {
+      output(array[i]);
+      if ( i < array.length - 1 ) writer_.append(",");
+    }
+    writer_.append("]");
+  }
+
+  protected void outputByteArray(byte[] array) {
+    output(foam.util.SecurityUtil.ByteArrayToHexString(array));
   }
 
   protected void outputMap(java.util.Map map) {
@@ -142,7 +178,7 @@ public class Outputter
 
   protected void outputProperty(FObject o, PropertyInfo p) {
     writer_.append(beforeKey_());
-    writer_.append(p.getName());
+    writer_.append(getPropertyName(p));
     writer_.append(afterKey_());
     writer_.append(":");
     p.toJSON(this, p.get(o));
@@ -155,7 +191,7 @@ public class Outputter
 
     writer_.append("{");
     int i = 0;
-    while(i < values.length ) {
+    while ( i < values.length ) {
       writer_.append(beforeKey_());
       writer_.append(values[i++].toString());
       writer_.append(afterKey_());
@@ -198,7 +234,14 @@ public class Outputter
     } else if ( value instanceof Number ) {
       outputNumber((Number) value);
     } else if ( isArray(value) ) {
-      outputArray((Object[]) value);
+        if ( value.getClass().equals(byte[][].class) ) {
+          outputByteArray((byte[][]) value);
+        } else if ( value instanceof byte[] ) {
+          outputByteArray((byte[]) value);
+        }
+        else {
+          outputArray((Object[]) value);
+        }
     } else if ( value instanceof Boolean ) {
       outputBoolean((Boolean) value);
     } else if ( value instanceof java.util.Date ) {
@@ -215,44 +258,78 @@ public class Outputter
   }
 
   protected boolean isArray(Object value) {
-    return ( value != null ) &&
+    return value != null &&
         ( value.getClass() != null ) &&
         value.getClass().isArray();
   }
 
+  public void outputDateValue(java.util.Date date) {
+    if ( outputReadableDates_ )
+      outputString(sdf.get().format(date));
+    else
+      outputNumber(date.getTime());
+  }
+
   protected void outputDate(java.util.Date date) {
-    outputString(sdf.get().format(date));
+    writer_.append("{\"class\":\"__Timestamp__\",\"value\":");
+    outputDateValue(date);
+    writer_.append("}");
+  }
+
+  protected synchronized List getProperties(ClassInfo info) {
+    String of = info.getObjClass().getSimpleName();
+
+    if ( propertyMap_.containsKey(of) && propertyMap_.get(of).isEmpty() ) {
+      propertyMap_.remove(of);
+    }
+
+    if ( ! propertyMap_.containsKey(of) ) {
+      List<PropertyInfo> filteredAxioms = new ArrayList<>();
+      Iterator e = info.getAxiomsByClass(PropertyInfo.class).iterator();
+      while ( e.hasNext() ) {
+        PropertyInfo prop = (PropertyInfo) e.next();
+        if ( propertyPredicate_ == null || propertyPredicate_.propertyPredicateCheck(this.x_, of.toLowerCase(), prop) ) {
+          filteredAxioms.add(prop);
+        }
+      }
+      propertyMap_.put(of, filteredAxioms);
+      return filteredAxioms;
+    }
+    return propertyMap_.get(of);
   }
 
   protected Boolean maybeOutputProperty(FObject fo, PropertyInfo prop, boolean includeComma) {
-    if ( mode_ == OutputterMode.NETWORK && prop.getNetworkTransient() ) return false;
-    if ( mode_ == OutputterMode.STORAGE && prop.getStorageTransient() ) return false;
+
     if ( ! outputDefaultValues_ && ! prop.isSet(fo) ) return false;
 
     Object value = prop.get(fo);
-
-    if ( value == null ) return false;
+    if ( value == null || ( isArray(value) && Array.getLength(value) == 0 ) ) {
+      return false;
+    }
 
     if ( includeComma ) writer_.append(",");
-    outputProperty(fo, prop);
+    if ( multiLineOutput_ ) addInnerNewline();
+    outputProperty(fo, prop); 
     return true;
   }
 
   protected void outputFObjectDelta(FObject oldFObject, FObject newFObject) {
-    ClassInfo info = oldFObject.getClassInfo();
-    boolean outputComma = true;
-    boolean isDiff = false;
-    boolean isPropertyDiff = false;
-    if ( ! oldFObject.equals(newFObject) ) {
-      List axioms = info.getAxiomsByClass(PropertyInfo.class);
-      Iterator i = axioms.iterator();
+    ClassInfo info           = oldFObject.getClassInfo();
+    boolean   outputComma    = true;
+    boolean   isDiff         = false;
+    boolean   isPropertyDiff = false;
 
-      while( i.hasNext() ) {
+    if ( ! oldFObject.equals(newFObject) ) {
+      List     axioms = getProperties(info);
+      Iterator i      = axioms.iterator();
+
+      writer_.append("{");
+      if ( multiLineOutput_ ) addInnerNewline();
+      while ( i.hasNext() ) {
         PropertyInfo prop = (PropertyInfo) i.next();
         isPropertyDiff = maybeOutputPropertyDelta(oldFObject, newFObject, prop);
         if ( isPropertyDiff) {
           if ( ! isDiff ) {
-            writer_.append("{");
             if ( outputClassNames_ ) {
               //output Class name
               writer_.append(beforeKey_());
@@ -261,37 +338,47 @@ public class Outputter
               writer_.append(":");
               outputString(info.getId());
             }
-            if ( outputClassNames_ )
-              writer_.append(",");
+            if ( outputClassNames_ ) writer_.append(",");
+            addInnerNewline();
             PropertyInfo id = (PropertyInfo) info.getAxiomByName("id");
             outputProperty(newFObject, id);
             isDiff = true;
           }
-
           writer_.append(",");
+          addInnerNewline();
           outputProperty(newFObject, prop);
         }
       }
-
-      if ( isDiff ) {
-        writer_.append("}");
+      
+      if ( isDiff ) { 
+        if ( multiLineOutput_ )  writer_.append("\n");
+        writer_.append("}"); 
       }
+    }
+  }
+
+  protected void addInnerNewline() {
+    if ( multiLineOutput_ ) {
+      writer_.append("\n");
     }
   }
 
   protected boolean maybeOutputPropertyDelta(FObject oldFObject, FObject newFObject, PropertyInfo prop) {
-    if ( mode_ == OutputterMode.NETWORK && prop.getNetworkTransient() ) return false;
-    if ( mode_ == OutputterMode.STORAGE && prop.getStorageTransient() ) return false;
 
-    if ( prop.compare(oldFObject, newFObject) != 0 ) {
-      return true;
-    }
-    return false;
+    return prop.compare(oldFObject, newFObject) != 0;
+  }
+
+  public void outputJSONJFObject(FObject o) {
+    writer_.append("p(");
+    outputFObject(o);
+    writer_.append(")\r\n");
   }
 
   protected void outputFObject(FObject o) {
     ClassInfo info = o.getClassInfo();
+
     writer_.append("{");
+    if ( multiLineOutput_ ) addInnerNewline();
     if ( outputClassNames_ ) {
       writer_.append(beforeKey_());
       writer_.append("class");
@@ -299,14 +386,15 @@ public class Outputter
       writer_.append(":");
       outputString(info.getId());
     }
-    List axioms = info.getAxiomsByClass(PropertyInfo.class);
-    Iterator i = axioms.iterator();
-    boolean outputComma = outputClassNames_;
+
+    List     axioms      = getProperties(info);
+    Iterator i           = axioms.iterator();
+    boolean  outputComma = outputClassNames_;
     while ( i.hasNext() ) {
       PropertyInfo prop = (PropertyInfo) i.next();
       outputComma = maybeOutputProperty(o, prop, outputComma) || outputComma;
     }
-
+    if ( multiLineOutput_ ) writer_.append("\n");
     writer_.append("}");
   }
 
@@ -322,18 +410,12 @@ public class Outputter
     writer_.append(",");
     outputString("name");
     writer_.append(":");
-    outputString(prop.getName());
+    outputString(getPropertyName(prop));
     writer_.append("}");
   }
 
   protected void outputClassInfo(ClassInfo info) {
-    writer_.append("{");
-    outputString("class");
-    writer_.append(":");
-    outputString("__Class__");
-    writer_.append(",");
-    outputString("forClass_");
-    writer_.append(":");
+    writer_.append("{\"class\":\"__Class__\",\"forClass_\":");
     outputString(info.getId());
     writer_.append("}");
   }
@@ -350,6 +432,10 @@ public class Outputter
     return null;
   }
 
+  public String getPropertyName(PropertyInfo p) {
+    return outputShortNames_ && ! SafetyUtil.isEmpty(p.getShortName()) ? p.getShortName() : p.getName();
+  }
+
   @Override
   public String toString() {
     return ( stringWriter_ != null ) ? stringWriter_.toString() : null;
@@ -364,12 +450,24 @@ public class Outputter
     writer_.append(str);
   }
 
-  public void setOutputDefaultValues(boolean outputDefaultValues) {
-    outputDefaultValues_ = outputDefaultValues;
+  public Outputter setOutputShortNames(boolean outputShortNames) {
+    outputShortNames_ = outputShortNames;
+    return this;
   }
 
-  public void setOutputClassNames(boolean outputClassNames) {
+  public Outputter setOutputDefaultValues(boolean outputDefaultValues) {
+    outputDefaultValues_ = outputDefaultValues;
+    return this;
+  }
+
+  public Outputter setOutputClassNames(boolean outputClassNames) {
     outputClassNames_ = outputClassNames;
+    return this;
+  }
+
+  public Outputter setPropertyPredicate(PropertyPredicate p) {
+    propertyPredicate_ = p;
+    return this;
   }
 
   @Override
@@ -382,5 +480,9 @@ public class Outputter
   public void flush() throws IOException {
     if ( stringWriter_ != null ) stringWriter_.flush();
     if ( writer_ != null ) writer_.flush();
+  }
+
+  public void setMultiLine(boolean ml) {
+    multiLineOutput_ = ml;
   }
 }

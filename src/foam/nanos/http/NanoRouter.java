@@ -8,24 +8,27 @@ package foam.nanos.http;
 
 import foam.box.Skeleton;
 import foam.core.ContextAware;
+import foam.core.Detachable;
 import foam.core.X;
 import foam.core.XFactory;
+import foam.dao.AbstractSink;
 import foam.dao.DAO;
 import foam.dao.SessionDAOSkeleton;
+import foam.nanos.NanoService;
 import foam.nanos.boot.NSpec;
 import foam.nanos.boot.NSpecAware;
 import foam.nanos.logger.Logger;
-import foam.nanos.NanoService;
 import foam.nanos.pm.PM;
 import foam.nanos.pm.PMWebAgent;
-import java.io.PrintWriter;
-import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Top-Level Router Servlet.
@@ -40,34 +43,54 @@ public class NanoRouter
   protected X x_;
 
   protected Map<String, WebAgent> handlerMap_ = new ConcurrentHashMap<>();
+  protected DAO nSpecDAO_;
 
   @Override
   public void init(javax.servlet.ServletConfig config) throws javax.servlet.ServletException {
     Object x = config.getServletContext().getAttribute("X");
-    if ( x != null && x instanceof foam.core.X ) x_ = (foam.core.X)x;
-    
+    if ( x != null && x instanceof foam.core.X ) x_ = (foam.core.X) x;
+
+    nSpecDAO_ = (DAO) x_.get("nSpecDAO");
+    nSpecDAO_.listen(new AbstractSink() {
+      @Override
+      public void put(Object obj, Detachable sub) {
+        NSpec sp = (NSpec) obj;
+        handlerMap_.remove(sp.getName());
+      }
+    }, null);
+
     super.init(config);
   }
 
   @Override
   protected void service(final HttpServletRequest req, final HttpServletResponse resp)
-      throws ServletException, IOException
+    throws ServletException, IOException
   {
     String   path       = req.getRequestURI();
     String[] urlParams  = path.split("/");
     String   serviceKey = urlParams[2];
     Object   service    = getX().get(serviceKey);
-    DAO      nSpecDAO   = (DAO) getX().get("nSpecDAO");
-    NSpec    spec       = (NSpec) nSpecDAO.find(serviceKey);
+    NSpec    spec       = (NSpec) nSpecDAO_.find(serviceKey);
     WebAgent serv       = getWebAgent(spec, service);
     PM       pm         = new PM(this.getClass(), serviceKey);
 
     resp.setContentType("text/html");
 
+    // prevent browsers from changing content-type in response
+    resp.setHeader("X-Content-Type-Options", "nosniff");
+    // do not allow browser to cache response data
+    resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    // same as cache-control, used for backwards compatibility with HTTP/1.0
+    resp.setHeader("Pragma", "no-cache");
+    // enable xss filtering to allow browser to sanitize page if xss attack is detected
+    resp.setHeader("X-XSS-Protection", "1");
+    // protect against clickjacking attacks
+    resp.setHeader("X-Frame-Options", "deny");
+
     try {
       if ( serv == null ) {
         System.err.println("No service found for: " + serviceKey);
-        resp.setStatus(resp.SC_NOT_FOUND);
+        resp.sendError(resp.SC_NOT_FOUND, "No service found for: "+serviceKey);
       } else {
         X y = getX().put(HttpServletRequest.class, req)
             .put(HttpServletResponse.class, resp)
@@ -139,18 +162,11 @@ public class NanoRouter
         //
         // NOTE: Authentication must be last as HttpParametersWebAgent will consume the authentication parameters.
         //
-        if (spec.getAuthenticate() ) {
+        if ( spec.getAuthenticate() ) {
           service = new AuthWebAgent("service.run." + spec.getName(), (WebAgent) service);
         }
       }
     }
-
-/*
-    if ( service instanceof WebAgent ) {
-      service = new WebAgentServlet((WebAgent) service);
-      informService(service, spec);
-    }
-    */
 
     if ( service instanceof WebAgent ) return (WebAgent) service;
 
@@ -166,7 +182,6 @@ public class NanoRouter
 
   @Override
   public void start() {
-
   }
 
   @Override

@@ -6,7 +6,9 @@
 
 package foam.core;
 
-import foam.dao.pg.IndexedPreparedStatement;
+import foam.dao.jdbc.IndexedPreparedStatement;
+import foam.nanos.auth.AuthService;
+import foam.nanos.auth.AuthorizationException;
 import foam.nanos.logger.Logger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -16,8 +18,6 @@ import java.sql.SQLException;
 import java.util.Map;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public abstract class AbstractPropertyInfo
   implements PropertyInfo
@@ -41,7 +41,7 @@ public abstract class AbstractPropertyInfo
   }
 
   @Override
-  public void toCSV(foam.lib.csv.Outputter outputter, Object value) {
+  public void toXML(foam.lib.xml.Outputter outputter, Object value) {
     outputter.output(value);
   }
 
@@ -65,12 +65,17 @@ public abstract class AbstractPropertyInfo
     }
   }
 
+  public int compareTo(Object obj) {
+    int result = getName().compareTo(((PropertyInfo)obj).getName());
+    return result != 0 ? result : getClassInfo().compareTo(((PropertyInfo)obj).getClassInfo());
+  }
+
   @Override
   public boolean hardDiff(FObject o1, FObject o2, FObject diff){
     // compare the property value of o1 and o2
     // If value is Object reference, only compare reference. (AbstractObjectPropertyInfo will override hardDiff method)
     // use to compare String and primitive type
-    int same = this.comparePropertyToValue(this.get(o1), this.get(o2));
+    int same = comparePropertyToValue(this.get(o1), this.get(o2));
     //return the value of o2 if o1 and o2 are different
     if ( same != 0 ) {
       //set o2 prop into diff
@@ -99,16 +104,6 @@ public abstract class AbstractPropertyInfo
   }
 
   @Override
-  public void toXML(FObject obj, Document doc, Element objElement) {
-    Object value = this.f(obj);
-    if ( value != null && value != "" ) {
-      Element prop = doc.createElement(this.getName());
-      prop.appendChild(doc.createTextNode(value.toString()));
-      objElement.appendChild(prop);
-    }
-  }
-
-  @Override
   public void setStatementValue(IndexedPreparedStatement stmt, FObject o) throws java.sql.SQLException {
     stmt.setObject(this.get(o));
   }
@@ -129,10 +124,49 @@ public abstract class AbstractPropertyInfo
   }
 
   @Override
-  public void validate(FObject obj) throws IllegalStateException {}
+  public void validate(X x, FObject obj) throws IllegalStateException {}
+
+  @Override
+  public boolean includeInDigest() {
+    return true;
+  }
 
   @Override
   public void updateDigest(FObject obj, MessageDigest md) {}
+
+  @Override
+  public boolean includeInSignature() {
+    return true;
+  }
+
+  @Override
+  public boolean containsPII(){
+    return false;
+  }
+
+  @Override
+  public boolean containsDeletablePII(){
+    return false;
+  }
+
+  @Override
+  public void authorize(X x) {
+    if ( this.getPermissionRequired() ) {
+      AuthService auth = (AuthService) x.get("auth");
+      String simpleName = this.getClassInfo().getObjClass().getSimpleName();
+      String permission =
+        simpleName.toLowerCase() +
+        ".%s." +
+        this.getName().toLowerCase();
+
+      if (
+        ! auth.check(x, String.format(permission, "rw")) &&
+        ! auth.check(x, String.format(permission, "ro"))
+      ) {
+        throw new AuthorizationException(String.format("Access denied. User lacks permission to access property '%s' on model '%s'.", this.getName(), simpleName));
+      };
+    }
+  }
 
   @Override
   public void updateSignature(FObject obj, Signature sig) throws SignatureException {}

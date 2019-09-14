@@ -21,12 +21,14 @@ foam.CLASS({
   extends: 'foam.u2.View',
 
   requires: [
-    'foam.comics.DAOCreateController'
+    'foam.comics.DAOCreateController',
+    'foam.u2.dialog.NotificationMessage',
+    'foam.u2.DisplayMode'
   ],
 
   imports: [
-    'stack',
-    'dao'
+    'dao',
+    'stack'
   ],
 
   exports: [
@@ -34,10 +36,20 @@ foam.CLASS({
   ],
 
   css: `
-    ^ .net-nanopay-ui-ActionView {
-      background: #59aadd;
-      color: white;
-      margin-right: 4px;
+    ^ {
+      width: 1024px;
+      margin: auto;
+    }
+    ^action-container {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+    }
+    ^action-container > div > div > * + * {
+      margin-left: 8px;
+    }
+    ^detail-container {
+      overflow-x: scroll;
     }
   `,
 
@@ -56,43 +68,74 @@ foam.CLASS({
       expression: function(data$dao$of) {
         return 'Create ' + data$dao$of.name;
       }
+    },
+    {
+      class: 'String',
+      name: 'detailView'
     }
   ],
 
   reactions: [
-    [ 'data', 'finished', 'onFinished' ]
+    [ 'data', 'finished', 'onFinished' ],
+    [ 'data', 'throwError', 'onThrowError' ],
   ],
 
   methods: [
     function initE() {
-      this.
-      addClass(this.myClass()).
-      start('table').
-        start('tr').
-          start('td').style({'vertical-align': 'top', 'width': '100%'}).
-            start('span').
-              style({background: 'rgba(0,0,0,0)'}).
-              show(this.mode$.map(function(m) { return m == foam.u2.DisplayMode.RW; })).
-              start().
-                style({'padding-bottom': '4px'}).
-                add(this.data.cls_.getAxiomsByClass(foam.core.Action)).
-              end().
-            end().
-            add(this.DAOCreateController.DATA).
-          end().
-        end().
-      end();
-      /*
-      this.
-        add(this.DAOCreateController.DATA,
-            this.data.cls_.getAxiomsByClass(foam.core.Action))
-            */
+      this
+        .addClass(this.myClass())
+
+        // Container for the actions
+        .start()
+          .addClass(this.myClass('action-container'))
+
+          // Actions grouped to the left
+          .start()
+            .startContext({ data: this })
+              .tag(this.CANCEL, { buttonStyle: 'SECONDARY' })
+            .endContext()
+          .end()
+
+          // Actions grouped to the right
+          .start()
+            .start()
+              .show(this.mode$.map((m) => m === this.DisplayMode.RW))
+              .add(this.data.cls_.getAxiomsByClass(foam.core.Action))
+            .end()
+          .end()
+        .end()
+
+        // Container for the detailview
+        .start()
+          .addClass(this.myClass('detail-container'))
+          .tag({
+            class: this.detailView,
+            of: this.dao.of,
+            data$: this.data$.dot('data')
+          })
+        .end();
+    }
+  ],
+
+  actions: [
+    {
+      name: 'cancel',
+      code: function() {
+        this.stack.back();
+      }
     }
   ],
 
   listeners: [
     function onFinished() {
       this.stack.back();
+    },
+    function onThrowError() {
+      var self = this;
+      this.add(this.NotificationMessage.create({
+         message: self.data.exception.message,
+         type: 'error'
+      }));
     }
   ]
 });

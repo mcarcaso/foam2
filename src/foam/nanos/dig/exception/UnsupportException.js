@@ -15,9 +15,9 @@ foam.CLASS({
       value: '400'
     },
     {
-      class: 'String',
+      class: 'Int',
       name: 'code',
-      value: '1004'
+      value: 1004
     },
     {
       class: 'String',
@@ -30,4 +30,4 @@ foam.CLASS({
       value: 'Unsupported Accept'
     }
   ]
-})
+});

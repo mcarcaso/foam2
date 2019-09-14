@@ -103,6 +103,9 @@ foam.CLASS({
       }
       this.addContentHeaders();
 
+      this.headers['Pragma'] = 'no-cache';
+      this.headers['Cache-Control'] = 'no-cache, no-store';
+
       var self = this;
 
       var headers = new Headers();
@@ -157,6 +160,9 @@ foam.CLASS({
           break;
           case 'json':
           this.headers['Content-Type'] = 'application/json';
+          break;
+          case 'url':
+          this.headers['Content-Type'] = 'application/x-www-form-urlencoded';
           break;
         }
       }

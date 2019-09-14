@@ -24,312 +24,347 @@ foam.INTERFACE({
   methods: [
     {
       name: 'put',
-      returns: 'Promise',
-      swiftReturns: 'foam_core_FObject?',
+      async: true,
+      type: 'FObject',
       swiftThrows: true,
+      documentation: 'Inserts a new object or updates an existing one. When the object is stored successfully, the promise resolves with the newly added object.',
       args: [
         {
-          of: 'FObject',
           name: 'obj',
+          type: 'FObject'
         }
       ]
     },
     {
       name: 'put_',
-      returns: 'Promise',
-      swiftReturns: 'foam_core_FObject?',
+      async: true,
+      type: 'FObject',
       swiftThrows: true,
       args: [
         {
           name: 'x',
-          swiftType: 'Context?'
+          type: 'Context',
         },
         {
-          of: 'FObject',
           name: 'obj',
+          type: 'FObject'
         }
       ]
     },
     {
       name: 'remove',
-      returns: 'Promise',
-      swiftReturns: 'foam_core_FObject?',
+      async: true,
+      type: 'FObject',
       swiftThrows: true,
+      documentation: `Deletes a single object from the DAO.
+                      NB: Trying to remove an object which does not exist is not an error. remove() only rejects if it fails to communicate with the backend.
+      `,
       args: [
         {
-          of: 'FObject',
           name: 'obj',
+          type: 'FObject'
         }
       ]
     },
     {
       name: 'remove_',
-      returns: 'Promise',
-      swiftReturns: 'foam_core_FObject?',
+      async: true,
+      type: 'FObject',
       swiftThrows: true,
       args: [
         {
           name: 'x',
-          swiftType: 'Context?'
+          type: 'Context',
         },
         {
           name: 'obj',
-          of: 'FObject'
+          type: 'FObject'
         }
       ]
     },
     {
       name: 'find',
-      returns: 'Promise',
-      swiftReturns: 'foam_core_FObject?',
+      async: true,
+      type: 'FObject',
       swiftThrows: true,
+      documentation: `Retrieves a single object from the DAO, whose id is equal to the parameter id or if the given predicate evaluates to true.
+      If the object is found, the promise resolves with the object.
+      If the object is not found, it returns null.
+      `,
       args: [
         {
           name: 'id',
+          type: 'Object'
         }
       ],
     },
     {
       name: 'find_',
-      returns: 'Promise',
-      swiftReturns: 'foam_core_FObject?',
+      async: true,
+      type: 'FObject',
       swiftThrows: true,
       args: [
         {
           name: 'x',
-          swiftType: 'Context?'
+          type: 'Context',
         },
         {
           name: 'id',
+          type: 'Object'
         }
       ]
     },
     {
       name: 'select',
-      returns: 'Promise',
-      swiftReturns: 'foam_dao_Sink',
+      async: true,
+      type: 'foam.dao.Sink',
       swiftThrows: true,
-      args: [
+      documentation: `The primary way to read objects from a DAO is select(sink) that will retrieve a collection of results and will send them (callback) to the sink. A simple select(sink) returns all record in the DAO.
+        If you don\'t specify a Sink when calling select(), a foam.dao.ArraySink will be created by default and passed to the resolved Promise:
+      `,      args: [
         {
           name: 'sink',
-          of: 'foam.dao.Sink',
+          type: 'foam.dao.Sink',
         }
       ]
     },
     {
       name: 'select_',
-      returns: 'Promise',
-      swiftReturns: 'foam_dao_Sink',
+      async: true,
+      type: 'foam.dao.Sink',
       swiftThrows: true,
       args: [
         {
           name: 'x',
-          swiftType: 'Context?'
+          type: 'Context',
         },
         {
           name: 'sink',
-          of: 'foam.dao.Sink',
+          type: 'foam.dao.Sink',
           swiftDefaultValue: 'foam_dao_ArraySink()',
         },
         {
           name: 'skip',
-          swiftType: 'Int',
-          swiftDefaultValue: '0',
+          type: 'Long',
+          swiftDefaultValue: '0'
         },
         {
           name: 'limit',
-          swiftType: 'Int',
-          swiftDefaultValue: 'Int.max',
+          type: 'Long',
+          swiftDefaultValue: 'Int.max'
         },
         {
           name: 'order',
-          of: 'foam.mlang.order.Comparator',
-          optional: true,
+          type: 'foam.mlang.order.Comparator',
           swiftDefaultValue: 'nil',
         },
         {
           name: 'predicate',
-          of: 'foam.mlang.predicate.Predicate',
-          optional: true,
+          type: 'foam.mlang.predicate.Predicate',
           swiftDefaultValue: 'nil',
         }
       ]
     },
     {
       name: 'removeAll',
-      returns: '',
+      async: true,
       swiftThrows: true,
+      documentation: `removeAll() is very similar to select(), with the obvious exception that it removes all matching entries from the DAO instead of returning them.
+                      Be careful! myDAO.removeAll() without any filtering will delete every entry.
+      `,
       args: [ ]
     },
     {
       name: 'removeAll_',
-      returns: '',
       swiftThrows: true,
+      async: true,
       args: [
         {
           name: 'x',
-          swiftType: 'Context?'
+          type: 'Context',
         },
         {
           name: 'skip',
-          swiftType: 'Int?',
-          swiftDefaultValue: 'nil',
+          type: 'Long',
+          swiftDefaultValue: '0'
         },
         {
           name: 'limit',
-          swiftType: 'Int?',
-          swiftDefaultValue: 'nil',
+          type: 'Long',
+          swiftDefaultValue: 'Int.max'
         },
         {
           name: 'order',
-          of: 'foam.mlang.order.Comparator',
-          optional: true,
+          type: 'foam.mlang.order.Comparator',
           swiftDefaultValue: 'nil',
         },
         {
           name: 'predicate',
-          of: 'foam.mlang.predicate.Predicate',
-          optional: true,
+          type: 'foam.mlang.predicate.Predicate',
           swiftDefaultValue: 'nil',
         }
       ]
     },
     {
       name: 'listen',
-      returns: '',
-      swiftReturns: 'Detachable',
+      type: 'Detachable',
+      javaType: 'void', // TODO Java detachable support.
+      async: true,
       swiftThrows: true,
       args: [
         {
-          of: 'foam.dao.Sink',
           name: 'sink',
+          type: 'foam.dao.Sink',
           swiftDefaultValue: 'foam_dao_ArraySink()',
         },
         {
           name: 'predicate',
-          of: 'foam.mlang.predicate.Predicate',
-          optional: true,
+          type: 'foam.mlang.predicate.Predicate',
           swiftDefaultValue: 'nil',
         }
       ]
     },
     {
       name: 'listen_',
-      returns: '',
-      swiftReturns: 'Detachable',
+      type: 'Detachable',
+      javaType: 'void', // TODO Java detachable support.
+      async: true,
       swiftThrows: true,
       args: [
         {
           name: 'x',
-          swiftType: 'Context?'
+          type: 'Context',
         },
         {
           name: 'sink',
-          of: 'foam.dao.Sink',
+          type: 'foam.dao.Sink',
           swiftDefaultValue: 'foam_dao_ArraySink()',
         },
         {
           name: 'predicate',
-          of: 'foam.mlang.predicate.Predicate',
-          optional: true,
+          type: 'foam.mlang.predicate.Predicate',
           swiftDefaultValue: 'nil',
         }
       ]
     },
     {
       name: 'pipe', // TODO: return a promise? don't put pipe and listen here?
-      returns: '',
+      type: 'Void',
       swiftThrows: true,
       args: [
         {
           name: 'sink',
-          of: 'foam.dao.Sink',
+          type: 'foam.dao.Sink',
         }
       ],
     },
     {
       name: 'pipe_', // TODO: return a promise? don't put pipe and listen here?
-      returns: '',
+      type: 'Void',
       swiftThrows: true,
       args: [
         {
           name: 'x',
-          swiftType: 'Context?'
+          type: 'Context'
         },
         {
           name: 'sink',
-          of: 'foam.dao.Sink',
+          type: 'foam.dao.Sink',
         },
         {
           name: 'predicate',
-          of: 'foam.mlang.predicate.Predicate',
-          optional: true,
+          type: 'foam.mlang.predicate.Predicate',
           swiftDefaultValue: 'nil',
         }
       ]
     },
     {
       name: 'where',
-      returns: 'foam.dao.DAO',
+      type: 'foam.dao.DAO',
       swiftThrows: true,
       args: [
         {
           name: 'predicate',
-          of: 'foam.mlang.predicate.Predicate',
-          optional: true,
+          type: 'foam.mlang.predicate.Predicate',
           swiftDefaultValue: 'nil',
         }
       ]
     },
     {
       name: 'orderBy',
-      returns: 'foam.dao.DAO',
+      type: 'foam.dao.DAO',
       swiftThrows: true,
       args: [
         {
           name: 'comparator',
-          of: 'foam.mlang.order.Comparator',
+          type: 'foam.mlang.order.Comparator',
         }
       ]
     },
     {
       name: 'skip',
-      returns: 'foam.dao.DAO',
+      type: 'foam.dao.DAO',
       swiftThrows: true,
       args: [
         {
           name: 'count',
-          swiftType: 'Int'
+          type: 'Long'
         }
       ]
     },
     {
       name: 'limit',
-      returns: 'foam.dao.DAO',
+      type: 'foam.dao.DAO',
       swiftThrows: true,
       args: [
         {
           name: 'count',
-          swiftType: 'Int'
+          type: 'Long'
         }
       ]
     },
     {
       name: 'inX',
-      returns: 'foam.dao.DAO',
-      args: [ { name: 'x', swiftType: 'Context' } ]
+      type: 'foam.dao.DAO',
+      args: [
+        {
+          name: 'x',
+          type: 'Context'
+        }
+      ]
     },
     {
       name: 'cmd',
-      swiftSupport: false,
-      returns: 'obj',
-      args: [ 'obj' ]
+      async: true,
+      type: 'Any',
+      args: [
+        {
+          name: 'obj',
+          type: 'Any'
+        }
+      ]
     },
     {
       name: 'cmd_',
-      swiftSupport: false,
-      returns: 'obj',
-      args: [ 'x', 'obj' ]
+      async: true,
+      type: 'Any',
+      swiftThrows: true,
+      args: [
+        {
+          name: 'x',
+          type: 'Context'
+        },
+        {
+          name: 'obj',
+          type: 'Any'
+        }
+      ]
+    },
+    {
+      name: 'getOf',
+      flags: ['java'],
+      type: 'Class',
+      javaType: 'foam.core.ClassInfo'
     }
   ]
 });

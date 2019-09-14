@@ -11,8 +11,8 @@ import foam.crypto.sign.Signable;
 
 import java.util.Map;
 
-public interface FObject
-    extends ContextAware, Comparable, Hashable, Signable
+public interface FObject extends
+  Appendable, ContextAware, Comparable, Freezable, Hashable, Signable, Validatable
 {
   ClassInfo getClassInfo();
   FObject copyFrom(FObject obj);
@@ -20,7 +20,7 @@ public interface FObject
   FObject deepClone();
   FObject shallowClone();
   Map diff(FObject obj);
-  void freeze();
+  FObject freeze();
   boolean isFrozen();
   //Return is FObject that contain different fields between two FObjects.
   FObject hardDiff(FObject obj);

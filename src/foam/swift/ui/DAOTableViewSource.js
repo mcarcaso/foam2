@@ -32,19 +32,19 @@ foam.CLASS({
     {
       class: 'foam.dao.DAOProperty',
       name: 'dao',
-      swiftPostSet: function() {/*
+      swiftPostSet: `
 if newValue == nil { return }
 
 
 let findIndex = { (o: foam_core_FObject) -> Int? in
   let id = o.get(key: "id")
-  return self.daoContents.index(where: { (o) -> Bool in
+  return self.daoContents.firstIndex(where: { (o) -> Bool in
     let o = o as! foam_core_FObject
     return FOAM_utils.equals(id, o.get(key: "id"))
   })
 }
 
-daoSub = try? newValue!.listen(FnSink_create([
+daoSub = try! newValue!.listen(FnSink_create([
   "fn": { [weak self] str, obj, sub in
     if self == nil { return }
     if str == "add" {
@@ -63,17 +63,17 @@ daoSub = try? newValue!.listen(FnSink_create([
     } else {
       self?.onDAOUpdate()
     }
-  } as (String, Any?, Detachable) -> Void,
+  } as (String?, Any?, ${foam.core.Detachable.model_.swiftName}?) -> Void,
 ]), nil)
 
 onDetach(daoSub)
 onDAOUpdate()
-      */},
+      `
     },
     {
-      swiftType: 'Detachable?',
+      type: 'foam.core.Detachable',
       name: 'daoSub',
-      swiftPostSet: 'if let o = oldValue as? Detachable { o.detach() }',
+      swiftPostSet: `if let o = oldValue as? ${foam.core.Detachable.model_.swiftName} { o.detach() }`,
     },
     {
       swiftType: 'UITableView?',
@@ -111,7 +111,7 @@ onDAOUpdate()
       isMerged: true,
       swiftCode: function() {/*
 let sink = try? dao!.select(ArraySink_create()) as? foam_dao_ArraySink
-daoContents = sink??.array ?? []
+daoContents = sink?.array ?? []
 tableView?.reloadData()
       */},
     },
@@ -131,11 +131,11 @@ public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPat
 
 class SimpleRowView: UITableViewCell {
   let view: UIView
-  init(view: UIView, style: UITableViewCellStyle, reuseIdentifier: String?) {
+  init(view: UIView, style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     self.view = view
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    var viewMap: [String:UIView] = ["v":view]
+    let viewMap: [String:UIView] = ["v":view]
     for v in viewMap.values {
       v.translatesAutoresizingMaskIntoConstraints = false
       addSubview(v)

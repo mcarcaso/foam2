@@ -49,7 +49,7 @@ E('b').add(
   E('br'),
   '<span style="color:red">HTML Injection Attempt</span>',
   E('br')
-);
+).write();
 
 E().
   add('Entities: ').
@@ -60,7 +60,9 @@ E().
   entity('lt').
   entity('quot').
   entity("#039").
+  add("&quot;").
   tag('br').
+  br().
   write();
 
 E('b').add(
@@ -206,6 +208,7 @@ foam.CLASS({
   properties: [ 'firstName', 'lastName', 'age' ],
   actions: [
     function sayHello() {
+      debugger;
       console.log('hello');
     },
     function sayGoodbye() {
@@ -244,17 +247,6 @@ var dv2 = foam.u2.DetailView.create({
   showActions: true
 }).write();
 
-foam.u2.DetailView.create({
-  data: foam.util.Timer.create(),
-  showActions: true
-}).write();
-
-foam.u2.DetailView.create({
-  data: foam.util.Timer.create(),
-  showActions: true,
-  properties: [ foam.util.Timer.INTERVAL, foam.util.Timer.I ],
-  actions: [ foam.util.Timer.STOP, foam.util.Timer.START ]
-}).write();
 
 foam.CLASS({
   name: 'CustomDetailView',
@@ -262,15 +254,14 @@ foam.CLASS({
 
   exports: [ 'as data' ],
 
-  axioms: [
-    foam.u2.CSS.create({
-      code: function() {/*
-        important { color: red; }
-      */}
-    })
-  ],
+  css: 'important { color: red; }',
 
   properties: [
+    {
+      class: 'Date',
+      name: 'datePicker',
+      view: 'foam.u2.md.DateField'
+    },
     { class: 'Int', name: 'i' },
     'field1',
     { name: 'field2', view: { class: 'foam.u2.view.PasswordView' } },
@@ -284,7 +275,8 @@ foam.CLASS({
           'DEF',
           'XYZ'
         ]
-      }
+      },
+      value: 'ABC'
     },
     'flip'
   ],
@@ -340,6 +332,24 @@ foam.CLASS({
               this.E('br'),
               'OnKey: '
           ).
+          // Static method of implementing a 'switch' statement.
+          // Output won't change if the value of 'choices' changes.
+          call(function() {
+            switch ( this.choices ) {
+              case 'ABC': this.add('choice ABC'); break;
+              case 'DEF': this.add('choice 2'); break;
+              default: this.add('other');
+            }
+          }).
+          // Dynamic method of implementing a 'switch' statement.
+          // Output will change if the value of 'choices' changes.
+          add(this.choices$.map(function(c) {
+            switch ( c ) {
+              case 'ABC': return 'choice ABC';
+              case 'DEF': return 'choice 2';
+              default: return 'other';
+            }
+          })).
           start('div').show(this.flip$).add('flip').end().
           start('div').hide(this.flip$).add('flop').end().
           start(this.FIELD1).attrs({onKey: true}).end().
@@ -495,11 +505,7 @@ ActionDemoView.create({data: ActionDemo.create()}).write();
 foam.CLASS({
   name: 'ParentView',
   extends: 'foam.u2.Element',
-  axioms: [
-    foam.u2.CSS.create({code: `
-      ^ { background: pink }
-    `})
-  ],
+  css: '^ { background: pink }',
   methods: [ function initE() {
     this.addClass(this.myClass()).add('text');
   }]
@@ -566,12 +572,11 @@ foam.CLASS({
     function initE() {
       this.SUPER();
 
-      this.tick();
+//      this.tick();
 
       this.start('blockquote')
         .show(this.showMe$)
         .forEach(this.data.a1, function(d) {
-          console.log('*******', d);
           this.add('(', d, ')');
         })
       .end();
@@ -601,6 +606,64 @@ var sat = StringArrayTest.create({a1:['abc','def','ghi']});
 
 // foam.u2.DetailView.create({data: sat}).write(document);
 
-document.write("*********************");
-
 StringArrayTestDetailView.create({data: sat}).write(document);
+
+
+foam.CLASS({
+  name: 'TextFieldTest',
+
+  properties: [
+    {
+      class: 'Float',
+      name: 'floatViewTest',
+      precision: 2,
+      view: { class: 'foam.u2.FloatView', min: 0.01, max: 0.99, onKey: true }
+    },
+    {
+      class: 'String',
+      name: 'textField',
+    },
+    {
+      class: 'Boolean',
+      name: 'booleanField',
+    },
+    {
+      class: 'Date',
+      name: 'datePicker',
+      view: 'foam.u2.md.DateField'
+    },
+    {
+      class: 'String',
+      name: 'textArea',
+      view: { class: 'foam.u2.tag.TextArea', rows: 5, cols: 40}
+    },
+    {
+      class: 'String',
+      name: 'choiceView',
+      view: {
+        class: 'foam.u2.view.ChoiceView',
+        choices: [ 'Red', 'Green', 'Blue' ]
+      }
+    },
+    {
+      class: 'String',
+      name: 'choiceView2',
+      view: {
+        class: 'foam.u2.view.ChoiceView',
+        choices: [ [ 'R', 'Red' ], [ 'G', 'Green' ], [ 'B', 'Blue' ] ]
+      }
+    },
+    {
+      class: 'String',
+      name: 'comboBox',
+      view: {
+        class: 'foam.u2.TextField',
+        choices: [ 'Red', 'Green', 'Blue', 'Purple', 'Peach', 'Pink' ]
+      }
+    },
+  ]
+});
+
+var d = TextFieldTest.create();
+foam.u2.DetailView.create({ data: d }).write();
+foam.u2.DetailView.create({ data: d }).write();

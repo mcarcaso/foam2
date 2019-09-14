@@ -24,7 +24,7 @@ foam.CLASS({
 
   axioms: [
     // Reuse parsers if created for same 'of' class.
-    foam.pattern.Multiton.create({ property: 'of' })
+    foam.pattern.Multiton.create({property: 'of'})
   ],
 
   // TODO(braden): Support KEYWORD predicates and queries on them.
@@ -296,7 +296,7 @@ foam.CLASS({
           is: function(v) {
             return self.Eq.create({
               arg1: v[1],
-              arg2: self.True.create()
+              arg2: true
             });
           },
 
@@ -333,6 +333,10 @@ foam.CLASS({
           },
 
           equals: function(v) {
+            // TODO: Refactor so that properties provide a way to adapt the
+            // values rather than putting all of the value adaptation logic
+            // here.
+
             // v[2], the values, is an array, which might have an 'and', 'or' or
             // 'negated' property on it. The default is 'or'. The partial
             // evaluator for expressions can simplify the resulting Mlang further.
@@ -340,7 +344,10 @@ foam.CLASS({
             var values = v[2];
             // Int is actually the parent of Float and Long, so this captures all
             // numeric properties.
-            var isNum = foam.core.Int.isInstance(prop);
+            var isNum = foam.core.Int.isInstance(prop) ||
+              foam.core.Reference.isInstance(prop) &&
+              foam.core.Int.isInstance(prop.of.ID);
+
             var isFloat = foam.core.Float.isInstance(prop);
 
             var isDateField = foam.core.Date.isInstance(prop) ||
@@ -376,10 +383,22 @@ foam.CLASS({
 
               expr = self.In.create({ arg1: prop, arg2: values });
             } else if ( foam.core.Enum.isInstance(prop) ) {
-              expr = self.In.create({ arg1: prop, arg2: values });
+              // Convert string values into enum values, checking if either the
+              // enum name or label starts with the supplied value.
+              var newValues = [];
+              var e = prop.of;
+              for ( var i = 0 ; i < values.length ; i++ ) {
+                var value = values[i]
+                for ( var j = 0 ; j < e.VALUES.length ; j++ ) {
+                  var eValue = e.VALUES[j];
+                  if ( foam.String.startsWithIC(eValue.name, value) || foam.String.startsWithIC(eValue.label, value) )
+                    newValues.push(eValue);
+                }
+              }
+              expr = self.In.create({ arg1: prop, arg2: newValues });
             } else {
               expr = (v[1] === '=') ?
-                  self.InIC.create({ arg1: prop, arg2: values }) :
+                  self.Eq.create({ arg1: prop, arg2: values[0] }) :
                   self.Or.create({
                     args: values.map(function(v) {
                       return self.ContainsIC.create({ arg1: prop, arg2: v });
@@ -507,7 +526,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.parse',
-  name: 'PropertyRefinement',
+  name: 'PropertyAliasesRefinement',
   refines: 'foam.core.Property',
 
   properties: [

@@ -36,14 +36,12 @@ public class AuthMOP
    * @param name name of property
    * @return true if has access, false otherwise
    */
-  private Boolean checkPermission_(X x, AuthService authService, String name) {
+  private boolean checkPermission_(X x, AuthService authService, String name) {
     String permissionString = name == null ?
       getRootPermission_(x) :
       getRootPermission_(x) + "." + name ;
 
-    java.security.Permission permission = new AuthPermission(permissionString);
-
-    return authService.checkPermission(x, permission);
+    return authService.check(x, permissionString);
   }
 
   @Override

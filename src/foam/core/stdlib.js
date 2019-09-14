@@ -214,6 +214,7 @@ foam.LIB({
           },
           'memoize0(' + f.name + ')');
       ret.toString = function() {
+        return f.toString();
         return `foam.Function.memoize0(${f.toString()})`
       };
       ret.args = []
@@ -243,6 +244,7 @@ foam.LIB({
           },
           'memoize1(' + f.name + ')');
       ret.toString = function() {
+        return f.toString();
         return `foam.Function.memoize1(${f.toString()})`
       };
       ret.args = [];
@@ -326,12 +328,18 @@ foam.LIB({
       var ws = "\\s*";
       var comment = "(?:\\/\\*(?:.|\\s)*?\\*\\/)?";
       var skip = "(?:" + ws + comment + ws + ")*";
-      var header = "(?:function" + skip + ident + "?\\(|\\()" + skip;
-      var arg = "(?:" + ident + skip + ")";
+
+      var functionHeader = "(async )?" + "function" + skip + ident + "?" + ws + "\\(";
+
+      var arrowHeader = "\\(";
+
+      var arg = "(?:" + skip + ident + skip + ")";
       var nextArg = "(?:," + skip + arg + ")";
-      var argEnd = "\\)";
+      var argEnd = skip + "\\)";
       var headerToBody = skip + "(?:\\=\\>)?" + skip;
-      var body = "\\{((?:.|\\s)*)\\}";
+      var bodyText = "((?:.|\\s)*)";
+      var body = "\\{" + bodyText + "\\}";
+      var arrowBody = bodyText;
 
       var breakdown = {
         name: '',
@@ -360,10 +368,17 @@ foam.LIB({
         currentRegex.lastIndex = lastIndex;
       }
 
-      var match = next(header);
-      if ( ! match ) return null;
+      var isArrow = false;
 
-      if ( match[1] ) breakdown.name = match[1];
+      var match = next(functionHeader);
+      if ( match ) {
+        breakdown.async = !! match[1];
+        if ( match[2] ) breakdown.name = match[2];
+      } else {
+        match = next(arrowHeader);
+        if ( ! match ) return null;
+        isArrow = true;
+      }
 
       match = next(arg);
 
@@ -380,7 +395,9 @@ foam.LIB({
 
       if ( ! next(headerToBody) ) return null;
 
-      match = next(body);
+
+      match = isArrow ? next(arrowBody) : next(body);
+
       if ( ! match ) return null;
       breakdown.body = match[1];
 
@@ -410,13 +427,43 @@ foam.LIB({
      * Outputs:
      * Name is adam
      * Hello adam
+     * 
+     * This also supports nested properties for FObjects using the $ syntax.
+     * 
+     * Ex.
+     * foam.CLASS({
+     *   name: 'Foo',
+     *   properties: ['str']
+     * });
+     * foam.CLASS({
+     *   name: 'Bar',
+     *   properties: [
+     *     {
+     *       class: 'FObjectProperty',
+     *       of: 'Foo',
+     *       name: 'foo'
+     *     }
+     *   ]
+     * });
+     * 
+     * var bar = Bar.create({
+     *   foo: Foo.create({str: 'Hello!'})
+     * });
+     * foam.Function.withArgs(function(foo$str) {
+     *   console.log(foo$str);
+     * }, bar);
      *
+     * Outputs:
+     * Hello!
      **/
     function withArgs(fn, source, opt_self) {
       var argNames = foam.Function.argNames(fn);
       var args = [];
       for ( var i = 0 ; i < argNames.length ; i++ ) {
-        var a = source[argNames[i]];
+        var a = foam.core.FObject.isInstance(source) &&
+                argNames[i].indexOf('$') != -1 ?
+          source.slot(argNames[i]).get() :
+          source[argNames[i]];
         if ( typeof a === 'function' ) a = a.bind(source);
         args.push(a);
       }
@@ -536,7 +583,17 @@ foam.LIB({
         foam.assert(typeof str === 'string',
             'Cannot capitalize non-string values.');
         // switchFromProperyName to //SwitchFromPropertyName
+        if ( ! str ) return '';
         return str[0].toUpperCase() + str.substring(1);
+      })
+    },
+    {
+      name: 'pluralize',
+      code: foam.Function.memoize1(function(str) {
+        // Ex. Book -> Books, Currency -> Currencies, Kiss -> Kisses
+        if ( str.endsWith('s') ) return str + 'es';
+        if ( str.endsWith('y') ) return str.substring(0, str.length-1) + 'ies';
+        return str + 's';
       })
     },
     {
@@ -612,6 +669,14 @@ foam.LIB({
   methods: [
     function isInstance(o) { return Array.isArray(o); },
     function is(a, b) { return a === b; },
+    function shallowClone(o) {
+      /** Returns a shallow copy of this array. */
+      var ret = new Array(o.length);
+      for ( var i = 0 ; i < o.length ; i++ ) {
+        ret[i] = o[i];
+      }
+      return ret;
+    },
     function clone(o) {
       /** Returns a deep copy of this array and its contents. */
       var ret = new Array(o.length);
@@ -669,7 +734,40 @@ foam.LIB({
           a.splice(i, 1);
         }
       }
+    },
+    function unique(a, comparator) {
+      // Returns a sorted array with all duplicate values removed.
+      // Sorting and comparison is done by the "comparator" parameter.
+      // If "comparator" is not specified then foam.util.compare will
+      // be used.
+
+      var comparator = comparator || foam.util.compare;
+      var sorted =  a.sort(comparator);
+      return sorted.reduce(function(acc, value) {
+        if ( ! acc.length ||
+             comparator(acc[acc.length - 1], value) != 0 )
+          acc.push(value);
+
+        return acc;
+      }, []);
     }
+  ]
+});
+
+
+foam.LIB({
+  name: 'foam.RegExp',
+  methods: [
+    function isInstance(o) { return o instanceof RegExp; },
+    function is(a, b) { return a === b; },
+    function clone(o) { return new RegExp(o); },
+    function equals(a, b) { return this.compare(a, b) == 0 },
+    function compare(a, b) {
+      if ( ! foam.RegExp.isInstance(b) ) return 1;
+      return foam.String.compare(a.toString(), b.toString());
+    },
+    // Hash n & n: Truncate to 32 bits.
+    function hashCode(d) { foam.String.hashCode(d.toString()) },
   ]
 });
 
@@ -764,8 +862,34 @@ foam.LIB({
       return typeof o === 'object' && ! Array.isArray(o) &&
           ! foam.core.FObject.isInstance(o) && ! foam.Null.isInstance(o);
     },
-    function clone(o) { return o; },
-    function equals(a, b) { return a === b; },
+    function clone(o) {
+      const newObj = {};
+
+      for ( var key in o ) {
+        if ( o.hasOwnProperty(key) ) {
+          newObj[key] = foam.util.clone(o[key]);
+        }
+      }
+
+      return newObj;
+    },
+    function keys(o) { return Object.keys(o); },
+    function equals(a, b) {
+      if ( foam.Object.is(a, b) ) return true;
+      if ( ! foam.Object.isInstance(a)
+        || ! foam.Object.isInstance(b) ) return false;
+      if ( this.keys(a).length !== this.keys(b).length ) return false;
+
+      for ( var key in a ) {
+        if ( ! a.hasOwnProperty(key)
+          || ! b.hasOwnProperty(key)
+          || ! foam.util.equals(a[key], b[key])
+        ) {
+          return false;
+        }
+      }
+      return true;
+    },
     function compare(a, b) {
       if ( ! foam.Object.isInstance(b) ) return 1;
       return foam.Number.compare(a.$UID, b ? b.$UID : -1);
@@ -803,6 +927,7 @@ foam.typeOf = (function() {
   var tFObject   = foam.core.FObject;
   var tFunction  = foam.Function;
   var tObject    = foam.Object;
+  var tRegExp    = foam.RegExp;
 
   return function typeOf(o) {
     if ( tNumber.isInstance(o) )    return tNumber;
@@ -814,6 +939,7 @@ foam.typeOf = (function() {
     if ( tDate.isInstance(o) )      return tDate;
     if ( tFunction.isInstance(o) )  return tFunction;
     if ( tFObject.isInstance(o) )   return tFObject;
+    if ( tRegExp.isInstance(o) )   return tRegExp;
     return tObject;
   };
 })();
@@ -826,14 +952,15 @@ foam.typeOf = (function() {
 
 foam.core.FObject.ordinal = 0;
 foam.Date.ordinal = 1;
-foam.Object.ordinal = 2;
-foam.Function.ordinal = 3;
-foam.Array.ordinal = 4;
-foam.String.ordinal = 5;
-foam.Number.ordinal = 6;
-foam.Boolean.ordinal = 7;
-foam.Null.ordinal = 8;
-foam.Undefined.ordinal = 9;
+foam.RegExp.ordinal = 2;
+foam.Object.ordinal = 3;
+foam.Function.ordinal = 4;
+foam.Array.ordinal = 5;
+foam.String.ordinal = 6;
+foam.Number.ordinal = 7;
+foam.Boolean.ordinal = 8;
+foam.Null.ordinal = 9;
+foam.Undefined.ordinal = 10;
 
 foam.LIB({
   name: 'foam',
@@ -843,6 +970,13 @@ foam.LIB({
       var uid = '__mmethod__' + foam.next$UID() + '__';
 
       var first = true;
+
+      var name;
+      for ( var key in map ) {
+        name = map[key].name;
+        break;
+      }
+
       var f = function(arg1) {
         if ( first ) {
           for ( var key in map ) {
@@ -864,9 +998,10 @@ foam.LIB({
               'and no default method provided');
           foam.assert(
               type[uid],
-              'Missing multi-method for type ', arg1, ' map: ', map,
-              'and no deafult method provided');
+              'Missing ' + name + ' multi-method for type ', arg1, ' map: ', map,
+              'and no default method provided');
         }
+
         return ( type[uid] || opt_defaultMethod ).apply(this, arguments);
       };
       // The native toString on the function that's returned will never work on
@@ -888,6 +1023,8 @@ foam.LIB({
 
         return `foam.mmethod(${mapString}, ${defaultMethodStr})`;
       };
+      f.map = map;
+      f.defaultMethod = opt_defaultMethod;
       f.args = [];
       return f;
     }
@@ -903,7 +1040,11 @@ foam.LIB({
 
     methods: [
       function clone(o)      { return typeOf(o).clone(o); },
-      function equals(a, b)  { return typeOf(a).equals(a, b); },
+      function equals(a, b)  {
+        var typeA = typeOf(a);
+        var typeB = typeOf(b);
+        return typeA === typeB && typeA.equals(a, b);
+      },
       function is(a, b) {
         var aType = typeOf(a);
         var bType = typeOf(b);
@@ -925,13 +1066,19 @@ foam.LIB({
       function flagFilter(flags) {
         return function(a) {
           if ( ! flags ) return true;
-          if ( ! a.flags ) return true;
+          if ( ! a.flags || ! a.flags.length ) return true;
           for ( var i = 0, f; f = flags[i]; i++ ) {
             if ( a.flags.indexOf(f) != -1 ) return true;
           }
           return false;
         }
       },
+      function isPrimitive(value) {
+        return typeof value === 'string' ||
+          typeof value === 'number' ||
+          typeof value === 'boolean' ||
+          foam.Date.isInstance(value);
+      }
     ]
   });
 })();
@@ -954,31 +1101,6 @@ foam.LIB({
 
       var pkg = foam.package.ensurePackage(global, cls.package);
       pkg[cls.name] = cls;
-
-      foam.package.triggerClass_(cls);
-    },
-
-    function waitForClass(cls) {
-      if ( foam.lookup(cls, true) ) return Promise.resolve(foam.lookup(cls));
-
-      foam.package.__pending = foam.package.__pending || {};
-      foam.package.__pending[cls] = foam.package.__pending[cls] || [];
-
-      return new Promise(function(resolve, reject) {
-        foam.package.__pending[cls].push(resolve);
-      });
-    },
-
-    function triggerClass_(cls) {
-      if ( ! foam.package.__pending || ! foam.package.__pending[cls.id] ) return;
-
-      var pending = foam.package.__pending[cls.id];
-
-      foam.package.__pending[cls.id] = undefined;
-
-      for ( var i = 0 ; i < pending.length ; i++ ) {
-        pending[i](cls);
-      }
     },
 
     /**
@@ -998,8 +1120,6 @@ foam.LIB({
             if ( tmp ) return tmp;
 
             tmp = thunk();
-
-            foam.package.triggerClass_(tmp);
 
             return tmp;
           }

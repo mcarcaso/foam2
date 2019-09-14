@@ -28,92 +28,29 @@ foam.CLASS({
   ]
 });
 
-
 foam.CLASS({
   package: 'foam.u2',
   name: 'Tabs',
-  extends: 'foam.u2.Element',
-
-  requires: [ 'foam.u2.Tab' ],
-
+  extends: 'foam.u2.UnstyledTabs',
   css: `
-    ^ {
-      display: block;
+    ^tabRow {
+      height: 48px;
+      border-bottom: 1px solid #e7eaec;
+      background-color: white;
     }
-    ^tabRow { height: 37px; }
     ^tab {
-      background: lightgray;
-      border-bottom: none;
-      border-top: 1px solid black;
-      border-left: 1px solid black;
-      border-right: 1px solid black;
-      border-top-right-radius: 4px;
-      border-top-left-radius: 4px;
-      float: left;
-      padding: 6px;
+      border-top: 3px solid transparent;
+      border-bottom: 3px solid transparent;
+      display: inline-block;
+      height: 48px;
+      box-sizing: border-box;
+      padding: 13px 16px;
+    }
+    ^tab:hover {
+      cursor: pointer;
     }
     ^tab.selected {
-      background: white;
-      position: relative;
-      z-index: 1;
-    }
-    ^content {
-      background: white;
-      border: 1px solid black;
-      box-shadow: 3px 3px 6px 0 gray;
-      left: -4px;
-      margin: 4px;
-      padding: 0;
-      position: relative;
-      top: -13px;
+      border-bottom: 3px solid /*%PRIMARY3%*/ #406dea;
     }
   `,
-
-  properties: [
-    /* not used
-    {
-      name: 'tabs',
-      factory: function() { return []; }
-    },
-    */
-    {
-      name: 'selected',
-      postSet: function(o, n) {
-        if ( o ) o.selected = false;
-        n.selected = true;
-      }
-    },
-    'tabRow'
-  ],
-
-  methods: [
-    function init() {
-      this.
-        addClass(this.myClass()).
-        start('div', null, this.tabRow$).
-          addClass(this.myClass('tabRow')).
-        end().
-        start('div', null, this.content$).
-          addClass(this.myClass('content')).
-        end();
-    },
-
-    function add(tab) {
-      if ( this.Tab.isInstance(tab) ) {
-
-        if ( ! this.selected ) this.selected = tab;
-
-        this.tabRow.start('span').
-          addClass(this.myClass('tab')).
-          enableClass('selected', tab.selected$).
-          on('click', function() { this.selected = tab; }.bind(this)).
-          add(tab.label).
-        end();
-
-        tab.shown$ = tab.selected$;
-      }
-
-      this.SUPER(tab);
-    }
-  ]
 });

@@ -32,6 +32,10 @@ public class ClassInfoImpl
     return this;
   }
 
+      public int compareTo(Object obj) {
+    return getId().compareTo(((ClassInfo)obj).getId());
+  }
+
   public Class getObjClass() {
     return class_;
   }
@@ -61,6 +65,7 @@ public class ClassInfoImpl
     return parent_;
   }
 
+
   public ClassInfo addAxiom(Axiom a) {
     // TODO: Should all axioms have setClassInfo? If not, create an interface
     // that has setClassInfo and make PropertyInfo implement it.
@@ -79,7 +84,7 @@ public class ClassInfoImpl
 
   @Override
   public Object newInstance() throws IllegalAccessException, InstantiationException {
-    return class_.getClass().newInstance();
+    return class_.newInstance();
   }
 
   public List getAxioms() {

@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-
 foam.CLASS({
   package: 'foam.nanos.u2.navigation',
   name: 'UserView',
@@ -63,7 +62,6 @@ foam.CLASS({
     ^ h1 {
       font-size: 16px;
       font-weight: 100;
-      color: white;
     }
     ^carrot {
       width: 0;
@@ -128,7 +126,7 @@ foam.CLASS({
       padding-left: 50px;
       font-size: 14px;
       font-weight: 300;
-      color: #093649;
+      color: /*%BLACK%*/ #1e1f21;
       line-height: 25px;
     }
     ^ .foam-nanos-menu-SubMenuView-inner > div:last-child {
@@ -138,8 +136,7 @@ foam.CLASS({
       color: #c82e2e;
     }
     ^ .foam-nanos-menu-SubMenuView-inner > div:hover {
-      background-color: %SECONDARYCOLOR%;
-      color: white;
+      background-color: /*%PRIMARY3%*/ #406dea;
       cursor: pointer;
     }
     ^ .foam-nanos-menu-SubMenuView-inner::before {
@@ -147,7 +144,6 @@ foam.CLASS({
       position: absolute;
       height: 0;
       width: 0;
-      border: 8px solid transparent;
       border-bottom-color: white;
       -ms-transform: translate(110px, -16px);
       transform: translate(110px, -16px);
@@ -165,7 +161,7 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'showCountUnread',
-      expression: (countUnread) => countUnread > 0,
+      expression: (countUnread) => countUnread > 0
     },
     {
       name: 'userCur',
@@ -176,13 +172,13 @@ foam.CLASS({
   methods: [
     function initE() {
       this.notificationDAO.on.sub(this.onDAOUpdate);
-      this.user.id$.sub(this.onDAOUpdate);
+      this.user$.dot('id').sub(this.onDAOUpdate);
+      this.group$.dot('id').sub(this.onDAOUpdate);
       this.onDAOUpdate();
+
       this
         .addClass(this.myClass())
-
-         //currency menu
-         this.otherViews();
+        this.otherViews();  //currency menu
 
         // The notifications container
         this.start('div')
@@ -197,15 +193,15 @@ foam.CLASS({
           .on('click', this.changeToNotificationsPage.bind(this))
 
           .start('img')
-            .attrs({ src: 'images/bell.png' })
+            .attrs({src: 'images/bell.png'})
           .end()
 
           // The unread notification count bubble. Only shown if there is at
           // least one unread notification.
           .start('span')
             .addClass('dot')
-            .add( this.countUnread$ )
-            .show( this.showCountUnread$ )
+            .add(this.countUnread$)
+            .show(this.showCountUnread$)
           .end()
         .end()
 
@@ -225,22 +221,16 @@ foam.CLASS({
         .end();
     },
 
-    /** Change the application page to #notifications */
     function changeToNotificationsPage() {
-      this.menuDAO
-          .where(this.EQ(this.Menu.ID, 'notifications'))
-          .select()
-          .then((queryResult) => {
-            if ( queryResult.length === 0 ) {
-              throw Error('No menu item in menuDAO with id "notifications"');
-            }
-            var notificationMenu = queryResult.array[0];
-            notificationMenu.launch();
-          })
-          .catch((err) => console.error(err));
+      this.menuDAO.find('notifications').then((queryResult) => {
+        if ( queryResult == null ) {
+          throw new Error('No menu in menuDAO with id "notifications".');
+        }
+        queryResult.launch();
+      });
     },
     function otherViews() {
-     
+
     }
   ],
 
@@ -249,7 +239,8 @@ foam.CLASS({
       name: 'onDAOUpdate',
       isFramed: true,
       code: function() {
-        var group = this.user.group;
+        if ( ! this.group || ! this.user ) return;
+        var group = this.group.id;
         var id    = this.user.id;
         if ( id != 0 ) {
           this.notificationDAO.where(
@@ -261,11 +252,11 @@ foam.CLASS({
                 this.EQ(this.Notification.BROADCASTED, true)
               ),
               this.NOT(this.IN(
-                  this.Notification.NOTIFICATION_TYPE,
-                  this.user.disabledTopics))
+                this.Notification.NOTIFICATION_TYPE,
+                this.user.disabledTopics))
             )
           ).select(this.COUNT()).then((count) => {
-              this.countUnread = count.value;
+            this.countUnread = count.value;
           });
         }
       }

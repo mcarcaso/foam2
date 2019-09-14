@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2019 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 foam.INTERFACE({
   package: 'foam.swift.type',
   name: 'Type',
@@ -13,7 +19,7 @@ foam.INTERFACE({
       args: [
         { name: 'o' },
       ],
-      swiftReturns: 'Bool',
+      type: 'Boolean',
     },
     {
       name: 'compare',
@@ -21,7 +27,7 @@ foam.INTERFACE({
         { name: 'o1' },
         { name: 'o2' },
       ],
-      swiftReturns: 'Int',
+      swiftType: 'Int',
     },
   ],
 });

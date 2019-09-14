@@ -29,9 +29,13 @@ foam.CLASS({
   axioms: [
     {
       installInClass: function(cls) {
-        cls.createView = function(spec, args, self, ctx) {
+        cls.createView = function(spec, args, self, ctx, disableWarning) {
+          if ( foam.core.FObject.isInstance(ctx) ) {
+            ctx = ctx.__subContext__;
+          }
+
           if ( foam.u2.Element.isInstance(spec) ) {
-            if ( foam.debug ) {
+            if ( foam.debug && ! disableWarning ) {
               console.warn('Warning: Use of literal View as ViewSpec: ', spec.cls_.id);
             }
             return spec.copyFrom(args);
@@ -44,16 +48,22 @@ foam.CLASS({
             return spec.toE(args, ctx);
 
           if ( foam.Function.isInstance(spec) )
-            return foam.u2.ViewSpec.createView(spec.call(self, args, ctx), args, self, ctx);
+            return foam.u2.ViewSpec.createView(spec.call(self, args, ctx, true), args, self, ctx, true);
 
           if ( foam.Object.isInstance(spec) ) {
-            var ret = spec.create ?
-                spec.create(args, ctx) :
-                ctx.lookup(spec.class).create(spec, ctx).copyFrom(args || {});
+            var ret;
+
+            if ( spec.create ) {
+              ret = spec.create(args, ctx);
+            } else {
+              var cls = ctx.lookup(spec.class);
+              if ( ! cls ) foam.assert(false, 'ViewSpec specifies unknown class: ', spec.class);
+              ret = cls.create(spec, ctx).copyFrom(args || {});
+            }
 
             foam.assert(
-                foam.u2.Element.isInstance(ret) || ret.toE,
-                'ViewSpec result must extend foam.u2.Element or be toE()-able.');
+              foam.u2.Element.isInstance(ret) || ret.toE,
+              'ViewSpec result must extend foam.u2.Element or be toE()-able.');
 
             return ret;
           }
@@ -84,9 +94,11 @@ foam.CLASS({
       }
     ],
     */
+    ['view', { class: 'foam.u2.view.MapView' }],
     [ 'adapt', function(_, spec, prop) {
       return foam.String.isInstance(spec) ? { class: spec } : spec ;
-    } ]
+    } ],
+    [ 'displayWidth', 80 ]
     /*
     [ 'toJSON', function(value) {
       Output as string if 'class' is only defined value.

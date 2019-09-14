@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.HashMap;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class TraceWebAgent
   implements WebAgent
@@ -29,11 +30,13 @@ public class TraceWebAgent
     Logger              logger = (Logger) x.get("logger");
 
     try {
-      PrintWriter        out = x.get(PrintWriter.class);
-      HttpServletRequest req = x.get(HttpServletRequest.class);
-      HttpParameters     params = x.get(HttpParameters.class);
-      Map                kv  = new HashMap();
+      PrintWriter         out = x.get(PrintWriter.class);
+      HttpServletRequest  req = x.get(HttpServletRequest.class);
+      HttpServletResponse resp = x.get(HttpServletResponse.class);
+      HttpParameters      params = x.get(HttpParameters.class);
+      Map                 kv  = new HashMap();
 
+      resp.setContentType("text/html");
       out.println("<HTML>\n" +
           "<HEAD><TITLE>trace</TITLE></HEAD>\n" +
           "<BODY BGCOLOR=\"#FDF5E6\">\n" +
@@ -86,9 +89,9 @@ public class TraceWebAgent
       out.println("<BR>\n" +
                   "<TABLE BORDER=1 ALIGN=\"CENTER\">\n" +
                   "<TR BGCOLOR=\"#FFAD00\">\n" +
-                  "<TH>Nanopay Parameter Name<TH>Parameter Value");
+                  "<TH>Parameter Name<TH>Parameter Value");
 
-      // Nanopay parameters
+      // Parameters
       if ( params != null ) {
         out.println("<TR><TD>WebAgent Parameters");
         out.println("    <TD>" + params);
@@ -99,7 +102,7 @@ public class TraceWebAgent
       out.println("</BODY></HTML>");
 
       StringWriter stringWriter = new StringWriter();
-      Outputter outputter = new Outputter(new PrintWriter(stringWriter), OutputterMode.FULL);
+      Outputter outputter = new Outputter(x, new PrintWriter(stringWriter));
       outputter.output(kv);
       logger.info("TraceWebAgent", stringWriter);
 

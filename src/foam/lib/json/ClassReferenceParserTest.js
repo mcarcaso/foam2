@@ -19,29 +19,33 @@ foam.CLASS({
       name: 'runTest',
       javaCode: `
         String input = "{\\"class\\":\\"__Class__\\",\\"forClass_\\":\\"foam.nanos.auth.User\\"}";
-        ClassReferenceParserTest_StringWithValidClassReference(x, input, User.class, "Parsed User Class reference parser successfully");;
+        ClassReferenceParserTest_StringWithValidClassReference(
+          x, input, User.getOwnClassInfo(), "Parsed long form modelled Class reference parser successfully");
+          
+        String input2 = "\\"foam.nanos.auth.User\\"";
+        ClassReferenceParserTest_StringWithValidClassReference(
+          x, input2, User.getOwnClassInfo(), "Parsed short form modelled Class reference parser successfully");
       `
     },
     {
       name: 'ClassReferenceParserTest_StringWithValidClassReference',
       args: [
         {
-          class: 'Object',
           name: 'x',
-          javaType: 'foam.core.X'
+          type: 'Context'
         },
         {
-          class: 'String',
-          name: 'data'
+          name: 'data',
+          type: 'String'
         },
         {
-          class: 'Object',
           name: 'expected',
-          javaType: 'Class'
+          // NOTE: ClassReferenceParser returns classInfo of the modelled class instead of the actual Java class.
+          type: 'Class'
         },
         {
-          class: 'String',
-          name: 'message'
+          name: 'message',
+          type: 'String'
         },
       ],
       javaCode: `

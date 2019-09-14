@@ -1,18 +1,21 @@
 #!/usr/bin/env node
 
-var dir = __dirname;
-var root = dir + '/../..';
+global.FOAM_FLAGS = {
+  web: true,
+  js: true,
+  debug: true,
+};
 
-require(root + '/src/foam.js');
+require(__dirname + '/../../src/foam.js');
 
-var classloader = foam.__context__.classloader;
+foam.__context__.classloader.addClassPath(__dirname + '/src');
 
-classloader.addClassPath(dir + '/src');
-
-classloader.load('foam.tools.Build').then(function() {
-  var b = foam.tools.Build.create({
-    modelId: 'demo.build.ModelToBuild',
-    root: dir + '/build/',
-  });
-  b.execute();
+Promise.all([
+  foam.__context__.classloader.load('foam.build.Builder'),
+  foam.__context__.classloader.load('demo.build.ModelToBuild'),
+]).then(function(cls) {
+  foam.build.Builder.create({
+    targetFile: __dirname + '/foam-bin.js',
+    enabledFeatures: ['web', 'js'],
+  }).execute()
 });

@@ -58,7 +58,7 @@ foam.CLASS({
       vertical-align: top;
       margin-top: 5px;
     }
-    ^ .net-nanopay-ui-ActionView-uploadImage {
+    ^ .foam-u2-ActionView-uploadImage {
       width: 136px;
       height: 40px;
       background: transparent;
@@ -77,17 +77,17 @@ foam.CLASS({
       font-size: 14px;
       font-weight: 300;
       letter-spacing: 0.2px;
-      color: %SECONDARYCOLOR%;
+      color: /*%PRIMARY3%*/ #406dea;
     }
     ^ .uploadRestriction {
       margin-top: 9px;
       font-size: 10px;
       font-weight: 300;
       letter-spacing: 0.2px;
-      color: #093649;
+      color: /*%BLACK%*/ #1e1f21;
     }
     ^ .box-for-drag-drop {
-      border: dashed 4px #edf0f5;
+      border: dashed 4px /*%GREY5%*/ #f5f7fa;
       background:white;
       height: 100px;
       padding: 10px 10px;
@@ -135,23 +135,19 @@ foam.CLASS({
       var self = this;
       this
         .addClass(this.myClass())
-        .start('div').addClass((this.boxHidden)?'boxless-for-drag-drop' :this.dragActive$.map(function (drag) {
+        .start('div').addClass((this.boxHidden)?'boxless-for-drag-drop' :this.dragActive$.map(function(drag) {
           return drag ? 'box-for-drag-drop' : 'boxless-for-drag-drop';
         }))
-          .add(this.slot(function (ProfilePictureImage) {
+          .add(this.slot(function(ProfilePictureImage) {
             return this.E('img').addClass('shopperImage')
             .attrs({
-              src: this.ProfilePictureImage$.map(function (ProfilePictureImage) {
+              src: this.ProfilePictureImage$.map(function(ProfilePictureImage) {
                 if ( ProfilePictureImage && ProfilePictureImage.data ) {
                   var blob = ProfilePictureImage.data;
-                  var sessionId = localStorage['defaultSession'];
                   if ( self.BlobBlob.isInstance(blob) )
                     return URL.createObjectURL(blob.blob);
 
                   var url = '/service/httpFileService/' + ProfilePictureImage.id;
-                  // attach session id if available
-                  if ( sessionId )
-                    url += '?sessionId=' + sessionId;
                   return url;
                 }
 

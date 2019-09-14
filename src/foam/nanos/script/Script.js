@@ -45,31 +45,21 @@ foam.CLASS({
 
   constants: [
     {
-      type: 'int',
       name: 'MAX_OUTPUT_CHARS',
-      value: 20000,
+      type: 'Integer',
+      value: 20000
     },
     {
-      type: 'int',
       name: 'MAX_NOTIFICATION_OUTPUT_CHARS',
-      value: 200,
+      type: 'Integer',
+      value: 200
     }
   ],
 
   properties: [
     {
       class: 'String',
-      name: 'id',
-      tableCellFormatter: function(value) {
-        this.start()
-          .style({
-            'overflow': 'hidden',
-            'max-width': '25ch',
-            'min-width': '25ch',
-            'text-overflow': 'ellipsis'
-          }).add(value)
-        .end();
-      }
+      name: 'id'
     },
     {
       class: 'Boolean',
@@ -81,44 +71,27 @@ foam.CLASS({
           .add(value ? 'Y' : 'N')
         .end();
       },
+      tableWidth: 90,
       value: true
     },
     {
       class: 'String',
       name: 'description',
-      documentation: 'Description of the script.',
-      tableCellFormatter: function(value) {
-        this.start()
-          .style({
-            'overflow': 'hidden',
-            'max-width': '25ch',
-            'min-width': '25ch',
-            'text-overflow': 'ellipsis'
-          }).add(value)
-        .end();
-      }
+      documentation: 'Description of the script.'
     },
     {
       class: 'DateTime',
       name: 'lastRun',
       documentation: 'Date and time the script ran last.',
-      visibility: 'RO'
+      visibility: 'RO',
+      tableWidth: 140
     },
     {
-      class: 'Long',
+      class: 'Duration',
       name: 'lastDuration',
       documentation: 'Date and time the script took to complete.',
       visibility: 'RO',
-      tableCellFormatter: function(value) {
-        this.start()
-          .style({
-            'overflow': 'hidden',
-            'max-width': '5ch',
-            'min-width': '5ch',
-            'text-overflow': 'ellipsis'
-          }).add(value)
-        .end();
-      }
+      tableWidth: 125
     },
     /*
     {
@@ -134,7 +107,8 @@ foam.CLASS({
       class: 'Boolean',
       name: 'server',
       documentation: 'Runs on server side if enabled.',
-      value: true
+      value: true,
+      tableWidth: 80
     },
     {
       class: 'foam.core.Enum',
@@ -143,15 +117,14 @@ foam.CLASS({
       documentation: 'Status of script.',
       visibility: 'RO',
       value: 'UNSCHEDULED',
-      javaValue: 'ScriptStatus.UNSCHEDULED'
+      javaValue: 'ScriptStatus.UNSCHEDULED',
+      tableWidth: 100
     },
     {
       class: 'String',
       name: 'code',
       view: {
-        class: 'foam.u2.tag.TextArea',
-        rows: 20, cols: 80,
-        css: { 'font-family': 'monospace' }
+        class: 'io.c9.ace.Editor'
       }
     },
     {
@@ -160,7 +133,7 @@ foam.CLASS({
       visibility: 'RO',
       view: {
         class: 'foam.u2.tag.TextArea',
-        rows: 12, cols: 80,
+        rows: 12, cols: 120,
         css: { 'font-family': 'monospace' }
       },
       preSet: function(_, newVal) {
@@ -182,7 +155,7 @@ foam.CLASS({
     {
       class: 'String',
       name: 'notes',
-      view: { class: 'foam.u2.tag.TextArea', rows: 4, cols: 80 }
+      view: { class: 'foam.u2.tag.TextArea', rows: 4, cols: 144 }
     }
   ],
 
@@ -190,9 +163,9 @@ foam.CLASS({
     {
       name: 'createInterpreter',
       args: [
-        { name: 'x', javaType: 'foam.core.X' }
+        { name: 'x', type: 'Context' }
       ],
-      javaReturns: 'Interpreter',
+      javaType: 'Interpreter',
       javaCode: `
         Interpreter shell = new Interpreter();
 
@@ -201,6 +174,7 @@ foam.CLASS({
           shell.set("x", x);
           shell.eval("runScript(String name) { script = x.get(\\"scriptDAO\\").find(name); if ( script != null ) eval(script.code); }");
           shell.eval("foam.core.X sudo(String user) { foam.util.Auth.sudo(x, (String) user); }");
+          shell.eval("foam.core.X sudo(Object id) { foam.util.Auth.sudo(x, id); }");
         } catch (EvalError e) {}
 
         return shell;
@@ -212,20 +186,24 @@ foam.CLASS({
         var log = function() {
           this.output += Array.from(arguments).join('') + '\n';
         }.bind(this);
-        with ( { log: log, print: log, x: this.__context__ } )
+        try {
+          with ({ log: log, print: log, x: this.__context__ })
           return Promise.resolve(eval(this.code));
+        } catch (err) {
+          this.output += err;
+          return Promise.reject(err);
+        }
       },
       args: [
         {
-          name: 'x', javaType: 'foam.core.X'
+          name: 'x', type: 'Context'
         }
       ],
-      javaReturns: 'void',
       javaCode: `
         ByteArrayOutputStream baos  = new ByteArrayOutputStream();
         PrintStream           ps    = new PrintStream(baos);
         Interpreter           shell = createInterpreter(x);
-        PM                    pm    = new PM(this.getClass(), getId());
+        PM                    pm    = new PM.Builder(x).setClassType(Script.getOwnClassInfo()).setName(getId()).build();
 
         // TODO: import common packages like foam.core.*, foam.dao.*, etc.
         try {
@@ -280,6 +258,8 @@ foam.CLASS({
   actions: [
     {
       name: 'run',
+      tableWidth: 70,
+      confirmationRequired: true,
       code: function() {
         var self = this;
         this.output = '';
@@ -295,6 +275,10 @@ foam.CLASS({
           this.status = this.ScriptStatus.RUNNING;
           this.runScript().then(() => {
             this.status = this.ScriptStatus.UNSCHEDULED;
+            this.scriptDAO.put(this);
+          }).catch((err) => {
+            console.log(err);
+            this.status = this.ScriptStatus.ERROR;
             this.scriptDAO.put(this);
           });
         }

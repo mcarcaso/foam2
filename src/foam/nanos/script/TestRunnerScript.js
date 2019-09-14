@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2019 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 foam.CLASS({
   package: 'foam.nanos.script',
   name: 'TestRunnerScript',
@@ -46,6 +52,11 @@ foam.CLASS({
     {
       name: 'passedTests',
       class: 'Int'
+    },
+    {
+      name: 'failedTestsList',
+      class: 'FObjectArray',
+      of: 'Test'
     }
   ],
 
@@ -54,10 +65,9 @@ foam.CLASS({
       name: 'runScript',
       args: [
         {
-          name: 'x', javaType: 'foam.core.X'
+          name: 'x', type: 'Context'
         }
       ],
-      javaReturns: 'void',
       javaCode: `
         // turn off logging to get rid of clutter.
         LogLevelFilterLogger loggerFilter = (LogLevelFilterLogger) x.get("logger");
@@ -69,16 +79,27 @@ foam.CLASS({
         ArraySink tests = (ArraySink) testDAO.select(new ArraySink());
         List testArray = tests.getArray();
 
+        List<String> selectedTests = null;
+        if ( ! SafetyUtil.isEmpty(System.getProperty("foam.tests")) ){
+          String t = System.getProperty("foam.tests");
+          selectedTests = Arrays.asList(t.split(","));
+        }
+
         for ( int i = 0; i < testArray.size(); i ++ ) {
           Test test = (Test) testArray.get(i);
           test = (Test) test.fclone();
           if ( ! test.getEnabled() ) {
             continue;
           }
-          if ( test.getServer() ) {
-            runServerSideTest(x, test);
+
+          if ( selectedTests != null ) {
+            if ( selectedTests.contains(test.getId()) ) {
+              runTests(x, test);
+            } else {
+              continue;
+            }
           } else {
-            // TODO: Run client side tests in a headless browser.
+            runTests(x, test);
           }
         }
 
@@ -89,19 +110,48 @@ foam.CLASS({
 
         // Exit with the appropriate output.
         if ( getFailedTests() > 0 ) {
+          System.out.println(RED_COLOR + " FAILED TESTS: " + RESET_COLOR);
+          Test[] failedTests = getFailedTestsList();
+          for (Test test: failedTests ) {
+            System.out.println(test.getId());
+            String outputs[] = test.getOutput().split("\\n");
+            for( String output: outputs ) {
+              if ( output.startsWith("FAILURE") ) {
+                System.out.println("\\t" + RED_COLOR + " "+ CROSS_MARK + " " + output + " " + RESET_COLOR);
+              }
+            }
+          }
           System.exit(1);
         }
         System.exit(0);
       `
     },
     {
+      name: 'runTests',
+      args: [
+        {
+          name: 'x', type: 'Context'
+        },
+        {
+          name: 'test', type: 'foam.nanos.test.Test'
+        }
+      ],
+      javaCode: `
+        if ( test.getServer() ) {
+          runServerSideTest(x, test);
+        } else {
+          // TODO: Run client side tests in a headless browser.
+        }
+      `
+    },
+    {
       name: 'runServerSideTest',
       args: [
         {
-          name: 'x', javaType: 'foam.core.X'
+          name: 'x', type: 'Context'
         },
         {
-          name: 'test', javaType: 'Test'
+          name: 'test', type: 'foam.nanos.test.Test'
         }
       ],
       javaCode: `
@@ -110,32 +160,50 @@ foam.CLASS({
           test.runScript(x);
           setPassedTests(getPassedTests() + (int) test.getPassed());
           setFailedTests(getFailedTests() + (int) test.getFailed());
+          if ( (int) test.getFailed() > 0) {
+            addToFailedTestsList(test);
+          }
           printOutput(test);
         }
         catch ( Exception e ) {
           e.printStackTrace();
           setFailedTests(getFailedTests() + 1);
+          addToFailedTestsList(test);
         }
       `
+    },
+    {
+      name: 'addToFailedTestsList',
+      args: [
+        {
+          name: 'test', javaType: 'Test'
+        }
+      ],
+      javaCode: `
+        Test[] failedTests = getFailedTestsList();
+        Test[] temp = new Test[failedTests.length+1];
+        for ( int i = 0;i < failedTests.length; i++ ) {
+          temp[i] = failedTests[i];
+        }
+        temp[failedTests.length]=test;
+        setFailedTestsList(temp);`
     },
     {
       name: 'printBold',
       args: [
         {
-          name: 'message', javaType: 'String'
+          name: 'message', type: 'String'
         }
       ],
-      javaReturns: 'void',
       javaCode: 'System.out.println("\\033[0;1m" + message + RESET_COLOR);'
     },
     {
       name: 'printOutput',
       args: [
         {
-          name: 'test', javaType: 'Test'
+          name: 'test', type: 'foam.nanos.test.Test'
         }
       ],
-      javaReturns: 'void',
       javaCode: `
         String outputs[] = test.getOutput().split("\\n");
         for( String output: outputs ) {

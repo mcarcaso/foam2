@@ -9,10 +9,12 @@ foam.CLASS({
   name: 'GoogleTOTPAuthService',
   extends: 'foam.nanos.auth.twofactor.AbstractTOTPAuthService',
 
+  documentation: 'Google Authenticator Time-based One-time Password Service (TOTP)',
+
   javaImports: [
     'com.google.common.io.BaseEncoding',
     'foam.dao.DAO',
-    'foam.nanos.app.AppConfig',
+    'foam.nanos.app.EmailConfig',
     'foam.nanos.auth.User',
     'foam.nanos.session.Session',
     'foam.util.SafetyUtil',
@@ -24,32 +26,34 @@ foam.CLASS({
     {
       name: 'KEY_SIZE',
       value: 10,
-      type: 'int'
+      type: 'Integer'
     },
     {
       name: 'STEP_SIZE',
       value: 30 * 1000,
-      type: 'long'
+      type: 'Long'
     },
     {
       name: 'WINDOW',
       value: 3,
-      type: 'int'
+      type: 'Integer'
     }
   ],
 
   properties: [
-    ['algorithm', 'SHA1' ]
+    [ 'algorithm', 'SHA1' ]
   ],
 
   methods: [
     {
-      name: 'generateKey',
+      name: 'generateKeyAndQR',
       javaCode: `
-        User user = (User) x.get("user");
+        User user = (User) (x.get("agent") != null ?
+          x.get("agent") :
+          x.get("user")) ;
         DAO userDAO = (DAO) x.get("localUserDAO");
 
-        // fetch from user dao to get secret key
+        // fetch from localUserDAO to get updated user before setting TwoFactorSecret
         user = (User) userDAO.find(user.getId());
 
         // generate secret key, encode as base32 and store
@@ -61,28 +65,40 @@ foam.CLASS({
         user.setTwoFactorSecret(key);
         userDAO.put_(x, user);
 
-        if ( ! generateQrCode ) {
-          return key;
-        }
-
         try {
-          AppConfig config = (AppConfig) x.get("appConfig");
-          String path = String.format("/%s:%s", config.getName(), user.getEmail());
-          String query = String.format("secret=%s&issuer=%s&algorithm=%s", key, config.getName(), getAlgorithm());
+          EmailConfig service = (EmailConfig) x.get("emailConfig");
+          String name = service == null ? "FOAM" : service.getDisplayName();
+          String path = String.format("/%s:%s", name, user.getEmail());
+          String query = String.format("secret=%s&issuer=%s&algorithm=%s", key, name, getAlgorithm());
           URI uri = new URI("otpauth", "totp", path, query, null);
-          return "data:image/svg+xml;charset=UTF-8," + QrCode.encodeText(uri.toASCIIString(), QrCode.Ecc.MEDIUM).toSvgString(0);
+
+          return new OTPKey.Builder(x)
+            .setKey(key)
+            .setQrCode("data:image/svg+xml;charset=UTF-8,"+
+              QrCode.encodeText(uri.toASCIIString(), QrCode.Ecc.MEDIUM).toSvgString(0))
+            .build();
         } catch ( Throwable t ) {
-          throw new RuntimeException(t);
+          throw new RuntimeException("Error when generating QR code.", t);
         }
       `
     },
     {
       name: 'verifyToken',
       javaCode: `
-        long code = Long.parseLong(token, 10);
-        User user = (User) x.get("user");
-        DAO userDAO = (DAO) x.get("localUserDAO");
-        DAO sessionDAO = (DAO) x.get("sessionDAO");
+        long code;
+        try {
+          code = Long.parseLong(token, 10);
+        } catch(Exception e){
+          return false;
+        }
+
+        User user      = (User) (x.get("agent") != null ?
+          x.get("agent") :
+          x.get("user")) ;
+        DAO userDAO    = (DAO) x.get("localUserDAO");
+        DAO sessionDAO = (DAO) x.get("localSessionDAO");
+
+        String sessionUser = (String) ( x.get("agent") != null ? "agent" : "user" );
 
         // fetch from user dao to get secret key
         user = (User) userDAO.find(user.getId());
@@ -96,8 +112,7 @@ foam.CLASS({
 
           // update session with two factor success set to true
           Session session = x.get(Session.class);
-          session.setUserId(user.getId());
-          session.setContext(session.getContext().put("user", user).put("twoFactorSuccess", true));
+          session.setContext(session.getContext().put(sessionUser, user).put("twoFactorSuccess", true));
           sessionDAO.put(session);
           return true;
         }
@@ -109,7 +124,9 @@ foam.CLASS({
       name: 'disable',
       javaCode: `
         if ( verifyToken(x, token) ) {
-          User user = (User) x.get("user");
+          User user   = (User) (x.get("agent") != null ?
+            x.get("agent") :
+            x.get("user")) ;
           DAO userDAO = (DAO) x.get("localUserDAO");
 
           // fetch user from DAO and set two factor secret to null
@@ -117,6 +134,7 @@ foam.CLASS({
           user.setTwoFactorEnabled(false);
           user.setTwoFactorSecret(null);
           userDAO.put_(x, user);
+
           return true;
         }
 

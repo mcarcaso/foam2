@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2018 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 foam.INTERFACE({
   package: 'foam.json2',
   name: 'OutputterOutput',
@@ -19,14 +25,14 @@ foam.INTERFACE({
     },
     {
       name: 'out',
-      args: [ { name: 's', swiftType: 'String' } ],
+      args: [ { name: 's', type: 'String' } ],
     },
     {
       name: 'comma',
     },
     {
       name: 'output',
-      swiftReturns: 'String',
+      type: 'String',
     },
   ],
 })

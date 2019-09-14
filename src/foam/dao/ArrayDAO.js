@@ -32,7 +32,7 @@ foam.CLASS({
       class: 'Class',
       name: 'of',
       factory: function() {
-        if ( this.array.length === 0 ) return this.lookup('foam.core.FObject');
+        if ( this.array.length === 0 ) return this.__context__.lookup('foam.core.FObject');
         return null;
       }
     },
@@ -70,7 +70,7 @@ foam.CLASS({
     },
 
     function select_(x, sink, skip, limit, order, predicate) {
-      var resultSink = sink || this.ArraySink.create();
+      var resultSink = sink || this.ArraySink.create({ of: this.of });
 
       sink = this.decorateSink_(resultSink, skip, limit, order, predicate);
 

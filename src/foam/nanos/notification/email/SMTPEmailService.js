@@ -8,71 +8,100 @@ foam.CLASS({
   package: 'foam.nanos.notification.email',
   name: 'SMTPEmailService',
 
-  documentation: 'Implementation of Email Service using SMTP',
-
   implements: [
-    'foam.nanos.NanoService',
     'foam.nanos.notification.email.EmailService'
   ],
 
+  documentation: 'Implementation of Email Service using SMTP',
+
   imports: [
-    'threadPool?', // Only imported in Java
-    'appConfig?'
+    'threadPool?'
   ],
 
   javaImports: [
     'foam.core.ContextAgent',
     'foam.core.X',
-    'foam.nanos.pool.FixedThreadPool',
     'foam.util.SafetyUtil',
     'java.nio.charset.StandardCharsets',
     'java.util.Date',
     'java.util.Properties',
+    'java.util.List',
     'javax.mail.*',
     'javax.mail.internet.InternetAddress',
     'javax.mail.internet.MimeMessage',
     'org.apache.commons.lang3.StringUtils',
-    'org.jtwig.environment.EnvironmentConfiguration',
-    'org.jtwig.environment.EnvironmentConfigurationBuilder',
-    'org.jtwig.JtwigModel',
     'org.jtwig.JtwigTemplate',
-    'org.jtwig.resource.loader.TypedResourceLoader'
+    'org.jtwig.resource.loader.TypedResourceLoader',
+    'foam.dao.ArraySink',
+    'foam.dao.DAO',
+    'foam.nanos.auth.User',
+    'foam.nanos.auth.Group',
+    'foam.nanos.logger.Logger',
+    'foam.nanos.om.OMLogger',
+    'static foam.mlang.MLang.EQ'
   ],
 
   axioms: [
     {
       name: 'javaExtras',
-      buildJavaClass: function (cls) {
+      buildJavaClass: function(cls) {
         cls.extras.push(foam.java.Code.create({
           data:
-`private class SMTPAuthenticator extends javax.mail.Authenticator {
-  protected String username_;
-  protected String password_;
+            `private class SMTPAuthenticator extends javax.mail.Authenticator {
+              protected String username_;
+              protected String password_;
 
-  public SMTPAuthenticator(String username, String password) {
-    this.username_ = username;
-    this.password_ = password;
-  }
+              public SMTPAuthenticator(String username, String password) {
+                this.username_ = username;
+                this.password_ = password;
+              }
 
-  @Override
-  protected PasswordAuthentication getPasswordAuthentication() {
-    return new PasswordAuthentication(this.username_, this.password_);
-  }
-}
-
-protected Session session_ = null;
-protected EnvironmentConfiguration config_ = null;`
-        }))
+              @Override
+              protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(this.username_, this.password_);
+              }
+            }
+            `
+        }));
       }
     }
   ],
 
   properties: [
     {
-      class: 'Boolean',
-      name: 'enabled',
-      value: true,
-      javaFactory: 'return true;'
+      name: 'session_',
+      javaType: 'Session',
+      class: 'Object',
+      javaFactory:
+      `
+        Properties props = new Properties();
+        props.setProperty("mail.smtp.auth", getAuthenticate() ? "true" : "false");
+        props.setProperty("mail.smtp.starttls.enable", getStarttls() ? "true" : "false");
+        props.setProperty("mail.smtp.host", getHost());
+        props.setProperty("mail.smtp.port", getPort());
+        if ( getAuthenticate() ) {
+          return Session.getInstance(props, new SMTPAuthenticator(getUsername(), getPassword()));
+        }
+        return Session.getInstance(props);
+      `
+    },
+    {
+      class: 'Object',
+      javaType: 'Transport',
+      name: 'transport_',
+      javaFactory:
+      `
+        Logger logger = (Logger) getX().get("logger");
+        Transport transport = null;
+        try {
+          transport = getSession_().getTransport("smtp");
+          transport.connect(getUsername(), getPassword());
+          logger.info("SMTPEmailService connected.");
+        } catch ( Exception e ) {
+          logger.error("Transport failed to initialize: " + e);
+        }
+        return transport;
+      `
     },
     {
       class: 'String',
@@ -103,196 +132,107 @@ protected EnvironmentConfiguration config_ = null;`
       class: 'String',
       name: 'password',
       value: null
-    },
-    {
-      class: 'String',
-      name: 'from',
-      value: null
-    },
-    {
-      class: 'String',
-      name: 'displayName',
-      value: null
-    },
-    {
-      class: 'String',
-      name: 'replyTo',
-      value: null
     }
   ],
 
   methods: [
     {
-      name: 'getConfig',
-      javaReturns: 'EnvironmentConfiguration',
-      args: [
-        {
-          name: 'group',
-          javaType: 'String'
-        }
-      ],
-      javaCode:
-`if ( config_ == null ) {
-  config_ = EnvironmentConfigurationBuilder
-    .configuration()
-    .resources()
-      .resourceLoaders()
-        .add(new TypedResourceLoader("dao", new DAOResourceLoader(getX(), group)))
-      .and()
-    .and()
-  .build();
-}
-return config_;`
-    },
-    {
       name: 'createMimeMessage',
-      javaReturns: 'MimeMessage',
+      javaType: 'MimeMessage',
+      documentation: `Create a MimeMessage from the passed EmailMessage`,
       args: [
         {
           name: 'emailMessage',
-          javaType: 'foam.nanos.notification.email.EmailMessage'
+          type: 'foam.nanos.notification.email.EmailMessage'
         }
       ],
       javaCode:
-`try {
-  MimeMessage message = new MimeMessage(session_);
+      `
+        Logger logger = (Logger) getX().get("logger");
+        try {
+          MimeMessage message = new MimeMessage(getSession_());
 
-  // don't send email if no sender
-  String from = getFrom();
-  if ( SafetyUtil.isEmpty(from) )
-    return null;
+          // the From Property is mainly to hide our smtp user credetials.
+          if ( emailMessage.isPropertySet("from") ) {
+            if ( emailMessage.isPropertySet("displayName") ) {
+              message.setFrom( new InternetAddress(emailMessage.getFrom(), emailMessage.getDisplayName()) );
+            } else {
+              message.setFrom(new InternetAddress(emailMessage.getFrom()));
+            }
+          } else if ( emailMessage.isPropertySet("replyTo") ) {
+              if ( emailMessage.isPropertySet("displayName") ) {
+                message.setFrom( new InternetAddress(emailMessage.getReplyTo(), emailMessage.getDisplayName()) );
+              } else {
+                message.setFrom(new InternetAddress(emailMessage.getReplyTo()));
+              }
+          }
+          
+          if ( emailMessage.isPropertySet("replyTo") )
+            message.setReplyTo(InternetAddress.parse(emailMessage.getReplyTo()));
 
-  // add display name if present
-  String displayName = getDisplayName();
-  if ( SafetyUtil.isEmpty(displayName) ) {
-    message.setFrom(new InternetAddress(from));
-  } else {
-    message.setFrom(new InternetAddress(from, displayName));
-  }
+          if ( emailMessage.isPropertySet("subject") )
+            message.setSubject(emailMessage.getSubject());
 
-  // attach reply to if present
-  String replyTo = getReplyTo();
-  if ( ! SafetyUtil.isEmpty(replyTo) ) {
-    message.setReplyTo(InternetAddress.parse(replyTo));
-  }
+          if ( emailMessage.isPropertySet("body") )
+            message.setContent(emailMessage.getBody(), "text/html; charset=utf-8");
 
-  // don't send email if no subject
-  String subject = emailMessage.getSubject();
-  if ( SafetyUtil.isEmpty(subject) )
-    return null;
-  message.setSubject(subject);
+          if ( emailMessage.isPropertySet("to") ) {
+            if ( emailMessage.getTo().length == 1 ) {
+              message.setRecipient(Message.RecipientType.TO, new InternetAddress((emailMessage.getTo())[0], false));
+            } else {
+              message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(StringUtils.join(emailMessage.getTo(), ",")));
+            }
+          }
 
-  // don't send email if no body
-  String body = emailMessage.getBody();
-  if ( SafetyUtil.isEmpty(body) )
-    return null;
-  message.setContent(body, "text/html; charset=utf-8");
-
-  // don't send email if no recipient
-  String[] to = emailMessage.getTo();
-  if ( to == null || to.length <= 0 )
-    return null;
-
-  if ( to.length == 1 ) {
-    message.setRecipient(Message.RecipientType.TO, new InternetAddress(to[0], false));
-  } else {
-    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(StringUtils.join(to, ",")));
-  }
-
-  // send email even if no CC
-  String[] cc = emailMessage.getCc();
-  if ( cc != null && cc.length == 1 ) {
-    message.setRecipient(Message.RecipientType.CC, new InternetAddress(cc[0], false));
-  } else if ( cc != null && cc.length > 1 ) {
-    message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(StringUtils.join(cc, ",")));
-  }
-
-  // send email even if no BCC
-  String[] bcc = emailMessage.getBcc();
-  if ( bcc != null && bcc.length == 1 ) {
-    message.setRecipient(Message.RecipientType.BCC, new InternetAddress(bcc[0], false));
-  } else if ( bcc != null && bcc.length > 1 ) {
-    message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(StringUtils.join(bcc, ",")));
-  }
-
-  // set date
-  message.setSentDate(new Date());
-  return message;
-} catch (Throwable t) {
-  t.printStackTrace();
-  return null;
-}`
+          if ( emailMessage.isPropertySet("cc") ) {
+            if ( emailMessage.getCc().length == 1 ) {
+              message.setRecipient(Message.RecipientType.CC, new InternetAddress((emailMessage.getCc())[0], false));
+            } else {
+              message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(StringUtils.join(emailMessage.getCc(), ",")));
+            }
+          }
+          
+          if ( emailMessage.isPropertySet("bcc") ) {
+            if ( emailMessage.getBcc().length == 1 ) {
+              message.setRecipient(Message.RecipientType.BCC, new InternetAddress((emailMessage.getBcc())[0], false));
+            } else {
+              message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(StringUtils.join(emailMessage.getBcc(), ",")));
+            }
+          }
+          
+          message.setSentDate(new Date());
+          logger.info("SMTPEmailService Created MimeMessage.");
+          return message;
+        } catch (Throwable t) {
+          logger.error("SMTPEmailService failed to created MimeMessage. " + t);
+          return null;
+        }
+      `
     },
     {
       name: 'sendEmail',
-      args: [
-        {
-          name: 'emailMessage',
-          javaType: 'final foam.nanos.notification.email.EmailMessage'
+      javaCode: `
+        emailMessage = (EmailMessage) emailMessage.fclone();
+        MimeMessage message = createMimeMessage(emailMessage);
+        Logger logger = (Logger) getX().get("logger");
+        try {
+          getTransport_().send(message);
+          emailMessage.setStatus(Status.SENT);
+          logger.debug("SMTPEmailService sent MimeMessage.");
+        } catch ( SendFailedException e ) {
+          emailMessage.setStatus(Status.FAILED);
+          logger.error("SMTPEmailService sending MimeMessage failed. " + e);
+        } catch ( MessagingException e ) {
+          try {
+            getTransport_().close();
+          } catch ( Exception e2 ) {
+            logger.error("Failed to close transport. " + e2);
+          }
+          clearTransport_();
+          logger.error("SMTPEmailService sending MimeMessage failed. " + e);
         }
-      ],
-      javaCode: `
-if ( ! this.getEnabled() ) return;
-
-((FixedThreadPool) getThreadPool()).submit(getX(), new ContextAgent() {
-  @Override
-  public void execute(X x) {
-    try {
-      MimeMessage message = createMimeMessage(emailMessage);
-      if ( message == null ) {
-        return;
-      }
-
-      // send message
-      Transport transport = session_.getTransport("smtp");
-      transport.connect();
-      transport.sendMessage(message, message.getAllRecipients());
-      transport.close();
-    } catch (Throwable t) {
-      t.printStackTrace();
-    }
-  }
-});`
-    },
-    {
-      name: 'sendEmailFromTemplate',
-      javaCode: `
-if ( ! this.getEnabled() ) return;
-
-String group = user != null ? (String) user.getGroup() : null;
-EmailTemplate emailTemplate = DAOResourceLoader.findTemplate(getX(), name, group);
-if ( emailMessage == null )
-  return;
-
-for ( String key : templateArgs.keySet() ) {
-  Object value = templateArgs.get(key);
-  if ( value instanceof String ) {
-    String s = (String) value;
-    templateArgs.put(key, new String(s.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
-  }
-}
-
-EnvironmentConfiguration config = getConfig(group);
-JtwigTemplate template = JtwigTemplate.inlineTemplate(emailTemplate.getBody(), config);
-JtwigModel model = JtwigModel.newModel(templateArgs);
-emailMessage.setSubject(emailTemplate.getSubject());
-emailMessage.setBody(template.render(model));
-sendEmail(emailMessage);`
-    },
-    {
-      name: 'start',
-      javaReturns: 'void',
-      javaCode:
-`Properties props = new Properties();
-props.setProperty("mail.smtp.auth", getAuthenticate() ? "true" : "false");
-props.setProperty("mail.smtp.starttls.enable", getStarttls() ? "true" : "false");
-props.setProperty("mail.smtp.host", getHost());
-props.setProperty("mail.smtp.port", getPort());
-if ( getAuthenticate() ) {
-  session_ = Session.getInstance(props, new SMTPAuthenticator(getUsername(), getPassword()));
-} else {
-  session_ = Session.getInstance(props);
-}`
+        return emailMessage;
+      `
     }
   ]
 });

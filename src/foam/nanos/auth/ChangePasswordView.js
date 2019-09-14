@@ -56,7 +56,7 @@ foam.CLASS({
       line-height: 1.33;
       letter-spacing: 0.2;
       text-align: left;
-      color: #093649;
+      color: /*%BLACK%*/ #1e1f21;
     }
     ^ .originalPass-Text{
       width: 118px;
@@ -106,13 +106,13 @@ foam.CLASS({
       text-align: center;
       color: #ffffff;
       cursor: pointer;
-      border: 1px solid %SECONDARYCOLOR%;
-      background-color: %SECONDARYCOLOR%;
+      border: 1px solid /*%PRIMARY3%*/ #406dea;
+      background-color: /*%PRIMARY3%*/ #406dea;
       margin-left: 20px;
       margin-top: 19px;
     }
     ^ .update-BTN:hover {
-      border: 1px solid %SECONDARYCOLOR%;
+      border: 1px solid /*%PRIMARY3%*/ #406dea;
       opacity: 0.9;
     }
     ^ h1{
@@ -123,7 +123,7 @@ foam.CLASS({
       line-height: 1;
       letter-spacing: 0.3px;
       text-align: left;
-      color: #093649;
+      color: /*%BLACK%*/ #1e1f21;
       display: inline-block;
     }
     ^ h2{
@@ -133,19 +133,15 @@ foam.CLASS({
       font-weight: 300;
       letter-spacing: 0.2px;
       text-align: left;
-      color: #093649;
+      color: /*%BLACK%*/ #1e1f21;
       display: inline-block;
     }
   `,
 
   messages: [
-    { name: 'noSpaces', message: 'Password cannot contain spaces' },
-    { name: 'noNumbers', message: 'Password must have one numeric character' },
-    { name: 'noSpecial', message: 'Password must not contain: !@#$%^&*()_+' },
     { name: 'emptyOriginal', message: 'Please enter your original password'},
     { name: 'emptyPassword', message: 'Please enter your new password' },
     { name: 'emptyConfirmation', message: 'Please re-enter your new password' },
-    { name: 'invalidLength', message: 'Password must be 7-32 characters long' },
     { name: 'passwordMismatch', message: 'Passwords do not match' },
     { name: 'passwordSuccess', message: 'Password successfully updated' }
   ],
@@ -169,18 +165,18 @@ foam.CLASS({
   ],
 
   methods: [
-    function initE(){
+    function initE() {
       this.SUPER();
       this
       .addClass(this.myClass())
       .start().addClass('Container')
         .start('div')
-          .start('h1').add("Change Password").addClass('changePass-Text').end()
+          .start('h1').add('Change Password').addClass('changePass-Text').end()
         .end()
         .start('div')
-          .start('h2').add("Original Password").addClass('originalPass-Text').end()
-          .start('h2').add("New Password").addClass('newPass-Text').end()
-          .start('h2').add("Confirm Password").addClass('confirmPass-Text').end()
+          .start('h2').add('Original Password').addClass('originalPass-Text').end()
+          .start('h2').add('New Password').addClass('newPass-Text').end()
+          .start('h2').add('Confirm Password').addClass('confirmPass-Text').end()
         .end()
         .start('div')
           .start(this.ORIGINAL_PASSWORD).addClass('originalPass-Input').end()
@@ -196,7 +192,7 @@ foam.CLASS({
    {
       name: 'updatePassword',
       label: 'Update',
-      code: function (X) {
+      code: function(X) {
         var self = this;
 
         // check if original password entered
@@ -205,33 +201,13 @@ foam.CLASS({
           return;
         }
 
-        // validate new password
+        // check if new password entered
         if ( ! this.newPassword ) {
           this.add(this.NotificationMessage.create({ message: this.emptyPassword, type: 'error' }));
           return;
         }
 
-        if ( this.newPassword.includes(' ') ) {
-          this.add(this.NotificationMessage.create({ message: this.noSpaces, type: 'error' }));
-          return;
-        }
-
-        if ( this.newPassword.length < 7 || this.newPassword.length > 32 ) {
-          this.add(this.NotificationMessage.create({ message: this.invalidLength, type: 'error' }));
-          return;
-        }
-
-        if ( ! /\d/g.test(this.newPassword) ) {
-          this.add(self.NotificationMessage.create({ message: this.noNumbers, type: 'error' }));
-          return;
-        }
-
-        if ( /[^a-zA-Z0-9]/.test(this.newPassword) ) {
-          this.add(self.NotificationMessage.create({ message: this.noSpecial, type: 'error' }));
-          return;
-        }
-
-        // check if confirmation entered
+        // check if new password confirmation entered
         if ( ! this.confirmPassword ) {
           this.add(self.NotificationMessage.create({ message: this.emptyConfirmation, type: 'error' }));
           return;
@@ -244,7 +220,7 @@ foam.CLASS({
         }
 
         // update password
-        this.auth.updatePassword(null, this.originalPassword, this.newPassword).then(function (result) {
+        this.auth.updatePassword(null, this.originalPassword, this.newPassword).then(function(result) {
           // copy new user, clear password fields, show success
           self.user.copyFrom(result);
           self.originalPassword = null;
@@ -252,7 +228,7 @@ foam.CLASS({
           self.confirmPassword = null;
           self.add(self.NotificationMessage.create({ message: self.passwordSuccess }));
         })
-        .catch(function (err) {
+        .catch(function(err) {
           self.add(self.NotificationMessage.create({ message: err.message, type: 'error' }));
         });
       }

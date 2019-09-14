@@ -14,7 +14,7 @@ import java.io.*;
 import java.util.HashMap;
 
 public class FileWebAgent
-    implements WebAgent, NSpecAware
+  implements WebAgent, NSpecAware
 {
   protected static final int                     BUFFER_SIZE = 4096;
   protected static final String                  DEFAULT_EXT = "application/octet-stream";
@@ -36,7 +36,7 @@ public class FileWebAgent
     EXTS.put("html",  "text/html");
   }
 
-  protected NSpec nspec_;
+  protected NSpec  nspec_;
   protected String path_;
   protected String cwd_;
 
@@ -50,16 +50,15 @@ public class FileWebAgent
 
   public FileWebAgent(String path, String cwd) {
     this.path_ = path;
-    this.cwd_ = cwd;
+    this.cwd_  = cwd;
   }
 
   @Override
   public void execute(X x) {
-    HttpServletRequest req = x.get(HttpServletRequest.class);
+    HttpServletRequest  req  = x.get(HttpServletRequest.class);
     HttpServletResponse resp = x.get(HttpServletResponse.class);
-
-    String path = null;
-    BufferedInputStream is = null;
+    String              path = null;
+    BufferedInputStream is   = null;
 
     try {
       path = req.getRequestURI().replaceFirst("/?service/" + nspec_.getName() + "/?", "") + path_;
@@ -87,9 +86,7 @@ public class FileWebAgent
               + file.getName() + "\"?>" + file.getName() + "</a></li>");
         }
 
-        pw.write("</ul>  \n" +
-            "</body>\n" +
-            "</html>");
+        pw.write("</ul></body></html>");
         return;
       }
 
@@ -124,7 +121,17 @@ public class FileWebAgent
   }
 
   @Override
+  public NSpec getNSpec() {
+    return this.nspec_;
+  }
+
+  @Override
   public void setNSpec(NSpec spec) {
     this.nspec_ = spec;
+  }
+
+  @Override
+  public void clearNSpec() {
+    this.nspec_ = null;
   }
 }

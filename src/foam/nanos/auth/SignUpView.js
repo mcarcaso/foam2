@@ -54,7 +54,7 @@ foam.CLASS({
           line-height: 1;
           letter-spacing: 0.5px;
           text-align: left;
-          color: #093649;
+          color: /*%BLACK%*/ #1e1f21;
           margin-top: 20px;
           margin-bottom: 30px;
         }
@@ -81,7 +81,7 @@ foam.CLASS({
         ^ label{
           font-weight: 300;
           font-size: 14px;
-          color: #093649;
+          color: /*%BLACK%*/ #1e1f21;
         }
         .input-container{
           width: 46%;
@@ -169,7 +169,7 @@ foam.CLASS({
   ],
 
   methods: [
-    function initE(){
+    function initE() {
       this.SUPER();
       this.agreed = false;
       var self = this;
@@ -221,20 +221,22 @@ foam.CLASS({
           .start('p').add('Already have an account?').end()
           .start('p').addClass('link')
             .add('Sign in.')
-            .on('click', function(){ self.stack.push({ class: 'foam.nanos.auth.SignInView' }) })
+            .on('click', function() {
+              self.stack.push({ class: 'foam.nanos.auth.SignInView' });
+            })
           .end()
         .end()
-      .end()
+      .end();
     },
   ],
 
   actions: [
     {
       name: 'signUp',
-      isEnabled: function(firstName, lastName, email, password){
+      isEnabled: function(firstName, lastName, email, password) {
         return firstName && lastName && email && password;
       },
-      code: function (X, obj) {
+      code: function(X, obj) {
         var self = this;
         var user = self.User.create({
           firstName: self.firstName,
@@ -246,7 +248,7 @@ foam.CLASS({
           department: self.department
         });
 
-        this.userDAO.put(user).then(function(user){
+        this.userDAO.put(user).then(function(user) {
           self.user = user;
           X.stack.push({ class: 'foam.nanos.auth.SignInView' });
         });

@@ -514,7 +514,10 @@ foam.CLASS({
     {
       name: 'canvas',
       hidden: 'true',
-      transient: true
+      transient: true,
+      expression: function(parent$canvas) {
+        return parent$canvas;
+      }
     },
     {
       name: 'transform_',
@@ -578,11 +581,12 @@ foam.CLASS({
       p.x /= p.w;
       p.y /= p.w;
       p.w = 1;
+      return p;
     },
 
     function globalToLocalCoordinates(p) {
-      if ( this.parent ) this.parent.globalToLocalCoordinates(p);
-      this.parentToLocalCoordinates(p);
+      if ( this.parent ) p = this.parent.globalToLocalCoordinates(p);
+      return this.parentToLocalCoordinates(p);
     },
 
     function findFirstChildAt(p) {
@@ -619,7 +623,7 @@ foam.CLASS({
 
     function maybeInitCView(x) {
       if ( this.state === 'initial' ) {
-        this.state = 'initailized'
+        this.state = 'initailized';
         this.initCView(x);
       }
     },
@@ -701,7 +705,6 @@ foam.CLASS({
 
     function addChild_(c) {
       c.parent = this;
-      c.canvas = this.canvas;
       return c;
     },
 
@@ -843,6 +846,10 @@ foam.CLASS({
     {
       name: 'border',
       value: '#000000'
+    },
+    {
+      class: 'Boolean',
+      name: 'clip'
     }
   ],
 
@@ -854,7 +861,8 @@ foam.CLASS({
         x.lineWidth = this.borderWidth;
         x.stroke();
       }
-      if ( this.color  ) x.fill();
+      if ( this.color ) x.fill();
+      if ( this.clip ) x.clip();
     }
   ]
 });
@@ -1005,11 +1013,6 @@ foam.CLASS({
       x.beginPath();
       x.arc(0, 0, this.radius, this.start, this.end);
 
-      if ( this.start != 0 || this.end != Math.PI*2 ) {
-        x.lineTo(0,0);
-        x.lineTo(this.radius*Math.cos(this.start)+0.5,this.radius*Math.sin(this.start));
-      }
-
       if ( this.color ) x.fill();
 
       if ( this.border ) {
@@ -1018,7 +1021,7 @@ foam.CLASS({
       }
    },
 
-    function toE(X) {
+    function toE(args, X) {
       return this.Canvas.create({ cview: this }, X).attrs({
         width: this.x + this.radius + this.arcWidth,
         height: this.y + this.radius + this.arcWidth
@@ -1033,7 +1036,7 @@ foam.CLASS({
   name: 'Circle',
   extends: 'foam.graphics.Arc',
 
-  documentation: 'A CView for drawing a Circle.',
+  documentation: "A CView for drawing a Circle, or a pie-shaped wedge if you set 'start' and 'end'.",
 
   properties: [
     {
@@ -1070,7 +1073,24 @@ foam.CLASS({
       var dx = this.x-c.x;
       var dy = this.y-c.y;
       return dx * dx + dy * dy <= r * r;
-    }
+    },
+
+    function paintSelf(x) {
+      x.beginPath();
+      x.arc(0, 0, this.radius, this.start, this.end);
+
+      if ( this.start != 0 || this.end != Math.PI*2 ) {
+        x.lineTo(0,0);
+        x.lineTo(this.radius*Math.cos(this.start)+0.5,this.radius*Math.sin(this.start));
+      }
+
+      if ( this.color ) x.fill();
+
+      if ( this.border ) {
+        x.lineWidth = this.arcWidth;
+        x.stroke();
+      }
+   }
   ]
 });
 
@@ -1249,7 +1269,7 @@ foam.CLASS({
   methods: [
     function initE() {
       this.SUPER();
-      this.on('load', this.paint);
+      this.sub('onload', this.paint);
       this.cview$.valueSub('invalidated', this.paint);
     },
 

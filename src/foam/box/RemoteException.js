@@ -22,8 +22,11 @@ foam.CLASS({
   methods: [
     {
       name: 'toString',
-      javaReturns: 'String',
-      javaCode: 'return getMessage();'
+      type: 'String',
+      javaCode: 'return getMessage();',
+      code: function() {
+        return this.message;
+      }
     }
   ]
 });

@@ -19,19 +19,19 @@ public protocol Axiom {
 }
 
 public protocol GetterAxiom {
-  func get(_ obj: foam_core_FObject) -> Any?
+  func get(_ obj: foam_core_FObject?) -> Any?
 }
 
 public protocol SetterAxiom {
-  func set(_ obj: foam_core_FObject, value: Any?)
+  func set(_ obj: foam_core_FObject?, value: Any?)
 }
 
 public protocol SlotGetterAxiom {
-  func getSlot(_ obj: foam_core_FObject) -> foam_swift_core_Slot
+  func getSlot(_ obj: foam_core_FObject?) -> foam_swift_core_Slot?
 }
 
 public protocol SlotSetterAxiom {
-  func setSlot(_ obj: foam_core_FObject, value: foam_swift_core_Slot)
+  func setSlot(_ obj: foam_core_FObject?, value: foam_swift_core_Slot?)
 }
 
 class ListenerList {
@@ -42,7 +42,7 @@ class ListenerList {
   var sub: Subscription?
 }
 
-public protocol PropertyInfo: Axiom, SlotGetterAxiom, SlotSetterAxiom, GetterAxiom, SetterAxiom, foam_mlang_Expr {
+public protocol PropertyInfo: Axiom, SlotGetterAxiom, SlotSetterAxiom, GetterAxiom, SetterAxiom, foam_mlang_Expr, foam_mlang_order_Comparator {
   var classInfo: ClassInfo { get }
   var transient: Bool { get }
   var storageTransient: Bool { get }
@@ -51,9 +51,9 @@ public protocol PropertyInfo: Axiom, SlotGetterAxiom, SlotSetterAxiom, GetterAxi
   var visibility: foam_u2_Visibility { get }
   var jsonParser: foam_swift_parse_parser_Parser? { get }
   func viewFactory(x: Context) -> foam_core_FObject?
-  func hasOwnProperty(_ o: foam_core_FObject) -> Bool
-  func clearProperty(_ o: foam_core_FObject)
-  func toJSON(outputter: foam_swift_parse_json_output_Outputter, out: foam_json2_Outputter, value: Any?)
+  func hasOwnProperty(_ o: foam_core_FObject?) -> Bool
+  func clearProperty(_ o: foam_core_FObject?)
+  func toJSON(outputter: foam_swift_parse_json_output_Outputter?, out: foam_json2_Outputter?, value: Any?)
 }
 extension PropertyInfo {
   public func f(_ obj: Any?) -> Any? {
@@ -62,19 +62,25 @@ extension PropertyInfo {
     }
     return nil
   }
-  public func partialEval() {
-    // TODO
+  func `partialEval`() -> foam_mlang_Expr? {
+    return self
+  }
+  func `compare`(_ o1: Any?, _ o2: Any?) -> Int {
+    guard let fo1 = o1 as? foam_core_FObject,
+      let fo2 = o2 as? foam_core_FObject else {
+        return FOAM_utils.compare(o1, o2)
+    }
+    return FOAM_utils.compare(get(fo1), get(fo2))
+  }
+  public func createStatement() -> String? {
+    return ""
+  }
+  public func prepareStatement(_ stmt: Any?) {
   }
 }
 
 public protocol JSONOutputter {
-  func toJSON(outputter: foam_swift_parse_json_output_Outputter, out: foam_json2_Outputter)
-}
-
-extension PropertyInfo {
-  public func compare(_ o1: foam_core_FObject, _ o2: foam_core_FObject) -> Int {
-    return FOAM_utils.compare(get(o1), get(o2))
-  }
+  func toJSON(outputter: foam_swift_parse_json_output_Outputter?, out: foam_json2_Outputter?)
 }
 
 public class MethodArg {
@@ -85,12 +91,12 @@ public protocol MethodInfo: Axiom, GetterAxiom, SlotGetterAxiom {
   var args: [MethodArg] { get }
 }
 extension MethodInfo {
-  public func call(_ obj: foam_core_FObject, args: [Any?] = []) throws -> Any? {
-    let callback = obj.getSlot(key: name)!.swiftGet() as! ([Any?]) throws -> Any?
+  public func call(_ obj: foam_core_FObject?, args: [Any?] = []) throws -> Any? {
+    let callback = obj!.getSlot(key: name)!.swiftGet() as! ([Any?]) throws -> Any?
     return try callback(args)
   }
-  public func get(_ obj: foam_core_FObject) -> Any? {
-    return obj.getSlot(key: name)!.swiftGet()
+  public func get(_ obj: foam_core_FObject?) -> Any? {
+    return obj?.getSlot(key: name)!.swiftGet()
   }
 }
 
@@ -113,8 +119,8 @@ public class Context {
     classNameMap[NSStringFromClass(cls.cls)] = cls.id
     _ = cls.ownAxioms
   }
-  public func lookup(_ id: String) -> ClassInfo? {
-    return classIdMap[id] ?? parent?.lookup(id)
+  public func lookup(_ id: String?) -> ClassInfo? {
+    return classIdMap[id!] ?? parent?.lookup(id)
   }
   func lookup_(_ cls: AnyClass) -> ClassInfo? {
     let str = NSStringFromClass(cls)
@@ -202,11 +208,7 @@ extension ClassInfo {
   }
 }
 
-public protocol Detachable {
-  func detach()
-}
-
-public class Subscription: Detachable {
+public class Subscription: foam_core_Detachable {
   private var detach_: (() -> Void)?
   init(detach: @escaping () ->Void) {
     self.detach_ = detach
@@ -217,7 +219,7 @@ public class Subscription: Detachable {
   }
 }
 
-public protocol foam_core_FObject: class, Detachable, Topic, JSONOutputter {
+public protocol foam_core_FObject: foam_core_Detachable, Topic, JSONOutputter {
   func ownClassInfo() -> ClassInfo
   func set(key: String, value: Any?)
   func get(key: String) -> Any?
@@ -225,7 +227,7 @@ public protocol foam_core_FObject: class, Detachable, Topic, JSONOutputter {
   func hasOwnProperty(_ key: String) -> Bool
   func clearProperty(_ key: String)
   func compareTo(_ data: foam_core_FObject?) -> Int
-  func onDetach(_ sub: Detachable?)
+  func onDetach(_ sub: foam_core_Detachable?)
   func toString() -> String
   func copyFrom(_ o: foam_core_FObject)
   init(_ args: [String:Any?])
@@ -256,7 +258,7 @@ public class AbstractFObject: NSObject, foam_core_FObject, ContextAware {
   public func set(key: String, value: Any?) {
     if key.last == "$" && value is foam_swift_core_Slot {
       let slot = String(key[..<(key.index(before: key.endIndex))])
-      (self.ownClassInfo().axiom(byName: slot) as? SlotSetterAxiom)?.setSlot(self, value: value as! foam_swift_core_Slot)
+      (self.ownClassInfo().axiom(byName: slot) as? SlotSetterAxiom)?.setSlot(self, value: value as? foam_swift_core_Slot)
     } else {
       (self.ownClassInfo().axiom(byName: key) as? SetterAxiom)?.set(self, value: value)
     }
@@ -274,7 +276,7 @@ public class AbstractFObject: NSObject, foam_core_FObject, ContextAware {
     (self.ownClassInfo().axiom(byName: key) as? PropertyInfo)?.clearProperty(self)
   }
 
-  public func onDetach(_ sub: Detachable?) {
+  public func onDetach(_ sub: foam_core_Detachable?) {
     guard let sub = sub else { return }
     _ = self.sub(topics: ["detach"]) { (s, _) in
       s.detach()
@@ -423,7 +425,7 @@ public class AbstractFObject: NSObject, foam_core_FObject, ContextAware {
   }
 
   public func toString() -> String {
-    return foam_swift_parse_json_output_Outputter.DEFAULT.swiftStringify(self)
+    return foam_swift_parse_json_output_Outputter.DEFAULT.swiftStringify(self)!
   }
 
   public func copyFrom(_ o: foam_core_FObject) {
@@ -449,8 +451,8 @@ public class AbstractFObject: NSObject, foam_core_FObject, ContextAware {
     return super.isEqual(object)
   }
 
-  public func toJSON(outputter: foam_swift_parse_json_output_Outputter, out: foam_json2_Outputter) {
-    outputter.outputFObject(out, self)
+  public func toJSON(outputter: foam_swift_parse_json_output_Outputter?, out: foam_json2_Outputter?) {
+    outputter?.outputFObject(out, self)
   }
 }
 
@@ -516,8 +518,7 @@ public class FoamError: Error {
   init(_ obj: Any?) { self.obj = obj }
   public func toString() -> String {
     if let obj = self.obj as? foam_core_FObject {
-      let o = foam_swift_parse_json_output_Outputter.DEFAULT
-      return o.swiftStringify(obj)
+      return foam_swift_parse_json_output_Outputter.DEFAULT.swiftStringify(obj)!
     } else if let obj = self.obj as? FoamError {
       return "FoamError(" + obj.toString() + ")"
     }
@@ -624,6 +625,7 @@ public class Future<T> {
   }
 }
 
+// TODO: Model!
 public class ParserContext {
   private lazy var map_: [String:Any] = [:]
   private var parent_: ParserContext?
@@ -659,15 +661,15 @@ public class BasicTopic: Topic {
   var map_: [String:Topic] = [:]
 
   public func hasListeners(_ args: [Any] = []) -> Bool {
-    return parent_.hasListeners([name_] + args)
+    return parent_.hasListeners([name_!] + args)
   }
 
   public func sub(topics: [String] = [], listener l: @escaping Listener) -> Subscription {
-    return parent_.sub(topics: [name_] + topics, listener: l)
+    return parent_.sub(topics: [name_!] + topics, listener: l)
   }
 
   public func pub(_ args: [Any?]) -> Int {
-    return parent_.pub([name_] + args)
+    return parent_.pub([name_!] + args)
   }
 
   subscript(key: String) -> Topic {

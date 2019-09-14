@@ -16,11 +16,15 @@ foam.CLASS({
     'foam.mlang.predicate.True'
   ],
 
+  imports: [
+    'searchManager'
+  ],
+
   css: `
     ^ {
       background-color: white;
       border-bottom: 1px solid #e9e9e9;
-      color: #093649;
+      color: /*%BLACK%*/ #1e1f21;
       padding: 0;
     }
 
@@ -34,7 +38,17 @@ foam.CLASS({
     }
 
     ^ .section {
-      padding: 10px 13px;
+      padding: 8px 16px;
+    }
+
+    ^ .section:first-of-type {
+      display: flex;
+      align-items: center;
+    }
+
+    ^ .section:first-of-type label {
+      position: initial;
+      margin: 0 0 0 8px;
     }
 
     ^ .foam-u2-search-TextSearchView {
@@ -52,7 +66,7 @@ foam.CLASS({
     }
 
     ^ .foam-u2-search-GroupBySearchView .foam-u2-tag-Select > option {
-      color: #093649;
+      color: /*%BLACK%*/ #1e1f21;
       font-weight: normal;
       font-style: normal;
       font-stretch: normal;
@@ -78,7 +92,19 @@ foam.CLASS({
       name: 'active',
       documentation: `Tracks whether the property is being used as part of the
         filter criteria or not.`
-    }
+    },
+    {
+      name: 'searchViewElement_'
+    },
+    'container_',
+    'property',
+    'dao',
+    {
+      class: 'Boolean',
+      name: 'firstTime_',
+      value: true
+    },
+    'view_'
   ],
 
   methods: [
@@ -91,15 +117,14 @@ foam.CLASS({
           .addClass('section')
           .tag(
             { class: 'foam.u2.md.CheckBox', },
-            { label: this.searchView.property.label },
+            { label: this.property.label },
             this.checkbox$
           )
         .end()
-        .start()
+        .start('div', null, this.container_$)
           .addClass('section')
           .addClass('form-element-container')
           .show(this.active$)
-          .add(this.searchView)
         .end();
 
       this.checkbox.data$.sub(this.checkboxChanged);
@@ -108,8 +133,20 @@ foam.CLASS({
 
   listeners: [
     function checkboxChanged() {
-      if ( this.active ) this.searchView.clear();
       this.active = ! this.active;
+
+      if ( this.active ) {
+        if ( this.firstTime_ ) {
+          this.container_.tag(this.searchView, {
+            property: this.property,
+            dao: this.dao
+          }, this.view_$);
+          this.searchManager.add(this.view_$.get());
+          this.firstTime_ = false;
+        }
+      } else {
+        if ( this.view_ ) this.view_.clear();
+      }
     }
   ]
 });

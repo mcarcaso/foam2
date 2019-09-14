@@ -38,6 +38,11 @@ foam.CLASS({
   properties: [
     {
       class: 'String',
+      name: 'name',
+      factory: function() { return "select"; }
+    },
+    {
+      class: 'String',
       name: 'label',
       documentation: 'User-visible label. Not to be confused with "text", ' +
           'which is the user-visible name of the currently selected choice.'
@@ -53,16 +58,19 @@ foam.CLASS({
 
         this.feedback_ = true;
 
-        if ( ! n && this.placeholder ) {
-          this.data = undefined;
-          this.text = this.placeholder;
-          this.index = -1;
-        } else {
-          this.data = n && n[0];
-          this.text = n && n[1];
-          this.index = this.findIndexOfChoice(n);
+        try {
+          if ( ! n && this.placeholder ) {
+            this.data  = undefined;
+            this.text  = this.placeholder;
+            this.index = -1;
+          } else {
+            this.data  = n && n[0];
+            this.text  = n && n[1];
+            this.index = this.findIndexOfChoice(n);
+          }
+        } finally {
+          this.feedback_ = false;
         }
-        this.feedback_ = false;
       }
     },
     {
@@ -84,7 +92,7 @@ foam.CLASS({
           return out;
         }
 
-        nu = foam.Array.clone(nu);
+        nu = foam.Array.shallowClone(nu);
 
         // Upgrade single values to [value, value].
         for ( var i = 0; i < nu.length; i++ ) {
@@ -95,7 +103,7 @@ foam.CLASS({
 
         if ( this.dynamicSize ) this.size = Math.min(nu.length, this.maxSize);
         return nu;
-      },
+      }
     },
     {
       class: 'Int',
@@ -185,23 +193,36 @@ foam.CLASS({
     },
 
     function initE() {
+      var self = this;
+
       // If no item is selected, and data has not been provided, select the 0th
       // entry.
-      if ( ! this.data && ! this.index ) {
+      if ( this.data == null && ! this.index ) {
         this.index = 0;
       }
 
       if ( this.dao ) this.onDAOUpdate();
 
-      this.start(this.selectSpec, {
-        data$: this.index$,
-        label$: this.label$,
-        alwaysFloatLabel: this.alwaysFloatLabel,
-        choices$: this.choices$,
-        placeholder$: this.placeholder$,
-        mode$: this.mode$,
-        size$: this.size$
-      }).end();
+      this.add(this.slot(function(mode){
+        if ( mode !== foam.u2.DisplayMode.RO ) {
+          return self.E()
+            .start(self.selectSpec, {
+              data$: self.index$,
+              label$: self.label$,
+              alwaysFloatLabel: self.alwaysFloatLabel,
+              choices$: self.choices$,
+              placeholder$: self.placeholder$,
+              mode$: self.mode$,
+              size$: self.size$
+            })
+              .attrs({ name: self.name })
+              .enableClass('selection-made', self.index$.map((index) => index !== -1))
+            .end();
+      
+        } else {
+          return self.E().add(self.text$)
+        }
+      }))
 
       this.dao$proxy.on.sub(this.onDAOUpdate);
     },
@@ -249,7 +270,7 @@ foam.CLASS({
       code: function() {
         var d = this.data;
         if ( this.choices.length ) {
-          this.choice = ( d && this.findChoiceByData(d) ) || this.defaultValue;
+          this.choice = ( d != null && this.findChoiceByData(d) ) || this.defaultValue;
         }
       }
     },
@@ -257,11 +278,18 @@ foam.CLASS({
       name: 'onDAOUpdate',
       isFramed: true,
       code: function() {
-        this.dao.select().then(function(s) {
-          this.choices = s.array.map(this.objToChoice);
-          if ( ! this.data && this.index === -1 ) this.index = this.placeholder ? -1 : 0;
+        var p = this.mode === foam.u2.DisplayMode.RW ?
+          this.dao.select().then(s => s.array) :
+          this.dao.find(this.data).then(o => o ? [o] : []);
+
+        p.then(function(a) {
+          this.choices = a.map(this.objToChoice);
+          if ( this.data == null && this.index === -1 ) this.index = this.placeholder ? -1 : 0;
         }.bind(this));
       }
     }
+  ],
+  reactions: [
+    ['', 'propertyChange.mode', 'onDAOUpdate']
   ]
 });

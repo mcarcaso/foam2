@@ -22,6 +22,8 @@
 //   - don't output default classes
 */
 foam.CLASS({
+  package: 'foam.core',
+  name: 'PropertyToFromJSONRefinement',
   refines: 'foam.core.Property',
 
   properties: [
@@ -43,21 +45,6 @@ foam.CLASS({
         o.output({ class: '__Property__', forClass_: this.forClass_, name: this.name });
       } else {
         o.outputFObject_(this);
-      }
-    }
-  ]
-});
-
-foam.CLASS({
-  refines: 'foam.core.Object',
-
-  properties: [
-    {
-      name: 'toJSON',
-      value: function toJSON(value, outputter) {
-        return value instanceof Date ?
-            { class: '__Timestamp__', value: value.getTime() } :
-            value;
       }
     }
   ]
@@ -106,16 +93,33 @@ foam.CLASS({
   axioms: [
     {
       name: 'create',
-      installInClass: function(clsName) {
-        return X.lookup(clsName, true);
+      installInClass: function(cls) {
+        cls.create = function(args, x) {
+          return foam.lookup(args.forClass_, true);
+        };
       }
     }
   ]
 });
 
-
-/** Add toJSON() method to FObject. **/
 foam.CLASS({
+  package: 'foam.core',
+  name: '__Timestamp__',
+  axioms: [
+    {
+      name: 'create',
+      installInClass: function(cls) {
+        cls.create = function(args) {
+          return new Date(args.value);
+        }
+      }
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.core',
+  name: 'FObjectStringifyRefinement',
   refines: 'foam.core.FObject',
 
   methods: [
@@ -143,6 +147,38 @@ foam.CLASS({
       class: 'String',
       name: 'buf_',
       value: ''
+    },
+    {
+      class: 'Boolean',
+      name: 'pretty',
+      value: true,
+      postSet: function(_, p) {
+        if ( p ) {
+          this.clearProperty('indentStr');
+          this.clearProperty('nlStr');
+          this.clearProperty('postColonStr');
+          this.clearProperty('useShortNames');
+        } else {
+          this.indentStr = this.nlStr = this.postColonStr = null;
+        }
+      }
+    },
+    {
+      // TODO: rename to FON
+      class: 'Boolean',
+      name: 'strict',
+      value: true,
+      postSet: function(_, s) {
+        if ( s ) {
+          this.useShortNames            = false;
+          this.formatDatesAsNumbers     = false;
+          this.alwaysQuoteKeys          = true;
+          this.formatFunctionsAsStrings = true;
+        } else {
+          this.alwaysQuoteKeys          = false;
+          this.formatFunctionsAsStrings = false;
+        }
+      }
     },
     {
       class: 'Int',
@@ -233,38 +269,6 @@ foam.CLASS({
       class: 'Boolean',
       name: 'convertUnserializableToStubs',
       value: false
-    },
-    {
-      class: 'Boolean',
-      name: 'pretty',
-      value: true,
-      postSet: function(_, p) {
-        if ( p ) {
-          this.clearProperty('indentStr');
-          this.clearProperty('nlStr');
-          this.clearProperty('postColonStr');
-          this.clearProperty('useShortNames');
-        } else {
-          this.indentStr = this.nlStr = this.postColonStr = null;
-        }
-      }
-    },
-    {
-      // TODO: rename to FON
-      class: 'Boolean',
-      name: 'strict',
-      value: true,
-      postSet: function(_, s) {
-        if ( s ) {
-          this.useShortNames            = false;
-          this.formatDatesAsNumbers     = false;
-          this.alwaysQuoteKeys          = true;
-          this.formatFunctionsAsStrings = true;
-        } else {
-          this.alwaysQuoteKeys          = false;
-          this.formatFunctionsAsStrings = false;
-        }
-      }
     }
     /*
     {
@@ -347,22 +351,21 @@ foam.CLASS({
     },
 
     function outputProperty(o, p, includeComma) {
-      if ( ! this.propertyPredicate(o, p ) ) return false;
+      if ( ! this.propertyPredicate(o, p) ) return false;
       if ( ! this.outputDefaultValues && p.isDefaultValue(o[p.name]) )
         return false;
 
-      // Access property before checking o.hasOwnProperty.
-      var v = o[p.name];
       if ( this.outputOwnPropertiesOnly && ! o.hasOwnProperty(p.name) )
         return false;
 
-      if ( foam.Array.isInstance(v) && v.length == 0 )
-        return false;
+      var v = o[p.name];
 
       if ( includeComma ) this.out(',');
 
       this.nl().indent().outputPropertyName(p).out(':', this.postColonStr);
+
       this.output(p.toJSON(v, this), p.of);
+
       return true;
     },
 
@@ -375,11 +378,12 @@ foam.CLASS({
     },
 
     function outputDate(o) {
-      if ( this.formatDatesAsNumbers ) {
-        this.out(o.valueOf());
-      } else {
-        this.out(JSON.stringify(o));
-      }
+      // Serialize an unambiguous timestamp.  Date and DateTime
+      // property can provide an alternative toJSON() and
+      // adapt/javaJSONParser mechanism to save space.
+      this.out('{"class":"__Timestamp__","value":');
+      this.output(this.formatDatesAsNumbers ? o.getTime() : o.toISOString());
+      this.out('}');
     },
 
     function outputFunction(o) {
@@ -453,6 +457,12 @@ foam.CLASS({
       }
     },
 
+    function outputClassInfo(o) {
+      this.out('{"class":"__Class__","forClass_":');
+      this.outputString(o.id);
+      this.out('}');
+    },
+
     {
       name: 'output',
       code: foam.mmethod({
@@ -476,8 +486,8 @@ foam.CLASS({
           this.end(']');
         },
         Object: function(o) {
-          if ( o.isSubClass ) {
-            this.output({ class: '__Class__', forClass_: o.id });
+          if ( foam.core.FObject.isSubClass(o) ) {
+            this.outputClassInfo(o);
           } else if ( o.outputJSON ) {
             o.outputJSON(this);
           } else {
@@ -552,7 +562,7 @@ foam.CLASS({
     },
 
     function getCls(opt_cls) {
-      return foam.typeOf(opt_cls) === foam.String ? this.lookup(opt_cls, true) :
+      return foam.typeOf(opt_cls) === foam.String ? this.__context__.lookup(opt_cls, true) :
           opt_cls;
     }
   ]
@@ -639,32 +649,32 @@ foam.LIB({
     // Compact output (not pretty)
     Compact: foam.json.Outputter.create({
       pretty: false,
+      strict: false,
       formatDatesAsNumbers: true,
-      outputDefaultValues: false,
-      strict: false
+      outputDefaultValues: false
     }),
 
     // Shorter than Compact (uses short-names if available)
     Short: foam.json.Outputter.create({
       pretty: false,
+      strict: false,
       formatDatesAsNumbers: true,
       outputDefaultValues: false,
       // TODO: No deserialization support for shortnames yet.
       //      useShortNames: true,
-      useShortNames: false,
-      strict: false
+      useShortNames: false
     }),
 
     // Short, but exclude network-transient properties.
     Network: foam.json.Outputter.create({
       pretty: false,
+      strict: true,
       formatDatesAsNumbers: true,
-      outputDefaultValues: false,
+      outputDefaultValues: true,
       // TODO: No deserialization support for shortnames yet.
       //      useShortNames: true,
       useShortNames: false,
       // TODO: Currently faster to use strict JSON and native JSON.parse
-      strict: true,
       convertUnserializableToStubs: true,
       propertyPredicate: function(o, p) { return ! p.networkTransient; }
     }),
@@ -672,20 +682,36 @@ foam.LIB({
     // Short, but exclude storage-transient properties.
     Storage: foam.json.Outputter.create({
       pretty: false,
+      strict: false,
       formatDatesAsNumbers: true,
       outputDefaultValues: false,
       // TODO: No deserialization support for shortnames yet.
       //      useShortNames: true,
       useShortNames: false,
-      strict: false,
+      propertyPredicate: function(o, p) { return ! p.storageTransient; }
+    }),
+
+    // Short, but exclude storage-transient properties and is proper JSON.
+    StorageStrict: foam.json.Outputter.create({
+      pretty: false,
+      strict: true,
+      formatDatesAsNumbers: true,
+      outputDefaultValues: false,
+      // TODO: No deserialization support for shortnames yet.
+      //      useShortNames: true,
+      useShortNames: false,
       propertyPredicate: function(o, p) { return ! p.storageTransient; }
     })
   },
 
   methods: [
     {
-      // TODO: why is this called parse when it's really objectify?
       name: 'parse',
+      args: [
+        { type: 'Any', name: 'o' },
+        { type: 'Class', name: 'opt_class' },
+        { type: 'Context', name: 'opt_ctx' },
+      ],
       code: foam.mmethod({
         Array: function(o, opt_class, opt_ctx) {
           var a = new Array(o.length);
@@ -740,26 +766,19 @@ foam.LIB({
           return r;
         } else if ( foam.Object.isInstance(o) ) {
           for ( var key in o ) {
-            // anonymous class support.
-            if ( key === 'class' && foam.Object.isInstance(o[key]) ) {
-              var json = o[key];
-              json.name = 'AnonymousClass' + foam.next$UID();
-              console.log('Constructing anonymous class', json.name);
-
-              r.push(Promise.all(foam.json.references(x, json, [])).then(function() {
-                return x.classloader.maybeLoad(foam.core.Model.create(json));
-              }));
-
-              o[key] = json.name;
+            if ( key === 'type' && foam.String.isInstance(o[key]) ) {
+              foam.core.type.toType(o[key]).refs().forEach(function(id) {
+                r.push(x.classloader.maybeLoad(id));
+              })
               continue;
-            } else if ( (
-                key === 'of' ||
-                key === 'class' ||
-                key == 'view' ||
-                key == 'sourceModel' ||
-                key == 'targetModel' ||
-                key == 'refines' ) &&
-                        foam.String.isInstance(o[key]) ) {
+            }
+            if ( ( key === 'of' ||
+                   key === 'class' ||
+                   key === 'view' ||
+                   key === 'sourceModel' ||
+                   key === 'targetModel' ||
+                   key === 'refines' ) &&
+                 foam.String.isInstance(o[key]) ) {
               r.push(x.classloader.maybeLoad(o[key]));
               continue;
             }

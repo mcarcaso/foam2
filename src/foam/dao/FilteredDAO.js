@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2019 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 foam.CLASS({
   package: 'foam.dao',
   name: 'FilteredDAO',
@@ -12,7 +18,6 @@ foam.CLASS({
       // TODO: FObjectProperty of Predicate. Doing this currently breaks java.
       class: 'FObjectProperty',
       of: 'foam.mlang.predicate.Predicate',
-      swiftType: 'foam_mlang_predicate_Predicate',
       name: 'predicate'
     }
   ],

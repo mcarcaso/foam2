@@ -30,7 +30,12 @@ foam.CLASS({
       value: {class: 'foam.comics.InlineBrowserView'},
     },
     ['transient', true],
-    ['of', 'foam.dao.DAO']
+    ['of', 'foam.dao.DAO'],
+    {
+      name: 'javaInfoType',
+      flags: ['java'],
+      value: 'foam.core.AbstractDAOPropertyPropertyInfo',
+    },
   ],
 
   methods: [

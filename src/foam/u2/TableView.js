@@ -56,6 +56,10 @@ foam.CLASS({
 
         return this.toE(null, e.__subContext__.createSubContext({data: obj}));
       }
+    },
+    {
+      type: 'Int',
+      name: 'tableWidth'
     }
   ]
 });
@@ -196,6 +200,7 @@ foam.CLASS({
       factory: function() { return this.TableBody.create({ columns_: this.columns_ }); }
     }
   ],
+
   methods: [
     function put(obj) {
       this.body.addObj(obj);

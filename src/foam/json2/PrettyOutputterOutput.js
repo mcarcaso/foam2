@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2018 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 foam.CLASS({
   package: 'foam.json2',
   name: 'PrettyOutputterOutput',
@@ -10,6 +16,11 @@ foam.CLASS({
       name: 'delegate',
       factory: function() { return this.SimpleOutputterOutput.create() },
       swiftFactory: `return self.SimpleOutputterOutput_create()`,
+    },
+    {
+      class: 'String',
+      name: 'str',
+      expression: function(delegate$str) { return delegate$str }
     },
     {
       class: 'Int',

@@ -41,6 +41,8 @@ foam.CLASS({
       flags: ['swift'],
     },
     'foam.box.HTTPReplyBox',
+    'foam.box.HTTPException',
+    'foam.box.Message',
   ],
 
   imports: [
@@ -48,12 +50,33 @@ foam.CLASS({
     {
       name: 'me',
       key: 'me',
-      javaType: 'foam.box.Box'
+      type: 'foam.box.Box'
     },
     'window'
   ],
 
+  constants: [
+    {
+      name: 'SESSION_KEY',
+      value: 'sessionId',
+      type: 'String'
+    }
+  ],
+
   properties: [
+    {
+      class: 'String',
+      name: 'sessionName',
+      value: 'defaultSession'
+    },
+    {
+      class: 'String',
+      name: 'sessionID',
+      factory: function() {
+        return localStorage[this.sessionName] ||
+          ( localStorage[this.sessionName] = foam.uuid.randomGUID() );
+      }
+    },
     {
       class: 'String',
       name: 'url'
@@ -101,8 +124,9 @@ foam.CLASS({
         cls.extras.push(foam.java.Code.create({
           data: `
 protected class Outputter extends foam.lib.json.Outputter {
-  public Outputter() {
-    super(foam.lib.json.OutputterMode.NETWORK);
+  public Outputter(foam.core.X x) {
+    super(x);
+    setPropertyPredicate(new foam.lib.AndPropertyPredicate(x, new foam.lib.PropertyPredicate[] {new foam.lib.NetworkPropertyPredicate(), new foam.lib.PermissionedPropertyPredicate()}));
   }
 
   protected void outputFObject(foam.core.FObject o) {
@@ -140,6 +164,8 @@ protected class ResponseThread implements Runnable {
     {
       name: 'send',
       code: function(msg) {
+        msg.attributes[this.SESSION_KEY] = this.sessionID;
+
         // TODO: We should probably clone here, but often the message
         // contains RPC arguments that don't clone properly.  So
         // instead we will mutate replyBox and put it back after.
@@ -154,7 +180,10 @@ protected class ResponseThread implements Runnable {
         var req = this.HTTPRequest.create({
           url:     this.prepareURL(this.url),
           method:  this.method,
-          payload: payload
+          payload: payload,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+          },
         }).send();
 
         req.then(function(resp) {
@@ -168,12 +197,13 @@ protected class ResponseThread implements Runnable {
         });
       },
       swiftCode: function() {/*
+let msg = msg!
 let replyBox = msg.attributes["replyBox"] as? foam_box_Box
 msg.attributes["replyBox"] = HTTPReplyBox_create()
 
 var request = URLRequest(url: Foundation.URL(string: self.url)!)
 request.httpMethod = "POST"
-request.httpBody = outputter.swiftStringify(msg).data(using: .utf8)
+request.httpBody = outputter.swiftStringify(msg)!.data(using: .utf8)
 
 msg.attributes["replyBox"] = replyBox
 
@@ -196,7 +226,7 @@ task.resume()
       javaCode: `
 // TODO: Go async and make request in a separate thread.
 java.net.HttpURLConnection conn;
-foam.box.Box replyBox = (foam.box.Box)message.getAttributes().get("replyBox");
+foam.box.Box replyBox = (foam.box.Box)msg.getAttributes().get("replyBox");
 
 try {
   java.net.URL url = new java.net.URL(getUrl());
@@ -211,14 +241,13 @@ try {
 
 
   // TODO: Clone message or something when it clones safely.
-  message.getAttributes().put("replyBox", getX().create(foam.box.HTTPReplyBox.class));
+  msg.getAttributes().put("replyBox", getX().create(foam.box.HTTPReplyBox.class));
 
 
-  foam.lib.json.Outputter outputter = new foam.lib.json.Outputter(foam.lib.json.OutputterMode.NETWORK);
-  outputter.setX(getX());
-  output.write(outputter.stringify(message));
+  foam.lib.json.Outputter outputter = new foam.lib.json.Outputter(getX()).setPropertyPredicate(new foam.lib.NetworkPropertyPredicate());
+  output.write(outputter.stringify(msg));
 
-  message.getAttributes().put("replyBox", replyBox);
+  msg.getAttributes().put("replyBox", replyBox);
 
   output.close();
 

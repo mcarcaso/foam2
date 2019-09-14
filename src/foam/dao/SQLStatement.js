@@ -11,16 +11,16 @@ foam.INTERFACE({
   methods: [
     {
       name: 'createStatement',
-      javaReturns: 'String'
+      type: 'String'
     },
     {
       name: 'prepareStatement',
-      javaReturns: 'void',
+      type: 'Void',
       javaThrows: ['java.sql.SQLException'],
       args: [
         {
           name: 'stmt',
-          javaType: 'foam.dao.pg.IndexedPreparedStatement'
+          javaType: 'foam.dao.jdbc.IndexedPreparedStatement'
         }
       ]
     }

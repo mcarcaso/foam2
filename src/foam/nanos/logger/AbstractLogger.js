@@ -52,13 +52,13 @@ protected ThreadLocal<StringBuilder> sb = new ThreadLocal<StringBuilder>() {
   methods: [
     {
       name: 'formatArg',
+      type: 'String',
       args: [
         {
           name: 'obj',
-          javaType: 'Object'
+          type: 'Any'
         }
       ],
-      javaReturns: 'String',
       javaCode:
 `if ( obj instanceof Throwable ) {
   Throwable   t  = (Throwable) obj;
@@ -74,20 +74,27 @@ return String.valueOf(obj);`
     },
     {
       name: 'combine',
+      type: 'String',
       args: [
         {
           name: 'args',
-          javaType: 'Object[]'
+          type: 'Any[]'
         }
       ],
-      javaReturns: 'String',
       javaCode:
-      `StringBuilder str = sb.get();
-for ( Object n : args ) {
-  str.append(',');
-  str.append(formatArg(n));
-}
-return str.toString();`
+      `
+  StringBuilder str = sb.get();
+  if ( args.length >= 1) {
+    str.append(formatArg(args[0]));
+  }
+  for ( int i = 1; i < args.length; ++i) {
+    Object n = args[i];
+    str.append(',');
+    str.append(formatArg(n));
+  }
+  return str.toString();`
     }
   ]
 });
+
+

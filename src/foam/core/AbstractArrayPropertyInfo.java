@@ -6,17 +6,14 @@
 
 package foam.core;
 
-import foam.dao.pg.IndexedPreparedStatement;
+import foam.dao.jdbc.IndexedPreparedStatement;
 import foam.nanos.logger.Logger;
 import java.lang.UnsupportedOperationException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public abstract class AbstractArrayPropertyInfo
   extends AbstractPropertyInfo
@@ -57,25 +54,6 @@ public abstract class AbstractArrayPropertyInfo
       logger.error("Premature end of XML file");
     }
     return objList.toArray();
-  }
-
-  @Override
-  public void toXML (FObject obj, Document doc, Element objElement) {
-    Object value = this.f(obj);
-
-    // Return if some kind of array other than Object[], like int[]
-    if ( value == null || ! ( value instanceof Object[]) ) return;
-
-    Object[] nestObj = (Object[]) value;
-    Element  prop    = doc.createElement(this.getName());
-
-    objElement.appendChild(prop);
-
-    for ( int k = 0; k < nestObj.length; k++ ) {
-      Element nestedProp = doc.createElement("value");
-      nestedProp.appendChild(doc.createTextNode(nestObj[k].toString()));
-      prop.appendChild(nestedProp);
-    }
   }
 
   @Override

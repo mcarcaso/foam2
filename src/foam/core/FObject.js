@@ -33,7 +33,10 @@ foam.LIB({
     // Each class has a prototype object which is the prototype of all
     // instances of the class. A classes prototype extends its parent
     // classes prototype.
-    prototype: {},
+    prototype: {
+      // Bootstrap context getter, upgraded in EndBoot.js
+      get __context__() { return foam.__context__; }
+    },
 
     // Each class has a map of Axioms added to the class.
     // Map keys are the name of the axiom.
@@ -152,6 +155,16 @@ foam.LIB({
         this.axiomMap_[a.name] = a;
       }
 
+      // Sort axioms by priority, higher priority gets installed first.
+      // Default to 100.
+      axs = axs.sort(function(a, b) {
+        var p1 = foam.Number.isInstance(a.priority) ? a.priority : 100;
+        var p2 = foam.Number.isInstance(b.priority) ? b.priority : 100;
+
+        // compare p2 vs p1, as we want higher priority values first.
+        return foam.Number.compare(p2, p1);
+      });
+
       for ( var i = 0 ; i < axs.length ; i++ ) {
         var a = axs[i];
 
@@ -198,10 +211,13 @@ foam.LIB({
        * if it implements this class (directly or indirectly).
        */
 
-      if ( ! c || ! c.id ) return false;
+      if ( ! c || ! c.id || ! c.prototype ) return false;
+
+      // This optimization means we can't use foam.core.isSubClass() to check
+      // if an object is a class or not.
 
       // Optimize most common case and avoid creating cache
-      if ( this === foam.core.FObject ) return true;
+      // if ( this === foam.core.FObject ) return true;
 
       var cache = this.private_.isSubClassCache ||
         ( this.private_.isSubClassCache = {} );
@@ -293,7 +309,7 @@ foam.LIB({
         this.private_.initAgentsCache = [];
         for ( var key in this.axiomMap_ ) {
           var axiom = this.axiomMap_[key];
-          if (axiom.initObject) this.private_.initAgentsCache.push(axiom);
+          if ( axiom.initObject ) this.private_.initAgentsCache.push(axiom);
         }
       }
       return this.private_.initAgentsCache;
@@ -499,25 +515,6 @@ foam.CLASS({
       }
     },
 
-
-    /************************************************
-     * Console
-     ************************************************/
-
-    // Imports aren't implemented yet, so mimic:
-    //   imports: [ 'lookup', 'assert', 'error', 'log', 'warn' ],
-
-
-    // Bootstrap form replaced after this.__context__ is added.
-    function lookup() { return foam.lookup.apply(foam, arguments); },
-
-    function error() { this.__context__.error.apply(null, arguments); },
-
-    function log() { this.__context__.log.apply(null, arguments); },
-
-    function warn() { this.__context__.warn.apply(null, arguments); },
-
-
     /************************************************
      * Publish and Subscribe
      ************************************************/
@@ -597,7 +594,9 @@ foam.CLASS({
             case 9: l(s, a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]); break;
             default: l.apply(l, [s].concat(Array.from(a)));
           }
-        } catch (x) {}
+        } catch (x) {
+          if ( foam._IS_DEBUG_ ) console.warn("Listener threw exception", x);
+        }
         count++;
       }
       return count;
@@ -774,10 +773,13 @@ foam.CLASS({
       var names = obj.split('$');
       var axiom = this.cls_.getAxiomByName(names.shift());
 
-      foam.assert(axiom, 'slot() called with unknown axiom name:', obj);
-      foam.assert(axiom.toSlot, 'Called slot() on unslottable axiom:', obj);
+      if ( axiom == null ) {
+        throw new Error(`slot() called with unknown axiom: '${obj}' on model '${this.cls_.id}'.`);
+      } else if ( ! axiom.toSlot ) {
+        throw new Error(`Called slot() on unslottable axiom: '${obj}' on model '${this.cls_.id}'.`);
+      }
 
-      var slot = axiom.toSlot(this)
+      var slot = axiom.toSlot(this);
       names.forEach(function(n) {
         slot = slot.dot(n);
       });
@@ -1001,8 +1003,10 @@ foam.CLASS({
           this.cls_.prototype === this ? 'Proto' : '');
     },
 
-    function toJSON() {
-      return foam.json.stringify(this);
+    function toSummary() {
+      var prop = this.cls_.getAxiomsByClass(foam.core.String)
+        .find(p => !p.hidden);
+      return prop ? prop.f(this) : this.toString();
     },
 
     function dot(name) {

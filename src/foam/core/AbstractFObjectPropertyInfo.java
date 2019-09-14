@@ -27,6 +27,10 @@ public abstract class AbstractFObjectPropertyInfo
   //    return o1.compareTo(o2);
   //  }
 
+  public foam.core.ClassInfo of() {
+    return new foam.core.EmptyClassInfo();
+  }
+
   @Override
   public Object fromXML(X x, XMLStreamReader reader) {
     FObject obj = null;
@@ -49,15 +53,6 @@ public abstract class AbstractFObjectPropertyInfo
       logger.error("Premature end of xml file while reading property", this.getName());
     }
     return obj;
-  }
-
-  @Override
-  public void toXML(FObject obj, Document doc, Element objElement) {
-    Object nestObj = this.f(obj);
-    if ( nestObj == null ) return;
-    Element objTag = doc.createElement(this.getName());
-    objElement.appendChild(objTag);
-    XMLSupport.toXML((FObject) nestObj, doc, objTag);
   }
 
   @Override

@@ -157,7 +157,7 @@ foam.CLASS({
     {
       class: 'foam.u2.ViewSpec',
       name: 'filterAreaSpec',
-      value: 'div'
+      value: 'DIV'
     },
     {
       class: 'Boolean',
@@ -398,7 +398,7 @@ foam.CLASS({
       isFramed: true,
       code: function() {
         if ( ! this.loaded_ || ! this.data ) return;
-        var fields = this.searchFields;
+        var fields    = this.searchFields;
         var oldFields = this.oldSearchFields_;
 
         // Check for every filter that has been removed, and every filter that
@@ -406,7 +406,7 @@ foam.CLASS({
         // This function is responsible for choosing the view for each property.
         // Eg. drop-downs for Booleans and Enums, before/after for dates, etc.
         if ( oldFields ) {
-          for ( var i = 0; i < oldFields.length; i++ ) {
+          for ( var i = 0 ; i < oldFields.length ; i++ ) {
             if ( ! fields || fields.indexOf(oldFields[i]) < 0 ) {
               this.searchMgr_.remove(oldFields[i]);
               this.searchViews_[oldFields[i]].remove();
@@ -416,7 +416,7 @@ foam.CLASS({
         }
 
         if ( fields ) {
-          for ( var i = 0; i < fields.length; i++ ) {
+          for ( var i = 0 ; i < fields.length ; i++ ) {
             if ( ! oldFields || oldFields.indexOf(fields[i]) < 0 ) {
               var split = this.splitName(fields[i]);
               var prop = this.data.of.getAxiomByName(split.name);
@@ -603,6 +603,52 @@ foam.CLASS({
       class: 'foam.u2.ViewSpec',
       name: 'searchView',
       value: { class: 'foam.u2.search.FloatSearchView' }
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'foam.u2.search',
+  name: 'DAOPropertyRefinement',
+  refines: 'foam.dao.DAOProperty',
+
+  properties: [
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'searchView',
+      value: null
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'foam.u2.search',
+  name: 'ManyToManyRelationshipPropertyRefinement',
+  refines: 'foam.dao.ManyToManyRelationshipProperty',
+
+  properties: [
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'searchView',
+      value: null
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.u2.search',
+  name: 'ReferenceRefinement',
+  refines: 'foam.core.Reference',
+
+  properties: [
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'searchView',
+      expression: function(of) {
+        return of.ID.searchView;
+      }
     }
   ]
 });

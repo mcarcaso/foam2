@@ -6,6 +6,8 @@
 
 /* refinement to add device token property for Firebase */
 foam.CLASS({
+  package: 'foam.nanos.auth',
+  name: 'UserDeviceTokenRefinement',
   refines: 'foam.nanos.auth.User',
 
   properties: [
@@ -26,7 +28,7 @@ foam.CLASS({
 
   javaImports: [
     'foam.lib.json.Outputter',
-    'foam.lib.json.OutputterMode',
+    'foam.lib.NetworkPropertyPredicate',
     'foam.util.SafetyUtil',
     'java.io.OutputStreamWriter',
     'java.net.HttpURLConnection',
@@ -69,6 +71,7 @@ try {
   conn.setRequestMethod("POST");
   conn.setRequestProperty("Authorization", "key=" + getApiKey());
   conn.setRequestProperty("Content-Type", "application/json");
+  conn.setDoOutput(true);
 
   Map<String, Object> body = new HashMap<String, Object>();
   body.put("to", user.getDeviceToken());
@@ -85,7 +88,7 @@ try {
     body.put("data", data);
   }
 
-  Outputter outputter = new Outputter(OutputterMode.NETWORK);
+  Outputter outputter = new Outputter(getX()).setPropertyPredicate(new NetworkPropertyPredicate());
   outputter.output(body);
 
   wr = new OutputStreamWriter(conn.getOutputStream());

@@ -19,7 +19,10 @@ foam.CLASS({
   package: 'foam.dao',
   name: 'EasyDAO',
   extends: 'foam.dao.ProxyDAO',
-  implements: [ 'foam.mlang.Expressions' ],
+  implements: [
+    'foam.mlang.Expressions',
+    'foam.nanos.boot.NSpecAware'
+  ],
 
   documentation: function() {/*
     Facade for easily creating decorated DAOs.
@@ -33,16 +36,17 @@ foam.CLASS({
   requires: [
     'foam.box.Context',
     'foam.box.HTTPBox',
+    'foam.box.RetryBox',
     'foam.box.SessionClientBox',
     'foam.box.SocketBox',
-    'foam.box.WebSocketBox',
     'foam.box.TimeoutBox',
-    'foam.box.RetryBox',
+    'foam.box.WebSocketBox',
     'foam.dao.CachingDAO',
+    'foam.dao.ClientDAO',
     'foam.dao.CompoundDAODecorator',
     'foam.dao.ContextualizingDAO',
-    'foam.dao.DecoratedDAO',
     'foam.dao.DeDupDAO',
+    'foam.dao.DecoratedDAO',
     'foam.dao.GUIDDAO',
     'foam.dao.IDBDAO',
     {
@@ -54,48 +58,135 @@ foam.CLASS({
       path: 'foam.dao.java.JDAO',
       flags: ['java'],
     },
-    'foam.dao.LoggingDAO',
+    'foam.nanos.logger.Logger',
+    'foam.nanos.logger.LoggingDAO',
     'foam.dao.MDAO',
     'foam.dao.PromisedDAO',
     'foam.dao.RequestResponseClientDAO',
     'foam.dao.SequenceNumberDAO',
     'foam.dao.SyncDAO',
-    'foam.dao.TimingDAO'
+    'foam.dao.TimingDAO',
+    'foam.dao.JournalType'
   ],
 
   imports: [ 'document' ],
 
-  constants: {
-    // Aliases for daoType
-    ALIASES: {
-      ARRAY:  'foam.dao.ArrayDAO',
-      CLIENT: 'foam.dao.RequestResponseClientDAO',
-      IDB:    'foam.dao.IDBDAO',
-      LOCAL:  'foam.dao.LocalStorageDAO',
-      MDAO:   'foam.dao.MDAO'
+  javaImports: [
+    'foam.nanos.logger.Logger'
+  ],
+
+  constants: [
+    {
+      // Aliases for daoType
+      name: 'aliases',
+      flags: [ 'js' ],
+      value: {
+        ARRAY:  'foam.dao.ArrayDAO',
+        CLIENT: 'foam.dao.RequestResponseClientDAO',
+        IDB:    'foam.dao.IDBDAO',
+        LOCAL:  'foam.dao.LocalStorageDAO',
+        MDAO:   'foam.dao.MDAO'
+      }
     }
-  },
+  ],
 
   properties: [
     {
       /** The developer-friendly name for this EasyDAO. */
       class: 'String',
       name: 'name',
-      factory: function() { return this.of.id; }
+      factory: function() {
+        return this.nSpec && this.nSpec.name || this.of.id;
+      },
+      javaFactory: `
+      if ( getNSpec() != null ) {
+        return getNSpec().getName();
+      }
+      return this.getOf().getId();
+     `
+    },
+    {
+      name: 'nSpec',
+      class: 'FObjectProperty',
+      type: 'foam.nanos.boot.NSpec'
     },
     {
       /** This is set automatically when you create an EasyDAO.
         @private */
       name: 'delegate',
       javaFactory: `
-foam.dao.DAO delegate = getInnerDAO() == null ?
-  new foam.dao.MapDAO(getX(), getOf()) :
-  getInnerDAO();
+Logger logger = (Logger) getX().get("logger");
 
-if ( delegate instanceof foam.dao.MDAO ) setMdao((foam.dao.MDAO)delegate);
+foam.dao.DAO delegate = getInnerDAO();
+foam.dao.DAO head = delegate;
+foam.dao.ProxyDAO pxy = null;
+while( head instanceof foam.dao.ProxyDAO ) {
+  pxy = (foam.dao.ProxyDAO) head;
+  if ( head instanceof foam.dao.MDAO ) {
+    break;
+  }
+  head = ( (ProxyDAO) head).getDelegate();
+}
+if ( head instanceof foam.dao.MDAO ) {
+  setMdao((foam.dao.MDAO)head);
+  if ( getIndex() != null &&
+       getIndex().length > 0 ) {
+    getMdao().addIndex(getIndex());
+  }
+}
 
-if ( getJournaled() ) {
-  delegate = new foam.dao.java.JDAO(getX(), delegate, getJournalName());
+if ( getFixedSize() != null ) {
+  if ( head instanceof foam.dao.MDAO &&
+       pxy != null ) {
+    foam.dao.ProxyDAO fixedSizeDAO = (foam.dao.ProxyDAO) getFixedSize();
+    fixedSizeDAO.setDelegate(head);
+    pxy.setDelegate(fixedSizeDAO);
+  } else {
+    logger.error(this.getClass().getSimpleName(), "NSpec.name", (getNSpec() != null ) ? getNSpec().getName() : null, "of_", of_, "FixedSizeDAO did not find instanceof MDAO");
+    System.exit(1);
+  }
+}
+
+
+delegate = getOuterDAO(delegate);
+
+if ( getDecorator() != null ) {
+  if ( ! ( getDecorator() instanceof ProxyDAO ) ) {
+    logger.error(this.getClass().getSimpleName(), "delegate", "NSpec.name", (getNSpec() != null ) ? getNSpec().getName() : null, "of_", of_ , "delegateDAO", getDecorator(), "not instanceof ProxyDAO");
+    System.exit(1);
+  }
+  // The decorator dao may be a proxy chain
+  ProxyDAO proxy = (ProxyDAO) getDecorator();
+  while ( proxy.getDelegate() != null ) {
+    proxy = (ProxyDAO) proxy.getDelegate();
+  }
+  proxy.setDelegate(delegate);
+  delegate = (ProxyDAO) getDecorator();
+}
+
+if ( getDeletedAware() ||
+     foam.nanos.auth.DeletedAware.class.isAssignableFrom(getOf().getObjClass()) ) {
+  delegate = new foam.nanos.auth.DeletedAwareDAO.Builder(getX()).setDelegate(delegate).build();
+}
+
+if ( getCreatedAware() ||
+  foam.nanos.auth.CreatedAware.class.isAssignableFrom(getOf().getObjClass()) ) {
+  delegate = new foam.nanos.auth.CreatedAwareDAO.Builder(getX()).setDelegate(delegate).build();
+}
+
+if ( getCreatedByAware() ||
+  foam.nanos.auth.CreatedByAware.class.isAssignableFrom(getOf().getObjClass()) ) {
+  delegate = new foam.nanos.auth.CreatedByAwareDAO.Builder(getX()).setDelegate(delegate).build();
+}
+
+if ( getLastModifiedAware() ||
+  foam.nanos.auth.LastModifiedAware.class.isAssignableFrom(getOf().getObjClass()) ) {
+  delegate = new foam.nanos.auth.LastModifiedAwareDAO.Builder(getX()).setDelegate(delegate).build();
+}
+
+if ( getLastModifiedByAware() ||
+  foam.nanos.auth.LastModifiedByAware.class.isAssignableFrom(getOf().getObjClass()) ) {
+  delegate = new foam.nanos.auth.LastModifiedByAwareDAO.Builder(getX()).setDelegate(delegate).build();
 }
 
 if ( getGuid() && getSeqNo() ) {
@@ -110,6 +201,7 @@ if ( getSeqNo() ) {
   delegate = new foam.dao.SequenceNumberDAO.Builder(getX()).
     setDelegate(delegate).
     setProperty(getSeqPropertyName()).
+    setStartingValue(getSeqStartingValue()).
     build();
 }
 
@@ -119,15 +211,43 @@ if ( getContextualize() ) {
     build();
 }
 
-if ( getAuthenticate() ) {
-  delegate = new foam.dao.AuthenticatedDAO(
-    getName(),
-    getAuthenticateRead(),
-    delegate);
+if ( getOrder() != null &&
+     getOrder().length > 0 ) {
+  // TODO: CompositeDAO or thenBy
+  for ( foam.mlang.order.Comparator comp : getOrder() ) {
+    delegate = delegate.orderBy(comp);
+  }
+}
+
+if( getAuthorize() ) delegate = new foam.nanos.auth.AuthorizationDAO(getX(), delegate, getAuthorizer());
+
+if ( getNSpec() != null &&
+     getNSpec().getServe() &&
+     ! getAuthorize() &&
+     ! getReadOnly() ) {
+  //setReadOnly(true);
+  logger.warning("EasyDAO", getNSpec().getName(), "Served DAO should be Authorized, or ReadOnly");
+}
+
+if ( getPermissioned() &&
+     ( getNSpec() != null && getNSpec().getServe() ) ) {
+  delegate = new foam.nanos.auth.PermissionedPropertyDAO.Builder(getX()).setDelegate(delegate).build();
+}
+
+if ( getReadOnly() ) {
+  delegate = new foam.dao.ReadOnlyDAO.Builder(getX()).setDelegate(delegate).build();
+}
+
+if ( getLogging() ) {
+  delegate = new foam.nanos.logger.LoggingDAO.Builder(getX()).setNSpec(getNSpec()).setDelegate(delegate).build();
+}
+
+if ( getPipelinePm() && ( delegate instanceof ProxyDAO ) ) {
+  delegate = new foam.dao.PipelinePMDAO.Builder(getX()).setNSpec(getNSpec()).setDelegate(delegate).build();;
 }
 
 if ( getPm() ) {
-  delegate = new foam.dao.PMDAO(delegate);
+  delegate = new foam.dao.PMDAO.Builder(getX()).setNSpec(getNSpec()).setDelegate(delegate).build();
 }
 
 return delegate;
@@ -135,8 +255,23 @@ return delegate;
     },
     {
       class: 'Object',
-      javaType: 'foam.dao.DAO',
-      name: 'innerDAO'
+      type: 'foam.dao.DAO',
+      name: 'innerDAO',
+      javaFactory: `
+      if ( getJournalType().equals(JournalType.SINGLE_JOURNAL) )
+        return new foam.dao.java.JDAO(getX(), getOf(), getJournalName());
+      return new foam.dao.MDAO(getOf());
+      `
+    },
+    {
+      class: 'Object',
+      type: 'foam.dao.DAO',
+      name: 'decorator'
+    },
+    {
+      class: 'Boolean',
+      documentation: 'Creates pipelinePMDAOs around each decorator to measure their performance',
+      name: 'pipelinePm'
     },
     {
       /** Have EasyDAO use a sequence number to index items. Note that
@@ -145,6 +280,11 @@ return delegate;
       class: 'Boolean',
       name: 'seqNo',
       value: false
+    },
+    {
+      class: 'Long',
+      name: 'seqStartingValue',
+      value: 1
     },
     {
       /** Have EasyDAO generate guids to index items. Note that .seqNo and .guid features are mutually exclusive. */
@@ -172,15 +312,42 @@ return delegate;
       value: false
     },
     {
-      /** Enable standard authentication. */
+      /** Enable standard authorization. */
       class: 'Boolean',
-      name: 'authenticate',
+      name: 'authorize',
       value: true
     },
     {
-      /** Enable standard read authentication. */
+      class: 'Object',
+      type: 'foam.nanos.auth.Authorizer',
+      name: 'authorizer',
+      javaFactory: `
+      if ( foam.nanos.auth.Authorizable.class.isAssignableFrom(getOf().getObjClass()) ) {
+        return new foam.nanos.auth.AuthorizableAuthorizer(getPermissionPrefix());
+      } else {
+        return new foam.nanos.auth.StandardAuthorizer(getPermissionPrefix());
+      }
+      `
+    },
+    {
+      class: 'String',
+      name: 'permissionPrefix',
+      factory: function() {
+        return this.of.name.toLowerCase();
+      },
+      javaFactory: `
+      return this.getOf().getObjClass().getSimpleName().toLowerCase();
+     `
+    },
+    {
       class: 'Boolean',
-      name: 'authenticateRead',
+      name: 'readOnly',
+      value: false
+    },
+    {
+      documentation: 'Wrap in PermissionedPropertiesDAO',
+      class: 'Boolean',
+      name: 'permissioned',
       value: true
     },
     {
@@ -192,9 +359,10 @@ return delegate;
     },
     {
       /** Keep a history of all state changes to the DAO. */
-      class: 'Boolean',
-      name: 'journaled',
-      value: false
+      class: 'foam.core.Enum',
+      of: 'foam.dao.JournalType',
+      name: 'journalType',
+      value: 'NO_JOURNAL'
     },
     {
       class: 'String',
@@ -211,13 +379,11 @@ return delegate;
       class: 'Boolean',
       name: 'logging',
       value: false,
-      generateJava: false
     },
     {
       /** Enable time tracking for concurrent DAO operations. */
       class: 'Boolean',
       name: 'timing',
-      generateJava: false,
       value: false
     },
     {
@@ -232,12 +398,6 @@ return delegate;
       name: 'contextualize',
       value: false
     },
-//     {
-//       class: 'Boolean',
-//       name: 'cloning',
-//       value: false,
-//       //documentation: "True to clone results on select"
-//     },
     {
       /**
         <p>Selects the basic functionality this EasyDAO should provide.
@@ -264,14 +424,9 @@ return delegate;
       class: 'Boolean',
       generateJava: false,
       name: 'autoIndex',
+      documentation: 'not currently supported',
       value: false
     },
-//     {
-//       /** Creates an internal MigrationDAO and applies the given array of MigrationRule. */
-//       class: 'FObjectArray',
-//       name: 'migrationRules',
-//       of: 'foam.core.dao.MigrationRule',
-//     },
     {
       /** Turn on to activate synchronization with a server. Specify serverUri
         and syncProperty as well. */
@@ -311,17 +466,27 @@ return delegate;
       generateJava: false
     },
     {
+      name: 'retryBoxMaxAttempts',
+      generateJava: false,
+    },
+    {
       /** Destination address for server. */
       name: 'serverBox',
       generateJava: false,
       factory: function() {
         // TODO: This should come from the server via a lookup from a NamedBox.
-        return this.SessionClientBox.create({ delegate: this.RetryBox.create({ delegate:
-          this.TimeoutBox.create({ delegate:
-          this.remoteListenerSupport ?
-              this.WebSocketBox.create({ uri: this.serviceName }) :
-              this.HTTPBox.create({ url: this.serviceName })
-        })})});
+        var box = this.TimeoutBox.create({
+          delegate: this.remoteListenerSupport ?
+            this.WebSocketBox.create({ uri: this.serviceName }) :
+            this.HTTPBox.create({ url: this.serviceName })
+        })
+        if ( this.retryBoxMaxAttempts != 0 ) {
+          box = this.RetryBox.create({
+            maxAttempts: this.retryBoxMaxAttempts,
+            delegate: box,
+          })
+        }
+        return this.SessionClientBox.create({ delegate: box });
       }
     },
     {
@@ -336,12 +501,80 @@ return delegate;
       name: 'decorators'
     },
     {
+      class: 'FObjectArray',
+      of: 'foam.mlang.order.Comparator',
+      name: 'order'
+    },
+    {
+      class: 'FObjectArray',
+      of: 'foam.core.PropertyInfo',
+      name: 'index'
+    },
+    {
       name: 'testData',
       generateJava: false
-    }
-  ],
+    },
+    {
+      name: 'deletedAware',
+      class: 'Boolean',
+      value: false
+    },
+    {
+      name: 'createdAware',
+      class: 'Boolean',
+      value: false
+    },
+    {
+      name: 'createdByAware',
+      class: 'Boolean',
+      value: false
+    },
+    {
+      name: 'lastModifiedAware',
+      class: 'Boolean',
+      value: false
+    },
+    {
+      name: 'lastModifiedByAware',
+      class: 'Boolean',
+      value: false
+    },
+    {
+      name: 'fixedSize',
+      class: 'FObjectProperty',
+      of: 'foam.dao.FixedSizeDAO'
+    },
+ ],
 
   methods: [
+    {
+      name: 'init_',
+      javaCode: `
+       if ( of_ == null ) {
+         foam.nanos.logger.Logger logger = (foam.nanos.logger.Logger) getX().get("logger");
+         if ( logger != null ) {
+           logger.error("EasyDAO", getName(), "'of' not set.", new Exception("of not set"));
+         } else {
+           System.err.println("EasyDAO "+getName()+" 'of' not set.");
+         }
+         System.exit(1);
+       }
+     `
+    },
+    {
+      name: 'getOuterDAO',
+      documentation: 'Method to be overidden on the user end to add framework user specific DAO decorators to EasyDAO',
+      type: 'foam.dao.DAO',
+      args: [
+        {
+          type: 'foam.dao.DAO',
+          name: 'innerDAO'
+        }
+      ],
+      javaCode: `
+        return innerDAO;
+      `
+    },
     function init() {
       /**
         <p>On initialization, the EasyDAO creates an appropriate chain of
@@ -372,11 +605,11 @@ return delegate;
       }
 
       var daoModel = typeof daoType === 'string' ?
-        this.lookup(daoType) || global[daoType] :
+        this.__context__.lookup(daoType) || global[daoType] :
         daoType;
 
       if ( ! daoModel ) {
-        this.warn(
+        this.__context__.warn(
           "EasyDAO: Unknown DAO Type.  Add '" + daoType + "' to requires: list."
         );
       }
@@ -424,6 +657,7 @@ return delegate;
       if ( this.seqNo ) {
         var args = {__proto__: params, delegate: dao, of: this.of};
         if ( this.seqProperty ) args.property = this.seqProperty;
+        args.startingValue = this.seqStartingValue;
         dao = this.SequenceNumberDAO.create(args);
       }
 
@@ -488,12 +722,21 @@ return delegate;
         dao = decorated;
       }
 
-      if ( this.timing  ) {
+      if ( this.order ) {
+        for ( var i = 0; i <  this.order.length; i++ ) {
+          dao = dao.orderBy(this.order[i]);
+        }
+      }
+
+      if ( this.timing ) {
         dao = this.TimingDAO.create({ name: this.name + 'DAO', delegate: dao });
       }
 
       if ( this.logging ) {
-        dao = this.LoggingDAO.create({ delegate: dao });
+        dao = this.LoggingDAO.create({
+          nSpec: this.nSpec,
+          delegate: dao
+        });
       }
 
       var self = this;
@@ -534,16 +777,15 @@ return delegate;
     */
     {
       name: 'addPropertyIndex',
-      returns: 'foam.dao.EasyDAO',
-      javaReturns: 'foam.dao.EasyDAO',
-      args: [ { javaType: 'foam.core.PropertyInfo', name: 'prop' } ],
+      type: 'foam.dao.EasyDAO',
+      args: [ { javaType: 'foam.core.PropertyInfo...', name: 'props' } ],
       code:     function addPropertyIndex() {
         this.mdao && this.mdao.addPropertyIndex.apply(this.mdao, arguments);
         return this;
       },
       javaCode: `
 if ( getMdao() != null ) {
-  getMdao().addIndex(prop);
+  getMdao().addIndex(props);
 }
 return this;
 `
@@ -556,8 +798,8 @@ return this;
     */
     {
       name: 'addIndex',
-      returns: 'foam.dao.EasyDAO',
-      javaReturns: 'foam.dao.EasyDAO',
+      type: 'foam.dao.EasyDAO',
+      // TODO: The java Index interface conflicts with the js CLASS Index
       args: [ { javaType: 'foam.dao.index.Index', name: 'index' } ],
       code: function addIndex(index) {
         this.mdao && this.mdao.addIndex.apply(this.mdao, arguments);
@@ -569,6 +811,6 @@ if ( getMdao() != null ) {
 }
 return this;
 `
-    }
+    },
   ]
 });

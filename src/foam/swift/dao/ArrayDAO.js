@@ -23,6 +23,7 @@ foam.CLASS({
     {
       name: 'put_',
       swiftCode: function() {/*
+let obj = obj!
 var found = false
 for (i, o) in array.enumerated() {
   if primaryKey.compare(obj, o) == 0 {
@@ -39,7 +40,7 @@ return obj
     {
       name: 'remove_',
       swiftCode: function() {/*
-let i = array.index { (o) -> Bool in
+let i = array.firstIndex { (o) -> Bool in
   return self.primaryKey.compare(obj, o) == 0
 }
 if i == nil { return nil }
@@ -51,7 +52,7 @@ return o
     {
       name: 'find_',
       swiftCode: function() {/*
-let i = array.index { (o) -> Bool in
+let i = array.firstIndex { (o) -> Bool in
   return FOAM_utils.compare(id, self.primaryKey.get(o)) == 0
 }
 if i == nil { return nil }
@@ -69,9 +70,9 @@ let sub = Subscription(detach: { detached = true })
 
 for o in array {
   if detached { break }
-  sink.put(o, sub)
+  sink?.put(o, sub)
 }
-sink.eof()
+sink?.eof()
 
 return resultSink
       */},
@@ -80,8 +81,8 @@ return resultSink
       name: 'removeAll_',
       swiftCode: `
 let predicate: foam_mlang_predicate_Predicate = predicate ?? True_create()
-var skip: Int = skip ?? 0;
-var limit: Int = limit ?? Int.max
+var skip: Int = skip
+var limit: Int = limit
 
 for (i, o) in array.enumerated() {
   if predicate.f(o) {

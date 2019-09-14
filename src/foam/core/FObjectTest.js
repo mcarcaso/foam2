@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2019 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 foam.CLASS({
   package: 'foam.core',
   name: 'FObjectTest',
@@ -24,7 +30,7 @@ foam.CLASS({
     {
       name: 'FObject_fclone_ClonedObjectEqualsOriginal',
       args: [
-        { class: 'FObjectProperty', name: 'input' }
+        { type: 'FObject', name: 'input' }
       ],
       javaCode: `
         test(input.equals(input.fclone()), "Cloned FObject equals original FObject");

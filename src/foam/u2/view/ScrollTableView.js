@@ -11,9 +11,47 @@
 
   requires: [
     'foam.dao.FnSink',
-    'foam.graphics.ScrollCView',
     'foam.mlang.sink.Count',
     'foam.u2.view.TableView'
+  ],
+
+  css: `
+    ^ {
+      overflow: scroll;
+    }
+    ^table {
+      position: relative;
+    }
+    ^table  .foam-u2-view-TableView-thead {
+      z-index: 1;
+      overflow: visible;
+    }
+  `,
+
+  constants: [
+    {
+      type: 'Float',
+      name: 'MIN_TOP_PAGE_PROGRESS',
+      documentation: `
+        If the "top" page isn't scrolled by at least this amount, make
+        the top page the previous page.
+        i.e. If the page that's currently in view is only scrolled 10% of the way,
+        we consider the page that's above it to be the "top" page. If the page
+        that's on screen is scrolled 51% of the way, then it is considered the top
+        page.
+      `,
+      value: 0.5
+    },
+    {
+      type: 'Integer',
+      name: 'NUM_PAGES_TO_RENDER',
+      value: 3
+    },
+    {
+      type: 'Integer',
+      name: 'TABLE_HEAD_HEIGHT',
+      value: 51
+    }
   ],
 
   properties: [
@@ -21,82 +59,218 @@
       class: 'foam.dao.DAOProperty',
       name: 'data'
     },
-    {
-      class: 'Int',
-      name: 'limit',
-      value: 18,
-      // TODO make this a funciton of the height.
-    },
-    {
-      class: 'Int',
-      name: 'skip',
-    },
-    {
-      class: 'foam.dao.DAOProperty',
-      name: 'scrolledDAO',
-      expression: function(data, limit, skip) {
-        return data.limit(limit).skip(skip);
-      },
-    },
     'columns',
+    {
+      class: 'FObjectArray',
+      of: 'foam.core.Action',
+      name: 'contextMenuActions'
+    },
     {
       class: 'Int',
       name: 'daoCount'
     },
-    'selection'
+    'selection',
+    {
+      class: 'Boolean',
+      name: 'editColumnsEnabled',
+      documentation: `
+        Set to true if users should be allowed to choose which columns to use.
+      `,
+      value: true
+    },
+    {
+      class: 'Int',
+      name: 'rowHeight',
+      documentation: 'The height of one row of the table in px.',
+      value: 49
+    },
+    {
+      name: 'table_',
+      documentation: `
+        A reference to the table element we use in various calculations.
+      `
+    },
+    {
+      type: 'Int',
+      name: 'scrollHeight',
+      expression: function(daoCount, rowHeight) {
+        return rowHeight * daoCount + this.TABLE_HEAD_HEIGHT;
+      }
+    },
+    {
+      type: 'Int',
+      name: 'pageSize',
+      value: 30,
+      documentation: 'The number of items in each "page". There are three pages.'
+    },
+    {
+      type: 'Boolean',
+      name: 'enableDynamicTableHeight',
+      value: true,
+    },
+    {
+      class: 'Boolean',
+      name: 'multiSelectEnabled',
+      documentation: 'Pass through to UnstyledTableView.'
+    },
+    {
+      class: 'Map',
+      name: 'selectedObjects',
+      documentation: `
+        The objects selected by the user when multi-select support is enabled.
+        It's a map where the key is the object id and the value is the object.
+        Here we simply bind it to the selectedObjects property on TableView.
+      `
+    },
+    {
+      class: 'Int',
+      name: 'scrollPos_'
+    },
+    {
+      class: 'Int',
+      name: 'numPages_',
+      expression: function(daoCount, pageSize) {
+        return Math.ceil(daoCount / pageSize);
+      }
+    },
+    {
+      class: 'Int',
+      name: 'currentTopPage_',
+      expression: function(numPages_, scrollPos_, scrollHeight) {
+        var scrollPercent = scrollPos_ / scrollHeight;
+        var topPage = Math.floor(scrollPercent * numPages_);
+        var topPageProgress = (scrollPercent * numPages_) % 1;
+        if ( topPageProgress < this.MIN_TOP_PAGE_PROGRESS ) topPage = topPage - 1;
+        return Math.min(Math.max(0, numPages_ - this.NUM_PAGES_TO_RENDER), Math.max(0, topPage));
+      }
+    },
+    {
+      class: 'Map',
+      name: 'renderedPages_'
+    },
+  ],
+
+  reactions: [
+    ['', 'propertyChange.currentTopPage_', 'updateRenderedPages_'],
+    ['', 'propertyChange.table_', 'updateRenderedPages_'],
+    ['', 'propertyChange.daoCount', 'refresh'],
   ],
 
   methods: [
     function init() {
-      this.onDetach(this.data$proxy.listen(this.FnSink.create({fn:this.onDAOUpdate})));
-      this.onDAOUpdate();
+      this.onDetach(this.data$proxy.listen(this.FnSink.create({ fn: this.updateCount })));
+      this.updateCount();
     },
 
     function initE() {
-      // TODO probably shouldn't be using a table.
-      this.start('table').
-        on('wheel', this.onWheel).
-        start('tr').
-          start('td').
-            style({ 'vertical-align': 'top' }).
-            start(this.TableView, {data$: this.scrolledDAO$, columns: this.columns, selection$: this.selection$}).
-            end().
-          end().
-          start('td').style({ 'vertical-align': 'top' }).
-            add(this.ScrollCView.create({
-              value$: this.skip$,
-              extent$: this.limit$,
-              height: 40*18+41, // TODO use window height.
-              width: 18,
-              size$: this.daoCount$,
-            })).
-          end().
-        end().
-      end();
+      this.
+        addClass(this.myClass()).
+        on('scroll', this.onScroll).
+        start(this.TableView, {
+          data: foam.dao.NullDAO.create({of: this.data.of}),
+          columns: this.columns,
+          contextMenuActions: this.contextMenuActions,
+          selection$: this.selection$,
+          editColumnsEnabled: this.editColumnsEnabled,
+          multiSelectEnabled: this.multiSelectEnabled,
+          selectedObjects$: this.selectedObjects$
+        }, this.table_$).
+          addClass(this.myClass('table')).
+          style({
+            height: this.scrollHeight$.map(h => h + 'px')
+          }).
+        end();
+
+      /*
+        to be used in cases where we don't want the whole table to
+        take the whole page (i.e. we need multiple tables)
+        and enableDynamicTableHeight can be switched off
+      */
+      if (this.enableDynamicTableHeight) {
+        this.onDetach(this.onload.sub(this.updateTableHeight));
+        window.addEventListener('resize', this.updateTableHeight);
+        this.onDetach(() => {
+          window.removeEventListener('resize', this.updateTableHeight);
+        });
+      }
     }
   ],
 
   listeners: [
     {
-      name: 'onWheel',
-      code: function(e) {
-        var negative = e.deltaY < 0;
-        // Convert to rows, rounding up. (Therefore minumum 1.)
-        var rows = Math.ceil(Math.abs(e.deltaY) / /*self.rowHeight*/ 40);
-        this.skip = Math.max(0, this.skip + (negative ? -rows : rows));
-        e.preventDefault();
+      name: 'refresh',
+      isFramed: true,
+      code: function() {
+        Object.keys(this.renderedPages_).forEach(i => {
+          this.renderedPages_[i].remove();
+          delete this.renderedPages_[i];
+        });
+        this.updateRenderedPages_();
+        if ( this.el() ) this.el().scrollTop = 0;
       }
     },
     {
-      // TODO: Avoid onDAOUpdate approaches.
-      name: 'onDAOUpdate',
+      name: 'updateCount',
       isFramed: true,
       code: function() {
-        var self = this;
-        this.data$proxy.select(this.Count.create()).then(function(s) {
-          self.daoCount = s.value;
-        })
-      },
+        return this.data$proxy.select(this.Count.create()).then((s) => {
+          this.daoCount = s.value;
+        });
+      }
     },
+    {
+      name: 'updateRenderedPages_',
+      isFramed: true,
+      code: function() {
+        if ( ! this.table_ ) return;
+
+        // Remove any pages that are no longer on screen to save on
+        // the amount of DOM we add to the page.
+        Object.keys(this.renderedPages_).forEach(i => {
+          if ( i >= this.currentTopPage_ && i < this.currentTopPage_ + this.NUM_PAGES_TO_RENDER ) return;
+          this.renderedPages_[i].remove();
+          delete this.renderedPages_[i];
+        });
+
+        // Add any pages that are not already rendered.
+        for ( var i = 0; i < Math.min(this.numPages_, this.NUM_PAGES_TO_RENDER) ; i++) {
+          var page = this.currentTopPage_ + i;
+          if ( this.renderedPages_[page] ) continue;
+          var dao = this.data$proxy.limit(this.pageSize).skip(page * this.pageSize);
+          var tbody = this.table_.slotE_(this.table_.rowsFrom(dao));
+          tbody.style({
+            position: 'absolute',
+            width: '100%',
+            top: this.TABLE_HEAD_HEIGHT + page * this.pageSize * this.rowHeight + 'px'
+          });
+          this.table_.add(tbody);
+          this.renderedPages_[page] = tbody;
+        }
+
+      }
+    },
+    {
+      name: 'onScroll',
+      isFramed: true,
+      code: function(e) {
+        this.scrollPos_ = e.target.scrollTop;
+      }
+    },
+    {
+      name: 'updateTableHeight',
+      code: function() {
+        // Find the distance from the top of the table to the top of the screen.
+        var distanceFromTop = this.el().getBoundingClientRect().y;
+
+        // Calculate the remaining space we have to make use of.
+        var remainingSpace = window.innerHeight - distanceFromTop;
+
+        // TODO: Do we want to do this?
+        // Leave space for the footer.
+        remainingSpace -= 44;
+
+        this.style({ height: `${remainingSpace}px` });
+      }
+    }
   ]
 });

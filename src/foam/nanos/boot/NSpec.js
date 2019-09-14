@@ -18,7 +18,9 @@ foam.CLASS({
     'bsh.EvalError',
     'bsh.Interpreter',
     'foam.dao.DAO',
-    'foam.core.FObject'
+    'foam.core.FObject',
+    'foam.nanos.auth.AuthorizationException',
+    'foam.nanos.auth.AuthService'
   ],
 
   ids: [ 'name' ],
@@ -29,17 +31,18 @@ foam.CLASS({
     {
       class: 'String',
       name: 'name',
+      displayWidth: '60',
       tableWidth: 460
     },
     {
       class: 'String',
       name: 'description',
-      width: 80
+      width: 120
     },
     {
       class: 'Boolean',
       name: 'lazy',
-      tableWidth: 60,
+      tableWidth: 65,
       value: true,
       tableCellFormatter: function(value, obj, property) {
         this
@@ -54,7 +57,7 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'serve',
-      tableWidth: 50,
+      tableWidth: 72,
       tableCellFormatter: function(value, obj, property) {
         this
           .start()
@@ -109,6 +112,12 @@ foam.CLASS({
       }
     },
     {
+      class: 'FObjectProperty',
+      name: 'service',
+      view: { class: 'foam.u2.view.FObjectView' },
+      permissionRequired: true
+    },
+    {
       class: 'String',
       name: 'serviceClass',
       displayWidth: 80
@@ -121,18 +130,26 @@ foam.CLASS({
     {
       class: 'String',
       name: 'serviceScript',
-      view: { class: 'foam.u2.tag.TextArea', rows: 12, cols: 80 }
+      view: { class: 'io.c9.ace.Editor' },
+      permissionRequired: true
     },
     {
       class: 'String',
       name: 'client',
       value: '{}',
-      view: { class: 'foam.u2.tag.TextArea', rows: 12, cols: 80 }
+      view: { class: 'io.c9.ace.Editor' }
     },
     {
-      class: 'FObjectProperty',
-      name: 'service',
-      view: { class: 'foam.u2.view.FObjectView' }
+      class: 'String',
+      name: 'documentation',
+      view: { class: 'foam.u2.tag.TextArea', rows: 12, cols: 140 },
+      permissionRequired: true
+    },
+    {
+      class: 'String',
+      name: 'authNotes',
+      view: { class: 'foam.u2.tag.TextArea', rows: 12, cols: 140 },
+      permissionRequired: true
     }
     // TODO: permissions, keywords, lazy, parent
   ],
@@ -141,8 +158,8 @@ foam.CLASS({
     {
       name: 'saveService',
       args: [
-        { name: 'x', javaType: 'foam.core.X' },
-        { name: 'service', javaType: 'Object' }
+        { name: 'x', type: 'Context' },
+        { name: 'service', type: 'Any' }
       ],
       javaCode: `
       /*
@@ -158,9 +175,9 @@ foam.CLASS({
     {
       name: 'createService',
       args: [
-        { name: 'x', javaType: 'foam.core.X' }
+        { name: 'x', type: 'Context' }
       ],
-      javaReturns: 'java.lang.Object',
+      javaType: 'java.lang.Object',
       javaCode: `
         if ( getService() != null ) return getService();
 
@@ -178,8 +195,13 @@ foam.CLASS({
           saveService(x, service);
           return service;
         } catch (EvalError e) {
-          System.err.println("NSpec serviceScript error: " + getServiceScript());
-          e.printStackTrace();
+          foam.nanos.logger.Logger logger = (foam.nanos.logger.Logger) x.get("logger");
+          if ( logger != null ) {
+            logger.error("NSpec serviceScript error", getServiceScript(), e);
+          } else {
+            System.err.println("NSpec serviceScript error: " + getServiceScript());
+            e.printStackTrace();
+          }
         }
 
         return null;
@@ -189,6 +211,26 @@ foam.CLASS({
         'java.lang.InstantiationException',
         'java.lang.IllegalAccessException'
       ],
+    },
+    {
+      name: 'checkAuthorization',
+      type: 'Void',
+      documentation: `
+        Given a user's session context, throw an exception if the user doesn't
+        have permission to access this service.
+      `,
+      args: [
+        { type: 'Context', name: 'x' }
+      ],
+      javaCode: `
+        if ( ! getAuthenticate() ) return;
+
+        AuthService auth = (AuthService) x.get("auth");
+
+        if ( ! auth.check(x, "service." + getName()) ) {
+          throw new AuthorizationException(String.format("You do not have permission to access the service named '%s'.", getName()));
+        }
+      `
     }
   ],
 
@@ -198,8 +240,8 @@ foam.CLASS({
       // for now, but should get the config object from the NSpec itself
       // to be extensible.
       name: 'configure',
-      isAvailable: function(boxClass) {
-        return ! boxClass;
+      isAvailable: function(boxClass, serve) {
+        return serve && ! boxClass;
 //        return foam.dao.DAO.isInstance(this.__context__[this.name]);
       },
       code: function() {
@@ -207,6 +249,9 @@ foam.CLASS({
         if ( foam.dao.DAO.isInstance(service) ) {
           this.__context__.stack.push({
             class: 'foam.comics.BrowserView',
+            createEnabled: true,
+            editEnabled: true,
+            exportEnabled: true,
             data: service
           });
         }

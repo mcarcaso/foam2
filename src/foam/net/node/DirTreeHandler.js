@@ -19,7 +19,7 @@ foam.CLASS({
   package: 'foam.net.node',
   name: 'DirTreeHandler',
   extends: 'foam.net.node.PathnamePrefixHandler',
-
+  flags: ['node'],
   documentation: `HTTP(S) server handler for an entire directory.
 
       All files in the directory will be served according to their relative
@@ -70,12 +70,14 @@ foam.CLASS({
     {
       name: 'path',
       transient: true,
-      factory: function() { return require('path'); }
+      factory: function() { return require('path'); },
+      cloneProperty: function() {}
     },
     {
       name: 'fs',
       transient: true,
-      factory: function() { return require('fs'); }
+      factory: function() { return require('fs'); },
+      cloneProperty: function() {}
     }
   ],
 

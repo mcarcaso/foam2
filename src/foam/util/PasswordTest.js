@@ -9,6 +9,10 @@ foam.CLASS({
   name: 'PasswordTest',
   extends: 'foam.nanos.test.Test',
 
+  javaImports: [
+    'foam.core.X'
+  ],
+
   methods: [
     {
       name: 'runTest',
@@ -33,19 +37,17 @@ foam.CLASS({
         Password_Verify("F0amframew0rk", "ZgZ8/RVYJjg=:67iHRqR2TmD7JQNNDMRIek/vcNmJlwBOXBaENDJsa+8fOsyW6A6k6/jZLvalXI9suIngb0J/ruyrHAkCCUkQ6w==", true, "Password verification returns true with correct password, correct salt, and correct hashed password");
 
         // isValid tests
-        Password_IsValid(null, false, "isValid method returns false given null");
-        Password_IsValid("", false, "isValid method returns false given empty string");
-        Password_IsValid("foam", false, "isValid returns false given password shorter than 8 characters");
-        Password_IsValid("foamframework", false, "isValid returns false given password with no uppercase and no numbers");
-        Password_IsValid("Foamframework", false, "isValid returns false given password with no numbers");
-        Password_IsValid("F0amframew0rk", true, "isValid returns true given password longer than 8 characters, with uppercase and with numbers");
+        Password_IsValid(x, null, false, "isValid method returns false given null");
+        Password_IsValid(x, "", false, "isValid method returns false given empty string");
+        Password_IsValid(x, "foam", false, "isValid returns false given password shorter than 6 characters");
+        Password_IsValid(x, "F0amframew0rk", true, "isValid returns true given password longer than 6 characters");
       `
     },
     {
       name: 'Password_HashWithInvalidInput_IllegalArgumentException',
       args: [
-        { class: 'String', name: 'input'    },
-        { class: 'String', name: 'message'  }
+        { type: 'String', name: 'input'    },
+        { type: 'String', name: 'message'  }
       ],
       javaCode: `
         try {
@@ -59,7 +61,7 @@ foam.CLASS({
     {
       name: 'Password_HashWithValidInput_Succeeds',
       args: [
-        { class: 'String', name: 'input' }
+        { type: 'String', name: 'input' }
       ],
       javaCode: `
         try {
@@ -72,10 +74,10 @@ foam.CLASS({
     {
       name: 'Password_Verify',
       args: [
-        { class: 'String',  name: 'password' },
-        { class: 'String',  name: 'hash'     },
-        { class: 'Boolean', name: 'expected' },
-        { class: 'String',  name: 'message'  }
+        { type: 'String',  name: 'password' },
+        { type: 'String',  name: 'hash'     },
+        { type: 'Boolean', name: 'expected' },
+        { type: 'String',  name: 'message'  }
       ],
       javaCode: `
         test(Password.verify(password, hash) == expected, message);
@@ -84,12 +86,13 @@ foam.CLASS({
     {
       name: 'Password_IsValid',
       args: [
-        { class: 'String',  name: 'input'    },
-        { class: 'Boolean', name: 'expected' },
-        { class: 'String',  name: 'message'  },
+        { type: 'Context', name: 'x'    },
+        { type: 'String',  name: 'input'    },
+        { type: 'Boolean', name: 'expected' },
+        { type: 'String',  name: 'message'  },
       ],
       javaCode: `
-        test(Password.isValid(input) == expected, message);
+        test(Password.isValid(x, input) == expected, message);
       `
     }
   ]

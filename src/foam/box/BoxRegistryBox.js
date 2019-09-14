@@ -62,12 +62,13 @@ self.onDetach(Subscription(detach: {
     {
       name: 'send',
       swiftCode: function() {/*
+let msg = msg!
 if let object = msg.object as? foam_box_SubBoxMessage {
   let name = object.name
 
-  if let reg = registry_[name] as? Registration {
+  if let reg = registry_[name] as? foam_box_ExportBox {
     msg.object = object.object;
-    try reg.localBox.send(msg);
+    try reg.send(msg);
   } else {
     if let errorBox = msg.attributes["errorBox"] as? foam_box_Box {
       try errorBox.send(
@@ -85,10 +86,10 @@ if let object = msg.object as? foam_box_SubBoxMessage {
         if ( this.SubBoxMessage.isInstance(msg.object) ) {
           var name = msg.object.name;
 
-          if ( this.registry_[name] && this.registry_[name].localBox ) {
+          if ( this.registry_[name] ) {
             // Unpack sub box object... is this right?
             msg.object = msg.object.object;
-            this.registry_[name].localBox.send(msg);
+            this.registry_[name].send(msg);
           } else {
             if ( msg.attributes.replyBox ) {
               msg.attributes.replyBox.send(
@@ -103,19 +104,19 @@ if let object = msg.object as? foam_box_SubBoxMessage {
         }
       },
       javaCode: `
-Object obj = message.getObject();
+Object obj = msg.getObject();
 
 if ( obj instanceof foam.box.SubBoxMessage ) {
   foam.box.SubBoxMessage sbm = (foam.box.SubBoxMessage)obj;
   String name = sbm.getName();
 
-  Registration dest = (Registration)getRegistry_().get(name);
+  foam.box.Box dest = (foam.box.Box)(getRegistry_().get(name));
 
   if ( dest != null ) {
-    message.setObject(sbm.getObject());
-    dest.getLocalBox().send(message);
-  } else if ( message.getAttributes().containsKey("replyBox") ) {
-    foam.box.Box replyBox = (foam.box.Box)message.getAttributes().get("replyBox");
+    msg.setObject(sbm.getObject());
+    dest.send(msg);
+  } else if ( msg.getAttributes().containsKey("replyBox") ) {
+    foam.box.Box replyBox = (foam.box.Box)msg.getAttributes().get("replyBox");
     foam.box.Message errorMessage = getX().create(foam.box.Message.class);
     errorMessage.setObject(getX().create(foam.box.NoSuchNameException.class));
 

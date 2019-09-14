@@ -27,7 +27,7 @@ foam.CLASS({
     'foam.nanos.auth.token.Token',
     'foam.nanos.auth.User',
     'foam.nanos.notification.email.EmailMessage',
-    'foam.nanos.notification.email.EmailService',
+    'foam.util.Emails.EmailsUtility',
     'foam.util.Email',
     'foam.util.Password',
     'foam.util.SafetyUtil',
@@ -37,22 +37,22 @@ foam.CLASS({
     'java.util.UUID'
   ],
 
-  axioms: [
-    {
-      name: 'javaExtras',
-      buildJavaClass: function (cls) {
-        cls.extras.push(foam.java.Code.create({
-          data: 'java.util.regex.Pattern p = java.util.regex.Pattern.compile("[^a-zA-Z0-9]");'
-        }))
-      }
-    }
-  ],
-
   methods: [
     {
       name: 'generateTokenWithParameters',
       javaCode:
-`AppConfig appConfig = (AppConfig) getAppConfig();
+`
+AppConfig appConfig = (AppConfig) x.get("appConfig");
+
+// The context passed to us won't have a user in it because obviously the user
+// isn't logged in if they're resetting their password. However, decorators on
+// DAOs we access down the line from here will want to use the user from the
+// context. Therefore we put the system user in the context here so that
+// decorators down the line won't throw NPEs when trying to access the user in
+// the context.
+User systemUser = (User) getX().get("user");
+x = x.put("user", systemUser);
+
 DAO userDAO = (DAO) getLocalUserDAO();
 DAO tokenDAO = (DAO) getTokenDAO();
 String url = appConfig.getUrl()
@@ -83,7 +83,6 @@ token.setExpiry(generateExpiryDate());
 token.setData(UUID.randomUUID().toString());
 token = (Token) tokenDAO.put(token);
 
-EmailService email = (EmailService) getEmail();
 EmailMessage message = new EmailMessage();
 message.setTo(new String[] { user.getEmail() });
 
@@ -91,7 +90,8 @@ HashMap<String, Object> args = new HashMap<>();
 args.put("name", String.format("%s %s", user.getFirstName(), user.getLastName()));
 args.put("link", url +"?token=" + token.getData() + "#reset");
 
-email.sendEmailFromTemplate(user, message, "reset-password", args);
+EmailsUtility.sendEmailFromTemplate(x, user, message, "reset-password", args);
+
 return true;`
     },
     {
@@ -101,24 +101,16 @@ return true;`
   throw new RuntimeException("Cannot leave new password field empty");
 }
 
+// The context passed to us won't have a user in it because obviously the user
+// isn't logged in if they're resetting their password. However, decorators on
+// DAOs we access down the line from here will want to use the user from the
+// context. Therefore we put the system user in the context here so that
+// decorators down the line won't throw NPEs when trying to access the user in
+// the context.
+User systemUser = (User) getX().get("user");
+x = x.put("user", systemUser);
+
 String newPassword = user.getDesiredPassword();
-
-int length = newPassword.length();
-if ( length < 7 || length > 32 ) {
-  throw new RuntimeException("Password must be 7-32 characters long");
-}
-
-if ( newPassword.equals(newPassword.toLowerCase()) ) {
-  throw new RuntimeException("Password must have one capital letter");
-}
-
-if ( ! newPassword.matches(".*\\\\d+.*") ) {
-  throw new RuntimeException("Password must have one numeric character");
-}
-
-if ( p.matcher(newPassword).matches() ) {
-  throw new RuntimeException("Password must not contain: !@#$%^&*()_+");
-}
 
 DAO userDAO = (DAO) getLocalUserDAO();
 DAO tokenDAO = (DAO) getTokenDAO();
@@ -143,16 +135,14 @@ if ( userResult == null ) {
   throw new RuntimeException("User not found");
 }
 
-if ( ! Password.isValid(newPassword) ) {
+if ( ! Password.isValid(x, newPassword) ) {
   throw new RuntimeException("Invalid password");
 }
 
 // update user's password
 userResult = (User) userResult.fclone();
-userResult.setPasswordLastModified(Calendar.getInstance().getTime());
-userResult.setPreviousPassword(userResult.getPassword());
-userResult.setPassword(Password.hash(newPassword));
-userResult.setPasswordExpiry(null);
+userResult.setDesiredPassword(newPassword);
+user.setPasswordExpiry(null);
 userDAO.put(userResult);
 
 // set token processed to true
@@ -160,12 +150,12 @@ tokenResult = (Token) tokenResult.fclone();
 tokenResult.setProcessed(true);
 tokenDAO.put(tokenResult);
 
-EmailService email = (EmailService) getEmail();
+
 EmailMessage message = new EmailMessage();
 message.setTo(new String[] { userResult.getEmail() });
 HashMap<String, Object> args = new HashMap<>();
 args.put("name", userResult.getFirstName());
-email.sendEmailFromTemplate(userResult, message, "password-changed", args);
+EmailsUtility.sendEmailFromTemplate(x, userResult, message, "password-changed", args);
 return true;`
     }
   ]

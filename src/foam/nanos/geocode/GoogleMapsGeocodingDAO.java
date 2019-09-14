@@ -6,20 +6,17 @@
 
 package foam.nanos.geocode;
 
-import foam.core.ContextAgent;
-import foam.core.FObject;
-import foam.core.PropertyInfo;
-import foam.core.X;
+import foam.core.*;
 import foam.dao.DAO;
 import foam.dao.ProxyDAO;
 import foam.lib.json.JSONParser;
 import foam.nanos.auth.Address;
-import foam.nanos.pool.FixedThreadPool;
 import foam.util.SafetyUtil;
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.Exception;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -51,24 +48,29 @@ public class GoogleMapsGeocodingDAO
     this.prop_ = prop;
   }
 
-  // @Override
-  public FObject xxxput_(X x, FObject obj) {
+  @Override
+  public FObject put_(X x, FObject obj) {
     final FObject result = super.put_(x, obj);
 
-    ((FixedThreadPool) x.get("threadPool")).submit(x, new ContextAgent() {
+    ((Agency) x.get("threadPool")).submit(x, new ContextAgent() {
       @Override
       public void execute(X x) {
+        if ( result == null ) {
+          return;
+        }
+
         // don't geocode if no address property
-        Address address = (Address) prop_.get(result);
+        FObject cloned = result.fclone();
+        Address address = (Address) prop_.get(cloned);
         if ( address == null ) {
           return;
         }
 
         // check if address updated
         if ( address.getLatitude() != 0 && address.getLongitude() != 0 ) {
-          FObject stored = getDelegate().find(result.getProperty("id"));
-          if (stored != null && prop_.get(result) != null ) {
-            Address storedAddress = (Address) prop_.get(result);
+          FObject stored = getDelegate().find(cloned.getProperty("id"));
+          if (stored != null && prop_.get(cloned) != null ) {
+            Address storedAddress = (Address) prop_.get(cloned);
             // compare fields that are used to populate Google maps query
             if ( SafetyUtil.compare(address.getAddress(), storedAddress.getAddress()) == 0 &&
                 SafetyUtil.compare(address.getCity(), storedAddress.getCity()) == 0 &&
@@ -154,15 +156,15 @@ public class GoogleMapsGeocodingDAO
           // set latitude and longitude
           address.setLatitude(coords.getLat());
           address.setLongitude(coords.getLng());
-          prop_.set(result, address);
-          GoogleMapsGeocodingDAO.super.put_(x, result);
+          prop_.set(cloned, address);
+          GoogleMapsGeocodingDAO.super.put_(x, cloned);
         } catch (Throwable ignored) {
         } finally {
           IOUtils.closeQuietly(reader);
           IOUtils.close(conn);
         }
       }
-    });
+    }, "GoogleMaps Geocoding DAO");
 
     return result;
   }

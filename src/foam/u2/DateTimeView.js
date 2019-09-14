@@ -24,10 +24,15 @@ foam.CLASS({
 
   documentation: 'View for editing DateTime values.',
 
+  axioms: [
+    { class: 'foam.u2.TextInputCSS' }
+  ],
+
   methods: [
     function initE() {
       this.SUPER();
       this.setAttribute('type', 'datetime-local');
+      this.setAttribute('placeholder', 'yyyy/mm/dd hh:mm');
     },
 
     function link() {

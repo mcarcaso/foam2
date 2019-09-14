@@ -9,7 +9,7 @@ foam.CLASS({
   name: 'Test',
   extends: 'foam.nanos.script.Script',
 
-  imports: [ 'testDAO as scriptDAO' ],
+  imports: ['testDAO as scriptDAO'],
 
   javaImports: [
     'bsh.Interpreter',
@@ -22,7 +22,7 @@ foam.CLASS({
   ],
 
   tableColumns: [
-    'id', 'enabled', 'description', 'server',
+    'id', 'enabled', /*'description',*/ 'server',
     'passed', 'failed', 'lastRun', 'lastDuration',
     'status', 'run'
   ],
@@ -43,7 +43,8 @@ foam.CLASS({
       visibility: foam.u2.Visibility.RO,
       tableCellFormatter: function(value) {
         if ( value ) this.start().style({ color: '#0f0' }).add(value).end();
-      }
+      },
+      tableWidth: 85
     },
     {
       class: 'Long',
@@ -51,7 +52,8 @@ foam.CLASS({
       visibility: foam.u2.Visibility.RO,
       tableCellFormatter: function(value) {
         if ( value ) this.start().style({ color: '#f00' }).add(value).end();
-      }
+      },
+      tableWidth: 85
     }
   ],
 
@@ -59,28 +61,29 @@ foam.CLASS({
     {
       /** Template method used to add additional code in subclasses. */
       name: 'runTest',
+      type: 'Void',
       code: function(x) {
         return eval(this.code);
       },
       args: [
         {
-          name: 'x', javaType: 'foam.core.X'
+          name: 'x',
+          type: 'Context'
         }
       ],
-      javaReturns: 'void',
       javaCode: '/* NOOP */'
     },
     {
       name: 'test',
+      type: 'Void',
       args: [
         {
-          name: 'exp', javaType: 'boolean'
+          name: 'exp', type: 'Boolean'
         },
         {
-          name: 'message', javaType: 'String'
+          name: 'message', type: 'String'
         }
       ],
-      javaReturns: 'void',
       javaCode: `
         if ( exp ) {
           setPassed(getPassed()+1);
@@ -92,12 +95,12 @@ foam.CLASS({
     },
     {
       name: 'print',
+      type: 'Void',
       args: [
         {
-          name: 'message', javaType: 'String'
+          name: 'message', type: 'String'
         }
       ],
-      javaReturns: 'void',
       javaCode: `
         setOutput(getOutput() + "\\n" + message);
       `
@@ -129,6 +132,7 @@ foam.CLASS({
         } catch (err) {
           this.failed += 1;
           this.output += err;
+          return Promise.reject(err);
         }
 
         ret.then(() => {
@@ -143,10 +147,9 @@ foam.CLASS({
       },
       args: [
         {
-          name: 'x', javaType: 'foam.core.X'
+          name: 'x', type: 'Context'
         }
       ],
-      javaReturns: 'void',
       javaCode: `
         // disable tests in production
         if ( ((AppConfig) x.get("appConfig")).getMode() == Mode.PRODUCTION ) {
@@ -170,7 +173,7 @@ foam.CLASS({
           runTest(x);
         } catch (Throwable e) {
           setFailed(getFailed()+1);
-          ps.println();
+          ps.println("FAILURE: "+e.getMessage());
           e.printStackTrace(ps);
           e.printStackTrace();
         } finally {

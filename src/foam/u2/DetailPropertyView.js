@@ -24,7 +24,11 @@ foam.CLASS({
 
   properties: [
     'prop',
-    [ 'nodeName', 'tr' ]
+    [ 'nodeName', 'tr' ],
+    {
+      name: 'label',
+      factory: function() { return this.prop.label }
+    }
   ],
 
   css: `
@@ -52,11 +56,13 @@ foam.CLASS({
   methods: [
     function initE() {
       var prop = this.prop;
-
-      // TODO: hide this element if the prop changes its mode to HIDDEN.
       this.
+        show(prop.createVisibilityFor(this.__context__.data$).map(function(m) {
+          return m != foam.u2.Visibility.HIDDEN;
+        })).
         addClass('foam-u2-PropertyView').
-        start('td').addClass('foam-u2-PropertyView-label').add(prop.label).end().
+        addClass('foam-u2-PropertyView-prop-' + prop.name).
+        start('td').addClass('foam-u2-PropertyView-label').add(this.label).end().
         start('td').addClass('foam-u2-PropertyView-view').add(
           prop,
           prop.units && this.E('span').addClass('foam-u2-PropertyView-units').add(' ', prop.units)).

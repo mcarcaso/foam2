@@ -16,6 +16,8 @@
  */
 
 foam.CLASS({
+  package: 'foam.dao.index',
+  name: 'PropertyToIndexRefinement',
   refines: 'foam.core.Property',
 
   requires: [
@@ -33,6 +35,8 @@ foam.CLASS({
 
 
 foam.CLASS({
+  package: 'foam.dao.index',
+  name: 'FObjectArrayToIndexRefinement',
   refines: 'foam.core.FObjectArray',
 
   requires: [
@@ -48,6 +52,8 @@ foam.CLASS({
 
 
 foam.CLASS({
+  package: 'foam.dao.index',
+  name: 'AxiomArrayToIndexRefinement',
   refines: 'foam.core.AxiomArray',
 
   requires: [
@@ -63,6 +69,8 @@ foam.CLASS({
 
 
 foam.CLASS({
+  package: 'foam.dao.index',
+  name: 'StringArrayToIndexRefinement',
   refines: 'foam.core.StringArray',
 
   requires: [
@@ -375,8 +383,7 @@ foam.CLASS({
 
     function plan(sink, skip, limit, order, predicate, root) {
       var index = this;
-      var m = this.index;
-
+      var m     = this.index;
 
       if ( m.False.isInstance(predicate) ) return m.NotFoundPlan.create();
 
@@ -547,13 +554,14 @@ foam.CLASS({
             reverseSort ?
               subTree.selectReverse(
                 sink,
-                skip != null ? [skip] : null,
+                skip  != null ? [skip]  : null,
                 limit != null ? [limit] : null,
-                order, predicate, {}) : subTree.select(
-                  sink,
-                  skip != null ? [skip] : null,
-                  limit != null ? [limit] : null,
-                  order, predicate, {}) ;
+                order, predicate, {}) :
+              subTree.select(
+                sink,
+                skip  != null ? [skip]  : null,
+                limit != null ? [limit] : null,
+                order, predicate, {}) ;
             index.selectCount--;
           }
         },

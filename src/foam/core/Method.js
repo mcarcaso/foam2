@@ -61,14 +61,30 @@ foam.CLASS({
     { name: 'name', required: true },
     { name: 'code', required: false },
     'documentation',
-    'returns',
     'flags',
+    {
+      name: 'type',
+      value: 'Void'
+    },
+    {
+      class: 'Boolean',
+      name: 'async'
+    },
+    {
+      class: 'Boolean',
+      name: 'synchronized'
+    },
+    {
+      class: 'Boolean',
+      name: 'remote'
+    },
     {
       name: 'args',
       factory: function() {
         if ( this.code )
           try {
-            return foam.Function.args(this.code)
+            var bd = foam.Function.breakdown(this.code);
+            return bd.args;
           } catch(e) {
             console.warn('Unable to parse args:', e);
           }
@@ -83,7 +99,13 @@ foam.CLASS({
       method it overrides with this.SUPER().
     */
     function override_(proto, method, superMethod) {
-      if ( ! method ) return;
+      if ( ! method ) {
+        if ( this.name == 'toDisjunctiveNormalForm' ) {
+          console.warn('Method code missing for', this.name);
+          debugger;
+        }
+        return;
+      }
 
       // Not using SUPER, so just return original method
       if ( method.toString().indexOf('SUPER') == -1 ) return method;
@@ -175,7 +197,7 @@ foam.CLASS({
 
 foam.SCRIPT({
   package: 'foam.core',
-  name: 'MethodScript',
+  name: 'BootPhase2',
   code: function() {
     foam.boot.phase2();
   }

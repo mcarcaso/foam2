@@ -21,14 +21,12 @@ foam.CLASS({
   ],
 
   css: `
-    ^{
-      width: 448px;
-      margin: auto;
-    }
-    ^ .container{
+    ^ {
       height: 40.8px;
-      background-color: #093649;
-      margin-bottom: 20px;
+      width: 448px;
+      background-color: /*%PRIMARY1%*/ #202341;
+      border-radius: 2px 2px 0 0;
+      margin: auto;
     }
     ^ .title{
       height: 40px;
@@ -37,16 +35,17 @@ foam.CLASS({
       line-height: 2.86;
       text-align: left;
       color: #ffffff;
-      margin-left: 19px;
+      margin-left: 25px;
       display: inline-block;
     }
     ^ .close{
+      background: 0;
       width: 24px;
       height: 24px;
       margin-top: 5px;
       cursor: pointer;
       position: relative;
-      top: 4px;
+      top: -3px;
       right: 20px;
       float: right;
     }
@@ -64,29 +63,23 @@ foam.CLASS({
   `,
 
   methods: [
-    function initE(){
+    function initE() {
     this.SUPER();
-    var self = this;
 
     this
-    .addClass(this.myClass())
-      .start()
-        .start()
-          .start().addClass('container')
-            .start().addClass('title').add(this.title).end()
-            .start(this.CLOSE_MODAL).addClass('close').end()
-          .end()
-        .end()
-      .end()
+      .addClass(this.myClass())
+      .start().addClass('title').add(this.title).end()
+      .start(this.CLOSE_MODAL).addClass('close').end();
     }
   ],
 
   actions: [
     {
       name: 'closeModal',
-      icon: 'ic-cancelwhite.svg',
-      code: function(X){
-        X.closeDialog()
+      icon: 'images/ic-cancelwhite.svg',
+      label: '',
+      code: function(X) {
+        X.closeDialog();
       }
     }
   ]

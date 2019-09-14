@@ -15,9 +15,9 @@ foam.CLASS({
       value: '400'
     },
     {
-      class: 'String',
+      class: 'Int',
       name: 'code',
-      value: '1002'
+      value: 1002
     },
     {
       class: 'String',
@@ -30,4 +30,4 @@ foam.CLASS({
       value: 'PUT|POST expecting data, non received.'
     }
   ]
-})
+});

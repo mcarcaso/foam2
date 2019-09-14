@@ -11,8 +11,10 @@ import foam.dao.Sink;
 import foam.mlang.order.Comparator;
 import foam.mlang.predicate.Predicate;
 
+import java.io.IOException;
+
 public class ProxyIndex
-    implements Index
+  extends AbstractIndex
 {
   protected Index delegate_;
 
@@ -30,11 +32,6 @@ public class ProxyIndex
 
   public void setDelegate(foam.dao.index.Index val) {
     delegate_ = val;
-  }
-
-  @Override
-  public void onAdd(Sink sink) {
-    getDelegate().onAdd(sink);
   }
 
   @Override
@@ -67,11 +64,18 @@ public class ProxyIndex
     return getDelegate().size(unwrap(state));
   }
 
+  @Override
   public Object wrap(Object state) {
-    return state;
+    return getDelegate().wrap(state);
   }
 
+  @Override
   public Object unwrap(Object state) {
-    return state;
+    return getDelegate().unwrap(state);
+  }
+
+  @Override
+  public void flush(Object state) throws IOException {
+    getDelegate().flush(state);
   }
 }

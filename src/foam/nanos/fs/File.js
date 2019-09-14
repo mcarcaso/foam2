@@ -34,7 +34,16 @@ foam.CLASS({
     {
       class: 'Blob',
       name: 'data',
-      documentation: 'File data'
+      documentation: 'File data',
+      /**
+       * When we export this as the CSV, we are trying to create a new object if this property is undefined.
+       * But because this 'Blob' is an interface, we can not instantiate it.
+       *
+       * Provide an adapt function will fix that issue.
+       */
+      adapt: function(oldObj, newObj) {
+        return newObj;
+      }
     },
     {
       class: 'String',

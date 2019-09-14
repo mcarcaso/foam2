@@ -1,4 +1,4 @@
-/**ß
+/**
  * @license
  * Copyright 2018 The FOAM Authors. All Rights Reserved.
  */
@@ -15,9 +15,9 @@ foam.CLASS({
       value: '400'
     },
     {
-      class: 'String',
+      class: 'Int',
       name: 'code',
-      value: '1001'
+      value: 1001
     },
     {
       class: 'String',
@@ -25,4 +25,4 @@ foam.CLASS({
       value: 'DAOReject'
     }
   ]
-})
+});

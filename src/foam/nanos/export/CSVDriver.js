@@ -9,26 +9,24 @@ foam.CLASS({
   name: 'CSVDriver',
   implements: [ 'foam.nanos.export.ExportDriver' ],
 
-  documentation: 'Class for exporting data from a DAO to CSV',
-
-  properties: [
-    {
-      class: 'FObjectProperty',
-      of: 'foam.lib.csv.Outputter',
-      name: 'outputter',
-      factory: function() { return foam.lib.csv.Standard; }
-    }
+  requires: [
+    'foam.dao.CSVSink',
+    'foam.lib.csv.CSVOutputterImpl'
   ],
+
+  documentation: 'Class for exporting data from a FObject or DAO, to CSV.',
 
   methods: [
     function exportFObject(X, obj) {
-      return this.outputter.toCSV(obj);
+      var outputter = this.CSVOutputterImpl.create();
+      outputter.outputFObject(X, obj);
+      return outputter.toString();
     },
     function exportDAO(X, dao) {
-      var self = this;
-      return dao.select().then(function (sink) {
-        return self.outputter.toCSV(sink.array);
-      });
+      return dao.select(this.CSVSink.create({
+          of: dao.of,
+          props: X.filteredTableColumns || undefined
+        })).then( (s) => s.csv );
     }
   ]
 });

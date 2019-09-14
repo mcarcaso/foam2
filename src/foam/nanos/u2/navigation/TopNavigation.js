@@ -28,11 +28,16 @@ foam.CLASS({
     'foam.nanos.u2.navigation.UserView'
   ],
 
-  imports: [ 'menuDAO', 'user', 'loginSuccess' ],
+  imports: [
+    'group',
+    'loginSuccess',
+    'menuDAO',
+    'user'
+  ],
 
   css: `
     ^ {
-      background: %PRIMARYCOLOR%;
+      background: /*%PRIMARY1%*/ #202341;
       width: 100%;
       min-width: 992px;
       height: 60px;
@@ -75,7 +80,7 @@ foam.CLASS({
       border-bottom: 1px solid white;
     }
     ^ .selected {
-      border-bottom: 4px solid %ACCENTCOLOR% !important;
+      border-bottom: 4px solid /*%PRIMARY5%*/ #e5f1fc !important;
       padding-bottom: 5px;
       text-shadow: 0 0 0px white, 0 0 0px white;
     }
@@ -97,6 +102,13 @@ foam.CLASS({
     }
   `,
 
+  messages: [
+    {
+      name: 'GREETING',
+      message: 'Welcome'
+    }
+  ],
+
   properties: [
     {
       name: 'dao',
@@ -109,16 +121,26 @@ foam.CLASS({
       this
         .addClass(this.myClass())
         .start()
+          .addClass('welcome-label')
+          .hide(this.loginSuccess$)
+          .add(this.GREETING)
+        .end()
+        .callIf(this.loginSuccess, this.userLoggedIn);
+
+      this.loginSuccess$.sub(this.userLoggedIn);
+    }
+  ],
+
+  listeners: [
+    function userLoggedIn() {
+      this
+        .start()
           .addClass('logged-in-container')
-          .show(this.loginSuccess$)
           .tag({ class: 'foam.nanos.u2.navigation.BusinessLogoView' })
-          .start({ class: 'foam.nanos.menu.MenuBar' })
+          .start(this.MenuBar, { menuName: this.group ? this.group.rootMenu : '' })
             .addClass('menuBar')
           .end()
           .tag({ class: 'foam.nanos.u2.navigation.UserView' })
-        .end()
-        .start()
-          .add('Welcome').addClass('welcome-label').hide(this.loginSuccess$)
         .end();
     }
   ]

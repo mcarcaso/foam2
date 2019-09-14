@@ -25,7 +25,7 @@ foam.CLASS({
   name: 'ManyToManyRelationshipDAO',
   extends: 'foam.dao.ProxyDAO',
 
-  implements: [ { path: 'foam.mlang.Expressions', java: false } ],
+  implements: [ { path: 'foam.mlang.Expressions', flags: ['js'], java: false } ],
 
   documentation: 'Adapts a DAO based on a *:* Relationship.',
 
@@ -34,6 +34,14 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.dao.ManyToManyRelationshipImpl',
       name: 'relationship'
+    },
+    {
+      class: 'String',
+      name: 'targetDAOKey'
+    },
+    {
+      class: 'String',
+      name: 'unauthorizedTargetDAOKey'
     }
   ],
 
@@ -62,15 +70,22 @@ foam.CLASS({
               self.IN(self.of.ID, map.delegate.array)));
           });
       },
-      javaCode: `foam.mlang.sink.Map junction = (foam.mlang.sink.Map)getRelationship().getJunctionDAO().where(
-    foam.mlang.MLang.EQ(getRelationship().getSourceProperty(), getRelationship().getSourceId())).
-  select(foam.mlang.MLang.MAP(getRelationship().getTargetProperty(), new foam.dao.ArraySink()));
+      javaCode: `
+        foam.mlang.sink.Map junction = (foam.mlang.sink.Map) getRelationship().getJunctionDAO()
+          .where(foam.mlang.MLang.EQ(getRelationship().getSourceProperty(), getRelationship().getSourceId()))
+          .select(foam.mlang.MLang.MAP(getRelationship().getTargetProperty(), new foam.dao.ArraySink()));
 
-  return getDelegate().where(foam.mlang.MLang.IN(getPrimaryKey(), ((foam.dao.ArraySink)(junction.getDelegate())).getArray().toArray())).select_(
-    x, sink, skip, limit, order, predicate);`,
+        foam.nanos.auth.User user = (foam.nanos.auth.User) getX().get("user");
+        if ( user != null && user.getId() == foam.nanos.auth.User.SYSTEM_USER_ID && getUnauthorizedTargetDAOKey().length() != 0 ) {
+          setDelegate(((foam.dao.DAO) getX().get(getUnauthorizedTargetDAOKey())).inX(getX()));
+        }
 
-      swiftCode: function () {
-        /* let pred = __context__.create(foam_mlang_predicate_Eq.self, args: [
+        return getDelegate()
+          .where(foam.mlang.MLang.IN(getPrimaryKey(), ((foam.dao.ArraySink) (junction.getDelegate())).getArray().toArray()))
+          .select_(x, sink, skip, limit, order, predicate);
+      `,
+      swiftCode: `
+        let pred = __context__.create(foam_mlang_predicate_Eq.self, args: [
           "arg1": relationship?.sourceProperty,
           "arg2": relationship?.sourceId
         ])
@@ -80,14 +95,14 @@ foam.CLASS({
           "delegate": __context__.create(foam_dao_ArraySink.self)
         ])
 
-        let junction: foam_mlang_sink_Map = try relationship!.junctionDAO!.`where`(pred).select(map!) as! foam_mlang_sink_Map
-        return try delegate.`where`(__context__.create(foam_mlang_predicate_In.self, args: [
+        let junction: foam_mlang_sink_Map = try relationship!.junctionDAO!.\`where\`(pred)!.select(map!) as! foam_mlang_sink_Map
+        return try delegate.\`where\`(__context__.create(foam_mlang_predicate_In.self, args: [
           "arg1": primaryKey,
           "arg2": __context__.create(foam_mlang_ArrayConstant.self, args: [
             "value": (junction.delegate as? foam_dao_ArraySink)?.array
           ])
-        ])).select_(x, sink, skip, limit, order, predicate)  */
-      }
+        ]))!.select_(x, sink, skip, limit, order, predicate)
+      `
     }
   ]
 });

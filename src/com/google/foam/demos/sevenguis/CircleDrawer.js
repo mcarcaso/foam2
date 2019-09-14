@@ -35,17 +35,13 @@ foam.CLASS({
     UNSELECTED_COLOR: 'white'
   },
 
-  axioms: [
-    // TODO: remove '-' after ActionView when CSS naming fixed
-    foam.u2.CSS.create({
-      code: function() {/*
-      ^ { width:600px; margin: 20px; }
-      ^ canvas { border: 1px solid black; }
-      ^ .foam-u2-ActionView- { margin: 10px; }
-      ^ input[type='range'] { width: 400px; }
-      */}
-    })
-  ],
+  // TODO: remove '-' after ActionView when CSS naming fixed
+  css: `
+    ^ { width:600px; margin: 20px; }
+    ^ canvas { border: 1px solid black; }
+    ^ .foam-u2-ActionView- { margin: 10px; }
+    ^ input[type='range'] { width: 400px; }
+  `,
 
   classes: [
     {
@@ -61,10 +57,10 @@ foam.CLASS({
         function initE() {
           this.nodeName = 'span';
           this.
-              addClass(this.myClass()).
-              add('Adjust the diameter of the circle at (', this.data.x$, ', ', this.data.y$, ').').
-              tag('br').
-              add(this.RangeView.create({data$: this.data.radius$, maxValue: 200, onKey: true}));
+            addClass(this.myClass()).
+            add('Adjust the diameter of the circle at (', this.data.x$, ', ', this.data.y$, ').').
+            tag('br').
+            add(this.RangeView.create({data$: this.data.radius$, maxValue: 200, onKey: true}));
         }
       ]
     }
@@ -84,11 +80,10 @@ foam.CLASS({
       factory: function() {
         return this.Box.create({width: 600, height: 500, color: '#f3f3f3'});
       }
-    },
+    }
   ],
 
   methods: [
-
     function initE() {
       this.memento$.sub(function() {
         var m = this.memento;
@@ -104,16 +99,16 @@ foam.CLASS({
       }.bind(this));
 
       this.
-          addClass(this.myClass()).
-          start('center').
-            start(this.BACK,  {label: 'Undo'}).end().
-            start(this.FORTH, {label: 'Redo'}).end().
-            tag('br').
-            start(this.canvas).
-              on('click',       this.onClick).
-              on('contextmenu', this.onRightClick).
-            end().
-          end();
+        addClass(this.myClass()).
+        start('center').
+          start(this.BACK,  {label: 'Undo'}).end().
+          start(this.FORTH, {label: 'Redo'}).end().
+          tag('br').
+          start(this.canvas).
+            on('click',       this.onClick).
+            on('contextmenu', this.onRightClick).
+          end().
+        end();
     },
 
     function addCircle(x, y, opt_r) {

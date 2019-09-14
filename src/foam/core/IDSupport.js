@@ -24,12 +24,14 @@ foam.CLASS({
   package: 'foam.core',
   name: 'IDAlias',
   extends: 'foam.core.Object',
+
   properties: [
     ['name', 'id'],
     {
       class: 'String',
       name: 'propName'
     },
+    ['hidden', true],
     {
       name: 'targetProperty',
       transient: true
@@ -39,18 +41,21 @@ foam.CLASS({
     }],
     ['setter', function(v) {
       this.cls_.ID.targetProperty.set(this, v);
-    }]
+    }],
+    'value'
   ],
+
   methods: [
     function installInClass(c) {
       var prop = c.getAxiomByName(this.propName);
       foam.assert(foam.core.Property.isInstance(prop), 'Ids property: ' + c.id + '.' + this.propName, 'is not a Property');
       this.targetProperty = prop;
-
+      this.value = prop.value;
       this.SUPER(c);
     }
   ]
 });
+
 
 foam.CLASS({
   package: 'foam.core',
@@ -148,8 +153,11 @@ foam.CLASS({
 });
 
 foam.CLASS({
+  package: 'foam.core',
+  name: 'ModelIDRefine',
   refines: 'foam.core.Model',
   requires: [
+    'foam.core.IDAlias',
     'foam.core.MultiPartID',
   ],
   properties: [
