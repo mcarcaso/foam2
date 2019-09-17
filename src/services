@@ -600,3 +600,4 @@ p({
     "class": "foam.nanos.geocode.GoogleMapsCredentials"
   }
 })
+p({"class":"foam.nanos.boot.NSpec","name":"modelDAO","serve":true,"authenticate":false,"pm":false,"serviceScript":"return null;","client":"{\"class\":\"foam.apploader.ModelDAO\"}"})

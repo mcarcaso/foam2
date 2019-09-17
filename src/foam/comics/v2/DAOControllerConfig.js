@@ -61,7 +61,7 @@ foam.CLASS({
       name: 'defaultColumns',
       factory: null,
       expression: function(of) {
-        var tableColumns = of.getAxiomByName('tableColumns');
+        var tableColumns = of.getAxiomsByClass(foam.u2.TableColumns)[0];
 
         return tableColumns
                 ? tableColumns.columns

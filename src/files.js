@@ -678,6 +678,8 @@ FOAM_FILES([
 
   { name: "foam/graphics/ZoomMapView" },
 
+  { name: "foam/apploader/ModelDAO" },
+
   // Strategy
   { name: "foam/strategy/StrategyReference" },
   { name: "foam/strategy/StrategizerService" },

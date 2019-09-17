@@ -2654,6 +2654,14 @@ foam.CLASS({
   name: 'ModelU2Refinements',
   refines: 'foam.core.Model',
 
+  axioms: [
+    {
+      class: 'foam.u2.TableColumns',
+      name: 'modelColumns',
+      columns: ['package', 'name']
+    }
+  ],
+
   properties: [
     {
       class: 'String',
