@@ -28,6 +28,7 @@ foam.CLASS({
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       installInClass: function(cls) {
         cls.createView = function(spec, args, self, ctx, disableWarning) {
           if ( foam.core.FObject.isInstance(ctx) ) {

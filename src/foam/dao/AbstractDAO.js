@@ -607,6 +607,7 @@ return sink;
   ],
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       buildJavaClass: function(cls) {
         cls.extras.push(`
 public final static long MAX_SAFE_INTEGER = 9007199254740991l;

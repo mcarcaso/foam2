@@ -613,6 +613,7 @@ foam.CLASS({
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       installInClass: function(cls) {
         cls.toSwiftClass =  function() {
           var cls = foam.swift.SwiftClass.create({

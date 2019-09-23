@@ -41,3 +41,57 @@ foam.CLASS({
     }
   ]
 });
+
+foam.CLASS({
+  package: 'foam.u2.view',
+  name: 'AxiomArrayView',
+  extends: 'foam.u2.View',
+  requires: [
+    'foam.comics.v2.DAOBrowserView',
+    'foam.dao.MDAO',
+    'foam.dao.PromisedDAO',
+  ],
+  classes: [
+    {
+      name: 'AxiomWrapper',
+      ids: ['name'],
+      properties: [
+        {
+          class: 'String',
+          name: 'type',
+          expression: function(data) { return data.cls_.id }
+        },
+        {
+          class: 'String',
+          name: 'name',
+          expression: function(data) { return data.name }
+        },
+        {
+          name: 'data',
+          hidden: true
+        },
+      ]
+    }
+  ],
+  properties: [
+    {
+      class: 'foam.dao.DAOProperty',
+      name: 'dao',
+      expression: function(data) {
+        var dao = this.MDAO.create({ of: this.AxiomWrapper });
+        return this.PromisedDAO.create({
+          of: this.AxiomWrapper,
+          promise: Promise.all(
+            data.map(a => dao.put(this.AxiomWrapper.create({ data: a })))
+          ).then(_ => dao)
+        });
+      }
+    }
+  ],
+  methods: [
+    function initE() {
+      this.SUPER();
+      this.tag(this.DAOBrowserView, { data: this.dao$proxy });
+    }
+  ]
+});

@@ -506,8 +506,8 @@ return delegate;
       name: 'order'
     },
     {
-      class: 'FObjectArray',
-      of: 'foam.core.PropertyInfo',
+      //class: 'FObjectArray',
+      javaType: 'foam.core.PropertyInfo[]',
       name: 'index'
     },
     {

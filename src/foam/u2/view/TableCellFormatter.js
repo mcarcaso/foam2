@@ -247,3 +247,23 @@ foam.CLASS({
     }
   ]
 });
+
+foam.CLASS({
+  package: 'foam.u2.view',
+  name: 'ClassTableCellPropertyRefinement',
+  refines: 'foam.core.Class',
+  properties: [
+    {
+      class: 'foam.u2.view.TableCellFormatter',
+      name: 'tableCellFormatter',
+      factory: function() {
+        return foam.u2.view.FnFormatter.create({
+          class: 'foam.u2.view.FnFormatter',
+          f: function(value, obj, axiom) {
+            this.add(value ? value.id : '');
+          }
+        })
+      }
+    }
+  ]
+});

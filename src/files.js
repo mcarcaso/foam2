@@ -679,6 +679,9 @@ FOAM_FILES([
   { name: "foam/graphics/ZoomMapView" },
 
   { name: "foam/apploader/ModelDAO" },
+  { name: "foam/ide/AxiomDAO" },
+  { name: "foam/ide/AxiomWrapper" },
+  { name: "foam/ide/AxiomBrowser" },
 
   // Strategy
   { name: "foam/strategy/StrategyReference" },

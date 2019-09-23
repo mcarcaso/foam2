@@ -53,9 +53,10 @@ foam.CLASS({
       // List of all axioms, including methods, properties, listeners,
       // etc. and 'axioms'.
       name: 'axioms_',
+      label: 'Axioms',
       transient: true,
-      hidden: true,
-      factory: function() { return []; }
+      factory: function() { return []; },
+      view: { class: 'foam.u2.view.AxiomArrayView' },
     },
     {
       // List of extra axioms. Is added to axioms_.
@@ -78,11 +79,13 @@ foam.CLASS({
     {
       // Is upgraded to an AxiomArray later.
       of: 'Property',
+      hidden: true,
       name: 'properties'
     },
     {
       // Is upgraded to an AxiomArray later.
       of: 'Method',
+      hidden: true,
       name: 'methods'
     }
   ],

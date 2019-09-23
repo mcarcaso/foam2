@@ -121,6 +121,7 @@ both enabled.postSet and Builder.init_() can call createPipeline.`,
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       name: 'javaExtras',
       buildJavaClass: function(cls) {
         cls.extras.push(foam.java.Code.create({
@@ -296,6 +297,7 @@ If the delegate of that is also a ProxyDAO, creates a new PipelinedPMDAO in the 
 
       axioms: [
         {
+          class: 'foam.core.AnonymousAxiom',
           name: 'javaExtras',
           buildJavaClass: function(cls) {
             cls.extras.push(foam.java.Code.create({

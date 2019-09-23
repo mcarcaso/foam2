@@ -17,3 +17,27 @@ foam.INTERFACE({
     }
   ]
 });
+
+foam.CLASS({
+  package: 'foam.core',
+  name: 'AnonymousAxiom',
+  properties: [
+    {
+      class: 'String',
+      name: 'name',
+      value: 'anonymousAxiom'
+    },
+    {
+      class: 'Function',
+      name: 'installInClass'
+    },
+    {
+      class: 'Function',
+      name: 'installInProto'
+    },
+    {
+      class: 'Function',
+      name: 'buildJavaClass'
+    }
+  ]
+});

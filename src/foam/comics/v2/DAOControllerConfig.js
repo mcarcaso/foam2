@@ -65,7 +65,9 @@ foam.CLASS({
 
         return tableColumns
                 ? tableColumns.columns
-                : of.getAxiomsByClass(foam.core.Property).map(p => p.name);
+                : of.getAxiomsByClass(foam.core.Property)
+                    .filter(p => p.tableCellFormatter && ! p.hidden)
+                    .map(p => p.name);
       }
     },
     {

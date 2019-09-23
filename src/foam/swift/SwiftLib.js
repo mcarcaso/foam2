@@ -28,12 +28,15 @@ foam.LIB({
         return 'nil';
       } else if ( type == foam.Null ) {
         return 'nil';
+      } else if ( type == foam.RegExp ) {
+        return 'TODO: Output RegExp';
+      } else if ( type == foam.Object ) {
+        return 'TODO: Output objects';
       } else if ( type == foam.core.FObject ) {
         // TODO: Should be able to serialize an FObject to swift.
         return 'nil';
       } else  {
-        console.log('Encountered unexpected type while converitng value to string:', v);
-        debugger;
+        console.log('Encountered unexpected type while converting value to string:', v);
         return 'nil';
       }
     },

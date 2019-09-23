@@ -16,7 +16,7 @@ foam.CLASS({
       factory: function() {
         var dao = this.MDAO.create({ of: this.Model });
         var puts = Object.values(foam.USED).concat(Object.values(foam.UNUSED))
-          .map(json => this.Model.create(json))
+          .map(json => (json.class ? foam.lookup(json.class) : this.Model).create(json))
           .map(m => dao.put(m));
         return Promise.all(puts).then(() => dao);
       }

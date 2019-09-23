@@ -110,6 +110,7 @@ try {
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       name: 'javaExtras',
       buildJavaClass: function(cls) {
         cls.extras.push(foam.java.Code.create({

@@ -54,9 +54,9 @@ foam.CLASS({
       class: 'Int'
     },
     {
-      name: 'failedTestsList',
       class: 'FObjectArray',
-      of: 'Test'
+      of: 'foam.nanos.test.Test',
+      name: 'failedTestsList'
     }
   ],
 

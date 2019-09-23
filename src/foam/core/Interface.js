@@ -82,6 +82,7 @@ foam.CLASS({
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       installInClass: function(cls) {
         cls.create = function() {
           throw new Error("Cannot instantiate an Interface.");

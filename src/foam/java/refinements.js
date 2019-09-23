@@ -68,6 +68,8 @@ ${Object.keys(o).map(function(k) {
           o = o.replace(/\\/g, '\\\\')
           return `java.util.regex.Pattern.compile("${o}")`
         },
+      }, function(v) {
+        return 'null';
       })
     },
     {
@@ -902,6 +904,7 @@ foam.CLASS({
   flags: ['java'],
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       installInClass: function(cls) {
         cls.buildJavaClass = function(cls) {
           cls = cls || foam.java.Interface.create();
@@ -1188,6 +1191,7 @@ foam.CLASS({
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       installInClass: function(cls) {
         cls.buildJavaClass = function(cls) {
           cls = cls || foam.java.Enum.create();

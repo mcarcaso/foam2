@@ -80,6 +80,7 @@ return desc;`
   ],
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       name: 'javaExtras',
       buildJavaClass: function(cls) {
         cls.extras.push(`public void submit(foam.core.X x, foam.core.ContextAgent agent) {

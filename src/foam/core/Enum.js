@@ -255,6 +255,7 @@ foam.CLASS({
   axioms: [
     foam.pattern.Multiton.create({property: 'ordinal'}),
     {
+      class: 'foam.core.AnonymousAxiom',
       installInClass: function(cls) {
         // Each sub-class of AbstractEnum gets it's own VALUES array.
         Object.defineProperty(cls, 'VALUES', {

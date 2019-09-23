@@ -91,6 +91,7 @@ return listener
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       buildJavaClass: function(cls) {
         cls.extras.push(`
 public ProxyDAO(foam.core.X x, foam.dao.DAO delegate) {

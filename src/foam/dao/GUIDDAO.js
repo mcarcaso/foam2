@@ -80,6 +80,7 @@ return getDelegate().put_(x, obj);
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       buildJavaClass: function(cls) {
         cls.extras.push(`
 public GUIDDAO(DAO delegate) {

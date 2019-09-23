@@ -10,6 +10,11 @@ foam.CLASS({
   properties: [
     {
       class: 'String',
+      name: 'name',
+      value: 'remoteAxiom'
+    },
+    {
+      class: 'String',
       name: 'clientClass'
     }
   ],

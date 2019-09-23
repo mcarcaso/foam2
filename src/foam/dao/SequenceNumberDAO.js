@@ -135,6 +135,7 @@ foam.CLASS({
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       buildJavaClass: function(cls) {
         cls.extras.push(`
           public SequenceNumberDAO(foam.dao.DAO delegate) {

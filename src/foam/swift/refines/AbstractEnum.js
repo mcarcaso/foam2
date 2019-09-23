@@ -11,6 +11,7 @@ foam.CLASS({
   flags: ['swift'],
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       installInClass: function(cls) {
         var toSwiftClass = cls.toSwiftClass;
         cls.toSwiftClass = function() {

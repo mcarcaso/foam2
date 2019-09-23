@@ -22,6 +22,7 @@ foam.CLASS({
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       name: 'javaExtras',
       buildJavaClass: function (cls) {
         cls.extras.push(`

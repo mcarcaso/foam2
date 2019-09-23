@@ -202,6 +202,7 @@ foam.CLASS({
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       buildJavaClass: function(cls) {
         cls.extras.push(`
   /** map of properties of a model that require model.permission.property for read / write operations **/
@@ -241,6 +242,7 @@ foam.CLASS({
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       buildJavaClass: function(cls) {
         cls.extras.push(`
   private PermissionedPropertyDAO dao;

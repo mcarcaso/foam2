@@ -56,6 +56,7 @@ foam.CLASS({
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       name: 'create',
       installInClass: function(c) {
         var oldCreate = c.create;
@@ -92,6 +93,7 @@ foam.CLASS({
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       name: 'create',
       installInClass: function(cls) {
         cls.create = function(args, x) {
@@ -107,6 +109,7 @@ foam.CLASS({
   name: '__Timestamp__',
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       name: 'create',
       installInClass: function(cls) {
         cls.create = function(args) {
