@@ -163,6 +163,7 @@ foam.CLASS({
   properties: [
     {
       name: 'ids',
+      hidden: true,
       postSet: function(_, ids) {
         foam.assert(foam.Array.isInstance(ids), 'Ids must be an array.');
         foam.assert(ids.length, 'Ids must contain at least one property.');

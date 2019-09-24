@@ -53,10 +53,9 @@ foam.CLASS({
       // List of all axioms, including methods, properties, listeners,
       // etc. and 'axioms'.
       name: 'axioms_',
-      label: 'Axioms',
       transient: true,
-      factory: function() { return []; },
-      view: { class: 'foam.u2.view.AxiomArrayView' },
+      hidden: true,
+      factory: function() { return []; }
     },
     {
       // List of extra axioms. Is added to axioms_.

@@ -2666,6 +2666,7 @@ foam.CLASS({
     {
       class: 'String',
       name: 'css',
+      hidden: true,
       postSet: function(_, code) {
         var css = foam.u2.CSS.create({code: code});
         css.name = css.name + '-' + this.id;
@@ -2682,6 +2683,7 @@ foam.CLASS({
         // TODO: remove when all code ported
       `,
       name: 'tableProperties',
+      hidden: true,
       setter: function(_, ps) {
         console.warn("Deprecated use of tableProperties. Use 'tableColumns' instead.");
         this.tableColumns = ps;
@@ -2689,12 +2691,14 @@ foam.CLASS({
     },
     {
       name: 'tableColumns',
+      hidden: true,
       postSet: function(_, cs) {
         this.axioms_.push(foam.u2.TableColumns.create({columns: cs}));
       }
     },
     {
       name: 'searchColumns',
+      hidden: true,
       postSet: function(_, cs) {
         this.axioms_.push(foam.u2.SearchColumns.create({columns: cs}));
       }
@@ -2713,3 +2717,50 @@ foam.CLASS({
     }
   ]
 });
+
+foam.CLASS({
+  package: 'foam.u2',
+  name: 'ModelDetailViewRefines',
+  refines: 'foam.core.Model',
+  properties: [
+    { name: 'package', gridColumns: 4, order: 0 },
+    { name: 'name', gridColumns: 4, order: 1 },
+    {
+      name: 'extends',
+      gridColumns: 2,
+      order: 3,
+      visibilityExpression: function(refines) {
+        return refines ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW
+      }
+    },
+    {
+      name: 'refines',
+      gridColumns: 2,
+      order: 4,
+      visibilityExpression: function(extends$) {
+        return extends$ != 'FObject' ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW
+      }
+    },
+    {
+      name: 'documentation',
+      order: 5,
+      view: { class: 'foam.u2.tag.TextArea' }
+    },
+    
+    { name: 'label', gridColumns: 6 },
+    { name: 'plural', gridColumns: 6 },
+
+    { name: 'flags', section: 'advanced' },
+    
+    { name: 'order', section: 'basicInfo' },
+  ],
+
+  axioms: [
+    {
+      class: 'foam.layout.SectionAxiom',
+      name: '_defaultSection',
+      title: 'Basic Info',
+      order: 0
+    },
+  ]
+})
