@@ -77,8 +77,12 @@ foam.CLASS({
               this.start('h2').add(section$title).end();
             })
             .start(self.Grid)
+              .style({
+                'grid-gap': '16px'
+              })
               .forEach(section.properties, function(p, index) {
                 this.start(self.GUnit, { columns: p.gridColumns })
+                  .show(p.createVisibilityFor(self.data$).map((m) => m !== self.Visibility.HIDDEN))
                   .start(self.SectionedDetailPropertyView, {
                     prop: p,
                     data$: self.data$

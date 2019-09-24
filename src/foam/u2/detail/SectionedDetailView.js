@@ -52,6 +52,9 @@ foam.CLASS({
 
           return self.E()
             .start(self.Grid)
+              .style({
+                'grid-gap': '16px'
+              })
               .forEach(sections, function(s) {
                 this
                   .start(self.GUnit, { columns: s.gridColumns })

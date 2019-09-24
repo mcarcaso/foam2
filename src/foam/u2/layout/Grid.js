@@ -26,14 +26,30 @@ foam.CLASS({
     }
   `,
 
+  properties: [
+    ['subs_', []]
+  ],
+
   listeners: [
     {
       name: 'resizeChildren',
       isFramed: true,
       code: function() {
+        this.subs_.forEach(s => s.detach());
+        this.subs_ = this.childNodes
+          .map(c => c.shown$)
+          .map(s => this.onDetach(s.sub(this.resizeChildren)));
+
         this.shown = false;
         var currentWidth = 0;
         this.childNodes.forEach(ret => {
+          if ( ! ret.shown ) {
+            ret.style({
+              'grid-column-start': 0,
+              'grid-column-end': 0
+            });
+            return;
+          }
           var width = this.GUnit.isInstance(ret) && ret.columns &&
             ret.columns[`${this.displayWidth.name.toLowerCase()}Columns`] ||
             this.displayWidth.cols;
@@ -52,6 +68,17 @@ foam.CLASS({
             'grid-column-start': startCol,
             'grid-column-end': endCol
           });
+        });
+        this.childNodes.forEach((a, i) => {
+          if ( ! a.shown ) return;
+          var b = this.childNodes.find((v, i2) => {
+            return i2 > i && v.shown;
+          });
+          if ( ! b || b.css['grid-column-start'] == 1 ) {
+            a.style({
+              'grid-column-end': this.displayWidth.cols + 1
+            });
+          }
         });
         this.shown = true;
       }
