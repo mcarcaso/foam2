@@ -770,7 +770,9 @@ foam.CLASS({
         });
       }
 
-      var names = obj.split('$');
+      var names = obj.split('$')
+        .filter(n => !! n); // The filter is to allow js keywords like 'extends'
+                            // to be written as extends$ and have it picked up.
       var axiom = this.cls_.getAxiomByName(names.shift());
 
       if ( axiom == null ) {
