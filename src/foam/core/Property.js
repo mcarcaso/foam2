@@ -62,6 +62,8 @@ foam.CLASS({
     /* User-level help. Could/should appear in GUI's as online help. */
     'help',
 
+    'order',
+
     /* Hidden properties to not appear in GUI's by default. */
     { class: 'Boolean', name: 'hidden' },
 
