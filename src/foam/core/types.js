@@ -678,6 +678,7 @@ foam.CLASS({
 
   properties: [
     { class: 'String',  name: 'name' },
+    { class: 'String',  name: 'package' },
     { class: 'Boolean', name: 'abstract' }
   ]
 });

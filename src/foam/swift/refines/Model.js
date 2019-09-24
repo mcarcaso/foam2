@@ -12,10 +12,17 @@ foam.CLASS({
   requires: [
     'foam.swift.SwiftClass',
   ],
+  axioms: [
+    {
+      class: 'foam.layout.SectionAxiom',
+      name: 'swiftProperties'
+    }
+  ],
   properties: [
     {
       class: 'String',
       name: 'swiftName',
+      section: 'swiftProperties',
       expression: function(id) {
         // TODO: remove this property.
         return foam.swift.toSwiftName(id);
@@ -24,15 +31,18 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'generateSwift',
+      section: 'swiftProperties',
       value: true,
     },
     {
       class: 'StringArray',
       name: 'swiftImports',
+      section: 'swiftProperties',
     },
     {
       class: 'String',
       name: 'swiftExtends',
+      section: 'swiftProperties',
       factory: function() {
         // TODO: This should be an expression on extends but putting extends in
         // the args makes js unhappy.
@@ -43,10 +53,12 @@ foam.CLASS({
     {
       class: 'StringArray',
       name: 'swiftImplements',
+      section: 'swiftProperties',
     },
     {
       class: 'String',
       name: 'swiftCode',
+      section: 'swiftProperties',
     },
   ],
   methods: [

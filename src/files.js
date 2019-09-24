@@ -71,6 +71,8 @@ FOAM_FILES([
   { name: "foam/core/Enum" },
   { name: "foam/core/JSON" },
   { name: "foam/core/XML" },
+  { name: "foam/u2/layout/GridColumns" },
+  { name: "foam/layout/SectionAxiom" },
   { name: "foam/lib/csv/CSVParser" },
   { name: "foam/lib/csv/CSVOutputter" },
   { name: "foam/lib/csv/CSVOutputterImpl" },
@@ -654,7 +656,6 @@ FOAM_FILES([
   { name: "foam/u2/layout/Grid" },
   { name: "foam/u2/layout/Card" },
   { name: "foam/u2/layout/GUnit" },
-  { name: "foam/u2/layout/GridColumns" },
 
   { name: "foam/comics/v2/CannedQuery" },
   { name: "foam/comics/v2/DAOBrowseControllerView" },
@@ -667,7 +668,6 @@ FOAM_FILES([
   { name: "foam/comics/v2/ViewSpecWithJava" },
 
   { name: "foam/layout/Section" },
-  { name: "foam/layout/SectionAxiom" },
 
   { name: "foam/u2/detail/AbstractSectionedDetailView" },
   { name: "foam/u2/detail/SectionView" },
