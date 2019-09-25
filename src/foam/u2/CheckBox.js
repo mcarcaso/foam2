@@ -18,10 +18,8 @@
 foam.CLASS({
   package: 'foam.u2',
   name: 'CheckBox',
-  extends: 'foam.u2.tag.Input',
-
+  extends: 'foam.u2.View',
   documentation: 'Checkbox View.',
-
   properties: [
     {
       class: 'Boolean',
@@ -38,54 +36,41 @@ foam.CLASS({
     },
     {
       name: 'labelFormatter'
+    },
+    {
+      name: 'input_'
     }
   ],
-
   methods: [
     function initE() {
-      this.SUPER();
-      this.setAttribute('type', 'checkbox');
-
       var self = this;
-
-      if ( this.showLabel ) {
-        this.start('label')
-          .addClass(this.myClass('label'))
-          .addClass(this.myClass('noselect'))
-          .callIfElse(this.labelFormatter,
-                      this.labelFormatter,
-                      function() { this.add(self.label$); })
-          .on('click', function() {
-            this.data = ! this.data;
-          }.bind(this))
-        .end();
-      }
-    },
-
-    function updateMode_(mode) {
-      var disabled = mode === foam.u2.DisplayMode.RO ||
-                     mode === foam.u2.DisplayMode.DISABLED;
-      this.setAttribute('disabled', disabled);
-    },
-
-    function link() {
-      this.data$.linkTo(this.attrSlot('checked'));
+      this.SUPER();
+      this
+        .start('input', null, this.input_$)
+          .setAttribute('type', 'checkbox')
+          .setAttribute('disabled', this.mode$.map(m => {
+            return m === foam.u2.DisplayMode.RO ||
+                   m === foam.u2.DisplayMode.DISABLED;
+          }))
+          .call(function() { self.data$.linkTo(this.attrSlot('checked')) })
+        .end()
+        .callIf(this.showLabel, function() {
+          this
+            .start('label')
+              .addClass(self.myClass('noselect'))
+              .callIfElse(
+                this.labelFormatter,
+                this.labelFormatter,
+                function() { this.add(self.label$) })
+              .setAttribute('for', this.input_$.dot('id'))
+            .end();
+        });
     }
   ],
-
   css: `
     ^ {
       margin: 4px;
       padding: 8px;
-    }
-
-    ^label {
-      color: #444;
-      flex-grow: 1;
-      margin-left: 12px;
-      overflow: hidden;
-      white-space: nowrap;
-      display: inline;
     }
 
     ^noselect {
