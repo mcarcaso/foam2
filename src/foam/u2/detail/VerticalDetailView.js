@@ -14,6 +14,19 @@ foam.CLASS({
     'foam.u2.layout.Rows'
   ],
 
+  css: `
+    ^section {
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+    ^section:first-child {
+      padding-top: 0px;
+    }
+    ^section:last-child {
+      padding-bottom: 0px;
+    }
+  `,
+
   methods: [
     function initE() {
       var self = this;
@@ -30,6 +43,7 @@ foam.CLASS({
                     data$: self.data$,
                     section: s
                   })
+                    .addClass(self.myClass('section'))
                     .show(s.createIsAvailableFor(self.data$))
                   .end();
               })

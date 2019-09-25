@@ -38,9 +38,11 @@ foam.CLASS({
 
   properties: [
     {
+      class: 'String',
       name: 'source',
       transient: true,
-    },
+      section: 'advanced'
+    }
   ],
 
   methods: [

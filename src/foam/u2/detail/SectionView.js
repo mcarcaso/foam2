@@ -34,6 +34,11 @@ foam.CLASS({
     ^ .foam-u2-detail-SectionedDetailPropertyView.last {
       padding-bottom: 0;
     }
+
+    ^title {
+      border-bottom: 1px solid lightgrey;
+      padding-bottom: 16px;
+    }
   `,
 
   properties: [
@@ -74,7 +79,11 @@ foam.CLASS({
           var elm = self.Rows.create()
             .show(section.createIsAvailableFor(self.data$))
             .callIf(showTitle && section$title, function() {
-              this.start('h2').add(section$title).end();
+              this
+                .start('h2')
+                  .addClass(self.myClass('title'))
+                  .add(section$title)
+                .end();
             })
             .start(self.Grid)
               .style({

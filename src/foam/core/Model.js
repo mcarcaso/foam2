@@ -34,21 +34,25 @@ foam.CLASS({
     'package',
     'abstract',
     'name',
+    'flags',
+    'extends',
     {
-      name: 'flags',
-      documentation: `
-        When set, marks the model with the given flags. This can be used for
-        things like stripping out platform specific models when building.
-      `,
+      name: 'refines',
+      gridColumns: 2,
+      order: 4,
+      visibilityExpression: function(extends$) {
+        return extends$ != 'FObject' ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW
+      }
     },
     {
-      name: 'label',
-      expression: function(name) { return foam.String.labelize(name); }
+      name: 'documentation',
+      value: '',
+      order: 5,
+      view: { class: 'foam.u2.tag.TextArea' },
+      adapt: function(_, d) {
+        return typeof d === 'function' ? foam.String.multiline(d).trim() : d;
+      }
     },
-    [ 'extends', 'FObject' ],
-    'refines',
-    'order',
-    { name: 'documentation', adapt: function(_, d) { return typeof d === 'function' ? foam.String.multiline(d).trim() : d; } },
     {
       // List of all axioms, including methods, properties, listeners,
       // etc. and 'axioms'.
@@ -78,13 +82,11 @@ foam.CLASS({
     {
       // Is upgraded to an AxiomArray later.
       of: 'Property',
-      hidden: true,
       name: 'properties'
     },
     {
       // Is upgraded to an AxiomArray later.
       of: 'Method',
-      hidden: true,
       name: 'methods'
     }
   ],

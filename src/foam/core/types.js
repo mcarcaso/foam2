@@ -677,9 +677,55 @@ foam.CLASS({
   documentation: 'Update Model Property types.',
 
   properties: [
-    { class: 'String',  name: 'name' },
-    { class: 'String',  name: 'package' },
-    { class: 'Boolean', name: 'abstract' }
+    {
+      class: 'Int',
+      name: 'order',
+      section: 'advanced',
+      value: Number.MAX_SAFE_INTEGER,
+    },
+    {
+      name: 'flags',
+      documentation: `
+        When set, marks the model with the given flags. This can be used for
+        things like stripping out platform specific models when building.
+      `,
+      section: 'advanced',
+    },
+    {
+      class: 'String', 
+      name: 'name',
+      gridColumns: 4,
+      order: 1
+    },
+    {
+      class: 'String',
+      name: 'package',
+      gridColumns: 4,
+      order: 0
+    },
+    {
+      class: 'Boolean',
+      name: 'abstract',
+      section: 'classProperties',
+    },
+    {
+      class: 'String',
+      name: 'plural',
+      gridColumns: 6,
+      order: 7,
+      section: 'uiSection',
+      expression: function(name) {
+        return foam.String.pluralize(name);
+      }
+    },
+    {
+      class: 'String',
+      name: 'label',
+      order: 6,
+      section: 'uiSection',
+      gridColumns: 6,
+      expression: function(name) { return foam.String.labelize(name); }
+    },
   ]
 });
 

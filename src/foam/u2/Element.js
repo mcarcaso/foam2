@@ -2659,6 +2659,16 @@ foam.CLASS({
       class: 'foam.u2.TableColumns',
       name: 'modelColumns',
       columns: ['package', 'name']
+    },
+    {
+      class: 'String',
+      name: 'extends',
+      value: 'FObject',
+      gridColumns: 2,
+      order: 3,
+      visibilityExpression: function(refines) {
+        return refines ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW
+      }
     }
   ],
 
@@ -2676,6 +2686,7 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'inheritCSS',
+      section: 'htmlSection',
       value: true
     },
     {
@@ -2722,38 +2733,6 @@ foam.CLASS({
   package: 'foam.u2',
   name: 'ModelDetailViewRefines',
   refines: 'foam.core.Model',
-  properties: [
-    { name: 'package', gridColumns: 4, order: 0 },
-    { name: 'name', gridColumns: 4, order: 1 },
-    {
-      name: 'extends',
-      gridColumns: 2,
-      order: 3,
-      visibilityExpression: function(refines) {
-        return refines ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW
-      }
-    },
-    {
-      name: 'refines',
-      gridColumns: 2,
-      order: 4,
-      visibilityExpression: function(extends$) {
-        return extends$ != 'FObject' ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW
-      }
-    },
-    {
-      name: 'documentation',
-      order: 5,
-      view: { class: 'foam.u2.tag.TextArea' }
-    },
-    
-    { name: 'label', gridColumns: 6 },
-    { name: 'plural', gridColumns: 6 },
-
-    { name: 'flags', section: 'advanced' },
-    
-    { name: 'order', section: 'basicInfo' },
-  ],
 
   axioms: [
     {
@@ -2762,5 +2741,29 @@ foam.CLASS({
       title: 'Basic Info',
       order: 0
     },
+    {
+      class: 'foam.layout.SectionAxiom',
+      name: 'classProperties',
+      order: 1
+    },
+    {
+      class: 'foam.layout.SectionAxiom',
+      name: 'advanced'
+    },
+    {
+      class: 'foam.layout.SectionAxiom',
+      name: 'htmlSection',
+      title: 'HTML'
+    },
+    {
+      class: 'foam.layout.SectionAxiom',
+      name: 'uiSection',
+      title: 'UI',
+      order: 2
+    },
+    {
+      class: 'foam.layout.SectionAxiom',
+      name: 'javaProperties'
+    }
   ]
 })

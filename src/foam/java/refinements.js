@@ -2001,6 +2001,7 @@ foam.CLASS({
     {
       class: 'String',
       name: 'javaName',
+      section: 'javaProperties',
       factory: function() { return this.id; }
     },
     {

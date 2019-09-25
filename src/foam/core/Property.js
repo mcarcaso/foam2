@@ -276,7 +276,9 @@ foam.CLASS({
     },
     {
       name: 'type',
-    }
+    },
+    'gridColumns',
+    'section'
   ],
 
   methods: [
