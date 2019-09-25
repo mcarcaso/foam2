@@ -2669,6 +2669,12 @@ foam.CLASS({
       visibilityExpression: function(refines) {
         return refines ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW
       }
+    },
+    {
+      class: 'Boolean',
+      name: 'abstract',
+      section: 'classProperties',
+      label2: 'Can this class get instantiated?'
     }
   ],
 

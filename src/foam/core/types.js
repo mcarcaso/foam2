@@ -704,11 +704,6 @@ foam.CLASS({
       order: 0
     },
     {
-      class: 'Boolean',
-      name: 'abstract',
-      section: 'classProperties',
-    },
-    {
       class: 'String',
       name: 'plural',
       gridColumns: 6,

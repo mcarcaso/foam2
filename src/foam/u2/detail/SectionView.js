@@ -23,18 +23,6 @@ foam.CLASS({
   ],
 
   css: `
-    ^ .foam-u2-detail-SectionedDetailPropertyView {
-      padding: 12px 0;
-    }
-
-    ^ .foam-u2-detail-SectionedDetailPropertyView.first {
-      padding-top: 0;
-    }
-
-    ^ .foam-u2-detail-SectionedDetailPropertyView.last {
-      padding-bottom: 0;
-    }
-
     ^title {
       border-bottom: 1px solid lightgrey;
       padding-bottom: 16px;
