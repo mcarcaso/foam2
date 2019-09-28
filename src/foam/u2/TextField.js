@@ -18,7 +18,7 @@
 foam.CLASS({
   package: 'foam.u2',
   name: 'TextField',
-  extends: 'foam.u2.tag.Input',
+  extends: 'foam.u2.View',
 
   axioms: [
     { class: 'foam.u2.TextInputCSS' }
@@ -33,30 +33,55 @@ foam.CLASS({
       border: none;
       background: rgba(0,0,0,0);
     }
+
+    ^ {
+      width: 100%;
+    }
   `,
 
   properties: [
     {
       class: 'Int',
       name: 'displayWidth'
+    },
+    {
+      class: 'String',
+      name: 'placeholder'
     }
   ],
 
   methods: [
     function fromProperty(prop) {
       this.SUPER(prop);
-
       if ( ! this.placeholder && prop.placeholder ) {
         this.placeholder = prop.placeholder;
       }
-
       if ( ! this.displayWidth ) {
         this.displayWidth = prop.displayWidth;
       }
-
-      if ( ! this.size ) {
-        this.size = this.displayWidth;
-      }
+    },
+    function initE() {
+      var self = this;
+      this.SUPER();
+      this
+        .start('input')
+          .addClass(this.myClass())
+          .setAttribute('type', 'text')
+          .setAttribute('disabled', this.mode$.map(m => {
+            return m === foam.u2.DisplayMode.DISABLED;
+          }))
+          .setAttribute('readonly', this.mode$.map(m => {
+            return m === foam.u2.DisplayMode.RO;
+          }))
+          .call(function() {
+            self.data$.relateTo(
+              this.attrSlot('value'),
+              d => foam.Null.isInstance(d) || foam.Undefined.isInstance(d) ?
+                '' : d.toString(),
+              d => d
+            );
+          })
+        .end();
     }
   ]
 });
