@@ -2719,7 +2719,22 @@ foam.CLASS({
       postSet: function(_, cs) {
         this.axioms_.push(foam.u2.SearchColumns.create({columns: cs}));
       }
-    }
+    },
+    {
+      name: 'flags',
+      help: `
+        When set, marks the model with the given flags. This can be used for
+        things like stripping out platform specific models when building.
+      `,
+      view: { class: 'foam.u2.view.StringArrayView' },
+      section: 'advanced',
+    },
+    {
+      class: 'String',
+      name: 'documentation',
+      order: 5,
+      view: { class: 'foam.u2.tag.TextArea' }
+    },
   ]
 });
 

@@ -684,15 +684,7 @@ foam.CLASS({
       value: Number.MAX_SAFE_INTEGER,
     },
     {
-      name: 'flags',
-      documentation: `
-        When set, marks the model with the given flags. This can be used for
-        things like stripping out platform specific models when building.
-      `,
-      section: 'advanced',
-    },
-    {
-      class: 'String', 
+      class: 'String',
       name: 'name',
       gridColumns: 4,
       order: 1

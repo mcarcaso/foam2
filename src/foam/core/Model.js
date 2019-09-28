@@ -44,15 +44,7 @@ foam.CLASS({
         return extends$ != 'FObject' ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW
       }
     },
-    {
-      name: 'documentation',
-      value: '',
-      order: 5,
-      view: { class: 'foam.u2.tag.TextArea' },
-      adapt: function(_, d) {
-        return typeof d === 'function' ? foam.String.multiline(d).trim() : d;
-      }
-    },
+    'documentation',
     {
       // List of all axioms, including methods, properties, listeners,
       // etc. and 'axioms'.

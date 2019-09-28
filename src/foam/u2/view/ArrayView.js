@@ -9,6 +9,13 @@ foam.CLASS({
   name: 'ArrayView',
   extends: 'foam.u2.View',
 
+  messages: [
+    {
+      name: 'NO_ELEMENTS',
+      message: 'There are no elements to display.'
+    }
+  ],
+
   requires: [
     'foam.u2.layout.Cols',
     'foam.u2.layout.Rows'
@@ -35,6 +42,7 @@ foam.CLASS({
         return mode === foam.u2.DisplayMode.RW;
       },
       code: function() {
+        this.data = this.data || [];
         this.data[this.data.length] = '';
         this.updateData();
       }
@@ -44,7 +52,7 @@ foam.CLASS({
   classes: [
     {
       name: 'Row',
-      imports: [ 
+      imports: [
         'data',
         'mode',
         'updateData'
@@ -121,6 +129,8 @@ foam.CLASS({
 
       this
         .add(this.slot(function(data, valueView) {
+          data = data || [];
+          if ( ! data.length ) return self.E('div').add(self.NO_ELEMENTS);
           return self.E()
             .start(self.Rows)
               .forEach(data, function(e, i) {
