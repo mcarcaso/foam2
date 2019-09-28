@@ -97,7 +97,6 @@ foam.CLASS({
       encode these changes in the actual foam files
     */
 
-    ^ .foam-u2-TextField,
     ^ .foam-u2-tag-Select,
     ^ .foam-u2-tag-TextArea,
     ^ .foam-u2-IntView {
@@ -267,6 +266,11 @@ foam.CLASS({
   properties: [
     'prop',
     {
+      class: 'Boolean',
+      name: 'refresh',
+      documentation: 'Flipped to force a re-rendering.'
+    },
+    {
       class: 'FObjectProperty',
       of: 'foam.core.Slot',
       name: 'visibilitySlot',
@@ -284,7 +288,8 @@ foam.CLASS({
       this
         .show(this.ProxySlot.create({ delegate$: this.visibilitySlot$ }))
         .addClass(this.myClass())
-        .add(this.slot(function(data, prop, prop$label) {
+        .add(this.slot(function(data, prop, prop$label, refresh) {
+          if ( ! data ) return;
           var errorSlot = prop.validateObj && prop.validationTextVisible ?
             data.slot(prop.validateObj) :
             foam.core.ConstantSlot.create({ value: null });
@@ -306,12 +311,29 @@ foam.CLASS({
                     this.enableClass(self.myClass('error'), errorSlot);
                   })
                 .end()
+                .add(self.data$.dot(prop.name).map(_ => {
+                  return ! data || ! data.hasOwnProperty(prop.name) ? '' :
+                    self.E()
+                      .show(self.mode$.map(m => m == foam.u2.DisplayMode.RW))
+                      .start('a')
+                        .add(
+                          ! foam.Undefined.isInstance(prop.value) ? 'use default' :
+                          ! foam.Undefined.isInstance(prop.expression) ? 'use default' :
+                          ! foam.Undefined.isInstance(prop.factory) ? 'reset' :
+                          'clear'
+                        )
+                        .on('click', function() {
+                          data[prop.name] = undefined;
+                          self.refresh = ! self.refresh;
+                        })
+                      .end();
+                }))
                 .callIf(prop.help, function() {
                   this.start()
                     .addClass(self.myClass('tooltip'))
                     .start({
                       class: 'foam.u2.tag.Image',
-                      data: 'images/question-icon.svg'
+                      data: '/src/foam/u2/images/question-icon.svg'
                     })
                       .addClass(self.myClass('helper-icon'))
                     .end()
