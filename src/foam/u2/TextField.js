@@ -47,6 +47,10 @@ foam.CLASS({
     {
       class: 'String',
       name: 'placeholder'
+    },
+    {
+      name: 'nodeName',
+      value: 'INPUT'
     }
   ],
 
@@ -64,24 +68,22 @@ foam.CLASS({
       var self = this;
       this.SUPER();
       this
-        .start('input')
-          .addClass(this.myClass())
-          .setAttribute('type', 'text')
-          .setAttribute('disabled', this.mode$.map(m => {
-            return m === foam.u2.DisplayMode.DISABLED;
-          }))
-          .setAttribute('readonly', this.mode$.map(m => {
-            return m === foam.u2.DisplayMode.RO;
-          }))
-          .call(function() {
-            self.data$.relateTo(
-              this.attrSlot('value'),
-              d => foam.Null.isInstance(d) || foam.Undefined.isInstance(d) ?
-                '' : d.toString(),
-              d => d
-            );
-          })
-        .end();
+        .addClass(this.myClass())
+        .setAttribute('type', 'text')
+        .setAttribute('disabled', this.mode$.map(m => {
+          return m === foam.u2.DisplayMode.DISABLED;
+        }))
+        .setAttribute('readonly', this.mode$.map(m => {
+          return m === foam.u2.DisplayMode.RO;
+        }))
+        .call(function() {
+          self.data$.relateTo(
+            this.attrSlot('value'),
+            d => foam.Null.isInstance(d) || foam.Undefined.isInstance(d) ?
+              '' : d.toString(),
+            d => d
+          );
+        });
     }
   ]
 });
