@@ -19,11 +19,9 @@ foam.CLASS({
   package: 'foam.u2',
   name: 'TextField',
   extends: 'foam.u2.View',
-
   axioms: [
     { class: 'foam.u2.TextInputCSS' }
   ],
-
   css: `
     input[type="search"] {
       -webkit-appearance: textfield !important;
@@ -38,7 +36,6 @@ foam.CLASS({
       width: 100%;
     }
   `,
-
   properties: [
     {
       class: 'Int',
@@ -83,7 +80,7 @@ foam.CLASS({
         }))
         .call(function() {
           self.data$.relateTo(
-            this.attrSlot('value'),
+            this.attrSlot('value', 'input'),
             d => foam.Null.isInstance(d) || foam.Undefined.isInstance(d) ?
               '' : d.toString(),
             d => d
