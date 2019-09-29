@@ -19,96 +19,58 @@ foam.CLASS({
   package: 'foam.u2.view',
   name: 'PasswordView',
   extends: 'foam.u2.View',
-
   requires: [
     'foam.u2.TextField'
   ],
-
   css: `
-    ^ .input-field-container {
+    ^ {
       position: relative;
     }
-    ^ .input-image {
+    ^img {
       position: absolute;
-      width: 24px;
-      height: 24px;
-      bottom: 8px;
+      margin-top: 4px;
       right: 6px;
     }
   `,
-
   constants: [
     {
       type: 'String',
       name: 'VISIBILITY',
-      value: 'images/visibility.svg'
+      value: '/src/foam/u2/images/visibility.svg'
     },
     {
       type: 'String',
       name: 'VISIBILITY_OFF',
-      value: 'images/visibility-off.svg'
+      value: '/src/foam/u2/images/visibility-off.svg'
     }
   ],
-
   properties: [
     {
-      name: 'visibilityIcon',
-      factory: function() {
-        return this.VISIBILITY_OFF;
-      }
+      class: 'Boolean',
+      name: 'showPassword'
     },
     {
       class: 'Boolean',
-      name: 'passwordInvisible',
-      value: true
-    },
-    {
-      class: 'Boolean',
-      name: 'passwordIcon'
-    },
-    {
-      class: 'String',
-      name: 'type',
-      value: 'password'
-    },
-    'inputElement'
+      name: 'isShowPasswordEnabled'
+    }
   ],
-
   methods: [
     function initE() {
       this.SUPER();
-
-      this.addClass(this.myClass()).start().
-        addClass('input-field-container').
-        start(this.TextField, {
-          type: this.type,
+      this
+        .addClass(this.myClass())
+        .tag(this.TextField, {
           data$: this.data$,
-          onKey: true
-        }, this.inputElement$).
-        addClass('full-width-input-password').end().
-        start('img').show(this.passwordIcon$).addClass('input-image').
-        attr('src', this.visibilityIcon$).on('click', this.visible).
-        end().
-      end();
-    },
-
-    function visibleIcon(visibilityIcon, type) {
-      this.visibilityIcon = visibilityIcon;
-      this.inputElement.setAttribute('type', type);
-      this.passwordInvisible = ! this.passwordInvisible;
-      this.enableClass('property-password', this.passwordInvisible);
-    }
-  ],
-
-  listeners: [
-    function visible() {
-      if ( this.passwordInvisible ) {
-        // Make password visible
-        this.visibleIcon(this.VISIBILITY, 'text');
-      } else {
-        // Make password invisible
-        this.visibleIcon(this.VISIBILITY_OFF, 'password');
-      }
+          type$: this.showPassword$.map(b => b ? 'text' : 'password')
+        })
+        .add(this.isShowPasswordEnabled$.map(b => {
+          return b ? this.E('IMG')
+            .addClass(this.myClass('img'))
+            .setAttribute('src', this.showPassword$.map(s => {
+              return s ? this.VISIBILITY_OFF : this.VISIBILITY;
+            }))
+            .on('click', _ => this.showPassword = ! this.showPassword) : null;
+        }));
     }
   ]
 });

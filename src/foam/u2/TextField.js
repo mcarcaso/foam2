@@ -49,6 +49,11 @@ foam.CLASS({
       name: 'placeholder'
     },
     {
+      class: 'String',
+      name: 'type',
+      value: 'text'
+    },
+    {
       name: 'nodeName',
       value: 'INPUT'
     }
@@ -69,7 +74,7 @@ foam.CLASS({
       this.SUPER();
       this
         .addClass(this.myClass())
-        .setAttribute('type', 'text')
+        .setAttribute('type', this.type$)
         .setAttribute('disabled', this.mode$.map(m => {
           return m === foam.u2.DisplayMode.DISABLED;
         }))
