@@ -18,28 +18,49 @@
 foam.CLASS({
   package: 'foam.u2',
   name: 'ClassView',
-  extends: 'foam.u2.TextField',
-
-  documentation: 'View for editing a Class Property.',
-
+  extends: 'foam.u2.View',
+  documentation: `
+    View for editing a Class Property.
+    TODO: The validation for this is awkward. Design a view that doesn't allow
+    a user to input a bad value.
+  `,
   properties: [
-    { class: 'Class', name: 'data' }
+    { class: 'Class', name: 'data' },
+    {
+      class: 'String',
+      name: 'data_',
+      expression: function(data) {
+        return data ? data.id : '';
+      },
+      postSet: function(_, n) {
+        n = n.trim();
+        var cls = foam.lookup(n, true);
+        if ( ! cls ) {
+          this.error_ = 'Please enter a valid class';
+        } else {
+          this.data = cls;
+          this.data_ = undefined;
+          this.error_ = undefined;
+        }
+      },
+      visibilityExpression: function (visibility) {
+        return visibility;
+      }
+    },
+    {
+      class: 'String',
+      name: 'error_',
+      visibility: 'RO'
+    }
   ],
-
   methods: [
-    function link() {
-      this.attrSlot(null, null).relateFrom(
-          this.data$,
-          this.textToData.bind(this),
-          this.dataToText.bind(this));
-    },
-
-    function dataToText(c) {
-      return c ? c.id : '';
-    },
-
-    function textToData(text) {
-      return text.trim();
+    function initE() {
+      this.SUPER();
+      this
+        .startContext({ data: this })
+          .add(this.DATA_)
+          .add(this.ERROR_)
+        .endContext();
     }
   ]
 });
