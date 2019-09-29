@@ -2561,7 +2561,6 @@ foam.CLASS({
     function initE() {
       this.SUPER();
       this.updateMode_(this.mode);
-      // this.enableClass('error', this.error_$);
       this.setAttribute('title', this.error_$);
     },
 
@@ -2570,20 +2569,8 @@ foam.CLASS({
     },
 
     function fromProperty(p) {
-      this.visibility = p.visibility;
-
+      this.visibility$.follow(p.createVisibilityFor(this.__context__.data$));
       this.attr('name', p.name);
-
-      if ( p.validateObj ) {
-        /*
-        var s = foam.core.ExpressionSlot.create({
-          obj$: this.__context__.data$,
-          code: p.validateObj
-        });
-        this.error_$.follow(s);
-        */
-//        this.error_$.follow(this.__context__.data.slot(p.validateObj));
-      }
     }
   ]
 });
