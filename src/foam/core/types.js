@@ -425,7 +425,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'EMail',
+  name: 'EMailProperty',
   extends: 'StringProperty',
   // FUTURE: verify
   label: 'Email address'

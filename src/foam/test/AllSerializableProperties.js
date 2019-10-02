@@ -54,7 +54,7 @@ foam.CLASS({
       name: 'fObjectPropertyProp'
     },
     {
-      class: 'foam.core.EMail',
+      class: 'foam.core.EMailProperty',
       name: 'emailProp'
     },
     {

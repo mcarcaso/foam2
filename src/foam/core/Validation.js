@@ -301,7 +301,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'EmailPropertyValidationRefinement',
-  refines: 'foam.core.EMail',
+  refines: 'foam.core.EMailProperty',
   properties: [
     {
       class: 'FObjectArray',

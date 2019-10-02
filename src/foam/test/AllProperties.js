@@ -54,7 +54,7 @@ foam.CLASS({
       name: 'fObjectPropertyProp'
     },
     {
-      class: 'foam.core.EMail',
+      class: 'foam.core.EMailProperty',
       name: 'emailProp'
     },
     {
@@ -225,7 +225,7 @@ foam.CLASS({
       name: 'transientFObjectProperty',
     },
     {
-      class: 'foam.core.EMail',
+      class: 'foam.core.EMailProperty',
       transient: true,
       name: 'transientEMail'
     },

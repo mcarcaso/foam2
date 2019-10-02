@@ -72,7 +72,7 @@ foam.CLASS({
         name: 'key'
     },
     {
-      class: 'EMail',
+      class: 'EMailProperty',
       displayWidth: 100,
       name: 'email'
     },

@@ -177,7 +177,7 @@ foam.CLASS({
       factory: function() { return ['row1', 'row2', 'row3']; }
     },
     {
-      class: 'EMail',
+      class: 'EMailProperty',
       name: 'defaultEMail',
       value: 'someone@somewhere.com'
     },

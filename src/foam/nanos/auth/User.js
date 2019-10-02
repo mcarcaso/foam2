@@ -162,7 +162,7 @@ foam.CLASS({
       width: 50
     },
     {
-      class: 'EMail',
+      class: 'EMailProperty',
       name: 'email',
       label: 'Email Address',
       documentation: 'The email address of the User.',

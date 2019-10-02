@@ -127,7 +127,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'EMail',
+      class: 'EMailProperty',
       name: 'email'
     },
     {
