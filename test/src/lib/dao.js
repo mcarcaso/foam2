@@ -588,7 +588,7 @@ describe('ContextualizingDAO', function() {
 // - Implement VersionNoDAO decorate server's DAO and automatically bump version
 //   numbers
 //
-// - Assert that "versionProperty" is a foam.core.Int. Possibly also assert a
+// - Assert that "versionProperty" is a foam.core.IntProperty. Possibly also assert a
 //   default value of 0.
 //
 // - Well written tests should:

@@ -24,7 +24,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'delay',
       preSet: function(_, a) {
         return a < this.maxDelay ? a : this.maxDelay;
@@ -32,7 +32,7 @@ foam.CLASS({
       value: 1
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'maxDelay',
       value: 20000
     }

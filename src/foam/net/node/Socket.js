@@ -57,7 +57,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'offset',
       value: 0
     },
@@ -65,7 +65,7 @@ foam.CLASS({
       name: 'buffer'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'nextSize',
       value: 0
     },

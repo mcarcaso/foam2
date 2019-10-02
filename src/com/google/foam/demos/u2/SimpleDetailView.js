@@ -19,7 +19,7 @@ foam.CLASS({
   name: 'Test1',
   label: 'Test 1',
 
-  properties: [ { class: 'Int', name: 'a' }, 'b' ]
+  properties: [ { class: 'IntProperty', name: 'a' }, 'b' ]
 });
 
 foam.CLASS({

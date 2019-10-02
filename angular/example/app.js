@@ -20,7 +20,7 @@ foam.CLASS({
   name: 'Todo',
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'id',
     },
     {

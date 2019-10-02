@@ -25,7 +25,7 @@ describe('RetryHTTPRequest', function() {
 
       properties: [
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'tries'
         }
       ],

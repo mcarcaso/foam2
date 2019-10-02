@@ -194,7 +194,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'batch',
       value: 0
     }
@@ -379,7 +379,7 @@ foam.CLASS({
     },
     {
       name: 'count',
-      class: 'Int',
+      class: 'IntProperty',
       value: 0
     }
   ],
@@ -441,7 +441,7 @@ foam.CLASS({
     },
     {
       name: 'count',
-      class: 'Int',
+      class: 'IntProperty',
       value: 0
     }
   ],

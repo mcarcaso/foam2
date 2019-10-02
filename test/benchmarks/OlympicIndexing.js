@@ -108,7 +108,7 @@ describe("Index benchmarks", function() {
 
       properties: [
         { name: 'id', hidden: true },
-        { class: 'Int', name: 'year', shortName: 'y' },
+        { class: 'IntProperty', name: 'year', shortName: 'y' },
         {
           class: 'Enum',
           of: 'benchmarks.olympics.MedalColor',

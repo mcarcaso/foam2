@@ -30,7 +30,7 @@ global.genericDAOTestBattery = function(daoFactory) {
         name: 'Person',
         properties: [
           {
-            class: 'Int',
+            class: 'IntProperty',
             name: 'id',
           },
           {

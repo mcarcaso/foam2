@@ -21,7 +21,7 @@ foam.CLASS({
   extends: 'foam.box.ProxyBox',
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'delay',
       value: 100
     },

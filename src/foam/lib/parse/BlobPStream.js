@@ -16,7 +16,7 @@ foam.CLASS({
       name: 'blob'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'pos_'
     },
     {

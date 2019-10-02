@@ -47,11 +47,11 @@ foam.CLASS({
   properties: [
     {
       name: 'failedTests',
-      class: 'Int'
+      class: 'IntProperty'
     },
     {
       name: 'passedTests',
-      class: 'Int'
+      class: 'IntProperty'
     },
     {
       class: 'FObjectArray',

@@ -932,7 +932,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'IntJavaRefinement',
-  refines: 'foam.core.Int',
+  refines: 'foam.core.IntProperty',
   flags: ['java'],
 
   properties: [

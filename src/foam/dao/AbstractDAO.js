@@ -758,7 +758,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'skip_',
     }
   ],
@@ -787,7 +787,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'limit_'
     }
   ],

@@ -228,7 +228,7 @@ describe('RestDAO', function() {
           name: 's'
         },
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'i'
         },
         {

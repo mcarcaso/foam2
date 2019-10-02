@@ -20,7 +20,7 @@ foam.CLASS({
   name: 'AllSerializableProperties',
   properties: [
     {
-      class: 'foam.core.Int',
+      class: 'foam.core.IntProperty',
       name: 'intProp'
     },
     {

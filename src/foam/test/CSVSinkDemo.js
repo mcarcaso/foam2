@@ -41,7 +41,7 @@ foam.CLASS({
       name: 'TestModel',
       properties: [
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'id'
         },
         {

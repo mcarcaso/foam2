@@ -24,14 +24,14 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'interval',
       help: 'Interval of time between updating time.',
       // units: 'ms',
       value: 10
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'i',
       value: 0
     },
@@ -41,7 +41,7 @@ foam.CLASS({
       value: 1.0
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name:  'duration',
       units: 'ms',
       value: -1
@@ -70,19 +70,19 @@ return newValue as! Int
       value: 0
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name:  'second',
       help:  'The second of the current minute.',
       value: 0
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name:  'minute',
       help:  'The minute of the current hour.',
       value: 0
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name:  'hour',
       help:  'The hour of the current day.',
       value: 0

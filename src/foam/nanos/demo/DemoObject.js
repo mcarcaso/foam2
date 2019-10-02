@@ -28,7 +28,7 @@ foam.CLASS({
       name: 'label'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'value'
     },
     {

@@ -45,7 +45,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'order',
       documentation: 'Used to order the menu list.',
       value: 1000

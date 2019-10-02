@@ -32,7 +32,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'timeout',
       // TODO: change this back to 5s once we have the cacheDAO.
       value: 60000,

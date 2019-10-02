@@ -96,7 +96,7 @@ describe('DatastoreDAO', function() {
             name: 'lastName'
           },
           {
-            class: 'Int',
+            class: 'IntProperty',
             name: 'iq'
           },
           {
@@ -291,7 +291,7 @@ describe('DatastoreDAO', function() {
 
         properties: [
           {
-            class: 'Int',
+            class: 'IntProperty',
             name: 'id',
             factory: function() { return sheepNum++; }
           }

@@ -68,7 +68,7 @@
       tableWidth: 200
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'priority',
       documentation: 'Priority defines the order in which rules are to be applied.'+
       'Rules with a higher priority are to be applied first.'+
@@ -171,7 +171,7 @@
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'validity',
       documentation: 'Validity of the rule (in days) for automatic rescheduling.',
       permissionRequired: true,

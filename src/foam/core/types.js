@@ -6,7 +6,7 @@
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Int',
+  name: 'IntProperty',
   extends: 'Property',
 
   properties: [
@@ -42,7 +42,7 @@ foam.CLASS({
       name: 'trim',
       value: false
     },
-    { class: 'Int', name: 'width', value: 30 },
+    { class: 'IntProperty', name: 'width', value: 30 },
     {
       name: 'adapt',
       value: function(_, a, p) {
@@ -151,7 +151,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'Byte',
-  extends: 'Int',
+  extends: 'IntProperty',
 
   documentation: 'Describes properties of type Byte.',
   label: 'Round byte numbers',
@@ -165,7 +165,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'Short',
-  extends: 'Int',
+  extends: 'IntProperty',
 
   documentation: 'Describes properties of type Short.',
   label: 'Round short numbers',
@@ -179,7 +179,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name:  'LongProperty',
-  extends: 'Int',
+  extends: 'IntProperty',
 
   documentation:  'Describes properties of type Long.',
   label: 'Round long numbers',
@@ -193,7 +193,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'Float',
-  extends: 'Int',
+  extends: 'IntProperty',
 
   // documentation:  'Describes properties of type Float.',
   label: 'Decimal numbers',
@@ -678,7 +678,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'order',
       section: 'advanced',
       value: Number.MAX_SAFE_INTEGER,

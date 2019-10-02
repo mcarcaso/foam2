@@ -24,7 +24,7 @@ foam.CLASS({
       name: 'charcode'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'remaining',
       value: 0
     },

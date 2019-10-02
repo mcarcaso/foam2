@@ -15,7 +15,7 @@ foam.CLASS({
       aliases:['fname','fn','first']
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'age'
     },
     {

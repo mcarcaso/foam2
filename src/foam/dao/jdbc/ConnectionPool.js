@@ -22,7 +22,7 @@ foam.CLASS({
       documentation: 'Connection pool',
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'poolSize',
       value: 20,
       documentation: 'Connection pool size'

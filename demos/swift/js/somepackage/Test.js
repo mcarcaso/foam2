@@ -48,7 +48,7 @@ return firstName + " " + lastName
       */},
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'intProp',
     },
     {

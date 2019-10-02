@@ -21,10 +21,10 @@ foam.CLASS({
   tableColumns: [ 'id', 'firstName', 'lastName', 'hello', 'remove' ],
 
   properties: [
-    { class: 'Int',    name: 'id', hidden: true },
+    { class: 'IntProperty',    name: 'id', hidden: true },
     { class: 'StringProperty', name: 'firstName' },
     { class: 'StringProperty', name: 'lastName' },
-    { class: 'Int',    name: 'age' }
+    { class: 'IntProperty',    name: 'age' }
   ],
 
   actions: [

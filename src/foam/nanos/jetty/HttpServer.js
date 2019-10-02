@@ -33,7 +33,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'port',
       value: 8080
     },
@@ -42,7 +42,7 @@ foam.CLASS({
       name: 'enableHttps'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'httpsPort',
       value: 443
     },

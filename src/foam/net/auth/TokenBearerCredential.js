@@ -30,7 +30,7 @@ foam.CLASS({
       name: 'accessToken'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       documentation: `date.getTime()-style time stamp of "accessToken"
           expiration.`,
       name: 'expiry'

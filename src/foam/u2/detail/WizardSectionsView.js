@@ -35,11 +35,11 @@ foam.CLASS({
       name: 'lastUpdate'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'currentIndex'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'prevIndex',
       expression: function(lastUpdate, currentIndex, sections, data) {
         for ( var i = currentIndex - 1 ; i >= 0 ; i-- ) {
@@ -49,7 +49,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'nextIndex',
       expression: function(lastUpdate, currentIndex, sections, data) {
         for ( var i = currentIndex + 1 ; i < sections.length ; i++ ) {
@@ -132,4 +132,4 @@ foam.CLASS({
         .end();
     }
   ]
-}); 
+});

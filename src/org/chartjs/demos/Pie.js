@@ -68,7 +68,7 @@ foam.CLASS({
         { name: 'id' },
         { class: 'StringProperty', name: 'name' },
         { class: 'StringProperty', name: 'sex', value: 'M' },
-        { class: 'Int', name: 'age' },
+        { class: 'IntProperty', name: 'age' },
       ]
     },
   ],

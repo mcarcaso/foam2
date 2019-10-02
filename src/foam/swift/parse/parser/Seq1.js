@@ -15,7 +15,7 @@ foam.CLASS({
       name: 'parsers',
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'index',
     },
   ],

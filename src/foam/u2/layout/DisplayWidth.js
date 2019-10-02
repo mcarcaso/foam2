@@ -6,7 +6,7 @@ foam.ENUM({
   `,
 
   values: [
-      { 
+      {
         name: 'XXS',
         documentation: `
           Display for the smaller end of smartphone devices and smartphone portrait screens:
@@ -64,11 +64,11 @@ foam.ENUM({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'cols'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'minWidth'
     }
   ]

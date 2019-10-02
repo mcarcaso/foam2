@@ -15,7 +15,7 @@ foam.CLASS({
       value: '400'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'code',
       value: 1005
     },

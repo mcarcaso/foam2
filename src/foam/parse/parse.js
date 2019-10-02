@@ -532,7 +532,7 @@ foam.CLASS({
       name: 'delimiter'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'minimum'
     }
   ],

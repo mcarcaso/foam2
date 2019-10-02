@@ -953,7 +953,7 @@ foam.CLASS({
       name: 'blobs'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'nextId',
       value: 1
     }

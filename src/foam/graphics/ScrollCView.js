@@ -37,7 +37,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'value',
 //      help: 'The first element being shown, starting at zero.',
       preSet: function(_, value) {
@@ -48,7 +48,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'extent',
 //      help: 'Number of elements shown.',
 //      minValue: 1, // TODO: add back when minValue supported
@@ -58,7 +58,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'size',
 //      help: 'Total number of elements being scrolled through.',
       value: 0,
@@ -69,7 +69,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'minHandleSize',
 //      help: 'Minimum size to make the drag handle.'
       value: 10
@@ -85,7 +85,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'innerBorder',
       value: 2
     },

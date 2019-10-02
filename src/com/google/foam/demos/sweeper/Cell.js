@@ -49,7 +49,7 @@ foam.CLASS({
     'x',
     'y',
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'mineCount',
       factory: function() { return this.board.getMineCount(this); }
     },

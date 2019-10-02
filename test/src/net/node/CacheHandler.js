@@ -79,7 +79,7 @@ describe('CacheHandler', function() {
 
       properties: [
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'statusCode',
           value: 404
         },
@@ -100,12 +100,12 @@ describe('CacheHandler', function() {
 
       properties: [
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'statusCode',
           value: 404
         },
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'expectedStatusCode',
           value: 200
         },

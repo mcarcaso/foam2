@@ -26,12 +26,12 @@ foam.CLASS({
       factory: function() { return []; }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'depth',
       value: 0
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'pos',
       value: -1,
       preSet: function(_, p) {
@@ -111,7 +111,7 @@ foam.CLASS({
           name: 'stack'
         },
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'pos'
         }
       ],

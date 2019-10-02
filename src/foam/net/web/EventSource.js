@@ -89,7 +89,7 @@ foam.CLASS({
       name: 'retryTimer'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'delay',
       preSet: function(_, a) {
         if ( a > 30000 ) return 30000;

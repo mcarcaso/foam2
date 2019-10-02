@@ -533,7 +533,7 @@ foam.CLASS({
       documentation: `Called before addRow is applied to objects in the DAO.`
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'batch',
       documentation: `Used to check whether a paint should be performed or not.`
     }
@@ -959,7 +959,7 @@ foam.CLASS({
       name: 'scrollHeight',
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'tabIndex',
     },
     {
@@ -2161,7 +2161,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'order',
       documentation: `
         The order to render the property in if rendering multiple properties.
@@ -2236,7 +2236,7 @@ foam.CLASS({
   refines: 'foam.core.StringProperty',
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'displayWidth',
       expression: function(width) { return width; }
     }
@@ -2300,7 +2300,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'IntViewRefinement',
-  refines: 'foam.core.Int',
+  refines: 'foam.core.IntProperty',
   requires: [ 'foam.u2.IntView' ],
   properties: [
     [ 'displayWidth', 10 ],

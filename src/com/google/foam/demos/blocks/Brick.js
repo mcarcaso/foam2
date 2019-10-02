@@ -45,7 +45,7 @@ foam.CLASS({
     'x',
     'y',
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'myWeight',
       expression: function(removed) { return removed ? 0 : 100; }
     },
@@ -58,17 +58,17 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'topWeight',
       value: 0
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'leftWeight',
       value: 0
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'rightWeight',
       value: 0
     },

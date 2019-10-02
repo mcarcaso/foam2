@@ -26,7 +26,7 @@ foam.CLASS({
   ],
 
   exports: [ 'as data' ],
- 
+
   css: `
     ^ {
       margin-bottom: 20px;
@@ -51,27 +51,27 @@ foam.CLASS({
       factory: function() { return this.user.tickets; }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'newCount'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'updatedCount'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'openCount'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'pendingCount'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'solvedCount'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'ticketCount'
     }
   ],

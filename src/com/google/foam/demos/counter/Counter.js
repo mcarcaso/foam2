@@ -17,7 +17,7 @@
 
 foam.CLASS({
   name: 'Counter',
-  properties: [ { class: 'Int', name: 'count', label: '' } ],
+  properties: [ { class: 'IntProperty', name: 'count', label: '' } ],
   actions: [
     function increment() { this.count++; },
     function decrement() { this.count--; }

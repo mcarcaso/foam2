@@ -29,7 +29,7 @@ foam.CLASS({
   properties: [
     [ 'gain', 1.0 ],
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'duration',
       value: 200,
       units: 'ms'
@@ -61,13 +61,13 @@ foam.CLASS({
       name: 'envelope'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'attack',
       value: 100,
       units: 'ms'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'decay',
       value: 100,
       units: 'ms'
@@ -79,7 +79,7 @@ foam.CLASS({
       units: '%'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'release',
       value: 100,
       units: 'ms'

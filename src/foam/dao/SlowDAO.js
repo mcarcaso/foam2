@@ -10,7 +10,7 @@ foam.CLASS({
   extends: 'foam.dao.ProxyDAO',
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'delayMs',
     },
   ],

@@ -53,7 +53,7 @@ foam.CLASS({
       value: 0
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'duration',
       units: 'ms',
       view: { class: 'foam.u2.RangeView', maxValue: 10000 },

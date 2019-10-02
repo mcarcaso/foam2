@@ -21,7 +21,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'version_',
       value: -1
     },

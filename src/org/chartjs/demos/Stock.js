@@ -176,7 +176,7 @@ foam.CLASS({
         },
         { class: 'Currency', name: 'pricePerShare' },
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'shares',
           chartJsFormatter: function(v) {
             return v + ' shares'

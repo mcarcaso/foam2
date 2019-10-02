@@ -31,11 +31,11 @@ foam.CLASS({
       name: 'data'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'selectedCount'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'totalCount'
     },
     {

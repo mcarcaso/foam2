@@ -97,7 +97,7 @@ foam.CLASS({
         results to be stale for a particular predicate and will issue a new
         select.
       */
-      class: 'Int',
+      class: 'IntProperty',
       name: 'staleTimeout',
       value: 500,
       //units: 'ms',

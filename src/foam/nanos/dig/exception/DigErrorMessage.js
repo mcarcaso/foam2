@@ -14,7 +14,7 @@ foam.CLASS({
       name: 'status'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'code'
     },
     {

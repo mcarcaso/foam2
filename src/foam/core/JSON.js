@@ -184,7 +184,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'indentLevel_',
       value: 0
     },

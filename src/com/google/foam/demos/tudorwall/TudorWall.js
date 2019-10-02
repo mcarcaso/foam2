@@ -59,7 +59,7 @@ foam.CLASS({
     [ 'cellSize', 20 ],
     [ 'fillStyle', 'black' ],
     [ 'color', 'black' ],
-    { class: 'Int', name: 'time' }
+    { class: 'IntProperty', name: 'time' }
   ],
 
   methods: [

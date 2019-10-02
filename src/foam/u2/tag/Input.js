@@ -50,11 +50,11 @@ foam.CLASS({
       // documentation: 'When true, $$DOC{ref:".data"} is updated on every keystroke, rather than on blur.'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'size'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'maxLength',
       attribute: true,
       // documentation: 'When set, will limit the length of the input to a certain number'

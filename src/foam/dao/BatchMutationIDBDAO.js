@@ -73,13 +73,13 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       documentation: `Maximum number of operations to include in a batch.`,
       name: 'batchSize',
       value: 1000
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       documentation: `Maximum number of in-flight batches
           (i.e., transactions). Default to 1 in case clients expect strict
           ordering of operations.`,
@@ -92,7 +92,7 @@ foam.CLASS({
       name: 'mutations_'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       documentation: 'Number of in-flight transactions.',
       name: 'numActiveTransactions_'
     }

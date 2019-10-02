@@ -9,11 +9,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'defaultInt'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'intWithMinAndMax',
       min: 1,
       max: 5,
@@ -21,7 +21,7 @@ foam.CLASS({
       units: ' rating (1-5)'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'intWithRangeView',
       view: {
         class: 'foam.u2.RangeView'
@@ -29,7 +29,7 @@ foam.CLASS({
     },
     /*
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'intWithTemperatureView',
       view: {
         class: 'foam.nanos.pm.TemperatureCView'
@@ -37,7 +37,7 @@ foam.CLASS({
     },
     */
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'intWithProgressView',
       view: {
         class: 'foam.u2.ProgressView'
@@ -45,7 +45,7 @@ foam.CLASS({
       value: 42
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'intWithDualView',
       view: {
         class: 'foam.u2.view.DualView',

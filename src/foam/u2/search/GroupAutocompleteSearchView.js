@@ -58,9 +58,9 @@ foam.CLASS({
       name: 'property',
       required: true,
       postSet: function(o, property) {
-        var isIntProp = foam.core.Int.isInstance(property) ||
+        var isIntProp = foam.core.IntProperty.isInstance(property) ||
           foam.core.Reference.isInstance(property) &&
-          foam.core.Int.isInstance(property.of.ID);
+          foam.core.IntProperty.isInstance(property.of.ID);
         if ( ! this.op ) {
           this.op = isIntProp
             ? foam.mlang.predicate.Eq
@@ -82,7 +82,7 @@ foam.CLASS({
       expression: function(property) {
         // TODO: broken by CLASS, fix
         // All the numeric types extend from Int, so I'll use that as my base.
-        return foam.core.Int.isInstance(property) ? foam.mlang.predicate.Eq :
+        return foam.core.IntProperty.isInstance(property) ? foam.mlang.predicate.Eq :
             foam.mlang.predicate.ContainsIC;
       }*/
     },

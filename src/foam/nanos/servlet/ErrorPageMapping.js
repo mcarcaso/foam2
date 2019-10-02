@@ -9,7 +9,7 @@ foam.CLASS({
   name: 'ErrorPageMapping',
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'errorCode'
     },
     {

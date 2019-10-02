@@ -25,12 +25,12 @@ foam.CLASS({
       value: 'red'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'viewBorderWidth',
-      value: 5 
+      value: 5
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'navBorderWidth',
       value: 10
     },

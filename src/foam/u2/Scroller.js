@@ -72,7 +72,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'rowHeight',
       value: 36
     },

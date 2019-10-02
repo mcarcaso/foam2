@@ -536,7 +536,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2.search',
   name: 'IntRefinement',
-  refines: 'foam.core.Int',
+  refines: 'foam.core.IntProperty',
 
   properties: [
     {

@@ -25,7 +25,7 @@ return newValue as! [Character]
       name: 'value_',
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'pos',
     },
     {

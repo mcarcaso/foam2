@@ -60,7 +60,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'width',
       value: 47
     },

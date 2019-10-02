@@ -20,7 +20,7 @@ foam.CLASS({
   properties: [
     {
       name: 'id',
-      class: 'Int',
+      class: 'IntProperty',
       sqlType: 'int'
     },
     {

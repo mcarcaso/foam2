@@ -19,7 +19,7 @@ foam.CLASS({
   package: 'com.google.foam.demos.sevenguis',
   name: 'Counter',
 
-  properties: [ { class: 'Int', name: 'value' } ],
+  properties: [ { class: 'IntProperty', name: 'value' } ],
 
   actions: [ function count() { this.value++; } ]
 });

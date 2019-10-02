@@ -224,7 +224,7 @@ foam.CLASS({
   properties: [
     'a',
     { class: 'BooleanProperty', name: 'b' },
-    { class: 'Int', name: 'c' },
+    { class: 'IntProperty', name: 'c' },
     { class: 'Float', name: 'd' },
     { class: 'StringProperty', name: 'e' },
     { class: 'Array', name: 'f' },
@@ -474,7 +474,7 @@ foam.u2.DetailView.create({data: ct}).write();
 foam.CLASS({
   package: 'foam.core',
   name: 'IntProperty',
-  extends: 'foam.core.Int'
+  extends: 'foam.core.IntProperty'
 });
 
 foam.CLASS({

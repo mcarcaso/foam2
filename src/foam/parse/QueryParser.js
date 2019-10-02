@@ -344,9 +344,9 @@ foam.CLASS({
             var values = v[2];
             // Int is actually the parent of Float and Long, so this captures all
             // numeric properties.
-            var isNum = foam.core.Int.isInstance(prop) ||
+            var isNum = foam.core.IntProperty.isInstance(prop) ||
               foam.core.Reference.isInstance(prop) &&
-              foam.core.Int.isInstance(prop.of.ID);
+              foam.core.IntProperty.isInstance(prop.of.ID);
 
             var isFloat = foam.core.Float.isInstance(prop);
 

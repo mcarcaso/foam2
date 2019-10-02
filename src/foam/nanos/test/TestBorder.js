@@ -21,8 +21,8 @@ foam.CLASS({
 
   properties: [
     'status',
-    { class: 'Int', name: 'passed' },
-    { class: 'Int', name: 'failed' }
+    { class: 'IntProperty', name: 'passed' },
+    { class: 'IntProperty', name: 'failed' }
   ],
 
   methods: [

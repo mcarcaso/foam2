@@ -9,7 +9,7 @@ foam.CLASS({
   name: 'TestDataForJDBC',
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'id',
       sqlType: 'int'
     },
@@ -27,7 +27,7 @@ foam.CLASS({
   properties: [
     {
       name: 'id',
-      class: 'Int',
+      class: 'IntProperty',
       sqlType: 'int'
     },
     {
@@ -44,7 +44,7 @@ foam.CLASS({
   properties: [
     {
       name: 'id',
-      class: 'Int',
+      class: 'IntProperty',
       sqlType: 'int'
     },
     {

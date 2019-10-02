@@ -11,7 +11,7 @@ foam.CLASS({
   properties:
   [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'id',
       help: 'ID of the issue, unique to this project.'
     },
@@ -93,7 +93,7 @@ foam.CLASS({
       help: 'Whether the authenticated user has starred this issue.'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'stars',
       help: 'Number of stars this issue has.'
     },

@@ -15,11 +15,11 @@ foam.CLASS({
       name: 'parsers',
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'index1',
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'index2',
     },
   ],
@@ -40,4 +40,3 @@ return ps!.setValue(values)
     },
   ]
 });
-

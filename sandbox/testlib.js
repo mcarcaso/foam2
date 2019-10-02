@@ -58,7 +58,7 @@ foam.CLASS({
       name: 'phone'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'age'
     }
   ]

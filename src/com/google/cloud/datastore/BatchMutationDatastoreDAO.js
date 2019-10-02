@@ -84,7 +84,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       documentation: `Maximum number of operations to include in a batch.
           Since each entity may be in a different entity group, default to
           transaction entity group limit of 25 [1].
@@ -94,7 +94,7 @@ foam.CLASS({
       value: 25
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       documentation: `Maximum number of in-flight batches
           (i.e., transactions). Default to 1 in case clients expect strict
           ordering of operations. Increasing to ~25 seems to work well for bulk
@@ -108,7 +108,7 @@ foam.CLASS({
       name: 'mutations_'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       documentation: 'Number of in-flight transactions.',
       name: 'numActiveTransactions_'
     }

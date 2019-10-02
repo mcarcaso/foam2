@@ -25,47 +25,47 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'rounds',
       label: 'Number of rounds',
       value: 8
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'workTime',
       value: 20,
       units: 'seconds'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'restTime',
       value: 10,
       units: 'seconds'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       value: 5,
       name: 'setupTime'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'currentRound',
       value: 1
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'seconds',
       label: 'Total time'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'elapsed',
       units: 'seconds',
       hidden: true,
       value: 0
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'remaining',
       units: 'seconds',
       value: 0,
@@ -87,13 +87,13 @@ if newValue == 0 {
       name: 'action'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'roundLength',
       hidden: true,
       units: 'seconds'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'roundStart',
       hidden: true,
       units: 'seconds'

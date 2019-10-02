@@ -37,7 +37,7 @@ foam.CLASS({
       final: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'httpCode',
       value: 500,
       final: true

@@ -11,7 +11,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'numberOfThreads',
       value: 16
     },

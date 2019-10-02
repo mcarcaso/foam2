@@ -98,11 +98,11 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'selectedCount'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'totalCount'
     },
     {
@@ -115,7 +115,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'loadingRequests',
       documentation: `
         Incremented every time an async call is made to the DAO and decremented

@@ -103,7 +103,7 @@ describe('FObject diff', function() {
     expect(a.diff(a)).toEqual({});
   });
   it("Exception if classes don't match", function() {
-    expect(function() { a.diff(foam.core.Int.create()); }).toThrow();
+    expect(function() { a.diff(foam.core.IntProperty.create()); }).toThrow();
   });
   it("Exception if diffing null", function() {
     expect(function() { a.diff(null); }).toThrow();

@@ -14,7 +14,7 @@ foam.CLASS({
       name: 'data',
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'year',
       expression: function(data) {
         if ( ! data || isNaN(data.getYear()) ) {
@@ -30,7 +30,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'monthIndex',
       expression: function(data) {
         if ( ! data || isNaN(data.getMonth()) ) {
@@ -58,7 +58,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'day',
       expression: function(data) {
         if ( ! data || isNaN(data.getDate()) ) {
@@ -108,7 +108,7 @@ foam.CLASS({
         var m;
         if ( ! data || isNaN(data.getDate()) ) {
           m = new Date().getMinutes();
-        } else { 
+        } else {
           m = data.getMinutes();
         }
         return (m < 10 ? '0' : '') + m;

@@ -262,7 +262,7 @@ foam.CLASS({
       name: 'datePicker',
       view: 'foam.u2.md.DateField'
     },
-    { class: 'Int', name: 'i' },
+    { class: 'IntProperty', name: 'i' },
     'field1',
     { name: 'field2', view: { class: 'foam.u2.view.PasswordView' } },
     {
@@ -406,7 +406,7 @@ foam.CLASS({
   name: 'Test',
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'foo',
       preSet: function(_, a) {
         if ( a > 20 ) return 20;

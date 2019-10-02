@@ -30,7 +30,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'statusCode',
       value: 404
     },

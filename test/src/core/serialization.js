@@ -220,7 +220,7 @@ describe('Serialization', function() {
 
       properties: [
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'value',
           value: 1
         }

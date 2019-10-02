@@ -24,7 +24,7 @@ foam.CLASS({
 
   properties: [
     [ 'type', 'number' ],
-    { class: 'Int', name: 'data' },
+    { class: 'IntProperty', name: 'data' },
     'min',
     'max'
   ],

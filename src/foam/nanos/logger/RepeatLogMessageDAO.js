@@ -22,7 +22,7 @@ foam.CLASS({
       name: 'previousLogMessage',
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'repeatCount'
     },
     {

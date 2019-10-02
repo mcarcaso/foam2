@@ -48,7 +48,7 @@ xdescribe("Index benchmarks", function() {
       name: 'Subject',
       properties: [
         {                   name: 'id' },
-        { class: 'Int',     name: 'intP' },
+        { class: 'IntProperty',     name: 'intP' },
         { class: 'BooleanProperty', name: 'boolP' },
         { class: 'StringProperty',  name: 'stringP' },
       ]

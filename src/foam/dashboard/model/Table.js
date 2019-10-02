@@ -18,7 +18,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'limit',
       value: 5,
     },

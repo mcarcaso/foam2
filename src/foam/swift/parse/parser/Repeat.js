@@ -16,12 +16,12 @@ foam.CLASS({
       name: 'delim',
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'min',
       value: -1,
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'max',
       value: -1,
     },

@@ -7,7 +7,7 @@
 foam.CLASS({
   package: 'foam.swift.refines',
   name: 'IntSwiftRefinement',
-  refines: 'foam.core.Int',
+  refines: 'foam.core.IntProperty',
   flags: ['swift'],
   properties: [
     {

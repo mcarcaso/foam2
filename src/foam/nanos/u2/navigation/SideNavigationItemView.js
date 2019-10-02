@@ -31,7 +31,7 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'level'
     }
   ],

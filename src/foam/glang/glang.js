@@ -123,7 +123,7 @@ foam.CLASS({
   extends: 'foam.glang.AbstractDateGlang',
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'startOfWeek',
       documentation: 'Value between 0 - Sunday and 6 - Saturday inclusive.  Indicates which day is considered the first day of a new week.',
       min: 0,
@@ -150,7 +150,7 @@ foam.CLASS({
   extends: 'foam.glang.AbstractDateGlang',
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'startOfWeek',
       documentation: 'Value between 0 - Sunday and 6 - Saturday inclusive.  Indicates which day is considered the first day of a new week.',
       min: 0,

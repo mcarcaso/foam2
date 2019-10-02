@@ -10,22 +10,22 @@ foam.CLASS({
   swiftImports: ['AudioToolbox'],
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'channel',
       value: 0,
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'note',
       value: 60,
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'velocity',
       value: 64,
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'releaseVelocity',
       value: 0,
     },

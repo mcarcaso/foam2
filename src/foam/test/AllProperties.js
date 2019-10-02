@@ -20,7 +20,7 @@ foam.CLASS({
   name: 'AllProperties',
   properties: [
     {
-      class: 'foam.core.Int',
+      class: 'foam.core.IntProperty',
       name: 'intProp'
     },
     {
@@ -183,7 +183,7 @@ foam.CLASS({
       name: 'viewFactoryProp'
     },
     {
-      class: 'foam.core.Int',
+      class: 'foam.core.IntProperty',
       transient: true,
       name: 'transientInt'
     },

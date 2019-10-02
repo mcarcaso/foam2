@@ -20,7 +20,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       label: 'How wide would you like your text field?',
       name: 'width',
       value: 30

@@ -26,42 +26,42 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'minute',
       value: -1,
       documentation: `Minute to execute script.
           Ranges from 0 - 59. -1 for wildcard`
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'hour',
       value: -1,
       documentation: `Hour to execute script.
           Ranges from 0 - 23. -1 for wildcard`
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'dayOfMonth',
       value: -1,
       documentation: `Day of Month to execute script.
           Ranges from 1 - 31. -1 for wildcard`
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'month',
       value: -1,
       documentation: `Month to execute script.
           Ranges from 1 - 12. -1 for wildcard`
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'dayOfWeek',
       value: -1,
       documentation: `Day of week to execute script.
           Ranges from 0 - 6, where 0 is Sunday. -1 for wildcard`
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'second',
       value: 0,
       documentation: `Second to execute the script.
@@ -129,4 +129,3 @@ return next.getTime();`
     }
   ]
 });
-

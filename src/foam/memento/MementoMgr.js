@@ -35,7 +35,7 @@ foam.CLASS({
     },
     'posFeedback_',
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'position',
       postSet: function(_, n) {
         if ( this.posFeedback_ ) return;

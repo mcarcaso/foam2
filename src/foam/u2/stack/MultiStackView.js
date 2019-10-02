@@ -26,7 +26,7 @@ foam.CLASS({
       value: 'foam.u2.control.Stack'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'limit'
     }
   ],

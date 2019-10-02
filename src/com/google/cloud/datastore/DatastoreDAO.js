@@ -110,7 +110,7 @@ foam.CLASS({
       final: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'port',
       value: 443,
       final: true

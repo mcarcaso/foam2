@@ -487,7 +487,7 @@ foam.CLASS({
       name: 'shadowColor'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'shadowBlur',
       units: 'pixels'
     },

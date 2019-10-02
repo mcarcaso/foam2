@@ -9,12 +9,12 @@ foam.CLASS({
   name: 'GridColumns',
   extends: 'foam.u2.Element',
   documentation: `
-    A model for the sizes of grid columns 
+    A model for the sizes of grid columns
   `,
-  
+
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'columns',
       documentation: `
         Sets up a standard default column width across all display types
@@ -22,7 +22,7 @@ foam.CLASS({
       value: 12
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'xxsColumns',
       documentation: `
         The column width for the smaller end of smartphone devices and smartphone portrait screens using an 8 column grid
@@ -32,7 +32,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'xsColumns',
       documentation: `
         The column width for the regular end of smartphone devices using an 8 column grid
@@ -42,7 +42,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'smColumns',
       documentation: `
         The column width for the larger end of smartphone devices and landscape smartphone screens using a 12 column grid
@@ -52,7 +52,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'mdColumns',
       documentation: `
         The column width for most tablet screens and portrait tablet screens using a 12 column grid
@@ -62,7 +62,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'lgColumns',
       documentation: `
         The column width for the smaller end of desktop screens using a 12 column grid
@@ -72,7 +72,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'xlColumns',
       documentation: `
         The column width for the majority of desktop screens using a 12 column grid

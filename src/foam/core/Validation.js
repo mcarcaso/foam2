@@ -169,7 +169,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'IntPropertyValidationRefinement',
-  refines: 'foam.core.Int',
+  refines: 'foam.core.IntProperty',
   properties: [
     {
       class: 'BooleanProperty',

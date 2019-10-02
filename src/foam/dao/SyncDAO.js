@@ -104,7 +104,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'pollingFrequency',
       documentation: `If using polling, pollingFrequency will determine the
         number of milliseconds to wait between synchronization attempts.`,

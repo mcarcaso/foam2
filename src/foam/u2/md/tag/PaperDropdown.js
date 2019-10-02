@@ -57,7 +57,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'size',
       value: 1
     },

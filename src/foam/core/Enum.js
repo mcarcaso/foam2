@@ -283,7 +283,7 @@ foam.CLASS({
       transient: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'ordinal',
       // NOTE: Default value of -1 forces legitimate values (starting at 0) to
       // all be non-default. This is important for, e.g., serialization of enum

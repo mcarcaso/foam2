@@ -21,7 +21,7 @@ describe('Query parser', function() {
     name: 'Item',
     properties: [
       {
-        class: 'Int',
+        class: 'IntProperty',
         name: 'id'
       },
       {

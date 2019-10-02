@@ -56,7 +56,7 @@ foam.CLASS({
   properties: [
     { class: 'BooleanProperty', name: 'isFramed',   value: false },
     { class: 'BooleanProperty', name: 'isMerged',   value: false },
-    { class: 'Int',     name: 'mergeDelay', value: 16, units: 'ms' },
+    { class: 'IntProperty',     name: 'mergeDelay', value: 16, units: 'ms' },
     {
       class: 'FObjectArray',
       of: 'foam.core.Argument',

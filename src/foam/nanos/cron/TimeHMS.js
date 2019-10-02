@@ -14,8 +14,8 @@ foam.CLASS({
   `,
 
   properties: [
-    { name: 'hour',   class: 'Int' },
-    { name: 'minute', class: 'Int' },
-    { name: 'second', class: 'Int' }
+    { name: 'hour',   class: 'IntProperty' },
+    { name: 'minute', class: 'IntProperty' },
+    { name: 'second', class: 'IntProperty' }
   ]
 });

@@ -29,12 +29,12 @@ foam.CLASS({
       name: 'Config',
       properties: [
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'height',
           value: 500,
         },
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'width',
           value: 1000,
         },

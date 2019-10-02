@@ -64,7 +64,7 @@ describe('relationships', function() {
 
         properties: [
           { class: 'StringProperty', name: 'title', required: true },
-          { class: 'Int', name: 'releaseYear' },
+          { class: 'IntProperty', name: 'releaseYear' },
         ]
       });
       foam.RELATIONSHIP({

@@ -39,12 +39,12 @@ foam.CLASS({
   properties: [
     [ 'nodeName', 'textarea' ],
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'rows',
       value: 4
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'cols',
       value: 60
     },

@@ -98,7 +98,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'rowHeight',
       documentation: 'Fixed of pixels per row.',
       value: 40,
@@ -106,7 +106,7 @@ foam.CLASS({
       final: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'numRows',
       documentation: 'Fixed number of rows to recycle within this view.',
       value: 20,
@@ -114,24 +114,24 @@ foam.CLASS({
       final: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'negativeRunway',
       documentation: 'Number of records to load before anchor row.',
       value: 500
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'positiveRunway',
       documentation: 'Number of records to load after+including anchor row.',
       value: 500
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'rowOffset',
       expression: function(numRows) { return Math.floor(numRows * 0.4); }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'batchSize',
       documentation: `Size for batch of data to fetch from DAO. This view will
           keep fetching batches until it fills out all rows, but requesting
@@ -171,21 +171,21 @@ foam.CLASS({
       transient: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'anchorRowIdx_',
       documentation: 'Anchor index in "rows_" array.',
       factory: function() { return this.negativeRunway; },
       transient: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'anchorDAOIdx_',
       documentation: `Anchor index relative to top of view (i.e., to first
           record in "dao").`,
       transient: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'count_',
       documentation: 'Count of records to display in this view.'
     },
@@ -221,7 +221,7 @@ foam.CLASS({
       transient: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'sentinelY_',
       documentation: `Y-index (in pixels) of "sentinel_", relative to top of
           this view (the scroll container).`,
@@ -248,7 +248,7 @@ foam.CLASS({
       transient: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'fetchId_',
       documentation: `A synchronization variable to prevent halt batch fetching
           of results if fetching from a new starting point has already
@@ -405,7 +405,7 @@ foam.CLASS({
 
       properties: [
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'negativeBuffer',
           documentation: `The area behind the current anchor where a gap may
               trigger a data fetch`,
@@ -414,7 +414,7 @@ foam.CLASS({
           }
         },
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'positiveBuffer',
           documentation: `The area in front of the current anchor where a gap
               may trigger a data fetch`,

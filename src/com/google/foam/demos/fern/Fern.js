@@ -16,7 +16,7 @@ foam.CLASS({
       extends: 'foam.graphics.Circle',
       imports: [ 'timer' ],
       properties: [
-        { class: 'Int', name: 'age' },
+        { class: 'IntProperty', name: 'age' },
         [ 'depth', 1 ],
         [ 'alpha', 0.8 ],
         [ 'radius', 1.2 ],
@@ -48,7 +48,7 @@ foam.CLASS({
     [ 'width', 1000 ],
     [ 'height', 800 ],
     [ 'color', 'white' ],
-    { class: 'Int', name: 'time' },
+    { class: 'IntProperty', name: 'time' },
     'root'
   ],
 

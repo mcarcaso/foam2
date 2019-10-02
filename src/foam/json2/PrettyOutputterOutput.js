@@ -23,7 +23,7 @@ foam.CLASS({
       expression: function(delegate$str) { return delegate$str }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'indent',
     },
     {

@@ -59,7 +59,7 @@ foam.CLASS({
       ],
       properties: [
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'index',
           visibility: 'RO'
         },

@@ -17,7 +17,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'port',
       value: 4000
     },

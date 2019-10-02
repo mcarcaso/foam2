@@ -66,7 +66,7 @@
       name: 'contextMenuActions'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'daoCount'
     },
     'selection',
@@ -79,7 +79,7 @@
       value: true
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'rowHeight',
       documentation: 'The height of one row of the table in px.',
       value: 49
@@ -123,18 +123,18 @@
       `
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'scrollPos_'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'numPages_',
       expression: function(daoCount, pageSize) {
         return Math.ceil(daoCount / pageSize);
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'currentTopPage_',
       expression: function(numPages_, scrollPos_, scrollHeight) {
         var scrollPercent = scrollPos_ / scrollHeight;

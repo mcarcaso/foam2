@@ -41,7 +41,7 @@ describe('BatchMutationDatastoreDAO', function() {
       package: 'com.google.cloud.datastore.test',
       name: 'Thing',
 
-      properties: [ { class: 'Int', name: 'id' } ]
+      properties: [ { class: 'IntProperty', name: 'id' } ]
     });
     var Thing = foam.lookup('com.google.cloud.datastore.test.Thing');
 
@@ -58,7 +58,7 @@ describe('BatchMutationDatastoreDAO', function() {
 
       properties: [
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'batches'
         }
       ],

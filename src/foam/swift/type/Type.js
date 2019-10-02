@@ -9,7 +9,7 @@ foam.INTERFACE({
   name: 'Type',
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'ordinal'
     },
   ],

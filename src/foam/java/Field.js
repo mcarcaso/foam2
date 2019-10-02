@@ -26,7 +26,7 @@ foam.CLASS({
     'type',
     'final',
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'order',
       value: 0
     },

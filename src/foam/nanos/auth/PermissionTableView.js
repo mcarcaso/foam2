@@ -139,7 +139,7 @@ foam.CLASS({
       name: 'pMap'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'skip'
     },
     'ps', /* permissions array */

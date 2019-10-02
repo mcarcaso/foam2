@@ -32,7 +32,7 @@ describe('broadcast registry', function() {
 
       properties: [
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'registryId'
         }
       ],
@@ -52,7 +52,7 @@ describe('broadcast registry', function() {
 
       properties: [
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'id'
         }
       ]

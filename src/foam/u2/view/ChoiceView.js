@@ -106,7 +106,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'index',
       documentation: 'The index of the current choice in the choices array.',
       transient: true,
@@ -165,7 +165,7 @@ foam.CLASS({
     'feedback_',
     'defaultValue',
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'size',
       documentation: `The number of entries in the HTML 'select' element that
         should be visible.`
@@ -179,7 +179,7 @@ foam.CLASS({
         property will still be respected.`
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'maxSize',
       documentation: `The size of the select element should never be greater
         than this number.`,

@@ -30,7 +30,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'counter',
       value: 1
     }

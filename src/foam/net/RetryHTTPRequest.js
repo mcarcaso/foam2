@@ -29,7 +29,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'numTries',
       value: 4
     },
@@ -42,7 +42,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'currentTry_'
     }
   ],

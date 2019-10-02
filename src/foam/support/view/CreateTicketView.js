@@ -187,7 +187,7 @@ foam.CLASS({
       value: 'New'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'ticketCount',
       value: '...'
     }

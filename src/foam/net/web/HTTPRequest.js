@@ -35,7 +35,7 @@ foam.CLASS({
       name: 'hostname'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'port'
     },
     {

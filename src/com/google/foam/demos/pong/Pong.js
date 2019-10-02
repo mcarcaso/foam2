@@ -93,11 +93,11 @@ foam.CLASS({
       factory: function() { return this.Paddle.create(); }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'lScore'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'rScore'
     },
     {

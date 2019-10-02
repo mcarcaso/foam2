@@ -33,7 +33,7 @@ foam.CLASS({
           name: 'id',
         },
         {
-          class: 'Int',
+          class: 'IntProperty',
           name: 'timestamp'
         }
       ]
@@ -43,7 +43,7 @@ foam.CLASS({
   properties: [
     {
       /** The maximum size to allow the target dao to be. */
-      class: 'Int',
+      class: 'IntProperty',
       name: 'maxSize',
       value: 100
     },
@@ -63,7 +63,7 @@ foam.CLASS({
       /** By starting at the current time, this should always be higher
         than previously stored timestamps. (only relevant if trackingDAO
         is persisted.) */
-      class: 'Int',
+      class: 'IntProperty',
       name: 'lastTimeUsed_',
       factory: function() { return Date.now(); }
     }

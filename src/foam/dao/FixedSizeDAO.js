@@ -29,7 +29,7 @@ foam.CLASS({
       name: 'predicate'
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'size'
     }
   ],

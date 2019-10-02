@@ -61,7 +61,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Int',
+      class: 'IntProperty',
       name: 'pos',
       value: 0
     }
