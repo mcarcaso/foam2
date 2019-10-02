@@ -26,9 +26,9 @@ foam.CLASS({
       name: 'help'
     },
     {
-      class: 'Int',
+      class: 'Long',
       name: 'order',
-      value: Number.MAX_VALUE
+      value: Number.MAX_SAFE_INTEGER
     },
     {
       class: 'Boolean',

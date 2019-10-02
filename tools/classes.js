@@ -5,6 +5,17 @@
  */
 
 var classes = [
+  'foam.core.FObjectArray',
+  'foam.u2.TableColumns',
+  'foam.core.Reference',
+  'foam.layout.SectionAxiom',
+  'foam.core.Color',
+  'foam.core.PhoneNumber',
+  'foam.core.Password',
+  'foam.core.EMail',
+  'foam.core.Implements',
+  'foam.core.Requires',
+  'foam.java.JavaImport',
   'foam.core.Model',
   'foam.pattern.Multiton',
   'foam.pattern.Singleton',

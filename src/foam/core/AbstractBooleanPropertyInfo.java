@@ -15,17 +15,17 @@ public abstract class AbstractBooleanPropertyInfo
   extends AbstractPropertyInfo
 {
   public int compareValues(boolean b1, boolean b2) {
-    return Boolean.compare(b1, b2);
+    return java.lang.Boolean.compare(b1, b2);
   }
 
   public Object fromString(java.lang.String value) {
-    return Boolean.parseBoolean(value);
+    return java.lang.Boolean.parseBoolean(value);
   }
 
   @Override
   public Object fromXML(X x, XMLStreamReader reader) {
     super.fromXML(x, reader);
-    return Boolean.parseBoolean(reader.getText());
+    return java.lang.Boolean.parseBoolean(reader.getText());
   }
 
   @Override

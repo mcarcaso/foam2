@@ -30,17 +30,17 @@ public abstract class AbstractDoublePropertyInfo
   };
 
   public int compareValues(double d1, double d2) {
-    return Double.compare(d1, d2);
+    return java.lang.Double.compare(d1, d2);
   }
 
   public Object fromString(java.lang.String value) {
-    return Double.valueOf(value);
+    return java.lang.Double.valueOf(value);
   }
 
   @Override
   public Object fromXML(X x, XMLStreamReader reader) {
     super.fromXML(x, reader);
-    return Double.parseDouble(reader.getText());
+    return java.lang.Double.parseDouble(reader.getText());
   }
 
   @Override

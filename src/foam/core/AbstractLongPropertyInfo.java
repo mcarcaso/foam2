@@ -30,17 +30,17 @@ public abstract class AbstractLongPropertyInfo
   };
 
   public int compareValues(long o1, long o2) {
-    return java.lang.Long.compare(o1, o2);
+    return java.lang.java.lang.Long.compare(o1, o2);
   }
 
   public Object fromString(java.lang.String value) {
-    return Long.valueOf(value);
+    return java.lang.Long.valueOf(value);
   }
 
   @Override
   public Object fromXML(X x, XMLStreamReader reader) {
     super.fromXML(x, reader);
-    return Long.valueOf(reader.getText());
+    return java.lang.Long.valueOf(reader.getText());
   }
 
   @Override

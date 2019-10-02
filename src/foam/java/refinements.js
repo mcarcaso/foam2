@@ -717,7 +717,7 @@ foam.CLASS({
       }
       cls.constant({
         name: this.name,
-        type: 'String',
+        type: 'java.lang.String',
         documentation: this.documentation,
         value: foam.java.asJavaValue(this.message)
       });
@@ -949,8 +949,8 @@ foam.CLASS({
       var m = info.getMethod('cast');
       m.body = `return ( o instanceof Number ) ?
         ((Number)o).intValue() :
-        ( o instanceof String ) ?
-        Integer.valueOf((String) o) :
+        ( o instanceof java.lang.String ) ?
+        Integer.valueOf((java.lang.String) o) :
         (int)o;`;
 
       return info;
@@ -979,8 +979,8 @@ foam.CLASS({
       var m = info.getMethod('cast');
       m.body = `return ( o instanceof Number ) ?
         ((Number)o).byteValue() :
-        ( o instanceof String ) ?
-        Byte.valueOf((String) o) :
+        ( o instanceof java.lang.String ) ?
+        Byte.valueOf((java.lang.String) o) :
         (byte)o;`;
 
       return info;
@@ -1009,8 +1009,8 @@ foam.CLASS({
       var m = info.getMethod('cast');
       m.body = `return ( o instanceof Number ) ?
         ((Number)o).shortValue() :
-        ( o instanceof String ) ?
-        Short.valueOf((String) o) :
+        ( o instanceof java.lang.String ) ?
+        Short.valueOf((java.lang.String) o) :
         (short)o;`;
 
       return info;
@@ -1030,9 +1030,9 @@ foam.CLASS({
     ['javaJSONParser', 'new foam.lib.json.LongParser()'],
     ['javaCSVParser', 'new foam.lib.json.LongParser()'],
     ['sqlType', 'BIGINT'],
-    ['javaCompare', 'return Long.compare(get_(o1), get_(o2));'],
-    [ 'javaComparePropertyToValue', 'return Long.compare(cast(key), cast(value));' ],
-    [ 'javaComparePropertyToObject', 'return Long.compare(cast(key), get_(o));' ]
+    ['javaCompare', 'return java.lang.Long.compare(get_(o1), get_(o2));'],
+    [ 'javaComparePropertyToValue', 'return java.lang.Long.compare(cast(key), cast(value));' ],
+    [ 'javaComparePropertyToObject', 'return java.lang.Long.compare(cast(key), get_(o));' ]
   ],
 
   methods: [
@@ -1042,8 +1042,8 @@ foam.CLASS({
       var m = info.getMethod('cast');
       m.body = `return ( o instanceof Number ) ?
         ((Number) o).longValue() :
-        ( o instanceof String ) ?
-        Long.valueOf((String) o) :
+        ( o instanceof java.lang.String ) ?
+        Long.valueOf((java.lang.String) o) :
         (long) o;`;
 
       return info;
@@ -1071,8 +1071,8 @@ foam.CLASS({
       var m = info.getMethod('cast');
       m.body = `return ( o instanceof Number ) ?
         ((Number)o).doubleValue() :
-        ( o instanceof String ) ?
-        Double.parseDouble((String) o) :
+        ( o instanceof java.lang.String ) ?
+        Double.parseDouble((java.lang.String) o) :
         (double)o;`;
 
       return info;
@@ -1101,8 +1101,8 @@ foam.CLASS({
       var m = info.getMethod('cast');
       m.body = `return ( o instanceof Number ) ?
         ((Number)o).floatValue() :
-        ( o instanceof String ) ?
-        Float.parseFloat((String) o) :
+        ( o instanceof java.lang.String ) ?
+        Float.parseFloat((java.lang.String) o) :
         (float)o;`;
 
       return info;
@@ -1243,11 +1243,11 @@ foam.CLASS({
 
           cls.method({
             name: 'labels',
-            type: 'String[]',
+            type: 'java.lang.String[]',
             visibility: 'public',
             static: true,
             body: `
-return new String[] {
+return new java.lang.String[] {
   ${this.VALUES.map(v => foam.java.asJavaValue(v.label)).join(', ')}
 };
             `
@@ -1272,7 +1272,7 @@ return null;
             type: cls.name,
             visibility: 'public',
             static: true,
-            args: [ { name: 'label', type: 'String' } ],
+            args: [ { name: 'label', type: 'java.lang.String' } ],
             body: `
 switch (label) {
 ${this.VALUES.map(v => `\tcase "${v.label}": return ${cls.name}.${v.name};`).join('\n')}
@@ -1448,7 +1448,7 @@ foam.CLASS({
       // cast numbers to strings
       var cast = info.getMethod('cast');
       cast.body = `return ( o instanceof Number ) ?
-        ((Number) o).toString() : (String) o;`;
+        ((Number) o).toString() : (java.lang.String) o;`;
 
       return info;
     }
@@ -1482,7 +1482,7 @@ foam.CLASS({
 
         for ( String key : map2.keySet() ) {
           map.put(getName() + "." + key, new foam.lib.csv.FromCSVSetter() {
-            public void set(foam.core.FObject obj, String str) {
+            public void set(foam.core.FObject obj, java.lang.String str) {
               try {
                 if ( prop.get(obj) == null ) prop.set(obj, prop.of().newInstance());
                 map2.get(key).set((foam.core.FObject) prop.get(obj), str);
@@ -1520,17 +1520,17 @@ foam.CLASS({
   flags: ['java'],
 
   properties: [
-    ['javaType', 'String[]'],
+    ['javaType', 'java.lang.String[]'],
     ['javaInfoType', 'foam.core.AbstractArrayPropertyInfo'],
     ['javaJSONParser', 'new foam.lib.json.StringArrayParser()'],
-    ['javaFactory', 'return new String[0];'],
+    ['javaFactory', 'return new java.lang.String[0];'],
     {
       name: 'javaValue',
       expression: function(value) {
         if ( ! value ) {
           return null;
         } else {
-          return 'new String[] {\"' + value.join('\",\"') + '\"}';
+          return 'new java.lang.String[] {\"' + value.join('\",\"') + '\"}';
         }
       }
     },
@@ -1546,7 +1546,7 @@ foam.CLASS({
       var cast = info.getMethod('cast');
       cast.body = 'Object[] value = (Object[])o;\n'
                 + this.javaType
-                + ' ret = new String[value == null ? 0 : value.length];\n'
+                + ' ret = new java.lang.String[value == null ? 0 : value.length];\n'
                 + 'if ( value != null ) System.arraycopy(value, 0, ret, 0, value.length);\n'
                 + 'return ret;';
 
@@ -1554,7 +1554,7 @@ foam.CLASS({
       info.method({
         name: 'of',
         visibility: 'public',
-        type: 'String',
+        type: 'java.lang.String',
         body: 'return "String";'
       });
 
@@ -1617,7 +1617,7 @@ foam.CLASS({
       info.method({
         name: 'of',
         visibility: 'public',
-        type: 'String',
+        type: 'java.lang.String',
         body: 'return "' + (this.of ? this.of.id ? this.of.id : this.of : null) + '";'
       });
 
@@ -1694,7 +1694,7 @@ foam.CLASS({
       info.method({
         name: 'of',
         visibility: 'public',
-        type: 'String',
+        type: 'java.lang.String',
         body: 'return "' + (this.of ? this.of.id ? this.of.id : this.of : null) + '";'
       });
 
@@ -1788,7 +1788,7 @@ foam.CLASS({
       var info = this.SUPER(cls);
 
       var m = info.getMethod('cast');
-      m.body = 'return ((Boolean) o).booleanValue();';
+      m.body = 'return ((java.lang.Boolean) o).booleanValue();';
 
       return info;
     }

@@ -56,7 +56,7 @@ abstract class AbstractX
   }
 
   public boolean getBoolean(X x, Object key, boolean defaultValue) {
-    Boolean b = (Boolean) x.get(key);
+    java.lang.Boolean b = (java.lang.Boolean) x.get(key);
     return b == null ? defaultValue : b;
   }
 
