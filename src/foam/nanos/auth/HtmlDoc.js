@@ -19,7 +19,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'id'
     },
     {

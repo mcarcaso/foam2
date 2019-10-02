@@ -53,7 +53,7 @@ Implement LastModifiedByAware to suppress 'modified by' comment in journal outpu
     },
     {
       name: 'id',
-      class: 'Long',
+      class: 'LongProperty',
       storageTransient: 'true',
       hidden: 'true',
       visibility: 'RO'

@@ -566,7 +566,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2.search',
   name: 'LongRefinement',
-  refines: 'foam.core.Long',
+  refines: 'foam.core.LongProperty',
 
   properties: [
     {

@@ -258,11 +258,11 @@ foam.CLASS({
       name: 'parent',
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'offset'
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'size',
       assertValue: function(value) {
         foam.assert(this.offset + value <= this.parent.size, 'Cannot create sub blob beyond end of parent.');
@@ -417,7 +417,7 @@ foam.CLASS({
       methods: [ 'read' ]
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'size'
     }
   ],
@@ -437,7 +437,7 @@ foam.CLASS({
       name: 'fd'
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'size',
       expression: function(fd) {
         return require('fs').fstatSync(fd).size;

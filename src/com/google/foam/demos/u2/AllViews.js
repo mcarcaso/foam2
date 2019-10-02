@@ -150,7 +150,7 @@ foam.CLASS({
       name: 'defaultShort'
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'defaultLong'
     },
     {

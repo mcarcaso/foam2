@@ -22,7 +22,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'id',
       visibility: foam.u2.Visibility.RO,
       label:'Ticket ID'
@@ -80,7 +80,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'emailId'
     }
   ]

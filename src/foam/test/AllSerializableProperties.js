@@ -79,7 +79,7 @@ foam.CLASS({
       name: 'floatProp'
     },
     {
-      class: 'foam.core.Long',
+      class: 'foam.core.LongProperty',
       name: 'longProp'
     },
     {

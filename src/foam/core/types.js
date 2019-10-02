@@ -178,7 +178,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name:  'Long',
+  name:  'LongProperty',
   extends: 'Int',
 
   documentation:  'Describes properties of type Long.',
@@ -250,7 +250,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'Duration',
-  extends: 'Long',
+  extends: 'LongProperty',
 
   documentation: `
     A length of time in milliseconds. Further refined in TableCellFormatter.js
@@ -480,7 +480,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'Currency',
-  extends: 'Long'
+  extends: 'LongProperty'
 });
 
 

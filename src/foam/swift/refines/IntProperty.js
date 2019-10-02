@@ -63,7 +63,7 @@ return 0
 foam.CLASS({
   package: 'foam.swift.refines',
   name: 'LongSwiftRefinement',
-  refines: 'foam.core.Long',
+  refines: 'foam.core.LongProperty',
   flags: ['swift'],
   properties: [
     {

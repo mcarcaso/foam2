@@ -52,7 +52,7 @@ foam.CLASS({
   extends: 'foam.glang.AbstractDateGlang',
   properties: [
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'timeSpanMs'
     }
   ],
@@ -168,7 +168,7 @@ foam.CLASS({
         var endOfWeek = (this.startOfWeek + 6) % 7;
         var day = ts.getDay();
         var daysToEndOfWeek = (endOfWeek - day + 7) % 7;
-        
+
         ts.setDate(date + daysToEndOfWeek);
 
         ts.setHours(23, 59, 59);

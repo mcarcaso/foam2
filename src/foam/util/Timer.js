@@ -52,12 +52,12 @@ foam.CLASS({
       value: 0
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name:  'startTime',
       value: 0
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name:  'time',
       help:  'The current time in milliseconds since epoch.',
       adapt: function(_, t) { return Math.ceil(t); },
@@ -93,7 +93,7 @@ return newValue as! Int
       hidden: true
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'startTime_',
       hidden: true
     }

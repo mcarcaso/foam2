@@ -24,7 +24,7 @@ describe('MLang', function() {
 
       properties: [
         {
-          class: 'Long',
+          class: 'LongProperty',
           name: 'id',
         },
         {
@@ -36,7 +36,7 @@ describe('MLang', function() {
           name: 'birthday',
         },
         {
-          class: 'Long',
+          class: 'LongProperty',
           name: 'age'
         },
         {

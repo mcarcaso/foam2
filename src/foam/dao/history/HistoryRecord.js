@@ -13,7 +13,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'seqNo'
     },
     {

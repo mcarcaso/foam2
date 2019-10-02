@@ -1022,7 +1022,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'LongJavaRefinement',
-  refines: 'foam.core.Long',
+  refines: 'foam.core.LongProperty',
   flags: ['java'],
 
   properties: [

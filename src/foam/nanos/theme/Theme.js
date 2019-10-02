@@ -34,7 +34,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'id',
       tableWidth: 70
     },
@@ -51,7 +51,7 @@ foam.CLASS({
       name: 'spid'
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'priority',
       documentation: `
         When multiple Theme objects could be applied to a given situation,

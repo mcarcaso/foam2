@@ -374,7 +374,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'limit'
     },
     {
@@ -436,7 +436,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'skip'
     },
     {

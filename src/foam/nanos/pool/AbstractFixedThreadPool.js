@@ -16,15 +16,15 @@ foam.CLASS({
       value: 16
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'queued'
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'executed'
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'executing'
     }
   ]

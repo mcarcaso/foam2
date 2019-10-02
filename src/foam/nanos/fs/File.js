@@ -22,7 +22,7 @@ foam.CLASS({
       documentation: 'Filename'
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'filesize',
       documentation: 'Filesize'
     },

@@ -96,7 +96,7 @@ foam.CLASS({
         name: 'email'
       },
       {
-        class: 'Long',
+        class: 'LongProperty',
         name: 'id'
       },
       {

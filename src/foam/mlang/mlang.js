@@ -16,7 +16,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'value'
     },
     {
@@ -2249,7 +2249,7 @@ foam.CLASS({
     },
     {
       name: 'Long',
-      path: 'foam.core.Long',
+      path: 'foam.core.LongProperty',
       flags: ['js']
     },
     {
@@ -3088,7 +3088,7 @@ foam.CLASS({
       value: 0
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'count',
       value: 0
     }
@@ -3426,7 +3426,7 @@ foam.CLASS({
   implements: [ 'foam.core.Serializable' ],
   properties: [
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'timeMs'
     }
   ],

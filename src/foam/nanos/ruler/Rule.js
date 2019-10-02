@@ -54,7 +54,7 @@
 
   properties: [
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'id',
       documentation: 'Sequence number.',
       visibility: 'RO',

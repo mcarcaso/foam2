@@ -38,7 +38,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'passed',
       visibility: foam.u2.Visibility.RO,
       tableCellFormatter: function(value) {
@@ -47,7 +47,7 @@ foam.CLASS({
       tableWidth: 85
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'failed',
       visibility: foam.u2.Visibility.RO,
       tableCellFormatter: function(value) {

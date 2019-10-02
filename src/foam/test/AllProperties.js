@@ -79,7 +79,7 @@ foam.CLASS({
       name: 'floatProp'
     },
     {
-      class: 'foam.core.Long',
+      class: 'foam.core.LongProperty',
       name: 'longProp'
     },
     {
@@ -256,7 +256,7 @@ foam.CLASS({
       name: 'transientFloat'
     },
     {
-      class: 'foam.core.Long',
+      class: 'foam.core.LongProperty',
       transient: true,
       name: 'transientLong'
     },

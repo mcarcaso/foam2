@@ -33,11 +33,11 @@ foam.CLASS({
       value: 'id'
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'startingValue',
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'value_',
       documentation: 'The next value to be used.',
       swiftExpressionArgs: ['delegate', 'property_', 'startingValue'],

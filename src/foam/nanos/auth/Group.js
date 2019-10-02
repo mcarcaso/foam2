@@ -83,7 +83,7 @@ foam.CLASS({
       value: null
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'softSessionLimit',
       documentation: `
         Users will be asked for providing a feedback once the soft session limit has been reached.

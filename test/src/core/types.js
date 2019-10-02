@@ -31,7 +31,7 @@ var createTestProperties = function createTestProperties() {
           name: 'dateTime',
         },
         {
-          class: 'Long',
+          class: 'LongProperty',
           name: 'long',
         },
         {

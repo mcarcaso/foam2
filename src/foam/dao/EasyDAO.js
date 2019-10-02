@@ -282,7 +282,7 @@ return delegate;
       value: false
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'seqStartingValue',
       value: 1
     },

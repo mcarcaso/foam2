@@ -30,7 +30,7 @@ describe('Created/LastModified Aware tests', function() {
 
       properties: [
         {
-          class: 'Long',
+          class: 'LongProperty',
           name: 'id',
         },
         {

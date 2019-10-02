@@ -27,7 +27,7 @@ foam.CLASS({
       name: 'dao'
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'periodLengthMs',
       documentation: 'Convenience property for setting closeTimeExpr',
       javaSetter: `

@@ -31,7 +31,7 @@ foam.CLASS({
       visibility: foam.u2.Visibility.RO
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'id',
       visibility: foam.u2.Visibility.RO
     },

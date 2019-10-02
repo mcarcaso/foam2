@@ -29,7 +29,7 @@ foam.CLASS({
       visibility: 'RO'
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'userId',
       tableCellFormatter: function(value, obj) {
         this.add(value);
@@ -41,7 +41,7 @@ foam.CLASS({
       visibility: 'FINAL',
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'agentId',
       tableCellFormatter: function(value, obj) {
         if ( ! value ) return;
@@ -86,7 +86,7 @@ foam.CLASS({
       ]
     },
     {
-      class: 'Long',
+      class: 'LongProperty',
       name: 'uses',
       storageTransient: true
     },
