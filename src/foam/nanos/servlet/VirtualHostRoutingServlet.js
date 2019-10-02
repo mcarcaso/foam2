@@ -22,7 +22,7 @@ foam.CLASS({
       name: 'defaultHost'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       transient: true,
       javaType: 'javax.servlet.ServletConfig',
       name: 'servletConfig'

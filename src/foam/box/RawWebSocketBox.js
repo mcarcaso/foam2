@@ -37,7 +37,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'socket',
       javaType: 'foam.net.WebSocket'
     }

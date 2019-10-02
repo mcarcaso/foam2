@@ -16,7 +16,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'pool',
       javaType: 'BasicDataSource',
       documentation: 'Connection pool',

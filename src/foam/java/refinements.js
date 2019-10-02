@@ -1799,7 +1799,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'ObjectJavaRefinement',
-  refines: 'foam.core.Object',
+  refines: 'foam.core.ObjectProperty',
   flags: ['java'],
   properties: [
     ['javaInfoType', 'foam.core.AbstractObjectPropertyInfo'],

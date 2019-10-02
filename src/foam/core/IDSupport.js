@@ -23,7 +23,7 @@
 foam.CLASS({
   package: 'foam.core',
   name: 'IDAlias',
-  extends: 'foam.core.Object',
+  extends: 'foam.core.ObjectProperty',
 
   properties: [
     ['name', 'id'],

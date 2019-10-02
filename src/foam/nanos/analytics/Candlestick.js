@@ -20,7 +20,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'key',
       visibility: 'RO',
       tableWidth: '350'

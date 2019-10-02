@@ -119,7 +119,7 @@ foam.CLASS({
       var model = this.__context__.lookup(this.of);
       var propName = this.name;
 
-      cls.installAxiom(foam.core.Object.create({
+      cls.installAxiom(foam.core.ObjectProperty.create({
         name: this.replyPolicyName,
         type: 'foam.box.BoxService',
         hidden: true

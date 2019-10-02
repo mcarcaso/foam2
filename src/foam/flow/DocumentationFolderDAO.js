@@ -28,7 +28,7 @@ foam.CLASS({
       javaFactory: 'return new foam.dao.MDAO.Builder(getX()).build();'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'storage',
       javaType: 'foam.nanos.fs.Storage',
       javaFactory: `

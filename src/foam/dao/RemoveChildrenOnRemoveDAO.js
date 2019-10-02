@@ -15,12 +15,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'sourceKey',
       javaType: 'foam.core.PropertyInfo',
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'targetKey',
       javaType: 'foam.core.PropertyInfo',
     },

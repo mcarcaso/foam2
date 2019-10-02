@@ -28,7 +28,7 @@ foam.CLASS({
       javaFactory: 'return new java.util.ArrayList();'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'object'
     },
     {

@@ -101,7 +101,7 @@ foam.CLASS({
       name: 'remoteHostWhiteList'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'context',
       type: 'Context',
       // Put a null user to prevent sytem user from leaking into subcontexts

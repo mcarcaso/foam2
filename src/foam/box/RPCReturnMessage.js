@@ -21,7 +21,7 @@ foam.CLASS({
   extends: 'foam.box.Message',
   properties: [
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'data'
     }
   ]

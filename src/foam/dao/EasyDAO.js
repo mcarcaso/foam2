@@ -254,7 +254,7 @@ return delegate;
 `
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       type: 'foam.dao.DAO',
       name: 'innerDAO',
       javaFactory: `
@@ -264,7 +264,7 @@ return delegate;
       `
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       type: 'foam.dao.DAO',
       name: 'decorator'
     },
@@ -318,7 +318,7 @@ return delegate;
       value: true
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       type: 'foam.nanos.auth.Authorizer',
       name: 'authorizer',
       javaFactory: `

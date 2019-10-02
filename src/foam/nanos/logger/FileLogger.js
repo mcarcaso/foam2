@@ -29,7 +29,7 @@ foam.CLASS({
     },
     {
       name: 'logger',
-      class: 'Object',
+      class: 'ObjectProperty',
       javaType: 'java.util.logging.Logger'
     }
   ],

@@ -91,7 +91,7 @@ Implement LastModifiedByAware to suppress 'modified by' comment in journal outpu
     // },
     {
       name: 'exception',
-      class: 'Object',
+      class: 'ObjectProperty',
       visibility: 'RO',
       view: { class: 'foam.u2.tag.TextArea', rows: 5, col: 80 }
     }

@@ -582,7 +582,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       /** @private */
       name: 'results',
       javaType: 'java.util.HashSet',

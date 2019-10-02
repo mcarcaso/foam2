@@ -26,7 +26,7 @@ foam.CLASS({
       javaFactory: 'return new java.util.HashMap();'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'object'
     },
     {

@@ -268,7 +268,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Object',
+  name: 'ObjectProperty',
   extends: 'Property',
   documentation: '',
   properties: [
@@ -299,7 +299,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'List',
-  extends: 'foam.core.Object',
+  extends: 'foam.core.ObjectProperty',
   properties: [
     [ 'type', 'List' ]
   ]

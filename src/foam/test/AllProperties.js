@@ -33,7 +33,7 @@ foam.CLASS({
       name: 'fObjectArrayProp'
     },
     {
-      class: 'foam.core.Object',
+      class: 'foam.core.ObjectProperty',
       name: 'objectProp'
     },
     {
@@ -199,7 +199,7 @@ foam.CLASS({
       name: 'transientFObjectArray'
     },
     {
-      class: 'foam.core.Object',
+      class: 'foam.core.ObjectProperty',
       transient: true,
       name: 'transientObject'
     },

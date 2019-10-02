@@ -42,7 +42,7 @@ setCloseTimeExpr(new foam.glang.EndOfTimeSpan.Builder(getX())
       name: 'closeTimeExpr'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       javaType: 'Object[]',
       name: 'locks',
       transient: true,

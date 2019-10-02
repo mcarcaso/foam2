@@ -37,7 +37,7 @@ foam.CLASS({
       name: 'description'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'messageMap',
       help: 'Map of language codes to the message in that language.',
       factory: function() { return {}; }

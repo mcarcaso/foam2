@@ -40,7 +40,7 @@ foam.CLASS({
       `
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'value_'
     },
   ],

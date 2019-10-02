@@ -17,7 +17,7 @@ foam.CLASS({
       name: 'seqNo'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'objectId',
       documentation: 'Id of object related to history record.'
     },

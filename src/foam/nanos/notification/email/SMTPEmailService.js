@@ -72,7 +72,7 @@ foam.CLASS({
     {
       name: 'session_',
       javaType: 'Session',
-      class: 'Object',
+      class: 'ObjectProperty',
       javaFactory:
       `
         Properties props = new Properties();
@@ -87,7 +87,7 @@ foam.CLASS({
       `
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       javaType: 'Transport',
       name: 'transport_',
       javaFactory:

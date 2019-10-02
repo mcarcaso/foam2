@@ -394,7 +394,7 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'sourceId',
       hidden: true
     },
@@ -414,14 +414,14 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       javaType: 'foam.core.PropertyInfo',
       swiftType: 'PropertyInfo',
       name: 'targetProperty',
       hidden: true
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       javaType: 'foam.core.PropertyInfo',
       swiftType: 'PropertyInfo',
       name: 'sourceProperty',

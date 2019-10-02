@@ -37,7 +37,7 @@ foam.CLASS({
       documentation: 'The applied rule.'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'objectId',
       visibility: 'RO',
       documentation: 'Id of the object on which rule is applied.'
@@ -49,7 +49,7 @@ foam.CLASS({
       documentation: 'DAO name of the object'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'result',
       documentation: 'Result of rule execution.',
       tableCellFormatter: function (value) {

@@ -21,7 +21,7 @@ foam.CLASS({
   implements: ['foam.core.Exception'],
   properties: [
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'data'
     }
   ]

@@ -45,13 +45,13 @@ foam.CLASS({
       name: 'reject_'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'semaphore',
       javaType: 'java.util.concurrent.Semaphore',
       javaFactory: 'return new java.util.concurrent.Semaphore(0);'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'message',
       type: 'foam.box.Message'
     }

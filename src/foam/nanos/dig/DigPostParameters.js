@@ -21,7 +21,7 @@ foam.CLASS({
     },
     {
       name: 'data',
-      class: 'Object'
+      class: 'ObjectProperty'
     },
     {
       name: 'email',

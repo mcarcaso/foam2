@@ -33,7 +33,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'sourceId'
     },
     {
@@ -45,7 +45,7 @@ foam.CLASS({
       name: 'unauthorizedTargetDAOKey'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'targetProperty',
       javaType: 'foam.core.PropertyInfo',
       swiftType: 'PropertyInfo'

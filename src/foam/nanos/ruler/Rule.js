@@ -184,7 +184,7 @@
       }
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'cmd',
       transient: true,
       hidden: true,

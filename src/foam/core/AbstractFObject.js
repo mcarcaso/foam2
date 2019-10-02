@@ -377,7 +377,7 @@ foam.CLASS({
         'SignatureException'
       ],
       args: [
-        { class: 'Object', name: 'signer', javaType: 'java.security.Signature' },
+        { class: 'ObjectProperty', name: 'signer', javaType: 'java.security.Signature' },
       ],
       javaCode: `
         List props = getClassInfo().getAxiomsByClass(PropertyInfo.class);

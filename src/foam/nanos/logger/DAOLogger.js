@@ -36,7 +36,7 @@ return dao;
     },
     {
       name: 'logger',
-      class: 'Object',
+      class: 'ObjectProperty',
       javaFactory: `return new foam.nanos.logger.StdoutLogger();`
     }
   ],

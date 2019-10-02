@@ -15,11 +15,11 @@ foam.CLASS({
       name: 'name'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'oldValue'
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'newValue'
     }
   ]

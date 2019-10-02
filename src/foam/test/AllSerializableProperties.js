@@ -33,7 +33,7 @@ foam.CLASS({
       name: 'fObjectArrayProp'
     },
     {
-      class: 'foam.core.Object',
+      class: 'foam.core.ObjectProperty',
       name: 'objectProp'
     },
     // {

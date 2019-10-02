@@ -75,7 +75,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'outputter',
       javaType: 'foam.lib.json.Outputter',
       javaFactory: `
@@ -85,7 +85,7 @@ foam.CLASS({
         `
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'parser',
       javaType: 'foam.lib.json.JSONParser',
       javaFactory: `return getX().create(JSONParser.class);`
@@ -124,7 +124,7 @@ foam.CLASS({
     },
     // reader uses a getter because we want a new reader on file replay
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'reader',
       javaType: 'java.io.BufferedReader',
       javaGetter: `
@@ -142,7 +142,7 @@ try {
     },
     // Writer uses a factory because we want to use one writer for the lifetime of this journal object
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'writer',
       javaType: 'java.io.BufferedWriter',
       javaFactory: `

@@ -62,7 +62,7 @@ foam.CLASS({
       flags: ['js']
     },
     {
-      class: 'Object',
+      class: 'ObjectProperty',
       name: 'sb',
       flags: ['java'],
       javaType: 'java.lang.StringBuilder',
