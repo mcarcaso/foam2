@@ -566,7 +566,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.swift.refines',
   name: 'ClassSwiftRefinement',
-  refines: 'foam.core.Class',
+  refines: 'foam.core.ClassProperty',
   flags: ['swift'],
   properties: [
     {

@@ -23,7 +23,7 @@ foam.CLASS({
       name: 'modelId',
     },
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       value: 'foam.doc.Axiom',
     },

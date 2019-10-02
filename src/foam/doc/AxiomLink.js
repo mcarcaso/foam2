@@ -10,7 +10,7 @@ foam.CLASS({
   extends: 'foam.u2.View',
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'cls'
     },
     {

@@ -27,7 +27,7 @@ foam.CLASS({
       view: 'foam.u2.tag.TextArea'
     },
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       visibility: 'HIDDEN'
     },

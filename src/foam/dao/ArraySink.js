@@ -50,7 +50,7 @@ foam.CLASS({
       javaFactory: `return new java.util.ArrayList();`
     },
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of'
     },
     {

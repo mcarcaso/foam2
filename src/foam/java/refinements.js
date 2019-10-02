@@ -1813,7 +1813,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'ClassJavaRefinement',
-  refines: 'foam.core.Class',
+  refines: 'foam.core.ClassProperty',
   flags: ['java'],
   properties: [
     ['javaType', 'foam.core.ClassInfo'],

@@ -29,7 +29,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       factory: function() {
         if ( this.array.length === 0 ) return this.__context__.lookup('foam.core.FObject');

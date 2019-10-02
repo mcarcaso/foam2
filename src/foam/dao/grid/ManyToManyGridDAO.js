@@ -43,7 +43,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'junctionCls',
       factory: function() {
         return this.__context__.lookup(this.relationship.junctionModel);
@@ -71,7 +71,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       value: 'foam.dao.grid.ManyToManyGridRecord'
     }

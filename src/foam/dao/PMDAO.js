@@ -38,7 +38,7 @@ foam.CLASS({
     },
     {
       name: 'classType',
-      class: 'Class',
+      class: 'ClassProperty',
       javaFactory: `
         return PMDAO.getOwnClassInfo();
       `,

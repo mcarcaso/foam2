@@ -87,7 +87,7 @@ foam.CLASS({
     },
     {
       name: 'of',
-      class: 'Class',
+      class: 'ClassProperty',
       documentation: `Model used to store information required by this credential`
     },
     {

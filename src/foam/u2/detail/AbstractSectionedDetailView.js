@@ -32,7 +32,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       expression: function(data) {
         return data && data.cls_;

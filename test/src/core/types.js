@@ -51,7 +51,7 @@ var createTestProperties = function createTestProperties() {
           name: 'stringArray',
         },
         {
-          class: 'Class',
+          class: 'ClassProperty',
           name: 'class',
         }
         // TODO: other types, as they gain testable functionality

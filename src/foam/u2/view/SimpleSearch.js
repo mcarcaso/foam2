@@ -24,7 +24,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of'
     },
     {

@@ -87,7 +87,7 @@ foam.CLASS({
     [ 'transient', true ],
     [ 'hidden', true ],
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       transient: true,
       required: false,

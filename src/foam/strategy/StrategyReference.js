@@ -34,7 +34,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'strategy',
       documentation: 'The strategy for the desired model.',
       required: true

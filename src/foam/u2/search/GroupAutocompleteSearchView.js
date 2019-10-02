@@ -77,7 +77,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'op'/*,
       expression: function(property) {
         // TODO: broken by CLASS, fix

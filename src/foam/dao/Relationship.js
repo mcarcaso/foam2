@@ -389,7 +389,7 @@ foam.CLASS({
   implements: ['foam.dao.ManyToManyRelationship'],
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'junction',
       hidden: true
     },

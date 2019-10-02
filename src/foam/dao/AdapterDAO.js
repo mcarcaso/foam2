@@ -63,7 +63,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'to',
       documentation: '"of" of delegate.'
     },

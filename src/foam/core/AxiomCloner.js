@@ -10,7 +10,7 @@ foam.CLASS({
   documentation: 'An axiom that clones an axiom from another model.',
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'from'
     },
     {

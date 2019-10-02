@@ -92,7 +92,7 @@ if ( foam.isServer ) {
 
     properties: [
       {
-        class: 'Class',
+        class: 'ClassProperty',
         name: 'of',
         value: 'foam.core.FObject'
       },

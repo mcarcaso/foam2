@@ -212,7 +212,7 @@ foam.CLASS({
   implements: ['foam.core.type.Type'],
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       value: 'foam.core.FObject',
     },

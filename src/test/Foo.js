@@ -118,7 +118,7 @@ foam.CLASS({
   extends: 'StringProperty',
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       value: test.SomeSpecialType
     },

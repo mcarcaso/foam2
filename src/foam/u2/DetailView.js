@@ -57,7 +57,7 @@ foam.CLASS({
     },
     'currentData',
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of'
     },
     {

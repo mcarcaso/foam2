@@ -63,7 +63,7 @@ foam.CLASS({
        * with Node appended:
        * <p><code>MyIndex => MyIndexNode</code>
        */
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'nodeClass',
       factory: function() {
         return this.cls_.id + 'Node';

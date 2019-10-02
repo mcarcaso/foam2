@@ -21,11 +21,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'server'
     },
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'client'
     },
     {

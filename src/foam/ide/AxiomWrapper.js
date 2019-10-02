@@ -24,7 +24,7 @@ foam.CLASS({
   properties: [
     'parent',
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'type',
       section: 'info',
       gridColumns: 4,

@@ -462,7 +462,7 @@ console.log(View.create({of: C}).view());
 foam.CLASS({
   name: 'ClassTest',
   properties: [
-    { name: 'cls', class: 'Class' },
+    { name: 'cls', class: 'ClassProperty' },
     { name: 'str', class: 'StringProperty' }
   ]
 });

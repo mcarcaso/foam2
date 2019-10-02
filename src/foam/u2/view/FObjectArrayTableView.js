@@ -14,7 +14,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       expression: function(data) {
         return data[0].cls_;

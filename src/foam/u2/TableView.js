@@ -298,7 +298,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       factory: function() { return this.data.of; }
     },

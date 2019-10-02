@@ -2196,7 +2196,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'targetClass',
       javaType: 'foam.core.ClassInfo'
     }
@@ -3237,7 +3237,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'targetClass'
     }
   ],

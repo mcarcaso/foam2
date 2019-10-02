@@ -512,7 +512,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       expression: function(dao) {
         return dao.of;

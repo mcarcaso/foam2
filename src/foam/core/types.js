@@ -360,7 +360,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Class',
+  name: 'ClassProperty',
   extends: 'Property',
 
   properties: [
@@ -540,7 +540,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       value: 'foam.core.FObject'
     },
@@ -618,7 +618,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of'
     },
     [ 'type', 'Any' ],

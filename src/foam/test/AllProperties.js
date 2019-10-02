@@ -45,7 +45,7 @@ foam.CLASS({
       name: 'stringArray'
     },
     {
-      class: 'foam.core.Class',
+      class: 'foam.core.ClassProperty',
       name: 'classProp'
     },
     {
@@ -214,7 +214,7 @@ foam.CLASS({
       name: 'transientStringArray'
     },
     {
-      class: 'foam.core.Class',
+      class: 'foam.core.ClassProperty',
       transient: true,
       name: 'transientClass'
     },

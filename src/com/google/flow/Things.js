@@ -165,7 +165,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       value: 'com.google.flow.DuplexDesk'
 //      hidden: true

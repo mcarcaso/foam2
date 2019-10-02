@@ -62,7 +62,7 @@ foam.CLASS({
     },
     'daoSub_',
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       expression: function(data) { return data.of; }
     },

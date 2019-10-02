@@ -32,7 +32,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       hidden: true
     },
@@ -90,7 +90,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       hidden: true
     },

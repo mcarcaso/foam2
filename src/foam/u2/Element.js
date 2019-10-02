@@ -2425,7 +2425,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'ClassViewRefinement',
-  refines: 'foam.core.Class',
+  refines: 'foam.core.ClassProperty',
   properties: [
     [ 'view', { class: 'foam.u2.ClassView' } ]
   ]

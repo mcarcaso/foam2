@@ -25,7 +25,7 @@ foam.CLASS({
     a user to input a bad value.
   `,
   properties: [
-    { class: 'Class', name: 'data' },
+    { class: 'ClassProperty', name: 'data' },
     {
       class: 'StringProperty',
       name: 'data_',

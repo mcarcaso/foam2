@@ -326,7 +326,7 @@ foam.CLASS({
   properties: [
     // TODO: 'of' or 'type'?
     {
-      class: 'Class',
+      class: 'ClassProperty',
       name: 'of',
       required: true
     },

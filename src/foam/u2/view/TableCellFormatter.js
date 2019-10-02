@@ -251,7 +251,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2.view',
   name: 'ClassTableCellPropertyRefinement',
-  refines: 'foam.core.Class',
+  refines: 'foam.core.ClassProperty',
   properties: [
     {
       class: 'foam.u2.view.TableCellFormatter',

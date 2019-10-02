@@ -45,7 +45,7 @@ foam.CLASS({
       name: 'stringArray'
     },
     {
-      class: 'foam.core.Class',
+      class: 'foam.core.ClassProperty',
       name: 'classProp'
     },
     {
