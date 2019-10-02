@@ -581,7 +581,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2.search',
   name: 'ByteRefinement',
-  refines: 'foam.core.Byte',
+  refines: 'foam.core.ByteProperty',
 
   properties: [
     {

@@ -150,7 +150,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Byte',
+  name: 'ByteProperty',
   extends: 'IntProperty',
 
   documentation: 'Describes properties of type Byte.',

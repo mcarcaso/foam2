@@ -962,7 +962,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'ByteJavaRefinement',
-  refines: 'foam.core.Byte',
+  refines: 'foam.core.ByteProperty',
   flags: ['java'],
 
   properties: [

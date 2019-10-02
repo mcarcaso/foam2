@@ -107,7 +107,7 @@ foam.CLASS({
       name: 'tableCellFormatterProp'
     },
     {
-      class: 'foam.core.Byte',
+      class: 'foam.core.ByteProperty',
       name: 'byteProp'
     },
     {
@@ -291,7 +291,7 @@ foam.CLASS({
       name: 'transientTableCellFormatter'
     },
     {
-      class: 'foam.core.Byte',
+      class: 'foam.core.ByteProperty',
       transient: true,
       name: 'transientByte'
     },

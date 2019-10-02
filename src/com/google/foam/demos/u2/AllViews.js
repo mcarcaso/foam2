@@ -142,7 +142,7 @@ foam.CLASS({
       name: 'defaultTime'
     },
     {
-      class: 'Byte',
+      class: 'ByteProperty',
       name: 'defaultByte'
     },
     {

@@ -103,7 +103,7 @@ foam.CLASS({
       name: 'mapProp'
     },
     {
-      class: 'foam.core.Byte',
+      class: 'foam.core.ByteProperty',
       name: 'byteProp'
     },
     {
