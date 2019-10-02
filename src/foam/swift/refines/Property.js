@@ -659,7 +659,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.swift.refines',
   name: 'DateTimeSwiftRefinement',
-  refines: 'foam.core.DateTime',
+  refines: 'foam.core.DateTimeProperty',
   flags: ['swift'],
   properties: [
     {

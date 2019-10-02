@@ -35,7 +35,7 @@ foam.CLASS({
       javaFactory: `return new CronSchedule.Builder(getX()).build();`
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'scheduledTime',
       documentation: `Scheduled time to run Cron script.`,
       hidden: true,

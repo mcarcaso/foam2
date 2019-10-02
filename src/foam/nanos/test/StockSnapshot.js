@@ -13,7 +13,7 @@ foam.CLASS({
   ids: ['time', 'symbol'],
   properties: [
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'time'
     },
     {

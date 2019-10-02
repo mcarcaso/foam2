@@ -38,7 +38,7 @@ describe('Created/LastModified Aware tests', function() {
           name: 'name',
         },
         {
-          class: 'DateTime',
+          class: 'DateTimeProperty',
           name: 'created'
         },
         {
@@ -47,7 +47,7 @@ describe('Created/LastModified Aware tests', function() {
           name: 'createdBy'
         },
         {
-          class: 'DateTime',
+          class: 'DateTimeProperty',
           name: 'lastModified'
         },
         {

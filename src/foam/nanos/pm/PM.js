@@ -31,7 +31,7 @@ foam.CLASS({
     },
     {
       name: 'startTime',
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       factory: function() {
         return new Date();
       },
@@ -39,7 +39,7 @@ foam.CLASS({
     },
     {
       name: 'endTime',
-      class: 'DateTime'
+      class: 'DateTimeProperty'
     },
   ],
 

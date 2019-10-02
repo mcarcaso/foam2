@@ -39,7 +39,7 @@ foam.CLASS({
       help: 'List of people who are CC\'ed on updates to this issue.'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'closed',
       help: 'Date and time the issue was closed.'
     },

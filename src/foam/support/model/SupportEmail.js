@@ -27,7 +27,7 @@ foam.CLASS({
       value: 'Pending'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'connectedTime'
     }
   ]

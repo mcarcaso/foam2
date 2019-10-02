@@ -21,12 +21,12 @@ foam.CLASS({
       visibility: 'RO'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'created',
       documentation: 'Creation date.'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'lastModified',
       documentation: 'Last modified date.'
     },
@@ -67,7 +67,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'expirationDate',
       documentation: 'Expiration date to be rescheduled.'
     },

@@ -15,14 +15,14 @@ foam.CLASS({
   properties: [
     {
       name: 'created',
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       factory: function() {
         return new Date();
       }
     },
     {
       name: 'expiry',
-      class: 'DateTime'
+      class: 'DateTimeProperty'
     },
     {
       name: 'data',

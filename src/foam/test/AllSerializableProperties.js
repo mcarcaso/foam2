@@ -71,7 +71,7 @@ foam.CLASS({
       name: 'dateProp'
     },
     {
-      class: 'foam.core.DateTime',
+      class: 'foam.core.DateTimeProperty',
       name: 'dateTimeProp'
     },
     {

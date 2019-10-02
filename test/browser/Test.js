@@ -401,7 +401,7 @@ foam.CLASS({
       name: 'date'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'dateTime'
     }
   ]

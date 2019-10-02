@@ -123,7 +123,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'DateTime',
+  name: 'DateTimeProperty',
   extends: 'DateProperty',
 
   documentation: 'Describes properties of type DateTime.',

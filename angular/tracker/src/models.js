@@ -197,7 +197,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'created',
       hidden: true,
       factory: function() {

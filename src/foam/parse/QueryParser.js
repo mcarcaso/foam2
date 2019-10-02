@@ -351,7 +351,7 @@ foam.CLASS({
             var isFloat = foam.core.Float.isInstance(prop);
 
             var isDateField = foam.core.DateProperty.isInstance(prop) ||
-                foam.core.DateTime.isInstance(prop);
+                foam.core.DateTimeProperty.isInstance(prop);
             var isDateRange = Array.isArray(values[0]) &&
                 values[0][0] instanceof Date;
 

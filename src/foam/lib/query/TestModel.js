@@ -19,7 +19,7 @@ foam.CLASS({
       name: 'age'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'birthdate'
     },
     { class: 'Enum', of: 'foam.lib.query.FooEnum', name: 'foo' }

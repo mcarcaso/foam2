@@ -82,7 +82,7 @@ foam.CLASS({
     },
     {
       name: 'expiry',
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       documentation: `Datetime of when capability is no longer valid`
     },
     {

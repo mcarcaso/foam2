@@ -10,7 +10,7 @@ foam.INTERFACE({
 
   properties: [
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'created',
       documentation: 'Creation date'
     }

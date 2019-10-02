@@ -53,7 +53,7 @@ foam.CLASS({
       visibility: 'RO',
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'created',
       visibility: 'RO'
     },
@@ -64,7 +64,7 @@ foam.CLASS({
       visibility: 'RO'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'lastUsed',
       visibility: 'RO',
       storageTransient: true

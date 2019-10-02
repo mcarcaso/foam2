@@ -30,7 +30,7 @@ foam.CLASS({
       name: 'id',
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'created',
       tableWidth: 170
     },

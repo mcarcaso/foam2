@@ -80,7 +80,7 @@ foam.CLASS({
       documentation: 'Description of the script.'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'lastRun',
       documentation: 'Date and time the script ran last.',
       visibility: 'RO',

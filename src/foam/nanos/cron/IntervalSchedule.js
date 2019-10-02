@@ -32,7 +32,7 @@ foam.CLASS({
       name: 'duration'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'start'
     }
   ],
@@ -71,4 +71,3 @@ return next.getTime();
     }
   ]
 });
-

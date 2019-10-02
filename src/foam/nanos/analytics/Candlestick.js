@@ -41,13 +41,13 @@ foam.CLASS({
       visibility: 'RO'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'openValueTime',
       visibility: 'RO',
       tableWidth: 150
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'closeTime',
       visibility: 'RO',
       tableWidth: 150
@@ -58,7 +58,7 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'closeValueTime',
       visibility: 'RO',
       tableWidth: 150

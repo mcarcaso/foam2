@@ -2267,7 +2267,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'DateTimeViewRefinement',
-  refines: 'foam.core.DateTime',
+  refines: 'foam.core.DateTimeProperty',
   properties: [
     [ 'view', { class: 'foam.u2.DateTimeView' } ]
   ]

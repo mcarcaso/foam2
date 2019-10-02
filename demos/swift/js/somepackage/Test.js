@@ -92,7 +92,7 @@ return ["Hello", "World"]
       name: 'enumProp',
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'dateProp',
     },
     {

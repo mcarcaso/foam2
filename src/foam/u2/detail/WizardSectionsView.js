@@ -31,7 +31,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'lastUpdate'
     },
     {

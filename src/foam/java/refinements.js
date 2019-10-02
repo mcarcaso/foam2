@@ -1292,7 +1292,7 @@ return null;
 foam.CLASS({
   package: 'foam.java',
   name: 'DateTimeJavaRefinement',
-  refines: 'foam.core.DateTime',
+  refines: 'foam.core.DateTimeProperty',
   flags: ['java'],
 
   properties: [

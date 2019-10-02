@@ -101,7 +101,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'lastLogin',
       documentation: 'The date and time of last login by User.'
     },
@@ -302,12 +302,12 @@ foam.CLASS({
       networkTransient: true
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'passwordLastModified',
       documentation: 'The date and time that the password was last modified.'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'passwordExpiry',
       documentation: `The date and time that the current password of the User
         will expire.`,
@@ -372,12 +372,12 @@ foam.CLASS({
       }
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'created',
       documentation: 'The date and time of when the User was created in the system.'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'lastModified',
       documentation: 'The date and time the User was last modified.'
     }

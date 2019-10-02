@@ -26,7 +26,7 @@ foam.CLASS({
       name: 'user'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'timestamp',
       documentation: 'Date and time history record was created.'
     },

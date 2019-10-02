@@ -39,7 +39,7 @@ foam.CLASS({
       name: 'type'
     },
     {
-      class: 'DateTime',
+      class: 'DateTimeProperty',
       name: 'timestamp'
     }
   ],
