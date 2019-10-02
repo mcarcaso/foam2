@@ -36,7 +36,7 @@ foam.CLASS({
       name: 'gridColumns'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'createIsAvailableFor',
       value: function(data$) {
         return foam.core.ConstantSlot.create({value: true});

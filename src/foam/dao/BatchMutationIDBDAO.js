@@ -46,12 +46,12 @@ foam.CLASS({
       name: 'data'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       documentation: 'Resolve function for DAO operation promise.',
       name: 'resolve'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       documentation: 'Reject function for DAO operation promise.',
       name: 'reject'
     }

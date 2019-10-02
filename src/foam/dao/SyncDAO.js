@@ -121,7 +121,7 @@ foam.CLASS({
       factory: function() { return Promise.resolve(); }
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'sync_',
       documentation: `Selected sync strategy; either syncToRemote_() or
           pollingSync_().`,

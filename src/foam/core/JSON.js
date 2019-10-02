@@ -248,12 +248,12 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'propertyPredicate',
       value: function(o, p) { return ! p.transient; }
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'objectKeyValuePredicate',
       documentation: 'Called before outputting a key/value. Outputs if true.',
       value: function(k, v) { return true; }

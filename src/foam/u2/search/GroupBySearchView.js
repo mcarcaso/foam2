@@ -83,7 +83,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'aFormatLabel',
       value: function(key) {
         return Promise.resolve('' + key);

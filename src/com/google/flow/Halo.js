@@ -61,7 +61,7 @@ foam.CLASS({
         'viewStart',
         'mouseStartX', 'mouseStartY',
         {
-          class: 'Function',
+          class: 'FunctionProperty',
           name: 'callback',
           value: function(view, viewStart, dx, dy) {
             console.log(viewStart, dx, dy);

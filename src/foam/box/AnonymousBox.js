@@ -10,7 +10,7 @@ foam.CLASS({
   flags: ['js'],
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'f'
     }
   ],

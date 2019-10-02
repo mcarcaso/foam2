@@ -56,14 +56,14 @@ foam.CLASS({
           }
         },
         {
-          class: 'Function',
+          class: 'FunctionProperty',
           name: 'resolve_',
           factory: function() {
             return this.promise_.resolveFunction_;
           }
         },
         {
-          class: 'Function',
+          class: 'FunctionProperty',
           name: 'reject_',
           factory: function() {
             return this.promise_.rejectFunction_;
@@ -92,7 +92,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       documentation: `Determine whether or not an error is sufficiently internal
         to the DAO that it's worth retrying the operation that yeilded the
         error. Default is to retry foam.dao.InternalException errors.`,

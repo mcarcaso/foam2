@@ -38,7 +38,7 @@ foam.CLASS({
       name: 'gridColumns'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'isAvailable',
       value: function() { return true; }
     }

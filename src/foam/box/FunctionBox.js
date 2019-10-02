@@ -21,7 +21,7 @@ foam.CLASS({
   implements: ['foam.box.Box'],
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       swiftType: '((Any?) -> ())',
       swiftRequiresEscaping: true,
       name: 'fn'

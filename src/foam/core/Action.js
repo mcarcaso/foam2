@@ -91,21 +91,21 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'isAvailable',
       label: 'Available',
       help: 'Function to determine if action is available.',
       value: null
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'isEnabled',
       label: 'Enabled',
       help: 'Function to determine if action is enabled.',
       value: null
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'code',
       required: true,
       value: null

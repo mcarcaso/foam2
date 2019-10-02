@@ -25,7 +25,7 @@ foam.CLASS({
       name: 'name'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'code'
     },
     {

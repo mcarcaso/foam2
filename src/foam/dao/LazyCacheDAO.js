@@ -129,7 +129,7 @@ foam.CLASS({
         Generates an internal key to uniquely identify a select.
         @private
       */
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'selectKey',
       value: function(sink, skip, limit, order, predicate /*string*/) {
         return ( predicate && predicate.toString() ) || "" + "," +

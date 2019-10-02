@@ -31,7 +31,7 @@ foam.CLASS({
     ['activeOps', {put: 0, remove:0, find: 0, select: 0}],
     {
       /** High resolution time value function */
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'now',
       factory: function() {
         if ( global.window && global.window.performance ) {

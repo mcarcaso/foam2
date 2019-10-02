@@ -2874,7 +2874,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'compareFn'
     }
   ],

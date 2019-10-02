@@ -28,15 +28,15 @@ foam.CLASS({
       value: 'anonymousAxiom'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'installInClass'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'installInProto'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'buildJavaClass'
     }
   ]

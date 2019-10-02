@@ -2122,7 +2122,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'FunctionJavaRefinement',
-  refines: 'foam.core.Function',
+  refines: 'foam.core.FunctionProperty',
   flags: ['java'],
   properties: [
     ['javaType', 'java.util.function.Function']

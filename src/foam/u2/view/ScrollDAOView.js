@@ -256,7 +256,7 @@ foam.CLASS({
       transient: true
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'modNumRows_',
       documentation: `Helper function for row arithmetic. A property rather than
           a method for easy export to inner class instances that use it.`,

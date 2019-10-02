@@ -254,19 +254,19 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'putFn'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'removeFn'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'eofFn'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'resetFn'
     }
   ],

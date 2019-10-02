@@ -44,7 +44,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'objToString',
       documentation: 'When the user has selected an object from the DAO as ' +
           'the chosen completion, we need to turn it back into a string for ' +

@@ -226,7 +226,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Function',
+  name: 'FunctionProperty',
   extends: 'Property',
 
   documentation: 'Describes properties of type Function.',

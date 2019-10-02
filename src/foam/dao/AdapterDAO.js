@@ -33,7 +33,7 @@ foam.CLASS({
 
       properties: [
         {
-          class: 'Function',
+          class: 'FunctionProperty',
           name: 'adapt',
           documentation: `"adapt(o)" adapts input to type expected by
               "delegate" sink.`,

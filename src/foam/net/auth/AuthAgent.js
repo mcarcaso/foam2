@@ -36,7 +36,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       documentation: `Determine whether or not a URL requires authorization
           via an authentication step managed by this agent. This procedure is
           treated as data rather than a method because it is typically injected

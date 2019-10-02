@@ -37,7 +37,7 @@ foam.CLASS({
       name: 'objectProp'
     },
     // {
-    //   class: 'foam.core.Function',
+    //   class: 'foam.core.FunctionProperty',
     //   name: 'functionProp'
     // },
     {

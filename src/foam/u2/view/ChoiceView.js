@@ -129,7 +129,7 @@ foam.CLASS({
       documentation: 'When provided the placeholder will be prepended to the selection list, and selected if the choices array is empty or no choice in the choices array is selected.'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'objToChoice',
       documentation: 'A function which adapts an object from the DAO to a ' +
           '[key, value] choice. Required when a DAO is provided.'

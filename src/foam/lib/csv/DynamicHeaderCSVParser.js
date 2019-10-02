@@ -79,7 +79,7 @@ foam.CLASS({
   refines: 'foam.core.Property',
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'fromCSVLabelMapping',
       value: function(map, prop) {
         map[prop.name] = prop;
@@ -94,7 +94,7 @@ foam.CLASS({
   refines: 'foam.core.FObjectProperty',
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'fromCSVLabelMapping',
       value: function(map, prop) {
         prop.of.getAxiomsByClass(foam.core.Property)
@@ -121,7 +121,7 @@ foam.CLASS({
   refines: 'foam.core.FObjectArray',
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'fromCSVLabelMapping',
       value: function(map, prop) {
         map[prop.name] = {
@@ -140,7 +140,7 @@ foam.CLASS({
   refines: 'foam.core.Array',
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'fromCSVLabelMapping',
       value: function(map, prop) {
         map[prop.name] = {
@@ -159,7 +159,7 @@ foam.CLASS({
   refines: 'foam.core.StringArray',
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'fromCSVLabelMapping',
       value: function(map, prop) {
         map[prop.name] = {

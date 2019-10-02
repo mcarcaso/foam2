@@ -80,7 +80,7 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'formatter'
     },
     {
@@ -239,7 +239,7 @@ foam.CLASS({
       name: 'selection'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'formatter'
     },
     {

@@ -112,14 +112,14 @@ foam.CLASS({
   refines: 'foam.core.Property',
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'toCSV',
       value: function(x, obj, outputter) {
         outputter.outputValue(obj ? this.f(obj) : null);
       }
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'toCSVLabel',
       value: function(x, outputter) {
         outputter.outputValue(this.name);
@@ -168,7 +168,7 @@ foam.CLASS({
     },
     {
       name: 'toCSVLabel',
-      class: 'Function',
+      class: 'FunctionProperty',
       value: function(x, outputter) {
         if ( ! this.of ) {
           outputter.outputValue(this.name);

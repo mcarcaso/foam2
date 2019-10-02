@@ -166,7 +166,7 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'buildFilter',
       value: function buildFilter(args) {
         var e = this.Card.create();

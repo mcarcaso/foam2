@@ -78,11 +78,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'customExecute'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'customToString'
     }
   ],

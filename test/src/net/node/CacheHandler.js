@@ -110,7 +110,7 @@ describe('CacheHandler', function() {
           value: 200
         },
         {
-          class: 'Function',
+          class: 'FunctionProperty',
           name: 'done',
           value: null
         }

@@ -523,12 +523,12 @@ foam.CLASS({
       name: 'dao',
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'addRow',
       documentation: `Called on each object in the DAO.`
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'cleanup',
       documentation: `Called before addRow is applied to objects in the DAO.`
     },
@@ -2144,7 +2144,7 @@ foam.CLASS({
       value: 'RW'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'visibilityExpression',
       value: null
     },

@@ -37,7 +37,7 @@ foam.CLASS({
       name: 'args'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'jsFunc',
       expression: function(predicate, jsErr) {
         return function() {
@@ -50,7 +50,7 @@ foam.CLASS({
       name: 'errorString'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'jsErr',
       expression: function(errorString) {
         return function() { return errorString; };

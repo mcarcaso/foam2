@@ -107,7 +107,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'propertyPredicate',
       value: function(o, p) { return ! p.transient; }
     },

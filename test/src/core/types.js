@@ -39,7 +39,7 @@ var createTestProperties = function createTestProperties() {
           name: 'float',
         },
         {
-          class: 'Function',
+          class: 'FunctionProperty',
           name: 'func',
         },
         {

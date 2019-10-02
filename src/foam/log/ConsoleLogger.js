@@ -43,33 +43,33 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'debug',
       factory: function() { return this.put.bind(this, this.LogLevel.DEBUG); }
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       documentation: 'Synonym for "info".',
       name: 'log',
       factory: function() { return this.put.bind(this, this.LogLevel.INFO); }
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'info',
       factory: function() { return this.put.bind(this, this.LogLevel.INFO); }
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'warn',
       factory: function() { return this.put.bind(this, this.LogLevel.WARN); }
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'error',
       factory: function() { return this.put.bind(this, this.LogLevel.ERROR); }
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'getDateString',
       factory: function() {
         return function() { return (new Date()).toString(); };

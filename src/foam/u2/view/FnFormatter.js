@@ -10,7 +10,7 @@ foam.CLASS({
   implements: [ 'foam.u2.view.Formatter' ],
   properties: [
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       name: 'f'
     }
   ],

@@ -91,7 +91,7 @@ foam.CLASS({
           name: 'view'
         },
         {
-          class: 'Function',
+          class: 'FunctionProperty',
           documentation: `
             A function that takes an argument and makes a best effort in
             converting that into the current type. See DEFAULT_TYPES for

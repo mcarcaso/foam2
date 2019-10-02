@@ -54,13 +54,13 @@ foam.CLASS({
       name: 'data'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       documentation: `Resolve function for datastore operation promise,
           pre-bound to return payload.`,
       name: 'resolve'
     },
     {
-      class: 'Function',
+      class: 'FunctionProperty',
       documentation: `Reject function for datastore operation promise,,
           pre-bound to error reporting payload.`,
       name: 'reject'

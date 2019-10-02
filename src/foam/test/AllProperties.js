@@ -37,7 +37,7 @@ foam.CLASS({
       name: 'objectProp'
     },
     {
-      class: 'foam.core.Function',
+      class: 'foam.core.FunctionProperty',
       name: 'functionProp'
     },
     {
@@ -204,7 +204,7 @@ foam.CLASS({
       name: 'transientObject'
     },
     {
-      class: 'foam.core.Function',
+      class: 'foam.core.FunctionProperty',
       transient: true,
       name: 'transientFunction'
     },
