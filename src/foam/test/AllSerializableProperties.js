@@ -119,7 +119,7 @@ foam.CLASS({
     //   name: 'listProp'
     // },
     {
-      class: 'foam.core.Image',
+      class: 'foam.core.ImageProperty',
       name: 'imageProp'
     },
     {

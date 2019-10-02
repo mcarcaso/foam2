@@ -47,7 +47,7 @@ foam.CLASS({
     },
     {
       name: 'icon',
-      class: 'Image',
+      class: 'ImageProperty',
       documentation: `Path to capability icon`
     },
     {

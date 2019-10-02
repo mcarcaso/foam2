@@ -75,7 +75,7 @@ foam.CLASS({
       of: 'foam.nanos.menu.Menu'
     },
     {
-      class: 'Image',
+      class: 'ImageProperty',
       name: 'logo',
       documentation: 'The logo to display in the application.',
       displayWidth: 60

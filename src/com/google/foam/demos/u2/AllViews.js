@@ -182,12 +182,12 @@ foam.CLASS({
       value: 'someone@somewhere.com'
     },
     {
-      class: 'Image',
+      class: 'ImageProperty',
       name: 'defaultImage',
       value: 'Dragon.png'
     },
     {
-      class: 'Image',
+      class: 'ImageProperty',
       name: 'imageView',
       view: 'foam.u2.view.ImageView',
       value: 'Dragon.png'

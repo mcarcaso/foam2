@@ -123,7 +123,7 @@ foam.CLASS({
       name: 'listProp'
     },
     {
-      class: 'foam.core.Image',
+      class: 'foam.core.ImageProperty',
       name: 'imageProp'
     },
     {
@@ -311,7 +311,7 @@ foam.CLASS({
       name: 'transientList'
     },
     {
-      class: 'foam.core.Image',
+      class: 'foam.core.ImageProperty',
       transient: true,
       name: 'transientImage'
     },

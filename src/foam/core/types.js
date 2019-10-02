@@ -434,7 +434,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Image',
+  name: 'ImageProperty',
   extends: 'StringProperty',
   // FUTURE: verify
   label: 'Image data or link',
