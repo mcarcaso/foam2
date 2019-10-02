@@ -32,7 +32,7 @@ describe('MLang', function() {
           name: 'name',
         },
         {
-          class: 'Date',
+          class: 'DateProperty',
           name: 'birthday',
         },
         {

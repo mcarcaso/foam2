@@ -29,7 +29,7 @@ describe('Query parser', function() {
         name: 'name'
       },
       {
-        class: 'Date',
+        class: 'DateProperty',
         name: 'timestamp',
         shortName: 't',
         aliases: [ 'time', 'datestamp', 'd' ]

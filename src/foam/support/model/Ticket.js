@@ -41,7 +41,7 @@ foam.CLASS({
       label: 'Subject',
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'createdAt',
       visibility: foam.u2.Visibility.RO,
       label: 'Time',

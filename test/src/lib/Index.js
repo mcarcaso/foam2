@@ -35,7 +35,7 @@ foam.CLASS({
       name: 'string'
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'date'
     },
     {

@@ -27,7 +27,7 @@ foam.CLASS({
       name: 'name'
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'issuedDate',
       label: 'Effective Date',
       tableCellFormatter: function(date) {

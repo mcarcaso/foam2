@@ -74,7 +74,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Date',
+  name: 'DateProperty',
   extends: 'Property',
 
   // documentation: 'Describes properties of type Date.',
@@ -124,7 +124,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'DateTime',
-  extends: 'Date',
+  extends: 'DateProperty',
 
   documentation: 'Describes properties of type DateTime.',
   label: 'Date and time',

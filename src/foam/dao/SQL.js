@@ -273,7 +273,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.dao',
   name: 'DateToSQLRefinement',
-  refines: 'foam.core.Date',
+  refines: 'foam.core.DateProperty',
   methods: [
     function toSQL() {
       var v1 = this.value || 0;

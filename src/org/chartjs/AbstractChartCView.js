@@ -19,7 +19,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'org.chartjs',
   name: 'ChartJSDateFormatterRefinement',
-  refines: 'foam.core.Date',
+  refines: 'foam.core.DateProperty',
   properties: [
     {
       name: 'chartJsFormatter',

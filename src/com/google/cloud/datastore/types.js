@@ -317,7 +317,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'com.google.cloud.datastore',
   name: 'DateDatastoreTypesRefinement',
-  refines: 'foam.core.Date',
+  refines: 'foam.core.DateProperty',
 
   methods: [
     function toDatastoreKeyNamePart(o) {

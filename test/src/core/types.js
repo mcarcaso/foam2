@@ -23,7 +23,7 @@ var createTestProperties = function createTestProperties() {
 
       properties: [
         {
-          class: 'Date',
+          class: 'DateProperty',
           name: 'date',
         },
         {
@@ -69,7 +69,7 @@ var createDateTestProperties = function createDateTestProperties() {
 
       properties: [
         {
-          class: 'Date',
+          class: 'DateProperty',
           name: 'date',
         },
         {

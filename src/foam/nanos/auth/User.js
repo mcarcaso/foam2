@@ -232,7 +232,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'birthday',
       documentation: 'The date of birth of the individual person, or real user.'
     },

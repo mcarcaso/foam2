@@ -67,7 +67,7 @@ foam.CLASS({
       name: 'enumProp'
     },
     {
-      class: 'foam.core.Date',
+      class: 'foam.core.DateProperty',
       name: 'dateProp'
     },
     {

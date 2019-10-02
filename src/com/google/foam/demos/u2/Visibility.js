@@ -68,7 +68,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'disabledDateExpression',
       visibilityExpression: function(flag) {
         return foam.u2.Visibility[flag ? 'RW' : 'DISABLED'];
@@ -89,7 +89,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'readOnlyDateExpression',
       visibilityExpression: function(flag) {
         return foam.u2.Visibility[flag ? 'RW' : 'RO'];

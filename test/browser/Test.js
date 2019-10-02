@@ -397,7 +397,7 @@ foam.CLASS({
   properties: [
     'id',
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'date'
     },
     {

@@ -51,7 +51,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'departDate',
       permissionRequired: true,
       factory: function() { return new Date(Date.now()+3600000*24); },
@@ -62,7 +62,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'returnDate',
       factory: function() { return new Date(Date.now()+2*3600000*24); },
       visibilityExpression: function(isReturn) {

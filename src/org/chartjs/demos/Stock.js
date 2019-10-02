@@ -147,7 +147,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'date',
       factory: function() { return new Date() },
     },
@@ -157,7 +157,7 @@ foam.CLASS({
       name: 'StockPriceSnapshot',
       properties: [
         { name: 'id' },
-        { class: 'Date', name: 'date' },
+        { class: 'DateProperty', name: 'date' },
         { class: 'StringProperty', name: 'symbol' },
         { class: 'Currency', name: 'price' },
       ]

@@ -26,7 +26,7 @@ foam.CLASS({
       name: 'receiverId'
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'dateCreated'
     },
     {

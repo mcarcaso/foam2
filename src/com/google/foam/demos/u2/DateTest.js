@@ -9,11 +9,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'date'
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'datePicker',
       view: 'foam.u2.md.DateField'
     }

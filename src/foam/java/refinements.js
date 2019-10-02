@@ -1329,7 +1329,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'DateJavaRefinement',
-  refines: 'foam.core.Date',
+  refines: 'foam.core.DateProperty',
   flags: ['java'],
 
    properties: [

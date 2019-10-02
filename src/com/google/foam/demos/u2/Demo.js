@@ -258,7 +258,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'datePicker',
       view: 'foam.u2.md.DateField'
     },
@@ -628,7 +628,7 @@ foam.CLASS({
       name: 'booleanField',
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'datePicker',
       view: 'foam.u2.md.DateField'
     },

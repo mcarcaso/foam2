@@ -67,7 +67,7 @@ foam.CLASS({
       name: 'enumProp'
     },
     {
-      class: 'foam.core.Date',
+      class: 'foam.core.DateProperty',
       name: 'dateProp'
     },
     {
@@ -241,7 +241,7 @@ foam.CLASS({
       name: 'transientEnum'
     },
     {
-      class: 'foam.core.Date',
+      class: 'foam.core.DateProperty',
       transient: true,
       name: 'transientDate'
     },

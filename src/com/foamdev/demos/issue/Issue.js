@@ -83,7 +83,7 @@ foam.CLASS({
     },
     */
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'published',
       help: 'Date and time the issue was originally published.'
     },
@@ -113,7 +113,7 @@ foam.CLASS({
       help: 'One-line summary of the issue.'
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'updated',
       help: 'Date and time the issue was last updated.'
     }

@@ -2259,7 +2259,7 @@ foam.CLASS({
     },
     {
       name: 'Date',
-      path: 'foam.core.Date',
+      path: 'foam.core.DateProperty',
       flags: ['js']
     }
   ],

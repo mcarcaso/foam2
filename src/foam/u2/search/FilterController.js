@@ -521,7 +521,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2.search',
   name: 'DateRefinement',
-  refines: 'foam.core.Date',
+  refines: 'foam.core.DateProperty',
 
   properties: [
     {

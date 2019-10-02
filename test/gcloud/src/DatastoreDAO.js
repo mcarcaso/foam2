@@ -100,7 +100,7 @@ describe('DatastoreDAO', function() {
             name: 'iq'
           },
           {
-            class: 'Date',
+            class: 'DateProperty',
             name: 'dob'
           }
         ]

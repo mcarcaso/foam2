@@ -47,7 +47,7 @@ foam.CLASS({
       value: 'General'
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'issuedDate',
       factory: function() { return new Date(); },
       label: 'Notification Date',
@@ -55,7 +55,7 @@ foam.CLASS({
       visibility: foam.u2.Visibility.RO
     },
     {
-      class: 'Date',
+      class: 'DateProperty',
       name: 'expiryDate',
       documentation: 'Expiration date of notification.',
       factory: function() {

@@ -49,7 +49,7 @@ var examples = [
           'id',
           'label',
           'amount',
-          { class: 'Date', name: 'date' },
+          { class: 'DateProperty', name: 'date' },
         ]
       });
 
