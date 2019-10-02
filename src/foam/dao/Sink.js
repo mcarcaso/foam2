@@ -511,7 +511,7 @@ foam.CLASS({
       name: 'comparator'
     },
     {
-      class: 'List',
+      class: 'ListProperty',
       name: 'array',
       factory: function() { return []; }
     }

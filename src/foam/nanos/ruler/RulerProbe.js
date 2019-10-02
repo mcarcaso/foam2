@@ -19,7 +19,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'List',
+      class: 'ListProperty',
       javaType: 'java.util.ArrayList<TestedRule>',
       name: 'appliedRules',
       factory: function() {

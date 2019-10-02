@@ -2457,7 +2457,7 @@ foam.CLASS({
       javaFactory: 'return new java.util.HashMap<Object, foam.dao.Sink>();'
     },
     {
-      class: 'List',
+      class: 'ListProperty',
       hidden: true,
       name: 'groupKeys',
       javaFactory: 'return new java.util.ArrayList();',
@@ -2619,7 +2619,7 @@ foam.CLASS({
       name: 'args'
     },
     {
-      class: 'List',
+      class: 'ListProperty',
       name: 'data',
       factory: function() { return []; }
     }

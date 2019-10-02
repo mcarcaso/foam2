@@ -119,7 +119,7 @@ foam.CLASS({
       name: 'doubleProp'
     },
     {
-      class: 'foam.core.List',
+      class: 'foam.core.ListProperty',
       name: 'listProp'
     },
     {
@@ -306,7 +306,7 @@ foam.CLASS({
       name: 'transientDouble'
     },
     {
-      class: 'foam.core.List',
+      class: 'foam.core.ListProperty',
       transient: true,
       name: 'transientList'
     },

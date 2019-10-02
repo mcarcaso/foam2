@@ -20,7 +20,7 @@ foam.CLASS({
   properties: [
     {
       name: 'agents',
-      class: 'List',
+      class: 'ListProperty',
       javaType: 'ArrayList<Runnable>',
       javaFactory: `return new ArrayList();`
     }
@@ -90,4 +90,3 @@ return desc;`
     }
   ]
 });
-

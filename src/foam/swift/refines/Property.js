@@ -498,7 +498,7 @@ return PInfo(classInfo())
 foam.CLASS({
   package: 'foam.swift.refines',
   name: 'ListSwiftRefinement',
-  refines: 'foam.core.List',
+  refines: 'foam.core.ListProperty',
   flags: ['swift'],
   properties: [
     {

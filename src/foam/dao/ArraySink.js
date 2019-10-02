@@ -35,7 +35,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'List',
+      class: 'ListProperty',
       name: 'array',
       adapt: function(old, nu) {
         if ( ! this.of ) return nu;

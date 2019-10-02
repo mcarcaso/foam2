@@ -115,7 +115,7 @@ foam.CLASS({
       name: 'doubleProp'
     },
     // {
-    //   class: 'foam.core.List',
+    //   class: 'foam.core.ListProperty',
     //   name: 'listProp'
     // },
     {

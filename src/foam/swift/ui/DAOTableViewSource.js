@@ -87,7 +87,7 @@ onDAOUpdate()
       value: 'CellID',
     },
     {
-      class: 'List',
+      class: 'ListProperty',
       name: 'daoContents',
     },
     {

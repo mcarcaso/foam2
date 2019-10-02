@@ -1396,7 +1396,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'ListJavaRefinement',
-  refines: 'foam.core.List',
+  refines: 'foam.core.ListProperty',
   flags: ['java'],
 
   properties: [
