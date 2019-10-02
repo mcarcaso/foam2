@@ -551,7 +551,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2.search',
   name: 'ShortRefinement',
-  refines: 'foam.core.Short',
+  refines: 'foam.core.ShortProperty',
 
   properties: [
     {

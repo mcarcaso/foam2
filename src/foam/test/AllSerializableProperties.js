@@ -107,7 +107,7 @@ foam.CLASS({
       name: 'byteProp'
     },
     {
-      class: 'foam.core.Short',
+      class: 'foam.core.ShortProperty',
       name: 'shortProp'
     },
     {

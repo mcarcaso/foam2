@@ -992,7 +992,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'ShortJavaRefinement',
-  refines: 'foam.core.Short',
+  refines: 'foam.core.ShortProperty',
   flags: ['java'],
 
   properties: [

@@ -164,7 +164,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Short',
+  name: 'ShortProperty',
   extends: 'IntProperty',
 
   documentation: 'Describes properties of type Short.',

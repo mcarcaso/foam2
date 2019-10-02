@@ -111,7 +111,7 @@ foam.CLASS({
       name: 'byteProp'
     },
     {
-      class: 'foam.core.Short',
+      class: 'foam.core.ShortProperty',
       name: 'shortProp'
     },
     {
@@ -296,7 +296,7 @@ foam.CLASS({
       name: 'transientByte'
     },
     {
-      class: 'foam.core.Short',
+      class: 'foam.core.ShortProperty',
       transient: true,
       name: 'transientShort'
     },

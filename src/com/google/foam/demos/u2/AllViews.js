@@ -146,7 +146,7 @@ foam.CLASS({
       name: 'defaultByte'
     },
     {
-      class: 'Short',
+      class: 'ShortProperty',
       name: 'defaultShort'
     },
     {

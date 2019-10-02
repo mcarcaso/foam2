@@ -39,7 +39,7 @@ return 0
 foam.CLASS({
   package: 'foam.swift.refines',
   name: 'ShortSwiftRefinement',
-  refines: 'foam.core.Short',
+  refines: 'foam.core.ShortProperty',
   flags: ['swift'],
   properties: [
     {
