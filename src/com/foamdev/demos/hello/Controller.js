@@ -18,7 +18,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'yourName',
       value: 'Jane Doe',
       view: {
@@ -31,8 +31,8 @@ foam.CLASS({
 
   methods: [
     function initE() {
-      this.start('div').add('Name:').end().start('div').add(this.YOUR_NAME).end(). 
-        //or start(this.YOUR_NAME).attrs({onKey: true, placeholder:'Your name please'}).end().      
+      this.start('div').add('Name:').end().start('div').add(this.YOUR_NAME).end().
+        //or start(this.YOUR_NAME).attrs({onKey: true, placeholder:'Your name please'}).end().
         start('h1').add('Hello ').add(this.yourName$).add('!').end();
     }
   ]

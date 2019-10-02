@@ -15,7 +15,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'cls',
       label: 'class',
       value: 'foam.nanos.auth.User',
@@ -24,7 +24,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'csv',
       view: { class: 'foam.u2.tag.TextArea' },
       value: `
@@ -44,7 +44,7 @@ id,firstName,lastName,email,phone.number,address.city,address.postalCode,lastLog
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'csvOut',
       view: {
         class: 'foam.u2.HTMLView',

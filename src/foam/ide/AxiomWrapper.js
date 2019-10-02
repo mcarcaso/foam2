@@ -33,7 +33,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       section: 'info',
       gridColumns: 4,

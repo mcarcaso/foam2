@@ -78,7 +78,7 @@ Implement LastModifiedByAware to suppress 'modified by' comment in journal outpu
     },
     {
       name: 'message',
-      class: 'String',
+      class: 'StringProperty',
       label: 'Log Message',
       visibility: foam.u2.Visibility.RO,
       view: { class: 'foam.u2.tag.TextArea', rows: 5, cols: 80 },

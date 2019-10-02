@@ -13,7 +13,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       hidden: true,
       expression: function(label) {
@@ -22,7 +22,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label'
     },
     {
@@ -39,4 +39,4 @@ foam.CLASS({
       hidden: true
     }
   ]
-}); 
+});

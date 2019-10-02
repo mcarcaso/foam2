@@ -39,15 +39,15 @@ foam.CLASS({
       tableWidth: 70
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'description'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'appName'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'spid'
     },
     {
@@ -81,21 +81,21 @@ foam.CLASS({
       displayWidth: 60
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'topNavigation',
       documentation: 'A custom top nav view to use.',
       value: 'foam.nanos.u2.navigation.TopNavigation',
       displayWidth: 45
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'footerView',
       documentation: 'A custom footer view to use.',
       value: 'foam.nanos.u2.navigation.FooterView',
       displayWidth: 45
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'customCSS',
       view: { class: 'foam.u2.tag.TextArea', rows: 16, cols: 60 },
     },
@@ -230,18 +230,18 @@ foam.CLASS({
       section: 'colours'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'inputHeight',
       documentation: 'Used to enforce consistent height across text-based inputs.',
       section: 'inputs'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'inputVerticalPadding',
       section: 'inputs'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'inputHorizontalPadding',
       section: 'inputs'
     }

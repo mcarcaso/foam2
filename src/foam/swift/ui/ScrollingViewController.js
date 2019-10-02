@@ -17,7 +17,7 @@ foam.CLASS({
       name: 'view',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title',
       swiftExpressionArgs: ['view$title'],
       swiftExpression: function() {/*
@@ -146,4 +146,3 @@ class VC_: UIViewController {
 }
   */},
 });
-

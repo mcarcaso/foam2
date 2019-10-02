@@ -18,7 +18,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'service',
       documentation: 'Name of the service'
     },

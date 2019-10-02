@@ -272,22 +272,22 @@ foam.CLASS({
       factory: function(action) { return this.action.icon; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'iconFontFamily',
       factory: function(action) { return this.action.iconFontFamily; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'iconFontClass',
       factory: function(action) { return this.action.iconFontClass; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'iconFontName',
       factory: function(action) { return this.action.iconFontName; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'labelPlaceholder',
       expression: function(label) { return this.action.label; }
     },
@@ -332,7 +332,7 @@ foam.CLASS({
       value: 'MEDIUM'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'styleClass_',
       expression: function(isDestructive, buttonStyle) {
         var s = buttonStyle.name.toLowerCase();
@@ -343,11 +343,11 @@ foam.CLASS({
 
   methods: [
     function initE() {
-      
+
       this.tooltip = this.action.toolTip;
 
       this.SUPER();
-      
+
       this.initCls();
 
       this.on('click', this.click);

@@ -64,7 +64,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'gridClsId',
       factory: function() {
         return this.relationship.junctionModel + 'Grid';
@@ -116,7 +116,7 @@ foam.CLASS({
       return Promise.all(
           sources.map(this.getDatumForTarget.bind(this, target)));
     },
-    
+
     function getDatumForTarget(target, source) {
       return this.junctionDAO.where(this.AND(
           this.EQ(this.junctionCls.SOURCE_ID, source.id),

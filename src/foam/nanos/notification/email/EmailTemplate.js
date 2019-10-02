@@ -8,7 +8,7 @@ foam.CLASS({
   package: 'foam.nanos.notification.email',
   name: 'EmailTemplate',
 
-  documentation: `Represents an email template that stores the default properties of a specific email, 
+  documentation: `Represents an email template that stores the default properties of a specific email,
   mimics the EmailMessage which is the end obj that is processed into email.`,
 
   javaImports: [
@@ -32,38 +32,38 @@ foam.CLASS({
       name: 'id'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       documentation: 'Template name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'group',
       value: '*'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'subject',
       documentation: 'Template subject'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'body',
       documentation: 'Template body',
       view: { class: 'foam.u2.tag.TextArea', rows: 40, cols: 150 }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'displayName',
       documentation: 'Displayed as the name in the email from field.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sendTo',
       documentation: 'This property will set to whomever the email is being sent to.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'replyTo',
       documentation: 'Displayed as the from email field.'
     },
@@ -89,7 +89,7 @@ foam.CLASS({
         },
         {
           name: 'group',
-          class: 'String',
+          class: 'StringProperty',
           documentation: 'group of user whose the recipient of the email being sent'
         },
         {
@@ -105,7 +105,7 @@ foam.CLASS({
       ],
       javaCode: `
         Logger logger = (Logger) x.get("logger");
-        
+
         if ( emailMessage == null ) {
           throw new NoSuchFieldException("emailMessage is Null");
         }
@@ -140,11 +140,11 @@ foam.CLASS({
         if ( ! emailMessage.isPropertySet("body") ) {
           emailMessage.setBody((JtwigTemplate.inlineTemplate(getBody(), config)).render(model));
         }
-        
+
         // REPLY TO:
         if ( ! emailMessage.isPropertySet("replyTo") && ! SafetyUtil.isEmpty(getReplyTo()) ) {
             emailMessage.setReplyTo((JtwigTemplate.inlineTemplate(getReplyTo(), config)).render(model));
-        } 
+        }
 
         // DISPLAY NAME:
         if ( ! emailMessage.isPropertySet("displayName") && ! SafetyUtil.isEmpty(getDisplayName()) ) {

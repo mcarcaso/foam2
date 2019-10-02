@@ -21,11 +21,11 @@ foam.ENUM({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'shortName'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'consoleMethodName'
     },
     {

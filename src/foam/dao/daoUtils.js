@@ -203,7 +203,7 @@ foam.CLASS({
       name: 'promise'
     }
   ],
-  
+
   methods: [
     {
       name: 'listen_',
@@ -238,7 +238,7 @@ foam.CLASS({
     {
       name:  'name',
       label: 'Store Name',
-      class:  'foam.core.String'
+      class:  'foam.core.StringProperty'
     }
   ],
 
@@ -289,7 +289,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'message'
     }
   ]

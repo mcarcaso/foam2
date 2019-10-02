@@ -19,7 +19,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'qualifier',
       documentation: `Lets the user choose a predicate to filter the view by.`,
       view: {

@@ -354,7 +354,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id'
     },
     {
@@ -506,13 +506,13 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'root',
       generateJava: false,
       documentation: 'Root directory of where files are stored'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'tmp',
       transient: true,
       documentation: 'Temp directory of where files are stored before hashing',
@@ -522,7 +522,7 @@ foam.CLASS({
       javaFactory: 'return File.separator + "tmp";'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sha256',
       transient: true,
       documentation: 'Directory of where files are stored after hashing',
@@ -816,11 +816,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'serviceName'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'address',
       factory: function() {
         return window.location.origin + '/' + this.serviceName;

@@ -29,7 +29,7 @@ foam.CLASS({
       expression: function(label) { return label; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label',
       required: true
     },

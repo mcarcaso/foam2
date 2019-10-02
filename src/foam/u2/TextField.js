@@ -42,11 +42,11 @@ foam.CLASS({
       name: 'displayWidth'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'placeholder'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type',
       value: 'text'
     },

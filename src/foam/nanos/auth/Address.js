@@ -25,7 +25,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type',
       documentation: 'The type of address.'
     },
@@ -43,13 +43,13 @@ foam.CLASS({
       class: 'Boolean',
       name: 'structured',
       value: true,
-      documentation: `Determines whether the address is shown in the following structure: 
-        Street Number, Street Name, Suite Number. For an unstructured address field, 
+      documentation: `Determines whether the address is shown in the following structure:
+        Street Number, Street Name, Suite Number. For an unstructured address field,
         use address1 and/or address2.
       `
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'address1',
       width: 70,
       displayWidth: 50,
@@ -73,7 +73,7 @@ foam.CLASS({
       ]
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'address2',
       width: 70,
       displayWidth: 50,
@@ -136,7 +136,7 @@ foam.CLASS({
     {
       // TODO: Remove structured, street number, and street name. This should be a view concern
       // and not baked into the model.
-      class: 'String',
+      class: 'StringProperty',
       name: 'streetNumber',
       width: 16,
       documentation: 'The structured field for the street number of the postal address.',
@@ -156,7 +156,7 @@ foam.CLASS({
       ]
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'streetName',
       width: 70,
       documentation: 'The structured field for the street name of the postal address.',
@@ -174,20 +174,20 @@ foam.CLASS({
       ]
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'suite',
       documentation: 'The structured field for the suite number of the postal address.',
       width: 16
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'city',
       documentation: 'The city of the postal address.',
       required: true,
       minLength: 1
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'postalCode',
       documentation: 'The postal code of the postal address.',
       preSet: function(oldValue, newValue) {

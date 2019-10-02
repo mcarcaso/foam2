@@ -10,15 +10,15 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'from'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'displayName'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'replyTo'
     }
   ]

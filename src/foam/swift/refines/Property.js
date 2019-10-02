@@ -18,7 +18,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftVarName',
       expression: function(name) {
         var reserved = [
@@ -32,36 +32,36 @@ foam.CLASS({
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftView',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftSlotLinkSubName',
       expression: function(name) { return name + '_Value_Sub_'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftSlotValueName',
       expression: function(name) { return name + '_Value_'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftSlotName',
       expression: function(name) { return name + '$'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftInitedName',
       expression: function(name) { return '_' + name + '_inited_'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftValueName',
       expression: function(name) { return '_' + name + '_'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftValueType',
       expression: function(swiftType) {
         return swiftType + (foam.swift.isNullable(swiftType) ? '' : '!')
@@ -85,16 +85,16 @@ foam.CLASS({
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftFactory'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftFactoryName',
       expression: function(name) { return '_' + name + '_factory_'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftValue',
       expression: function(value) {
         var v = foam.swift.asSwiftValue(value)
@@ -102,31 +102,31 @@ foam.CLASS({
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftGetter',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftSetter',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftPreSet',
       expression: function() {
         return 'return newValue';
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftPreSetFuncName',
       expression: function(name) { return '_' + name + '_preSet_'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftPostSet',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftPostSetFuncName',
       expression: function(name) { return '_' + name + '_postSet_'; },
     },
@@ -135,16 +135,16 @@ foam.CLASS({
       name: 'swiftExpressionArgs',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftExpression',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftExpressionSubscriptionName',
       expression: function(name) { return '_' + name + '_expression_'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftAdapt',
       expression: function(swiftType) {
         if (!foam.swift.requiresCast(swiftType)) return 'return newValue';
@@ -152,22 +152,22 @@ foam.CLASS({
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftAdaptFuncName',
       expression: function(name) { return '_' + name + '_adapt_'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftPrivateAxiomName',
       expression: function(name) { return '_' + foam.String.constantize(name) + '_'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftAxiomName',
       expression: function(name) { return foam.String.constantize(name); },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftToJSON',
       value: 'outputter?.output(out, value)',
     },
@@ -177,7 +177,7 @@ foam.CLASS({
       value: true,
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftJsonParser',
       factory: function() {
         return `Context.GLOBAL.create(foam_swift_parse_json_AnyParser.self)!`;
@@ -600,7 +600,7 @@ foam.CLASS({
       name: 'classes',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'viewType',
       value: 'UIView',
     },

@@ -46,7 +46,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'errorString'
     },
     {
@@ -105,7 +105,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'StringPropertyValidationRefinement',
-  refines: 'foam.core.String',
+  refines: 'foam.core.StringProperty',
   properties: [
     'minLength',
     'maxLength',

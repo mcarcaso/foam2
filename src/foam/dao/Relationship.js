@@ -38,7 +38,7 @@ foam.CLASS({
     },
     {
       name: 'name',
-      class: 'String',
+      class: 'StringProperty',
       transient: true,
       hidden: true,
       getter: function() {
@@ -53,7 +53,7 @@ foam.CLASS({
     'forwardName',
     {
       name: 'inverseName',
-      class: 'String'
+      class: 'StringProperty'
     },
     {
       name: 'cardinality',
@@ -64,15 +64,15 @@ foam.CLASS({
       value: '1:*'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sourceModel'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetModel'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'junctionModel',
       expression: function(sourceModel, targetModel) {
         var source = sourceModel.substring(sourceModel.lastIndexOf('.') + 1);
@@ -83,7 +83,7 @@ foam.CLASS({
     }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sourceDAOKey',
       expression: function(sourceModel) {
         var sourceName = sourceModel.substring(sourceModel.lastIndexOf('.') + 1);
@@ -91,11 +91,11 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'unauthorizedSourceDAOKey',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetDAOKey',
       expression: function(targetModel) {
         var targetName = targetModel.substring(targetModel.lastIndexOf('.') + 1);
@@ -103,11 +103,11 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'unauthorizedTargetDAOKey',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'junctionDAOKey',
       expression: function(junctionModel) {
         var junctionName = junctionModel.substring(junctionModel.lastIndexOf('.') + 1);
@@ -399,17 +399,17 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetDAOKey',
       hidden: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'unauthorizedTargetDAOKey',
       hidden: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'junctionDAOKey',
       hidden: true
     },
@@ -653,20 +653,20 @@ foam.CLASS({
     ['javaDiffProperty', '//noop'],
     ['generateJava', false],
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetPropertyName',
       documentation: 'We don\'t just use targetProperty here because at the time that this axiom is created, the target property may not even be installed yet on the target.  So instead we use a combination of targetPropertyName and target class and get the actual property when needed.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'target'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetDAOKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'unauthorizedTargetDAOKey'
     },
     {
@@ -686,7 +686,7 @@ foam.CLASS({
         targetPropertyName: this.targetPropertyName,
         targetDAOKey: this.targetDAOKey,
         unauthorizedTargetDAOKey: this.unauthorizedTargetDAOKey
-        
+
       }).copyFrom(this.methodOverrides));
 
       cls.installAxiom(this.OneToManyRelationshipProperty.create({
@@ -739,19 +739,19 @@ foam.CLASS({
   extends: 'foam.core.Method',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'target',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetPropertyName',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetDAOKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'unauthorizedTargetDAOKey'
     },
     {
@@ -844,27 +844,27 @@ foam.CLASS({
     ['generateJava', false],
     ['view', { class: 'foam.u2.DetailView', showActions: true }],
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'junction'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sourceProperty',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'junctionDAOKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetDAOKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'unauthorizedTargetDAOKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetProperty'
     },
     {
@@ -902,27 +902,27 @@ foam.CLASS({
   extends: 'foam.core.Method',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sourceProperty'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetProperty'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetDAOKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'unauthorizedTargetDAOKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'junctionDAOKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'junction'
     },
     {

@@ -62,7 +62,7 @@ foam.CLASS({
       name: 'xmlTextNode'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sqlType'
     },
     {

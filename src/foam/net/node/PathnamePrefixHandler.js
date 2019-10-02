@@ -27,7 +27,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'pathnamePrefix',
       expression: function(ctxPathnamePrefix) {
         return ctxPathnamePrefix || '';

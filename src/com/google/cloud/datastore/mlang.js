@@ -181,7 +181,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       documentation: `Provides Operator for the Cloud Datastore REST API.
           https://cloud.google.com/datastore/docs/reference/rest/v1/projects/runQuery#Operator_1`,
       name: 'datastoreOpName'
@@ -218,35 +218,35 @@ foam.CLASS({
   package: 'com.google.cloud.datastore',
   name: 'EqDatastoreRefinement',
   refines: 'foam.mlang.predicate.Eq',
-  properties: [ {class: 'String', name: 'datastoreOpName', value: 'EQUAL' }]
+  properties: [ {class: 'StringProperty', name: 'datastoreOpName', value: 'EQUAL' }]
 });
 
 foam.CLASS({
   package: 'com.google.cloud.datastore',
   name: 'LtDatastoreRefinement',
   refines: 'foam.mlang.predicate.Lt',
-  properties: [ {class: 'String', name: 'datastoreOpName', value: 'LESS_THAN' }]
+  properties: [ {class: 'StringProperty', name: 'datastoreOpName', value: 'LESS_THAN' }]
 });
 
 foam.CLASS({
   package: 'com.google.cloud.datastore',
   name: 'LteDatastoreRefinement',
   refines: 'foam.mlang.predicate.Lte',
-  properties: [ {class: 'String', name: 'datastoreOpName', value: 'LESS_THAN_OR_EQUAL' }]
+  properties: [ {class: 'StringProperty', name: 'datastoreOpName', value: 'LESS_THAN_OR_EQUAL' }]
 });
 
 foam.CLASS({
   package: 'com.google.cloud.datastore',
   name: 'GtDatastoreRefinement',
   refines: 'foam.mlang.predicate.Gt',
-  properties: [ {class: 'String', name: 'datastoreOpName', value: 'GREATER_THAN' }]
+  properties: [ {class: 'StringProperty', name: 'datastoreOpName', value: 'GREATER_THAN' }]
 });
 
 foam.CLASS({
   package: 'com.google.cloud.datastore',
   name: 'GteDatastoreRefinement',
   refines: 'foam.mlang.predicate.Gte',
-  properties: [ {class: 'String', name: 'datastoreOpName', value: 'GREATER_THAN_OR_EQUAL' }]
+  properties: [ {class: 'StringProperty', name: 'datastoreOpName', value: 'GREATER_THAN_OR_EQUAL' }]
 });
 
 

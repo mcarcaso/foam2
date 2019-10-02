@@ -27,7 +27,7 @@ foam.CLASS({
       factory: function() { return foam.parser.html.TagType.OPEN; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'nodeName',
       value: 'div'
     },

@@ -19,7 +19,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'modelId',
     },
     {
@@ -34,7 +34,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title',
     },
   ],

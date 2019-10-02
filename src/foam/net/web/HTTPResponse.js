@@ -31,7 +31,7 @@ foam.CLASS({
       name: 'status'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'responseType'
     },
     {

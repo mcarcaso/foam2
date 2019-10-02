@@ -36,7 +36,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       factory: function() { return `LogBox${this.$UID}`; },
       swiftFactory: 'return "LogBox$"+UUID().uuidString',

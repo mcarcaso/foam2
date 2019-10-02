@@ -120,7 +120,7 @@ function reverseMapType(property) {
   if ( foam.core.Float.isInstance(property) ) return 'number';
   if ( foam.core.Long.isInstance(property) ) return 'number';
   if ( foam.core.Double.isInstance(property) ) return 'number';
-  if ( foam.core.String.isInstance(property) ) return 'string';
+  if ( foam.core.StringProperty.isInstance(property) ) return 'string';
   if ( foam.core.Boolean.isInstance(property) ) return 'bool';
 
   if ( property.of ) return property.of;

@@ -27,7 +27,7 @@ foam.CLASS({
   properties: [
     { class: 'Class', name: 'data' },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'data_',
       expression: function(data) {
         return data ? data.id : '';
@@ -48,7 +48,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'error_',
       visibility: 'RO'
     }

@@ -39,7 +39,7 @@ foam.CLASS({
       name: 'totalCount'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'countText',
       expression: function(selectedCount, totalCount) {
         var singular = this.dao.of.name.toLowerCase();

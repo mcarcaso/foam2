@@ -10,19 +10,19 @@ foam.CLASS({
   documentation: 'A JDBC Connection Specification to add to the system context.',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'databaseServer'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'hostName'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'databaseName'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'userName'
     },
     {

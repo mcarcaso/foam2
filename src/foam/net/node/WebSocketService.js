@@ -28,11 +28,11 @@ foam.CLASS({
       name: 'delegate'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'privateKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'cert'
     }
   ],

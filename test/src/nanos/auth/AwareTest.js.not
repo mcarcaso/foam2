@@ -34,7 +34,7 @@ describe('Created/LastModified Aware tests', function() {
           name: 'id',
         },
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'name',
         },
         {

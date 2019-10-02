@@ -14,11 +14,11 @@ foam.CLASS({
       name: 'from'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'axiom'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       transient: true,
       expression: function(axiom) {

@@ -51,37 +51,37 @@ foam.CLASS({
     },
     {
       name: 'putName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return getNSpec().getName() + ":put";',
       visibility: 'RO'
     },
     {
       name: 'findName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return getNSpec().getName() + ":find";',
       visibility: 'RO'
     },
     {
       name: 'selectName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return getNSpec().getName() + ":select";',
       visibility: 'RO'
     },
     {
       name: 'removeName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return getNSpec().getName() + ":remove";',
       visibility: 'RO'
     },
     {
       name: 'removeAllName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return getNSpec().getName() + ":removeAll";',
       visibility: 'RO'
     },
     {
       name: 'cmdName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return getNSpec().getName() + ":cmd";',
       visibility: 'RO'
     }

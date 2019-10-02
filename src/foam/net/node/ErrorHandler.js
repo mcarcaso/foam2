@@ -31,7 +31,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'logMessage',
       required: true,
       final: true
@@ -43,7 +43,7 @@ foam.CLASS({
       final: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'clientMessage',
       factory: function() {
         var clientMessage = this.CLIENT_MESSAGES[this.httpCode];

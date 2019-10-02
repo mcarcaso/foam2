@@ -14,7 +14,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'serviceName',
       expression: function(delegate$serviceName) {
         return delegate$serviceName

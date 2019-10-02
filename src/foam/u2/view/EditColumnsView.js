@@ -41,13 +41,13 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'key',
       hidden: true,
       expression: function(of, axiom) { return of.id + '.' + axiom.name; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label',
       label: '',
       visibility: 'RO',

@@ -93,7 +93,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'query',
       postSet: function() { this.skip = 0; },
       view: {
@@ -104,7 +104,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'groupQuery',
       view: {
         class: 'foam.u2.TextField',

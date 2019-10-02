@@ -31,7 +31,7 @@ foam.CLASS({
       name: 'float'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'string'
     },
     {
@@ -1472,9 +1472,9 @@ describe('AND(*, CONTAINS_IC(ID, *)', function() {
       name: 'Person',
       properties:
       [
-        {class: 'String', name: 'id'},
-        {class: 'String', name: 'f'},
-        {class: 'String', name: 'l'}
+        {class: 'StringProperty', name: 'id'},
+        {class: 'StringProperty', name: 'f'},
+        {class: 'StringProperty', name: 'l'}
       ]
     });
     var dao = foam.dao.MDAO.create({of: test.Person});

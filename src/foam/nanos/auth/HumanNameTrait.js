@@ -10,24 +10,24 @@ foam.INTERFACE({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'firstName',
       tableWidth: 160,
       documentation: 'First name of user.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'middleName',
       documentation: 'Middle name of user.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'lastName',
       documentation: 'Last name of user.',
       tableWidth: 160
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'legalName',
       documentation: 'Full legal name of user. Appends first, middle & last name.',
       transient: true,

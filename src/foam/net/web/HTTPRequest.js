@@ -31,7 +31,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'hostname'
     },
     {
@@ -39,14 +39,14 @@ foam.CLASS({
       name: 'port'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'protocol',
       preSet: function(old, nu) {
         return nu.replace(':', '');
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'path',
       preSet: function(old, nu) {
         if ( ! nu.startsWith('/') ) return '/' + nu;
@@ -54,11 +54,11 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'url'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'method',
       value: 'GET'
     },
@@ -71,17 +71,17 @@ foam.CLASS({
     },
     {
       // TODO: validate acceptable types
-      class: 'String',
+      class: 'StringProperty',
       name: 'responseType',
       value: 'text'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'contentType',
       factory: function() { return this.responseType; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'mode',
       value: 'cors'
     }

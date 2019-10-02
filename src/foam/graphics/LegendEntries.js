@@ -12,7 +12,7 @@ foam.CLASS({
   documentation: 'LegendEntries  [ name ,  value [ float ] ]',
 
   properties: [ {
-      class: 'String',
+      class: 'StringProperty',
       name: 'seriesName'
     },
     {

@@ -8,7 +8,7 @@ foam.CLASS({
   package: 'foam.dao',
   name: 'CSVSink',
   extends: 'foam.dao.AbstractSink',
-  implements: [ 
+  implements: [
     'foam.core.Serializable'
   ],
   javaImports: [
@@ -22,7 +22,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'csv',
       view: 'foam.u2.tag.TextArea'
     },
@@ -155,7 +155,7 @@ foam.CLASS({
     },
     {
       name: 'javaToCSV',
-      class: 'String',
+      class: 'StringProperty',
       value: `
         if ( of() instanceof foam.core.EmptyClassInfo ) {
           outputter.outputValue(obj != null ? f(obj) : null);
@@ -186,7 +186,7 @@ foam.CLASS({
     },
     {
       name: 'javaToCSVLabel',
-      class: 'String',
+      class: 'StringProperty',
       value: `
         if ( of() instanceof foam.core.EmptyClassInfo ) {
           outputter.outputValue(getName());

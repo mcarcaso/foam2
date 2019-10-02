@@ -26,17 +26,17 @@ foam.CLASS({
       name: 'id',
       visibility: foam.u2.Visibility.RO,
       label:'Ticket ID'
-    }, 
+    },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'requestorEmail'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'requestorName'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'subject',
       label: 'Subject',
     },
@@ -59,15 +59,15 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'supportEmail'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'internalNote'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'status',
       label: 'Status',
       factory: function() {

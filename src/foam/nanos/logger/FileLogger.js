@@ -24,7 +24,7 @@ foam.CLASS({
   properties: [
     {
       name: 'logPath',
-      class: 'String',
+      class: 'StringProperty',
       javaValue: 'System.getProperty("LOG_HOME")'
     },
     {

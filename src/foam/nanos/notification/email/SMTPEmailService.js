@@ -105,12 +105,12 @@ foam.CLASS({
       `
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'host',
       value: '127.0.0.1'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'port',
       value: '25'
     },
@@ -125,12 +125,12 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'username',
       value: null
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'password',
       value: null
     }
@@ -167,7 +167,7 @@ foam.CLASS({
                 message.setFrom(new InternetAddress(emailMessage.getReplyTo()));
               }
           }
-          
+
           if ( emailMessage.isPropertySet("replyTo") )
             message.setReplyTo(InternetAddress.parse(emailMessage.getReplyTo()));
 
@@ -192,7 +192,7 @@ foam.CLASS({
               message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(StringUtils.join(emailMessage.getCc(), ",")));
             }
           }
-          
+
           if ( emailMessage.isPropertySet("bcc") ) {
             if ( emailMessage.getBcc().length == 1 ) {
               message.setRecipient(Message.RecipientType.BCC, new InternetAddress((emailMessage.getBcc())[0], false));
@@ -200,7 +200,7 @@ foam.CLASS({
               message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(StringUtils.join(emailMessage.getBcc(), ",")));
             }
           }
-          
+
           message.setSentDate(new Date());
           logger.info("SMTPEmailService Created MimeMessage.");
           return message;

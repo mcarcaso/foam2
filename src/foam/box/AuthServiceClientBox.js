@@ -20,12 +20,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sessionName',
       value: 'defaultSession'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sessionID',
       factory: function() {
         return localStorage[this.sessionName] ||

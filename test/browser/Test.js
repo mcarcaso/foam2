@@ -226,7 +226,7 @@ foam.CLASS({
     { class: 'Boolean', name: 'b' },
     { class: 'Int', name: 'c' },
     { class: 'Float', name: 'd' },
-    { class: 'String', name: 'e' },
+    { class: 'StringProperty', name: 'e' },
     { class: 'Array', name: 'f' },
   ]
 });
@@ -463,7 +463,7 @@ foam.CLASS({
   name: 'ClassTest',
   properties: [
     { name: 'cls', class: 'Class' },
-    { name: 'str', class: 'String' }
+    { name: 'str', class: 'StringProperty' }
   ]
 });
 var ct = ClassTest.create();
@@ -480,7 +480,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'StringProperty',
-  extends: 'foam.core.String'
+  extends: 'foam.core.StringProperty'
 });
 
 foam.CLASS({
@@ -493,14 +493,14 @@ foam.CLASS({
     },
     {
       name: 'aString',
-      of: 'String'
+      of: 'StringProperty'
     }
   ]
 });
 
 FacetTest.describe();
 
-console.log(foam.core.Property.create({of: 'String'}).cls_.id);
+console.log(foam.core.Property.create({of: 'StringProperty'}).cls_.id);
 */
 
 

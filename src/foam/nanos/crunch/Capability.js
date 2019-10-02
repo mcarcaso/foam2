@@ -40,11 +40,11 @@ foam.CLASS({
   ],
 
   properties: [
-    
+
     {
       name: 'id',
-      class: 'String'
-    }, 
+      class: 'StringProperty'
+    },
     {
       name: 'icon',
       class: 'Image',
@@ -52,21 +52,21 @@ foam.CLASS({
     },
     {
       name: 'description',
-      class: 'String',
+      class: 'StringProperty',
       documentation: `Description of capability`
     },
     {
       name: 'notes',
-      class: 'String',
+      class: 'StringProperty',
       view: {
         class: 'foam.u2.tag.TextArea',
-        rows: 12, 
+        rows: 12,
         cols: 120
       }
     },
     {
       name: 'version',
-      class: 'String'
+      class: 'StringProperty'
     },
     {
       name: 'enabled',
@@ -97,7 +97,7 @@ foam.CLASS({
     },
     {
       name: 'daoKey',
-      class: 'String',
+      class: 'StringProperty',
       visibility: 'RO'
     }
   ],
@@ -120,7 +120,7 @@ foam.CLASS({
 
         String[] permissionsGranted = this.getPermissionsGranted();
         for ( String permissionName : permissionsGranted ) {
-          if ( this.stringImplies(permissionName, permission) ) return true; 
+          if ( this.stringImplies(permissionName, permission) ) return true;
         }
 
         List<CapabilityCapabilityJunction> prereqs = ((ArraySink) this.getPrerequisites(x).getJunctionDAO().where(EQ(CapabilityCapabilityJunction.TARGET_ID, (String) this.getId())).select(new ArraySink())).getArray();
@@ -179,7 +179,7 @@ foam.RELATIONSHIP({
 });
 
 foam.RELATIONSHIP({
-  sourceModel: 'foam.nanos.crunch.Capability',  
+  sourceModel: 'foam.nanos.crunch.Capability',
   targetModel: 'foam.nanos.crunch.Capability',
   cardinality: '*:*',
   forwardName: 'deprecated',
@@ -188,7 +188,7 @@ foam.RELATIONSHIP({
 });
 
 foam.RELATIONSHIP({
-  sourceModel: 'foam.nanos.crunch.Capability',  
+  sourceModel: 'foam.nanos.crunch.Capability',
   targetModel: 'foam.nanos.crunch.Capability',
   cardinality: '*:*',
   forwardName: 'prerequisites',

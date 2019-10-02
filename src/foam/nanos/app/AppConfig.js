@@ -10,43 +10,43 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'version'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'privacy',
       value: 'Privacy Policy'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'privacyUrl'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'copyright'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'url',
       value: 'http://localhost:8080/'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'urlLabel',
       value: 'FOAM Powered'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'termsAndCondLabel',
       value: 'Terms and Conditions'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'termsAndCondLink'
     },
     {
@@ -55,12 +55,12 @@ foam.CLASS({
       name: 'mode'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'appLink',
       value: 'https://www.apple.com/lae/ios/app-store/'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'playLink',
       value: 'https://play.google.com/store?hl=en'
     },
@@ -70,7 +70,7 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'supportEmail'
     }
   ]

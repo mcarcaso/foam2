@@ -52,7 +52,7 @@ externalFile.blacklist.forEach(function(cls) {
   'foam.core.AbstractEnum',
   'foam.core.AbstractInterface',
   'foam.core.Property',
-  'foam.core.String',
+  'foam.core.StringProperty',
 
   // These have hand written java impls so we don't want to clobber them.
   // TODO: Change gen.sh to prefer hand written java files over generated.

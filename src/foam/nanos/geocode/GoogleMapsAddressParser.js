@@ -87,11 +87,11 @@ foam.CLASS({
       name: 'buildURLString',
       args: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'paramValue'
         },
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'mapsUri'
         }
       ],
@@ -100,7 +100,7 @@ foam.CLASS({
         StringBuilder sb = new StringBuilder();
         StringBuilder builder = sb.append(mapsUri);
         builder.append(paramValue).append("&key=").append(getApiKey());
-        
+
         return builder;
       `
     },
@@ -176,7 +176,7 @@ foam.CLASS({
         if ( response == null ) {
           throw new RuntimeException("Invalid response");
         }
-        
+
         if ( ! "OK".equals(response.getStatus()) ) {
           throw new RuntimeException(! SafetyUtil.isEmpty(response.getError_message()) ? response.getError_message() : "Invalid response");
         }
@@ -194,7 +194,7 @@ foam.CLASS({
         if ( result == null ) {
           throw new RuntimeException("Invalid response");
         }
-        
+
         if ( ! "OK".equals(result.getStatus()) ) {
           throw new RuntimeException(! SafetyUtil.isEmpty(result.getError_message()) ? result.getError_message() : "Invalid response");
         }
@@ -214,7 +214,7 @@ foam.CLASS({
           type: 'foam.nanos.geocode.GoogleMapsAddressComponent[]'
         },
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'suite'
         },
         {
@@ -248,7 +248,7 @@ foam.CLASS({
       args: [
         {
 
-          class: 'String',
+          class: 'StringProperty',
           name: 'type'
         },
         {

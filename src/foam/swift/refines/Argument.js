@@ -14,17 +14,17 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftLocalName',
       expression: function(name) { return name; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftExternalName',
       value: '_',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftDefaultValue',
     },
     {

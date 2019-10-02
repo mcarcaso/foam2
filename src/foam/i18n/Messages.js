@@ -29,11 +29,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'description'
     },
     {
@@ -43,7 +43,7 @@ foam.CLASS({
       factory: function() { return {}; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'message',
       getter: function() { return this.message_ || this.messageMap[foam.locale]; },
       setter: function(m) { this.message_ = this.messageMap[foam.locale] = m; }

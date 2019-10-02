@@ -13,19 +13,19 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'daoKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'subtitle'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'customDAOController',
       displayWidth: 80
     },
@@ -63,13 +63,13 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'detailView',
       value: 'foam.u2.DetailView',
       displayWidth: 80
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'createLabel',
       documentation: 'Set this to override the create button label.'
     },

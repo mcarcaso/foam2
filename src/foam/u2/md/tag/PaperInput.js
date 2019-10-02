@@ -23,7 +23,7 @@ foam.CLASS({
   properties: [
     [ 'nodeName', 'paper-input' ],
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label'
     },
     {

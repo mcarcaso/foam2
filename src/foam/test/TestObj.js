@@ -20,11 +20,11 @@ foam.CLASS({
   name: 'TestObj',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'description',
       documentation: `
         This property is available so that you can write tests that need you to

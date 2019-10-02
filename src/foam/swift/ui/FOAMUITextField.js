@@ -37,7 +37,7 @@ newValue.delegate = self
       name: 'data',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'emptyValue',
     },
   ],

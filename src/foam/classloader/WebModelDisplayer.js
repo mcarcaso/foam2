@@ -63,7 +63,7 @@ foam.CLASS({
       postSet: function(_, n) { foam.locale = n; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'classpath',
       postSet: function(_, n) {
         if ( ! n ) return;

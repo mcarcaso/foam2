@@ -93,7 +93,7 @@ foam.CLASS({
   properties: [
     {
       /** The developer-friendly name for this EasyDAO. */
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       factory: function() {
         return this.nSpec && this.nSpec.name || this.of.id;
@@ -294,7 +294,7 @@ return delegate;
       value: false
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'seqPropertyName',
       value: 'id'
     },
@@ -330,7 +330,7 @@ return delegate;
       `
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'permissionPrefix',
       factory: function() {
         return this.of.name.toLowerCase();
@@ -365,7 +365,7 @@ return delegate;
       value: 'NO_JOURNAL'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'journalName'
     },
     {

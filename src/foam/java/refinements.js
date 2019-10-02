@@ -84,7 +84,7 @@ ${Object.keys(o).map(function(k) {
 foam.CLASS({
   package: 'foam.java',
   name: 'JavaType',
-  extends: 'String',
+  extends: 'StringProperty',
   flags: ['java'],
   properties: [
     {
@@ -135,47 +135,47 @@ foam.CLASS({
     },
     { class: 'foam.java.JavaType' },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaJSONParser',
       value: 'foam.lib.json.AnyParser.instance()'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaQueryParser',
       expression: function(javaJSONParser) {
         return javaJSONParser;
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaCSVParser'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaInfoType'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaFactory'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaGetter'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaSetter'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaPreSet'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaPostSet'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'shortName'
     },
     {
@@ -183,36 +183,36 @@ foam.CLASS({
       name: 'aliases'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaCloneProperty',
       value: null
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaDiffProperty',
       value: null
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaCompare',
       value: 'return foam.util.SafetyUtil.compare(get_(o1), get_(o2));'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaComparePropertyToObject',
       value: 'return foam.util.SafetyUtil.compare(cast(key), get_(o));'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaComparePropertyToValue',
       value: 'return foam.util.SafetyUtil.compare(cast(key), cast(value));'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaAssertValue'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaValue',
       expression: function(value) {
         return foam.java.asJavaValue(value);
@@ -229,7 +229,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaValidateObj',
       expression: function(validationPredicates) {
         return validationPredicates
@@ -244,7 +244,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaFromCSVLabelMapping',
       value: `
         foam.core.PropertyInfo prop = this;
@@ -256,12 +256,12 @@ foam.CLASS({
       `
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaToCSV',
       value: 'outputter.outputValue(obj != null ? get(obj) : null);'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaToCSVLabel',
       value: 'outputter.outputValue(getName());'
     },
@@ -642,7 +642,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaCode',
       flags: ['java'],
     },
@@ -770,7 +770,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaCode'
     }
   ],
@@ -1426,7 +1426,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'StringJavaRefinement',
-  refines: 'foam.core.String',
+  refines: 'foam.core.StringProperty',
   flags: ['java'],
 
   properties: [
@@ -1999,7 +1999,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaName',
       section: 'javaProperties',
       factory: function() { return this.id; }
@@ -2025,7 +2025,7 @@ foam.CLASS({
   flags: ['java'],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'javaCode'
     }
   ],

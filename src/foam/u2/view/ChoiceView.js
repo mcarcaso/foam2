@@ -37,12 +37,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       factory: function() { return "select"; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label',
       documentation: 'User-visible label. Not to be confused with "text", ' +
           'which is the user-visible name of the currently selected choice.'
@@ -123,7 +123,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'placeholder',
       factory: function() { return undefined; },
       documentation: 'When provided the placeholder will be prepended to the selection list, and selected if the choices array is empty or no choice in the choices array is selected.'
@@ -218,7 +218,7 @@ foam.CLASS({
               .attrs({ name: self.name })
               .enableClass('selection-made', self.index$.map((index) => index !== -1))
             .end();
-      
+
         } else {
           return self.E().add(self.text$)
         }

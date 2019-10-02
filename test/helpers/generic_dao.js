@@ -34,11 +34,11 @@ global.genericDAOTestBattery = function(daoFactory) {
             name: 'id',
           },
           {
-            class: 'String',
+            class: 'StringProperty',
             name: 'firstName',
           },
           {
-            class: 'String',
+            class: 'StringProperty',
             name: 'lastName',
           },
           // TODO(braden): Put these tags fields back when the serialization
@@ -46,7 +46,7 @@ global.genericDAOTestBattery = function(daoFactory) {
           /*
             {
             class: 'Array',
-            of: 'String',
+            of: 'StringProperty',
             name: 'tags',
             },
           */

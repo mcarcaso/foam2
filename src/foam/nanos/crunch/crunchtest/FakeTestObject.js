@@ -6,32 +6,32 @@
 foam.CLASS({
     package: 'foam.nanos.crunch.crunchtest',
     name: 'FakeTestObject',
-  
+
     documentation: `
     Fake dataobject to test capability
     `,
-  
+
     implements: [
       'foam.core.Validatable'
     ],
-  
+
     javaImports: [
       'foam.nanos.auth.AuthorizationException',
       'foam.nanos.auth.AuthService',
       'foam.util.SafetyUtil'
     ],
-  
+
     properties: [
       {
         name: 'username',
-        class: 'String',
+        class: 'StringProperty',
       },
       {
         name: 'password',
-        class: 'String'
+        class: 'StringProperty'
       }
     ],
-  
+
     methods: [
       {
         name: 'validate',
@@ -51,9 +51,8 @@ foam.CLASS({
         }
         if ( ! this.getUsername().equals("RUBY") ) throw new RuntimeException("incorrect username");
         if ( ! this.getPassword().equals("PASS") ) throw new RuntimeException("incorrect password");
-            
+
         `
       }
     ]
   });
-    

@@ -28,7 +28,7 @@ describe('BaseHandler', function() {
 
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'exportFromRoute',
           value: VALUE
         }

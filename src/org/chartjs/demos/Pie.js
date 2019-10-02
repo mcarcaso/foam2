@@ -66,8 +66,8 @@ foam.CLASS({
       name: 'Person',
       properties: [
         { name: 'id' },
-        { class: 'String', name: 'name' },
-        { class: 'String', name: 'sex', value: 'M' },
+        { class: 'StringProperty', name: 'name' },
+        { class: 'StringProperty', name: 'sex', value: 'M' },
         { class: 'Int', name: 'age' },
       ]
     },
@@ -104,4 +104,3 @@ foam.CLASS({
     },
   ],
 });
-

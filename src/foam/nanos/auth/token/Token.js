@@ -31,7 +31,7 @@ foam.CLASS({
       documentation: 'The token expiry date'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'data',
       documentation: 'The token data'
     },

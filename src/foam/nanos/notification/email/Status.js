@@ -8,7 +8,7 @@ foam.ENUM({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'errorMessage'
     }
   ],

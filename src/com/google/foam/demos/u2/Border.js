@@ -25,7 +25,7 @@ foam.CLASS({
   `,
 
   properties: [
-    { class: 'String',  name: 'label' },
+    { class: 'StringProperty',  name: 'label' },
     { class: 'Boolean', name: 'selected' }
   ],
 

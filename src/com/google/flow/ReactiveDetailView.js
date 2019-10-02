@@ -131,7 +131,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'formula',
       displayWidth: 50,
       factory: function() {

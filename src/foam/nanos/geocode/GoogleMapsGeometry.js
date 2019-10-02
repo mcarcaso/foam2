@@ -24,7 +24,7 @@ foam.CLASS({
       documentation: 'Contains geocoded latitude, longitude value'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'location_type',
       documentation: 'Stores additional data about the specified location'
     },

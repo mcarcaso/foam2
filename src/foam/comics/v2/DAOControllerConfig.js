@@ -19,7 +19,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'daoKey'
     },
     {
@@ -52,7 +52,7 @@ foam.CLASS({
       expression: function(dao$of) { return dao$of; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'browseTitle',
       expression: function(of) { return foam.String.pluralize(of.model_.label); }
     },

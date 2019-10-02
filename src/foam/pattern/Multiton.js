@@ -44,7 +44,7 @@ foam.CLASS({
     [ 'name', 'create' ],
     {
       // FUTURE: switch to 'properties' to support multiple keys when/if needed.
-      class: 'String',
+      class: 'StringProperty',
       name: 'property'
     }
   ],

@@ -36,11 +36,11 @@ foam.CLASS({
       name: 'relationship'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetDAOKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'unauthorizedTargetDAOKey'
     }
   ],

@@ -18,7 +18,7 @@ foam.CLASS({
       documentation: 'Array of geocoded address information'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'formatted_address',
       documentation: 'String containing the human-readable address of this location'
     },
@@ -29,7 +29,7 @@ foam.CLASS({
       documentation: 'Address geometry information'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'place_id',
       documentation: 'Unique identifier that can be used with other Google APIs'
     },

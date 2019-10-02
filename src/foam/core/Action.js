@@ -31,27 +31,27 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       required: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'documentation'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label',
       expression: function(name) { return foam.String.labelize(name); }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'speechLabel',
       expression: function(label) { return label; }
     },
     {
       documentation: 'displayed on :hover',
-      class: 'String',
+      class: 'StringProperty',
       name: 'toolTip'
     },
     {
@@ -63,17 +63,17 @@ foam.CLASS({
       documentation: 'If confirmation is required. Recommended for destructive actions.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'iconFontFamily',
       value: 'Material Icons'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'iconFontClass',
       value: 'material-icons'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'iconFontName'
     },
     {
@@ -81,7 +81,7 @@ foam.CLASS({
       name: 'keyboardShortcuts'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'help'
     },
     {

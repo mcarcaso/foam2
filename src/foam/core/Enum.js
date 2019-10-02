@@ -278,7 +278,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'documentation',
       transient: true
     },
@@ -293,13 +293,13 @@ foam.CLASS({
       final: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       transient: true,
       final: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label',
       final: true,
       transient: true,

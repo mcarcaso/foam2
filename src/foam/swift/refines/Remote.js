@@ -15,7 +15,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftClientClass',
       expression: function(clientClass) { return clientClass },
     }

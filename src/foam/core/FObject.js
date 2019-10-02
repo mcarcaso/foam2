@@ -384,7 +384,7 @@ foam.LIB({
            The first element of the array is the name and the second is the
            default value.
 
-        3. Long-form JSON:     { class: 'String', name: 'sex', value: 'Male' }
+        3. Long-form JSON:     { class: 'StringProperty', name: 'sex', value: 'Male' }
            The long-form will support many options (many of which are defined
            in Property.js), but only 'name' is mandatory.
        */
@@ -1006,7 +1006,7 @@ foam.CLASS({
     },
 
     function toSummary() {
-      var prop = this.cls_.getAxiomsByClass(foam.core.String)
+      var prop = this.cls_.getAxiomsByClass(foam.core.StringProperty)
         .find(p => !p.hidden);
       return prop ? prop.f(this) : this.toString();
     },

@@ -58,7 +58,7 @@ foam.LIB({
 foam.CLASS({
   package: 'foam.swift',
   name: 'SwiftTypeProperty',
-  extends: 'String',
+  extends: 'StringProperty',
   flags: ['swift'],
   properties: [
     {

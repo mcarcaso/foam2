@@ -10,7 +10,7 @@ foam.CLASS({
   ids: [ 'studentId' ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {

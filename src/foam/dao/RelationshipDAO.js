@@ -37,11 +37,11 @@ foam.CLASS({
       name: 'sourceId'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetDAOKey'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'unauthorizedTargetDAOKey'
     },
     {

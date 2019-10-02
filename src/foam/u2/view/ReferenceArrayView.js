@@ -10,7 +10,7 @@ foam.CLASS({
   extends: 'foam.u2.view.ArrayView',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'daoKey'
     },
     {

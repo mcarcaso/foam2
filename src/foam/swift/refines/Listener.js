@@ -14,17 +14,17 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftListenerName',
       expression: function(swiftName) { return swiftName + '_listener'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftListenerDispatchQueue',
       value: 'DispatchQueue.main',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftListenerMethodName',
       expression: function(swiftName) { return swiftName + '_method'; },
     },

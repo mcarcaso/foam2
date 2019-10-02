@@ -10,7 +10,7 @@ foam.CLASS({
 
   documentation: 'Contains an array of property updates',
   ids: [ 'objectId', 'seqNo' ],
-  
+
   properties: [
     {
       class: 'Long',
@@ -22,7 +22,7 @@ foam.CLASS({
       documentation: 'Id of object related to history record.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'user'
     },
     {

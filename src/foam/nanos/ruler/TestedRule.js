@@ -25,11 +25,11 @@ foam.CLASS({
       name: 'rule'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'message'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {

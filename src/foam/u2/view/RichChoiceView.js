@@ -152,7 +152,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       factory: function() { return "select"; }
     },
@@ -227,7 +227,7 @@ foam.CLASS({
       documentation: 'Set to true to enable searching.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'filter_',
       documentation: 'The text that the user typed in to search by.',
       postSet: function(oldValue, newValue) {
@@ -241,13 +241,13 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'searchPlaceholder',
       documentation: 'Replaces search box placeholder with passed in string.',
       value: 'Search...'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'choosePlaceholder',
       documentation: 'Replaces choose from placeholder with passed in string.'
     },
@@ -334,7 +334,7 @@ foam.CLASS({
                   sections.forEach(function(section) {
                     promiseArray.push(section.dao.select(self.COUNT()));
                   });
-      
+
                   return Promise.all(promiseArray).then((resp) => {
                     var index = 0;
                     return this.E().forEach(sections, function(section) {

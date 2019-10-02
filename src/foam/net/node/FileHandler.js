@@ -26,7 +26,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'filePath',
       documentation: 'File location.',
       required: true

@@ -10,7 +10,7 @@ foam.CLASS({
   extends: 'foam.lib.csv.ProxyCSVOutputter',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'prefix'
     }
   ],

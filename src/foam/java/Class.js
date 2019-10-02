@@ -26,11 +26,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'package'
     },
     {
@@ -38,7 +38,7 @@ foam.CLASS({
       name: 'implements'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'visibility',
       value: 'public'
     },
@@ -55,7 +55,7 @@ foam.CLASS({
       name: 'abstract'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'extends'
     },
     {

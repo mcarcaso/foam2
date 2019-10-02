@@ -11,7 +11,7 @@ foam.CLASS({
   documentation: 'View for editing FObjects.',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'objectClass',
       label: '',
       visibilityExpression: function(choices) {
@@ -66,7 +66,7 @@ foam.CLASS({
             map[id] = deps;
             return map;
           }, {});
-        
+
         var choices = {};
         choices[of.id] = true;
         while ( true ) {

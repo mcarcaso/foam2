@@ -34,7 +34,7 @@ foam.CLASS({
   properties: [
     'id',
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'daoKey',
       label: 'DAO',
       view: function(_, X) {
@@ -54,7 +54,7 @@ foam.CLASS({
     'cmd',
     'format',
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'dao',
       hidden: true,
       transient: true,
@@ -63,12 +63,12 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'q',
       label: 'Query'
     },
     {
-        class: 'String',
+        class: 'StringProperty',
         name: 'key'
     },
     {
@@ -77,7 +77,7 @@ foam.CLASS({
       name: 'email'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       displayWidth: 100,
       name: 'subject'
     },
@@ -158,7 +158,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'result',
       value: 'No Request Sent Yet.',
       view: { class: 'foam.u2.tag.TextArea', rows: 5, cols: 120 },

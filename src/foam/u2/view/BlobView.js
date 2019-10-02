@@ -19,7 +19,7 @@ foam.CLASS({
   package: 'foam.u2.view',
   name: 'BlobView',
   extends: 'foam.u2.Element',
-  
+
   requires: [
     'foam.blob.BlobBlob'
   ],
@@ -31,11 +31,11 @@ foam.CLASS({
   properties: [
     'data',
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'filename'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type'
     },
     {

@@ -28,7 +28,7 @@ describe('MLang', function() {
           name: 'id',
         },
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'name',
         },
         {
@@ -40,7 +40,7 @@ describe('MLang', function() {
           name: 'age'
         },
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'guitar'
         },
         {
@@ -49,7 +49,7 @@ describe('MLang', function() {
           value: false,
         },
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'neverSet',
         },
         {

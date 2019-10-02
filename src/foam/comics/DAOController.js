@@ -136,14 +136,14 @@ foam.CLASS({
       `
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title',
       expression: function(data$of) {
         return 'Browse ' + data$of.model_.plural;
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'subtitle'
     },
     {
@@ -168,7 +168,7 @@ foam.CLASS({
       `
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'createLabel',
       documentation: `
         Set this to override the label of the create button, which is the
@@ -176,7 +176,7 @@ foam.CLASS({
       `
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'detailView',
       value: 'foam.u2.DetailView'
     },

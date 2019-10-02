@@ -36,11 +36,11 @@ foam.CLASS({
       visibility: foam.u2.Visibility.RO
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'template'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'notificationType',
       label: 'Notification type',
       documentation: 'Type of notification.',
@@ -64,7 +64,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'body',
       documentation: 'Notification body'
     },
@@ -95,7 +95,7 @@ foam.CLASS({
       javaFactory: 'return new java.util.HashMap<String, Object>();'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'emailName',
       label: 'Email template name',
       value: 'notification',
@@ -112,12 +112,12 @@ foam.CLASS({
       documentation: 'Sends notification as a Slack message.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'slackWebhook',
       documentation: 'Webhook associated to Slack.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'slackMessage',
       documentation: 'Message to be sent to Slack if sendSlackMessage is enabled.'
     }

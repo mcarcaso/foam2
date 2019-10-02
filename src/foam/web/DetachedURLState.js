@@ -70,7 +70,7 @@ foam.CLASS({
       factory: function() { return {}; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'path_',
       documentation: `"path" part of hash; hash is:
           "#<path>?<key1>=<value1>&<key2>=<value2>..."`,
@@ -79,7 +79,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'hash_',
       documentation: 'Complete state serialized to a URL hash value.',
     },

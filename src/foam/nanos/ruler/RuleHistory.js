@@ -43,7 +43,7 @@ foam.CLASS({
       documentation: 'Id of the object on which rule is applied.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'objectDaoKey',
       visibility: 'RO',
       documentation: 'DAO name of the object'
@@ -78,7 +78,7 @@ foam.CLASS({
       documentation: 'Rule history status.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'note',
       documentation: 'Note appended to the rule history.',
       view: {

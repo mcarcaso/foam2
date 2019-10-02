@@ -11,17 +11,17 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'docKey',
       documentation: 'ID of the document to render.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'daoKey',
       value: 'documentDAO'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'anchor'
     },
     {

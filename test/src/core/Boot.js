@@ -360,7 +360,7 @@ describe('Model.extends inheritance, isInstance(), isSubClass(), getAxioms()', f
 
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'name'
         },
         'age',
@@ -513,7 +513,7 @@ describe('Model.implements', function() {
       package: 'test',
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'name'
         },
         'age',
@@ -564,7 +564,7 @@ describe('Model.classes', function() {
 
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'name'
         },
         'age',
@@ -612,7 +612,7 @@ describe('FObject white box test', function() {
       package: 'test',
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'name'
         },
         {
@@ -876,7 +876,7 @@ describe('Bootstrap invariants', function() {
     expect(foam.core.Model.isInstance(foam.core.FObject.model_)).toBe(true);
     expect(foam.core.Model.isInstance(foam.core.Property.model_)).toBe(true);
     expect(foam.core.Model.isInstance(foam.core.Method.model_)).toBe(true);
-    expect(foam.core.Model.isInstance(foam.core.String.model_)).toBe(true);
+    expect(foam.core.Model.isInstance(foam.core.StringProperty.model_)).toBe(true);
     expect(foam.core.Model.isInstance(foam.core.FObjectArray.model_)).toBe(true);
   });
 

@@ -21,13 +21,13 @@ foam.CLASS({
   flags: ['node'],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'bufferEncoding',
       documentation: 'Node JS Buffer class encoding name.',
       required: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'charsetRegExp',
       documentation: `Regular expression matching HTTP Content-Encoding header
           charset value.`,

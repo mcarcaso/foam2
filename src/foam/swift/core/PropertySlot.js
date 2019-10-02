@@ -15,7 +15,7 @@ foam.CLASS({
       swiftWeak: true,
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'propertyName',
     },
   ],

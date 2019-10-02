@@ -19,31 +19,31 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'readWrite',
       value: 'testing...',
       visibility: foam.u2.Visibility.RW
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'final',
       value: 'testing...',
       visibility: foam.u2.Visibility.FINAL
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'disabled',
       value: 'testing...',
       visibility: foam.u2.Visibility.DISABLED
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'readOnly',
       value: 'testing...',
       visibility: foam.u2.Visibility.RO
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'hidden',
       value: 'testing...',
       visibility: foam.u2.Visibility.HIDDEN
@@ -54,7 +54,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'disabledExpression',
       visibilityExpression: function(flag) {
         return foam.u2.Visibility[flag ? 'RW' : 'DISABLED'];
@@ -75,7 +75,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'readOnlyExpression',
       visibilityExpression: function(flag) {
         return foam.u2.Visibility[flag ? 'RW' : 'RO'];
@@ -96,7 +96,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'hiddenExpression',
       visibilityExpression: function(flag) {
         return foam.u2.Visibility[flag ? 'RW' : 'HIDDEN'];

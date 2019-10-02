@@ -73,7 +73,7 @@ foam.CLASS({
     'filteredCount_',
     'totalCount_',
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'selectionText_',
       expression: function(filteredCount_, totalCount_) {
         if ( ! totalCount_ ) return '';

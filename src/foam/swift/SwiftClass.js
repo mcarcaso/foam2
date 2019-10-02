@@ -18,11 +18,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'visibility'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
@@ -49,11 +49,11 @@ foam.CLASS({
       factory: function() { return []; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'code',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type',
       value: 'class',
     },

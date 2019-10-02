@@ -16,7 +16,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'status',
       value: '403'
     },
@@ -26,7 +26,7 @@ foam.CLASS({
       value: 1009
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type',
       value: 'Authorization Failed'
     }

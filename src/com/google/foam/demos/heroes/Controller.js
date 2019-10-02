@@ -83,7 +83,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'heroName',
       view: {
         class: 'foam.u2.TextField',
@@ -121,7 +121,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'query',
       view: {
         class: 'foam.u2.TextField',

@@ -27,7 +27,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'declarations'
     }
   ],

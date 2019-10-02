@@ -13,7 +13,7 @@ foam.CLASS({
 
   properties: [ {
       class: 'Array',
-      of: 'String',
+      of: 'StringProperty',
       name: 'Horizontal' //Horizontal or Axis Labels [String]
     },
     {

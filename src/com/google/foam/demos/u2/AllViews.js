@@ -54,24 +54,24 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'defaultString'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'emptyRequiredString',
       validateObj: function(emptyRequiredString) { return emptyRequiredString ? '' : 'value required'; }
 //      required: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'requiredString',
       value: 'someValue',
       validateObj: function(requiredString) { return requiredString ? '' : 'value required'; }
 //      required: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'textFieldWithPlaceholder',
       view: {
         class: 'foam.u2.TextField',
@@ -79,12 +79,12 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'textFieldWithPlaceholder2',
       placeholder: 'placeholder'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'textFieldWithChoices',
       view: {
         class: 'foam.u2.TextField',
@@ -92,7 +92,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'choiceView',
       view: {
         class: 'foam.u2.view.ChoiceView',
@@ -100,7 +100,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'radioView',
       view: {
         class: 'foam.u2.view.RadioView',
@@ -108,12 +108,12 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'stringWithDisplayWidth',
       displayWidth: 4
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'stringWithTextFieldWithSize',
       displayWidth: 4,
       view: {
@@ -122,7 +122,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'stringWithTextArea',
       view: {
         class: 'foam.u2.tag.TextArea',
@@ -232,7 +232,7 @@ foam.CLASS({
       view: { class: 'foam.u2.md.CheckBox' }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'htmlView',
       value: '<b>bold</b><br/><i>italic</i>',
       view: 'foam.u2.HTMLView'

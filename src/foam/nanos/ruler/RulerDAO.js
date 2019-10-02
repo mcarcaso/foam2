@@ -37,7 +37,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'daoKey',
       documentation: 'The dao name that rule needs to be applied on.'
     },

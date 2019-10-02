@@ -144,7 +144,7 @@ foam.CLASS({
           var p = props[i];
           if ( ! p.hidden && p.name !== 'id' &&
               (foam.core.Property.isInstance(p) ||
-               foam.core.String.isInstance(p)) ) {
+               foam.core.StringProperty.isInstance(p)) ) {
             candidates.push(p);
           }
         }
@@ -522,7 +522,7 @@ foam.CLASS({
       name: 'dao'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title',
       expression: function(of) {
         return 'New ' + of.model_.label;

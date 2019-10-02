@@ -40,7 +40,7 @@ foam.CLASS({
       ],
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'key',
           postSet: function(o, n) {
             delete this.data[o];

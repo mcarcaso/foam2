@@ -12,12 +12,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'objectID',
       required: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'actionName',
       required: true
     }

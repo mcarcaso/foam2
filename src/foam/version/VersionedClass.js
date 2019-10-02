@@ -34,17 +34,17 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'package',
       factory: function() { return this.of.package; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       factory: function() { return `Versioned${this.of.name}`; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id',
       factory: function() { return `${this.package}.${this.name}`; }
     },

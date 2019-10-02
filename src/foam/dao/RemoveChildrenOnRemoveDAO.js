@@ -25,7 +25,7 @@ foam.CLASS({
       javaType: 'foam.core.PropertyInfo',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetDAOKey',
     }
   ],

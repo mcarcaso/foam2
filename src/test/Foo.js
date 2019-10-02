@@ -33,7 +33,7 @@ foam.CLASS({
   name: 'Person',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
@@ -115,7 +115,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'test',
   name: 'SpecialProperty',
-  extends: 'String',
+  extends: 'StringProperty',
   properties: [
     {
       class: 'Class',

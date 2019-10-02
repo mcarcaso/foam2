@@ -124,7 +124,7 @@ foam.CLASS({
       `
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'countText',
       documentation: `
         The formatted text that shows how many items have been selected from the

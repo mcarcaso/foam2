@@ -37,7 +37,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'documentation',
       value: ''
     }

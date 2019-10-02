@@ -18,12 +18,12 @@ foam.CLASS({
       documentation: 'Array of geocoded address information and geometry information'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'status',
       documentation: 'Contains the status of the request'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'error_message',
       documentation: 'Contains an error message'
     }

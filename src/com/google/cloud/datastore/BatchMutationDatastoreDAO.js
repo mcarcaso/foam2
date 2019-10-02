@@ -21,7 +21,7 @@ foam.ENUM({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       documentation: `"key" in Datastore API's mutations: [{<key>: <data>}].`,
       name: 'datastoreMutationKey'
     }

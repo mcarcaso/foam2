@@ -9,15 +9,15 @@ foam.CLASS({
   name: 'Document',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'markup',
       view: { class: 'foam.flow.MarkupEditor' }
     }

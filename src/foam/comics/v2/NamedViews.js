@@ -13,7 +13,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
@@ -21,7 +21,7 @@ foam.CLASS({
       name: 'view'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'icon'
     }
   ]
@@ -36,7 +36,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
@@ -44,8 +44,8 @@ foam.CLASS({
       name: 'view'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'icon'
     }
   ]
-}); 
+});

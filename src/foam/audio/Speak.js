@@ -27,7 +27,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'text',
       width: 60
     },

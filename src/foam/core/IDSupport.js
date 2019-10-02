@@ -28,7 +28,7 @@ foam.CLASS({
   properties: [
     ['name', 'id'],
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'propName'
     },
     ['hidden', true],

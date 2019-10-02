@@ -83,37 +83,37 @@ both enabled.postSet and Builder.init_() can call createPipeline.`,
     },
     {
       name: 'putName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return createName_("put");',
       visibility: 'RO'
     },
     {
       name: 'findName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return createName_("find");',
       visibility: 'RO'
     },
     {
       name: 'selectName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return createName_("select");',
       visibility: 'RO'
     },
     {
       name: 'removeName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return createName_("remove");',
       visibility: 'RO'
     },
     {
       name: 'removeAllName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return createName_("removeAll");',
       visibility: 'RO'
     },
     {
       name: 'cmdName',
-      class: 'String',
+      class: 'StringProperty',
       javaFactory: 'return createName_("cmd");',
       visibility: 'RO'
     }

@@ -28,7 +28,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type',
       expression: function(axiom) { return axiom.model_.name },
       tableCellFormatter: function(v) {

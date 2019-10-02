@@ -25,7 +25,7 @@ foam.CLASS({
       final: true // TODO: implement
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       view: { class: 'foam.u2.TextField', onKey: true}
     },

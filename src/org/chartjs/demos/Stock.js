@@ -158,7 +158,7 @@ foam.CLASS({
       properties: [
         { name: 'id' },
         { class: 'Date', name: 'date' },
-        { class: 'String', name: 'symbol' },
+        { class: 'StringProperty', name: 'symbol' },
         { class: 'Currency', name: 'price' },
       ]
     },
@@ -166,9 +166,9 @@ foam.CLASS({
       name: 'StockOrder',
       properties: [
         { name: 'id' },
-        { class: 'String', name: 'symbol' },
+        { class: 'StringProperty', name: 'symbol' },
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'person',
           chartJsFormatter: function(v) {
             return v + '!'

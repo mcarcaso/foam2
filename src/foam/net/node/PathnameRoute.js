@@ -25,7 +25,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'pathname',
       preSet: function(_, nu) {
         return `${this.parentPrefix || ''}${nu}`;

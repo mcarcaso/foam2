@@ -27,7 +27,7 @@ foam.CLASS({
       /**
         The property of incoming objects to set.
       */
-      class: 'String',
+      class: 'StringProperty',
       name: 'property',
       value: 'id'
     }

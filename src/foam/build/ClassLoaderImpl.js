@@ -34,7 +34,7 @@ foam.CLASS({
       name: 'aref',
       async: true,
       type: 'Any',
-      args: [ { class: 'String', name: 'id' } ],
+      args: [ { class: 'StringProperty', name: 'id' } ],
       code: function(x, id) {
         // In order to avoid circular dependencies, we resolve references lazily.
         return Promise.resolve({ "$REF$": id });

@@ -39,7 +39,7 @@ foam.CLASS({
 
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'name',
           documentation: `Name under which registration was stored in
               SelectorRegistry.`
@@ -52,7 +52,7 @@ foam.CLASS({
               managed registration.`
         },
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'delegateRegisteredName',
           documentation: `Name under which registration was stored in
               "delegateRegistry".`

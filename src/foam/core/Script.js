@@ -10,18 +10,18 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id',
       getter: function() {
         return this.package ? this.package + '.' + this.name : this.name;
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'package'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {

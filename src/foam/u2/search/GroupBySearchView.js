@@ -76,7 +76,7 @@ foam.CLASS({
       value: 17
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label',
       expression: function(property) {
         return property.label;

@@ -1116,11 +1116,11 @@ foam.CLASS({
   name: 'GrammarAxiom',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'language',
       value: 'foam.parse.Parsers'
     },

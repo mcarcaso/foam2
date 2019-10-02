@@ -10,7 +10,7 @@ foam.CLASS({
   flags: ['java'],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     }
   ],

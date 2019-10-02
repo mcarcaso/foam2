@@ -218,7 +218,7 @@ foam.CLASS({
   properties: [
     {
       name: 'template',
-      class: 'String'
+      class: 'StringProperty'
     },
     { name: 'code', required: false },
     'args'

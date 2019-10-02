@@ -15,11 +15,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'help'
     },
     {

@@ -63,7 +63,7 @@ foam.CLASS({
       final: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'payloadEncoding_',
       documentation: 'The encoding used for the request payload.',
     },

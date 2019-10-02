@@ -12,12 +12,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'package',
       value: 'foam.nanos'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       value: 'Test'
     },
@@ -33,12 +33,12 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'input',
       view: { class: 'foam.u2.tag.TextArea', rows: 24 }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'output',
       view: { class: 'foam.u2.tag.TextArea', rows: 24 }
     }

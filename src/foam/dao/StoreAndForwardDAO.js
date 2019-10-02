@@ -32,7 +32,7 @@ foam.CLASS({
 
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           documentation: 'DAO method name associated with operation.',
           name: 'methodName',
         },

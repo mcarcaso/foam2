@@ -21,7 +21,7 @@ foam.CLASS({
   refines: 'foam.core.Property',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'ngTemplate'
     }
   ]
@@ -141,7 +141,7 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title',
       required: true
     },
@@ -216,9 +216,8 @@ foam.CLASS({
   name: 'User',
 
   properties: [
-    { class: 'String', name: 'id', required: true },
-    { class: 'String', name: 'name', required: true },
-    { class: 'String', name: 'imageUrl' }
+    { class: 'StringProperty', name: 'id', required: true },
+    { class: 'StringProperty', name: 'name', required: true },
+    { class: 'StringProperty', name: 'imageUrl' }
   ]
 });
-

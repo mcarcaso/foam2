@@ -8,9 +8,9 @@ foam.CLASS({
   package: 'foam.nanos.u2.navigation',
   name: 'SideNavigation',
   extends: 'foam.u2.View',
-  
+
   documentation: 'Side navigation bar',
-  
+
   implements: [
     'foam.mlang.Expressions'
   ],
@@ -50,7 +50,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'menuName',
     }
   ],

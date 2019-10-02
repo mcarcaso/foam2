@@ -67,7 +67,7 @@ describe('selector registry', function() {
 
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'name'
         },
         {

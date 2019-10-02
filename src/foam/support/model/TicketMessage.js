@@ -30,11 +30,11 @@ foam.CLASS({
       name: 'dateCreated'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'message'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type'
     }
   ]

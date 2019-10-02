@@ -12,12 +12,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'long_name',
       documentation: 'Full text description or name of the address component as returned by the Geocoder'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'short_name',
       documentation: 'An abbreviated textual name for the address component, if available'
     },

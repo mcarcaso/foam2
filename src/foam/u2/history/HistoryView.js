@@ -65,7 +65,7 @@ foam.CLASS({
   properties: [
     'data',
     'historyItemView',
-    { class: 'String', name: 'title', value: 'History' }
+    { class: 'StringProperty', name: 'title', value: 'History' }
   ],
 
   methods: [

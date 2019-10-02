@@ -314,7 +314,7 @@ foam.CLASS({
         prop = this.clone();
 
         // sourceCls_ isn't a real property so it gets lost during the clone.
-        prop.sourceCls_ = c; 
+        prop.sourceCls_ = c;
 
         c.axiomMap_[prop.name] = prop;
       }
@@ -329,7 +329,7 @@ foam.CLASS({
       //   // check would help eliminate extra reinstalls.
 
       //   // Handle special case of axiom being installed into itself.
-      //   // For example foam.core.String has foam.core.String axioms for things
+      //   // For example foam.core.StringProperty has foam.core.StringProperty axioms for things
       //   // like "label"
       //   // In the future this shouldn't be required if a reinstall is
       //   // only triggered on this which affect getter/setter.

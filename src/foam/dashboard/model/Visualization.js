@@ -21,7 +21,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       // TODO: Write a predicate view
       name: 'predicate',
       hidden: true
@@ -42,13 +42,13 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       label: 'DAO',
       hidden: true,
       name: 'daoName'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label'
     },
     {
@@ -117,7 +117,7 @@ foam.CLASS({
     },
     {
       // TODO: An enum would be better'
-      class: 'String',
+      class: 'StringProperty',
       name: 'mode',
       hidden: true,
       expression: function(currentView) {

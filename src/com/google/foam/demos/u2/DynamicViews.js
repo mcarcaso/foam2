@@ -26,7 +26,7 @@ foam.CLASS({
       value: 30
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'stringValue',
       view: function(_, X) {
         return X.data.slot(function(width) {

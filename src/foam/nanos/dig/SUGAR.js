@@ -37,12 +37,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id',
       displayWidth: 40
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'serviceKey',
       label: 'Service',
       documentation: 'non DAOs list as service',
@@ -94,7 +94,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'method',
       label: 'Method',
       documentation: 'the methods list of the picked service key',
@@ -167,7 +167,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'interfaceName',
       documentation: 'service class name',
       displayWidth: 60,
@@ -186,19 +186,19 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'currentMethod',
       documentation: 'to set a current method for URL',
       hidden: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'postData',
       value: '',
       hidden: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'postURL',
       value: '',
       hidden: true
@@ -266,7 +266,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'result',
       value: 'No Request Sent Yet.',
       view: { class: 'foam.u2.tag.TextArea', rows: 5, cols: 137 },

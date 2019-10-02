@@ -11,7 +11,7 @@ foam.CLASS({
     being updated, the old value, and the new value`,
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {

@@ -19,11 +19,11 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'arg1'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'arg2'
     },
     {
@@ -61,4 +61,3 @@ foam.CLASS({
     }
   ]
 });
-

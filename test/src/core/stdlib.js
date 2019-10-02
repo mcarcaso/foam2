@@ -959,7 +959,7 @@ describe('foam.mmethod', function() {
 
     expect(mm(foam.core.StringArray.create({name:'n'})))
       .toBe('stringarray');
-    expect(mm(foam.core.String.create({name:'n'})))
+    expect(mm(foam.core.StringProperty.create({name:'n'})))
       .toBe('prop');
     expect(mm(foam.core.Property.create({name:'n'})))
       .toBe('prop');

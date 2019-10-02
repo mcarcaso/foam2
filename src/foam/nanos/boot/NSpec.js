@@ -29,13 +29,13 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       displayWidth: '60',
       tableWidth: 460
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'description',
       width: 120
     },
@@ -118,35 +118,35 @@ foam.CLASS({
       permissionRequired: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'serviceClass',
       displayWidth: 80
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'boxClass',
       displayWidth: 80
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'serviceScript',
       view: { class: 'io.c9.ace.Editor' },
       permissionRequired: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'client',
       value: '{}',
       view: { class: 'io.c9.ace.Editor' }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'documentation',
       view: { class: 'foam.u2.tag.TextArea', rows: 12, cols: 140 },
       permissionRequired: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'authNotes',
       view: { class: 'foam.u2.tag.TextArea', rows: 12, cols: 140 },
       permissionRequired: true

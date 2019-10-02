@@ -10,7 +10,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'className'
     },
     {
@@ -19,7 +19,7 @@ foam.CLASS({
       name: 'servletObject'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'pathSpec'
     },
     {

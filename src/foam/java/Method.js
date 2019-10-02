@@ -21,8 +21,8 @@ foam.CLASS({
 
   properties: [
     'name',
-    { class: 'String', name: 'visibility' },
-    { class: 'String', name: 'documentation' },
+    { class: 'StringProperty', name: 'visibility' },
+    { class: 'StringProperty', name: 'documentation' },
     'static',
     'abstract',
     'final',

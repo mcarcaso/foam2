@@ -13,7 +13,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id',
       displayWidth: 40
     },
@@ -31,7 +31,7 @@ foam.CLASS({
       value: 'SELECT',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'data',
       view: { class: 'foam.u2.tag.TextArea', rows: 16, cols: 120 }
     },

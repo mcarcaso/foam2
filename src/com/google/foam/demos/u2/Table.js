@@ -22,8 +22,8 @@ foam.CLASS({
 
   properties: [
     { class: 'Int',    name: 'id', hidden: true },
-    { class: 'String', name: 'firstName' },
-    { class: 'String', name: 'lastName' },
+    { class: 'StringProperty', name: 'firstName' },
+    { class: 'StringProperty', name: 'lastName' },
     { class: 'Int',    name: 'age' }
   ],
 

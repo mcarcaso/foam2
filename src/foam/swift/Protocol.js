@@ -16,11 +16,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'visibility',
       value: 'public'
     },

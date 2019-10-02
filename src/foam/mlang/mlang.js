@@ -20,7 +20,7 @@ foam.CLASS({
       name: 'value'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label',
       value: 'Count'
     }
@@ -2239,7 +2239,7 @@ foam.CLASS({
   requires: [
     {
       name: 'String',
-      path: 'foam.core.String',
+      path: 'foam.core.StringProperty',
       flags: ['js'],
     },
     {
@@ -2707,7 +2707,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name:  'plan',
       help:  'Execution Plan'
     }
@@ -3211,7 +3211,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'key'
     }
   ],

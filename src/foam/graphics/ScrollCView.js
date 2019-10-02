@@ -90,12 +90,12 @@ foam.CLASS({
       value: 2
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'handleColor',
       value: 'rgb(107,136,173)'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'borderColor',
       value: '#999'
     },

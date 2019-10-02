@@ -30,12 +30,12 @@ foam.CLASS({
 
   properties: [
     {
-        class: 'String',
+        class: 'StringProperty',
         name: 'id',
         displayWidth: 40
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'daoKey',
       label: 'DAO',
       view: function(_, X) {

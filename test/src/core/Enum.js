@@ -50,7 +50,7 @@ describe('Enum tests', function() {
       name: 'Todo',
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'assignee'
         },
         {

@@ -61,11 +61,11 @@ foam.CLASS({
   name: 'SimpleType',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'java',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swift',
     },
   ],

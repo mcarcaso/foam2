@@ -50,8 +50,8 @@ describe('NoDisjunction(Datastore) DAO', function() {
         ids: [ 'name', 'sex' ],
 
         properties: [
-          { class: 'String', name: 'name' },
-          { class: 'String', name: 'sex' }
+          { class: 'StringProperty', name: 'name' },
+          { class: 'StringProperty', name: 'sex' }
         ]
       });
       Person = foam.lookup('test.Person');

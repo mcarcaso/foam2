@@ -28,42 +28,42 @@ foam.CLASS({
       documentation: 'Connection pool size'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'driver',
       documentation: 'Database driver'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'prefix',
       documentation: 'Database connection string prefix. i.e. jdbc:postgresq://'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'hostname',
       documentation: 'Database hostname'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'port',
       documentation: 'Database port'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'database',
       documentation: 'Database name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'username',
       documentation: 'Database username for authentication'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'password',
       documentation: 'Database password for authentication'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'connectionString',
       transient: true,
       javaFactory: `return getPrefix() +

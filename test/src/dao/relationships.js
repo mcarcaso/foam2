@@ -52,8 +52,8 @@ describe('relationships', function() {
         ids: [ 'firstName', 'lastName' ],
 
         properties: [
-          { class: 'String', name: 'firstName', required: true },
-          { class: 'String', name: 'lastName',  required: true },
+          { class: 'StringProperty', name: 'firstName', required: true },
+          { class: 'StringProperty', name: 'lastName',  required: true },
         ]
       });
       foam.CLASS({
@@ -63,7 +63,7 @@ describe('relationships', function() {
         ids: [ 'title' ],
 
         properties: [
-          { class: 'String', name: 'title', required: true },
+          { class: 'StringProperty', name: 'title', required: true },
           { class: 'Int', name: 'releaseYear' },
         ]
       });

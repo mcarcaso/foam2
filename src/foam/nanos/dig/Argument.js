@@ -12,13 +12,13 @@ foam.CLASS({
 
   properties: [
    {
-    class: 'String',
+    class: 'StringProperty',
     name: 'name',
     documentation: 'Parameters defined name',
     visibility: foam.u2.Visibility.RO
    },
    {
-     class: 'String',
+     class: 'StringProperty',
      name: 'javaType',
      label: 'java Type',
      displayWidth: '100',
@@ -26,14 +26,14 @@ foam.CLASS({
      visibility: foam.u2.Visibility.RO
     },
     {
-     class: 'String',
+     class: 'StringProperty',
      name: 'of',
      label: 'of',
      displayWidth: '100',
      visibility: foam.u2.Visibility.RO
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       documentation: 'Parameters input value',
       name: 'value',
       displayWidth: 120

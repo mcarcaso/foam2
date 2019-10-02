@@ -21,7 +21,7 @@ foam.CLASS({
       swiftFactory: 'return UIView()',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title',
       swiftExpressionArgs: ['data'],
       swiftExpression: function() {/*

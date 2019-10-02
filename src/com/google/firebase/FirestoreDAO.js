@@ -25,7 +25,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       documentation: 'The collection/document path to the Firestore collection',
       name: 'collectionPath',
     },

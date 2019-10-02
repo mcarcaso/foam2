@@ -24,7 +24,7 @@ foam.CLASS({
       name: 'intProp'
     },
     {
-      class: 'foam.core.String',
+      class: 'foam.core.StringProperty',
       name: 'stringProp'
     },
     {
@@ -188,7 +188,7 @@ foam.CLASS({
       name: 'transientInt'
     },
     {
-      class: 'foam.core.String',
+      class: 'foam.core.StringProperty',
       transient: true,
       name: 'transientString'
     },
@@ -386,7 +386,7 @@ foam.CLASS({
       name: 'InnerClass1',
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'name'
         }
       ]

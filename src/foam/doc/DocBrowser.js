@@ -458,7 +458,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'path',
       width: 80,
       factory: function() {
@@ -730,7 +730,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'className',
       value: 'className',
     },
@@ -738,7 +738,7 @@ foam.CLASS({
       name: 'elementMap'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'prop',
       value: 'propName',
     },

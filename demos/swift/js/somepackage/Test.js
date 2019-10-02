@@ -33,14 +33,14 @@ foam.CLASS({
       expression: function(firstName) { return firstName },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'description',
     },
     {
       name: 'anyProp',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'exprProp',
       swiftExpressionArgs: ['firstName', 'lastName'],
       swiftExpression: function() {/*
@@ -56,17 +56,17 @@ return firstName + " " + lastName
       name: 'boolProp',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'prevFirstName',
       visibility: 'RO',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'prevLastName',
       visibility: 'RO',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'firstName',
       value: 'John',
       swiftPreSet: function() {/*
@@ -75,7 +75,7 @@ return newValue
       */},
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'lastName',
       value: 'Smith',
       swiftPostSet: 'self.prevLastName = oldValue as? String ?? ""'

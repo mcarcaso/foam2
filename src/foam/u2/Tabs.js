@@ -23,7 +23,7 @@ foam.CLASS({
   extends: 'foam.u2.Element',
 
   properties: [
-    { class: 'String',  name: 'label' },
+    { class: 'StringProperty',  name: 'label' },
     { class: 'Boolean', name: 'selected' }
   ]
 });

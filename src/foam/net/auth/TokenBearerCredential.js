@@ -24,7 +24,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       documentation: `Token used for "Authorization: Bearer <token>"-style HTTP
           request authentication.`,
       name: 'accessToken'

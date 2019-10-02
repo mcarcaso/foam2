@@ -20,7 +20,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftName',
       section: 'swiftProperties',
       expression: function(id) {
@@ -40,7 +40,7 @@ foam.CLASS({
       section: 'swiftProperties',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftExtends',
       section: 'swiftProperties',
       expression: function(extends$) {
@@ -54,7 +54,7 @@ foam.CLASS({
       section: 'swiftProperties',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftCode',
       section: 'swiftProperties',
     },

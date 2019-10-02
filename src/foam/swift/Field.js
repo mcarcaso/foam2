@@ -21,23 +21,23 @@ foam.CLASS({
     'defaultValue',
     {
       name: 'initializer',
-      class: 'String',
+      class: 'StringProperty',
     },
     {
       name: 'didSet',
-      class: 'String',
+      class: 'StringProperty',
     },
     {
       name: 'willSet',
-      class: 'String',
+      class: 'StringProperty',
     },
     {
       name: 'getter',
-      class: 'String',
+      class: 'StringProperty',
     },
     {
       name: 'setter',
-      class: 'String',
+      class: 'StringProperty',
     },
     {
       class: 'StringArray',

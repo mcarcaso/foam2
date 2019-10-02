@@ -18,7 +18,7 @@ foam.CLASS({
       name: 'parentSlot',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
     },
     {

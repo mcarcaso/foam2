@@ -28,7 +28,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'filename',
     },
     {
@@ -85,5 +85,3 @@ foam.CLASS({
 
   ]
 });
-
-

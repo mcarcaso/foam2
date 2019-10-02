@@ -9,7 +9,7 @@ foam.CLASS({
   name: 'TestModel',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       shortName:'n',
       aliases:['fname','fn','first']

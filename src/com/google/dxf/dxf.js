@@ -53,23 +53,23 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'handle'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'ownerHandle'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'layer'
     }
   ],
@@ -167,7 +167,7 @@ foam.CLASS({
       value: 1
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'lineType'
     }
   ],
@@ -325,7 +325,7 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'dxfUrl',
       value: '../dxf/sample.dxf'
     },

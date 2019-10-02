@@ -67,7 +67,7 @@ foam.CLASS({
     {
       /** The code for this example. This should be either bare code, or a
         function that returns a promise if async. */
-      class: 'String',
+      class: 'StringProperty',
       name: 'code',
       adapt: function(old, nu) {
         if ( foam.Function.isInstance(nu) ) {
@@ -80,7 +80,7 @@ foam.CLASS({
     },
     {
       /** Unit test expectations to run after the main code. */
-      class: 'String',
+      class: 'StringProperty',
       name: 'postTestCode',
       adapt: function(old, nu) {
         if ( foam.Function.isInstance(nu) ) {

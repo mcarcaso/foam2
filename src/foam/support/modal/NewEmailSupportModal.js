@@ -91,7 +91,7 @@ foam.CLASS({
       color: #ffffff;
     }
     ^ .div {
-      margin-top: 40px; 
+      margin-top: 40px;
     }
     ^ .div2 {
       padding: 20px;
@@ -105,7 +105,7 @@ foam.CLASS({
 
     properties: [
       {
-        class: 'String',
+        class: 'StringProperty',
         name: 'email'
       },
       {
@@ -113,7 +113,7 @@ foam.CLASS({
         name: 'id'
       },
       {
-        class: 'String',
+        class: 'StringProperty',
         name: 'emailRegex',
         factory: function() {
           return /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -151,7 +151,7 @@ foam.CLASS({
           .end()
         .end();
       }
-    ], 
+    ],
 
     actions: [
       {
@@ -161,7 +161,7 @@ foam.CLASS({
           if(!this.email) return;
           var self = this;
           if (!this.emailRegex.test(this.email)) {
-            this.add(this.NotificationMessage.create({ message: this.emailInvalid, type: 'error' })); 
+            this.add(this.NotificationMessage.create({ message: this.emailInvalid, type: 'error' }));
             return;
           }
 

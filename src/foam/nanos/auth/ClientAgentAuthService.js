@@ -20,7 +20,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'serviceName'
     },
     {

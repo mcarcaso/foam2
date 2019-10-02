@@ -14,11 +14,11 @@
 
    properties: [
      {
-       class: "String",
+       class: "StringProperty",
        name: "code"
      },
      {
-       class: "String",
+       class: "StringProperty",
        name: "name"
      },
    ]

@@ -476,11 +476,11 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'head'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'tail'
     },
     {
@@ -556,11 +556,11 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'head'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'tail'
     },
     {
@@ -659,13 +659,13 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'code',
       view: { class: 'foam.u2.tag.TextArea', rows: 16 },
       displayWidth: 60
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'output',
       transient: true,
       view: { class: 'foam.u2.tag.TextArea', rows: 16 },

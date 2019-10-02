@@ -14,12 +14,12 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftName',
       expression: function(name) { return name; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftType',
       expression: function(of) {
         of = foam.String.isInstance(of) ? foam.lookup(of, true) : of;
@@ -27,7 +27,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftCast',
       expression: function(swiftType) {
         return swiftType == 'Any?' ? '' : ' as! ' + swiftType;
@@ -39,7 +39,7 @@ foam.CLASS({
       value: true,
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftPrivateAxiomName',
       expression: function(swiftName) { return '_' + foam.String.constantize(swiftName) + '_'; },
     }

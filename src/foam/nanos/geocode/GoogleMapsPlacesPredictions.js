@@ -12,12 +12,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'description',
       documentation: 'Full address returned by Google Places API.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'place_id',
       documentation: 'Google maps place id used to lookup additional information of a location.'
     }

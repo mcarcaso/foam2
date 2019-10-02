@@ -83,7 +83,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'code'
     },
     {
@@ -816,7 +816,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id',
       transient: true,
       factory: function() { return this.NEXT_ID(); }
@@ -849,7 +849,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'tooltip'
     },
     {
@@ -2129,7 +2129,7 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'placeholder'
     },
     {
@@ -2233,7 +2233,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'StringDisplayWidthRefinement',
-  refines: 'foam.core.String',
+  refines: 'foam.core.StringProperty',
   properties: [
     {
       class: 'Int',
@@ -2338,7 +2338,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label2'
     },
     {
@@ -2515,7 +2515,7 @@ foam.CLASS({
       attribute: true
     },
     // {
-    //   class: 'String',
+    //   class: 'StringProperty',
     //   name: 'error_'
     // },
     {
@@ -2648,7 +2648,7 @@ foam.CLASS({
       columns: ['package', 'name']
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'extends',
       value: 'FObject',
       gridColumns: 2,
@@ -2667,7 +2667,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'css',
       hidden: true,
       postSet: function(_, code) {
@@ -2717,7 +2717,7 @@ foam.CLASS({
       section: 'advanced',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'documentation',
       order: 5,
       view: { class: 'foam.u2.tag.TextArea' }

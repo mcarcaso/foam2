@@ -27,7 +27,7 @@ Type System:
 
   Types for modelled classes are just the fully qualified class name
   such as foam.nanos.auth.User.
-  
+
   Array types are any type with the suffix '[]'.  "Any[]" represents
   an array of any type of object.  "Float[]" is an array of floats,
   and "foam.nanos.auth.User[][][]" is an array of arrays of arrays of
@@ -71,10 +71,10 @@ Properties:
   need to worry about it, all the built in properties have sensible
   defaults, and you could potentially provoke weird behaviour by
   changing the type of a property to something unexpected ( Example
-  making a property such as { class: 'String', type: 'Person' }, will
+  making a property such as { class: 'StringProperty', type: 'Person' }, will
   probably cause errors.
 
-  Just continue to use { class: 'String' }.  FObjectProperty should
+  Just continue to use { class: 'StringProperty' }.  FObjectProperty should
   use 'type' instead of 'of' to stay consistent { class:
   'FObjectProperty', type: 'foam.nanos.auth.Group' }, but of:
   'foam.nanos.auth.Group' will still work for the time being.
@@ -101,7 +101,7 @@ Properties:
 
   And when generating java code, the appropriate Pattern.compile()
   code will be output.
-  
+
 
 Refinements:
 
@@ -188,7 +188,7 @@ Constants:
   }
 
   But we can use FOAM's understanding of RegEx to shorten this specific example to:
-  
+
   {
     name: 'EXAMPLE_PATTERN',
     type: 'Regex',

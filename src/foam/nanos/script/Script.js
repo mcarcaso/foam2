@@ -58,7 +58,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id'
     },
     {
@@ -75,7 +75,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'description',
       documentation: 'Description of the script.'
     },
@@ -121,14 +121,14 @@ foam.CLASS({
       tableWidth: 100
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'code',
       view: {
         class: 'io.c9.ace.Editor'
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'output',
       visibility: 'RO',
       view: {
@@ -153,7 +153,7 @@ foam.CLASS({
       `
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'notes',
       view: { class: 'foam.u2.tag.TextArea', rows: 4, cols: 144 }
     }

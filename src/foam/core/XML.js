@@ -67,7 +67,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'buf_',
       value: ''
     },
@@ -77,12 +77,12 @@ foam.CLASS({
       value: 0
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'indentStr',
       value: '\t'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'nlStr',
       value: '\n'
     },

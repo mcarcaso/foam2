@@ -165,24 +165,24 @@ foam.CLASS({
       factory: function() { return this.user.tickets; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'requestorEmail'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'requestorName'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'subject'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'message',
       view: 'foam.u2.tag.TextArea'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'status',
       value: 'New'
     },

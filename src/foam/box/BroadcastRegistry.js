@@ -35,14 +35,14 @@ foam.CLASS({
 
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'name',
           documentation: `Name under which registration was stored in
               BroadcastRegistry.`
         },
         {
           class: 'Array',
-          of: 'String',
+          of: 'StringProperty',
           name: 'delegateNames',
           documentation: `Name under which registration delegate services
               are registered.`

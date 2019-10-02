@@ -61,7 +61,7 @@
       tableWidth: 50
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       section: 'basicInfo',
       documentation: 'Rule name for human readability.',
@@ -77,14 +77,14 @@
       tableWidth: 50
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'ruleGroup',
       documentation: 'ruleGroup defines sets of rules related to the same action.',
       permissionRequired: true,
       tableWidth: 100
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'documentation',
       permissionRequired: true,
       view: {
@@ -93,7 +93,7 @@
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'daoKey',
       documentation: 'dao name that the rule is applied on.',
       permissionRequired: true,

@@ -24,7 +24,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'path',
       factory: function() {
         return this.of.name + '.json';

@@ -31,7 +31,7 @@ foam.CLASS({
       name: 'props',
       factory: null,
       expression: function(of) {
-        return of.getAxiomByName('tableColumns') 
+        return of.getAxiomByName('tableColumns')
           ? of.getAxiomByName('tableColumns').columns
           : of.getAxiomsByClass()
             .filter((p) => ! p.networkTransient)
@@ -56,7 +56,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'csv',
       view: 'foam.u2.tag.TextArea',
       flags: ['js']

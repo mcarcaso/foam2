@@ -24,7 +24,7 @@ foam.CLASS({
       name: 'intProp'
     },
     {
-      class: 'foam.core.String',
+      class: 'foam.core.StringProperty',
       name: 'stringProp'
     },
     {

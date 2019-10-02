@@ -10,7 +10,7 @@ foam.CLASS({
   properties: [
     {
       name: 'search',
-      class: 'String',
+      class: 'StringProperty',
       view: { class: 'foam.u2.TextField', onKey: true }
     },
     {

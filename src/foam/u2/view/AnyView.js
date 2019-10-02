@@ -80,7 +80,7 @@ foam.CLASS({
       name: 'Choice',
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'label'
         },
         {

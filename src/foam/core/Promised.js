@@ -68,7 +68,7 @@ foam.CLASS({
       factory: null
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'stateName',
       expression: function(name) { return name + 'State'; }
     },
@@ -149,10 +149,10 @@ foam.CLASS({
             implements: [this.of],
             methods: pendingMethods,
             properties: [
-              {	
+              {
                 class: 'FObjectProperty',
-                of: cls.id,	
-                name: 'delegate'	
+                of: cls.id,
+                name: 'delegate'
               }
             ]
           }

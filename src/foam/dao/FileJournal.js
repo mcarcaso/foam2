@@ -79,8 +79,8 @@ foam.CLASS({
       name: 'outputter',
       javaType: 'foam.lib.json.Outputter',
       javaFactory: `
-        foam.lib.json.Outputter outputter = new Outputter(getX()).setPropertyPredicate(new StoragePropertyPredicate()); 
-        outputter.setMultiLine(getMultiLineOutput()); 
+        foam.lib.json.Outputter outputter = new Outputter(getX()).setPropertyPredicate(new StoragePropertyPredicate());
+        outputter.setMultiLine(getMultiLineOutput());
         return outputter;
         `
     },
@@ -107,7 +107,7 @@ foam.CLASS({
       `
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'filename',
       required: true
     },
@@ -266,7 +266,7 @@ try {
       ],
       args: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'data'
         }
       ],
@@ -394,7 +394,7 @@ try {
       type: 'String',
       args: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'line'
         }
       ],

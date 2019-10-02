@@ -24,7 +24,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id',
       visibility: 'RO'
     },
@@ -91,7 +91,7 @@ foam.CLASS({
       storageTransient: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'remoteHost',
       visibility: 'RO'
     },

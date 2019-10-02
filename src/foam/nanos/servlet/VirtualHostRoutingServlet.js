@@ -18,7 +18,7 @@ foam.CLASS({
       name: 'hostMapping'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'defaultHost'
     },
     {

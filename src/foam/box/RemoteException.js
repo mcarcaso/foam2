@@ -10,11 +10,11 @@ foam.CLASS({
   implements: ['foam.core.Exception'],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'message'
     }
   ],

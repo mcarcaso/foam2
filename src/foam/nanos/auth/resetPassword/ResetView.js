@@ -129,7 +129,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'token',
       factory: function() {
         var search = /([^&=]+)=?([^&]*)/g;
@@ -150,12 +150,12 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'newPassword',
       view: { class: 'foam.u2.view.PasswordView' }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'confirmPassword',
       view: { class: 'foam.u2.view.PasswordView' }
     }

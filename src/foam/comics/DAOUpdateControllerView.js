@@ -78,14 +78,14 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title',
       expression: function(data$dao$of) {
         return 'Edit ' + data$dao$of.name;
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'detailView'
     },
     {
@@ -146,7 +146,7 @@ foam.CLASS({
             .end()
           .end()
         .end()
-        
+
         // Container for the detailview
         .start('div', [], this.container_$)
           .addClass(this.myClass('detail-container'))

@@ -620,7 +620,7 @@ foam.CLASS({
       view: { class: 'foam.u2.FloatView', min: 0.01, max: 0.99, onKey: true }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'textField',
     },
     {
@@ -633,12 +633,12 @@ foam.CLASS({
       view: 'foam.u2.md.DateField'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'textArea',
       view: { class: 'foam.u2.tag.TextArea', rows: 5, cols: 40}
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'choiceView',
       view: {
         class: 'foam.u2.view.ChoiceView',
@@ -646,7 +646,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'choiceView2',
       view: {
         class: 'foam.u2.view.ChoiceView',
@@ -654,7 +654,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'comboBox',
       view: {
         class: 'foam.u2.TextField',

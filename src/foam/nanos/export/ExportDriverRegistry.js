@@ -11,8 +11,8 @@ foam.CLASS({
   documentation: 'Export driver registry model',
 
   properties: [
-    { class: 'String', name: 'id' },
-    { class: 'String', name: 'driverName' },
-    { class: 'String', name: 'targetModel' }
+    { class: 'StringProperty', name: 'id' },
+    { class: 'StringProperty', name: 'driverName' },
+    { class: 'StringProperty', name: 'targetModel' }
   ]
 });

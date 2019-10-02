@@ -31,7 +31,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'String',
+  name: 'StringProperty',
   extends: 'Property',
 
   documentation: 'StringProperties coerce their arguments into Strings.',
@@ -67,7 +67,7 @@ foam.CLASS({
   documentation: 'Upgrade Mode.documentation to a proper String property.',
 
   properties: [
-    { class: 'String', name: 'documentation' }
+    { class: 'StringProperty', name: 'documentation' }
   ]
 });
 
@@ -137,7 +137,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'Time',
-  extends: 'String',
+  extends: 'StringProperty',
 
   documentation: 'Describes properties of type Time.',
   label: 'Time',
@@ -426,7 +426,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'EMail',
-  extends: 'String',
+  extends: 'StringProperty',
   // FUTURE: verify
   label: 'Email address'
 });
@@ -435,7 +435,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'Image',
-  extends: 'String',
+  extends: 'StringProperty',
   // FUTURE: verify
   label: 'Image data or link',
   properties: [ [ 'displayWidth', 80 ] ]
@@ -445,7 +445,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'URL',
-  extends: 'String',
+  extends: 'StringProperty',
   // FUTURE: verify
   label: 'Web link (URL or internet address)',
   properties: [ [ 'displayWidth', 80 ] ]
@@ -455,7 +455,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'Color',
-  extends: 'String',
+  extends: 'StringProperty',
   label: 'Color',
   properties: [ [ 'displayWidth', 20 ] ]
 });
@@ -464,7 +464,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'Password',
-  extends: 'String',
+  extends: 'StringProperty',
   label: 'Password that displays protected or hidden text'
 });
 
@@ -472,7 +472,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'PhoneNumber',
-  extends: 'String',
+  extends: 'StringProperty',
   label: 'Phone number'
 });
 
@@ -623,7 +623,7 @@ foam.CLASS({
     },
     [ 'type', 'Any' ],
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'targetDAOKey',
       expression: function(of) {
         if ( ! of ) {
@@ -633,7 +633,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'unauthorizedTargetDAOKey',
       documentation: `
         Can be provided to use unauthorized local DAOs when the context user is the SYSTEM USER.
@@ -684,19 +684,19 @@ foam.CLASS({
       value: Number.MAX_SAFE_INTEGER,
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       gridColumns: 4,
       order: 1
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'package',
       gridColumns: 4,
       order: 0
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'plural',
       gridColumns: 6,
       order: 7,
@@ -706,7 +706,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label',
       order: 6,
       section: 'uiSection',
@@ -753,7 +753,7 @@ foam.CLASS({
       ]
     </pre>
     */
-    { class: 'String', name: 'shortName' }
+    { class: 'StringProperty', name: 'shortName' }
   ]
 });
 

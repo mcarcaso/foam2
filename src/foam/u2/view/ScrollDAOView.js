@@ -231,7 +231,7 @@ foam.CLASS({
       transient: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sentinelTransform_',
       documentation: 'CSS transform for "sentinel_".',
       expression: function(sentinelY_) {

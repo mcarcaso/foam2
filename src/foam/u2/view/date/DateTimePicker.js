@@ -221,7 +221,7 @@ foam.CLASS({
       documentation: `Used to show/hide the calendar.`
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'date',
       expression: function(day, year, month) {
         if ( ! this.data ) {
@@ -231,7 +231,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'dateTime',
       expression: function(day, year, month, hour12, minute, period) {
         if ( ! this.data ) {
@@ -241,7 +241,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'icon',
       expression: function(isOpen_) {
         return this.data && isOpen_ ? 'images/cancel-round.svg' : 'images/calendar.svg';

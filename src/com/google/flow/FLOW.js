@@ -70,7 +70,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
@@ -129,11 +129,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'description'
     },
     {
@@ -359,7 +359,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       value: 'Untitled1'
     },
@@ -456,7 +456,7 @@ foam.CLASS({
     },
     'cmdLineFeedback_',
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'cmdLine',
       value: 'flow> ',
       postSet: function(_, cmd) {

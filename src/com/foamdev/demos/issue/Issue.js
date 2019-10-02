@@ -44,7 +44,7 @@ foam.CLASS({
       help: 'Date and time the issue was closed.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'description',
       help: 'Description of the issue.'
     },
@@ -98,17 +98,17 @@ foam.CLASS({
       help: 'Number of stars this issue has.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'state',
       help: 'State of this issue (open or closed).'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'status',
       help: 'Status of this issue.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'summary',
       help: 'One-line summary of the issue.'
     },

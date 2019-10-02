@@ -19,11 +19,11 @@ foam.CLASS({
       value: '  '
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'buf_'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'outputMethod'
     }
   ],

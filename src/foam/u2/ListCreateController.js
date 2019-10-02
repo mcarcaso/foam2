@@ -59,7 +59,7 @@ foam.CLASS({
       value: function() { return this.dao.of.create(); }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'createLabel'
     },
     [ 'showActions', true ],

@@ -63,14 +63,14 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title',
       expression: function(data$dao$of) {
         return 'Create ' + data$dao$of.name;
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'detailView'
     }
   ],

@@ -30,7 +30,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String', // TODO: remove.
+      class: 'StringProperty', // TODO: remove.
       name: 'search',
       label: 'Search',
       view: { class: 'foam.u2.TextField' },

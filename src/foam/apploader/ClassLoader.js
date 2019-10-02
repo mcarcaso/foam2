@@ -70,7 +70,7 @@ have multiple classloaders running alongside eachother`
       name: 'load',
       type: 'Class',
       async: true,
-      args: [ { class: 'String', name: 'id' } ],
+      args: [ { class: 'StringProperty', name: 'id' } ],
       code: function(id) {
         return this.load_(id, []);
       }

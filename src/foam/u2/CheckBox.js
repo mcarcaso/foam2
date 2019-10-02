@@ -31,7 +31,7 @@ foam.CLASS({
       factory: function() { return !! this.label || this.labelFormatter },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label'
     },
     {

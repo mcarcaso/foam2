@@ -12,7 +12,7 @@ foam.INTERFACE({
       name: 'load',
       async: true,
       type: 'Class',
-      args: [ { class: 'String', name: 'id' } ]
+      args: [ { class: 'StringProperty', name: 'id' } ]
     }
   ]
 });

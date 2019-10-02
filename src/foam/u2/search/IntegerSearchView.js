@@ -28,7 +28,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'qualifier',
       documentation: `Lets the user choose an MLang predicate to filter by.`,
       view: {

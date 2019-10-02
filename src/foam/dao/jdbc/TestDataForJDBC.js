@@ -14,7 +14,7 @@ foam.CLASS({
       sqlType: 'int'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       sqlType: 'VARCHAR(40)'
     }
@@ -32,7 +32,7 @@ foam.CLASS({
     },
     {
       name: 'name',
-      class: 'String',
+      class: 'StringProperty',
       sqlType: 'VARCHAR(40)'
     }
   ]
@@ -49,12 +49,12 @@ foam.CLASS({
     },
     {
       name: 'firstName',
-      class: 'String',
+      class: 'StringProperty',
       sqlType: 'VARCHAR(40)'
     },
     {
       name: 'lastName',
-      class: 'String',
+      class: 'StringProperty',
       sqlType: 'VARCHAR(40)'
     }
   ]
@@ -67,4 +67,3 @@ foam.RELATIONSHIP({
   targetModel: 'foam.dao.jdbc.TestEmployee',
   inverseName: 'company'
 });
-

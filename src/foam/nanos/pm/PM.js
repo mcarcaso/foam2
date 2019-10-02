@@ -26,7 +26,7 @@ foam.CLASS({
       name: 'classType'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {

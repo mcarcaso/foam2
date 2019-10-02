@@ -9,12 +9,12 @@ foam.CLASS({
   name: 'Professor',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id',
       hidden: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {

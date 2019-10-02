@@ -31,12 +31,12 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'daoKey',
       value: 'documentDAO'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'anchor'
     }
   ],

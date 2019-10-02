@@ -14,7 +14,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftName',
       expression: function(name) { return name },
     },
@@ -30,11 +30,11 @@ foam.CLASS({
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftFactory',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftValue',
       expression: function(value, swiftFactory) {
         return swiftFactory ? '' : foam.swift.asSwiftValue(value);

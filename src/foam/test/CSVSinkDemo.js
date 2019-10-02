@@ -45,7 +45,7 @@ foam.CLASS({
           name: 'id'
         },
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'str'
         },
         {

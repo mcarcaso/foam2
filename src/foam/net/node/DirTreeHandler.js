@@ -48,7 +48,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'dir',
       documentation: 'Directory under which to serve files.',
       preSet: function(old, nu) {

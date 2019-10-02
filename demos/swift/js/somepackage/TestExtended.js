@@ -10,7 +10,7 @@ foam.CLASS({
   extends: 'somepackage.Test',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'firstName',
       value: 'John',
       swiftPreSet: function() {/*

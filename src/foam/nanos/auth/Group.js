@@ -23,7 +23,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id',
       documentation: 'Unique name of the Group.'
     },
@@ -33,7 +33,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'description',
       documentation: 'Description of the Group.'
     },
@@ -63,22 +63,22 @@ foam.CLASS({
       value: ''
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'url',
       value: null
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'from',
       value: null
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'displayName',
       value: null
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'replyTo',
       value: null
     },
@@ -96,7 +96,7 @@ foam.CLASS({
       `
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'supportEmail'
     }
     /*
@@ -193,7 +193,7 @@ foam.CLASS({
             configUrl = group.getUrl();
           }
           configSupportEmail = supportEmailFound ? configSupportEmail : group.getSupportEmail();
-      
+
           // Once true, stay true
           urlFound          = urlFound   ? urlFound   : ! SafetyUtil.isEmpty(configUrl);
           supportEmailFound = supportEmailFound ? supportEmailFound : ! SafetyUtil.isEmpty(configSupportEmail);

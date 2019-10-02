@@ -12,17 +12,17 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'package',
       value: 'com.acme'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'input',
       view: { class: 'foam.u2.tag.TextArea', rows: 24 }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'output',
       view: { class: 'foam.u2.tag.TextArea', rows: 24 }
     }

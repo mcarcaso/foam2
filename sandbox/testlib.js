@@ -50,11 +50,11 @@ foam.CLASS({
   ids: ['name'],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'phone'
     },
     {

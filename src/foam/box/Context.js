@@ -102,7 +102,7 @@ return __context__.lookup("foam.swift.net.SocketService")!.create(args: [
       swiftPostSet: 'NamedBox_create(["name": ""]).delegate = newValue!',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'myname',
       hidden: true,
       swiftFactory:

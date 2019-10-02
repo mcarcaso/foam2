@@ -25,7 +25,7 @@ foam.CLASS({
   properties: [
     {
       name: 'search',
-      class: 'String',
+      class: 'StringProperty',
       view: { class: 'foam.u2.TextField', onKey: true }
     },
     {
@@ -50,7 +50,7 @@ foam.CLASS({
       expression: function (dao, search, order) {
         var expr = foam.mlang.Expressions.create();
         return dao.orderBy(order).where(expr.OR(
-          expr.CONTAINS_IC(Phone.SNIPPET, search), 
+          expr.CONTAINS_IC(Phone.SNIPPET, search),
           expr.CONTAINS_IC(Phone.SNIPPET, search)));
       }
     },
@@ -69,7 +69,7 @@ foam.CLASS({
 
       if (window.location.hash) {
         var expr = foam.mlang.Expressions.create();
-        this.dao.where(expr.EQ(Phone.ID, 
+        this.dao.where(expr.EQ(Phone.ID,
             window.location.hash.substring(1))).select()
           .then(function (sink) {
             var phone = sink.a[0];
@@ -94,7 +94,7 @@ foam.CLASS({
 
 1. The original `Controller` is now the `else` branch; what will be shown when `window.location.hash` is empty.
 2. You're navigating by setting `window.location.hash` to the `id` of the phone we want to see.
-3. In that first branch, you created a `PhoneDetailView` which you'll define shortly. You told it what `model` it should display as a view. 
+3. In that first branch, you created a `PhoneDetailView` which you'll define shortly. You told it what `model` it should display as a view.
 4. You added `PhoneDetailView` to the view’s list of child views by calling add().
 5. You looked up the phone in the master `dao`, not the filtered one, for the phone whose ID is equal to the one in the hash, with the leading # chopped off.
 6. You called `select()` to retrieve the result which used the default `ArraySink` and put the results in an `a` property.
@@ -394,7 +394,7 @@ foam.CLASS({
 });
 {% endhighlight %}
 
-There’s quite a lot there but it’s mostly the same pattern repeated for each group of specs. 
+There’s quite a lot there but it’s mostly the same pattern repeated for each group of specs.
 
 #### **About the Above Code:**
 

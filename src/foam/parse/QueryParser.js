@@ -62,7 +62,7 @@ foam.CLASS({
      * also shared.
      */
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'me'
     },
     {

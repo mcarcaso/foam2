@@ -65,12 +65,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sessionName',
       value: 'defaultSession'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'sessionID',
       factory: function() {
         return localStorage[this.sessionName] ||
@@ -78,11 +78,11 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'url'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'method',
       value: 'POST'
     },

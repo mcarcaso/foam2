@@ -10,18 +10,18 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type',
     },
     {
       name: 'value'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'documentation'
     }
   ],

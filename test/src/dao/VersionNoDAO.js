@@ -36,11 +36,11 @@ describe('VersionNoDAO', function() {
           }
         },
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'firstName'
         },
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'lastName'
         }
       ]

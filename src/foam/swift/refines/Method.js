@@ -17,22 +17,22 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftName',
       expression: function(name) { return name == 'init' ? '__foamInit__' : name; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftPrivateAxiomName',
       expression: function(swiftName) { return '_' + foam.String.constantize(swiftName) + '_'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftAxiomName',
       expression: function(swiftName) { return foam.String.constantize(swiftName) },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftSlotName',
       expression: function(swiftName) { return swiftName + '$'; },
     },
@@ -42,12 +42,12 @@ foam.CLASS({
       expression: function(synchronized) { return !! synchronized; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftSynchronizedSemaphoreName',
       expression: function(swiftName) { return swiftName + '_semaphore_' },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftSynchronizedMethodName',
       expression: function(swiftName) { return swiftName + '_synchronized_' },
     },
@@ -76,12 +76,12 @@ foam.CLASS({
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftVisibility',
       value: 'public',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftCode',
     },
     {
@@ -93,7 +93,7 @@ foam.CLASS({
       name: 'swiftSupport',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftType',
       expression: function(type) {
         return foam.swift.toSwiftType(type, true);

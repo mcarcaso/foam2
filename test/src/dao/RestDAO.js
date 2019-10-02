@@ -35,7 +35,7 @@ describe('RestDAO', function() {
 
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'baseURL',
           value: baseURL
         },
@@ -192,7 +192,7 @@ describe('RestDAO', function() {
 
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'id'
         }
       ]
@@ -224,7 +224,7 @@ describe('RestDAO', function() {
 
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 's'
         },
         {

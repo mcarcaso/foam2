@@ -16,12 +16,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id',
       tableWidth: 280
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label',
       documentation: 'Menu label.'
     },
@@ -51,13 +51,13 @@ foam.CLASS({
       value: 1000
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'description',
       documentation: 'Menu item explaination.',
       displayWidth: 80
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'icon',
       documentation: 'Icon associated to the menu item.',
       displayWidth: 80
@@ -91,7 +91,7 @@ foam.RELATIONSHIP({
     hidden: true
   },
   targetProperty: {
-    class: 'String',
+    class: 'StringProperty',
     value: '',
     view: {
       class: 'foam.u2.view.ReferenceView',

@@ -13,11 +13,11 @@ foam.CLASS({
       name: 'axiom',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'parentId',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       factory: function() {
         return this.axiom.name;

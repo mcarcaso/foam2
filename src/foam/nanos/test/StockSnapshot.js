@@ -17,7 +17,7 @@ foam.CLASS({
       name: 'time'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'symbol'
     },
     {

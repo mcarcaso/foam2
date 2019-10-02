@@ -24,7 +24,7 @@ foam.INTERFACE({
         },
         {
           name: 'group',
-          class: 'String',
+          class: 'StringProperty',
           documentation: 'group of user whose the recipient of the email being sent'
         },
         {

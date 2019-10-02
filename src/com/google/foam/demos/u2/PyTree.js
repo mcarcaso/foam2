@@ -22,7 +22,7 @@ foam.CLASS({
     { class: 'Float', name: 'w', value: 80 },
     { class: 'Float', name: 'x' },
     { class: 'Float', name: 'y' },
-    { class: 'String', name: 'rotate' },
+    { class: 'StringProperty', name: 'rotate' },
     { name: 'heightFactor', value: 0.55 },
     { name: 'lean', value: 0 },
     { name: 'lvl', value: 1 },

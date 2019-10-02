@@ -106,7 +106,7 @@ foam.CLASS({
       documentation: 'The date and time of last login by User.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'firstName',
       documentation: 'The first name of the User.',
       validateObj: function(firstName) {
@@ -120,12 +120,12 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'middleName',
       documentation: 'The middle name of the User.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'lastName',
       documentation: 'The last name of the User.',
       validateObj: function(lastName) {
@@ -140,7 +140,7 @@ foam.CLASS({
     },
     'legalName',
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'organization',
       documentation: 'The organization/business associated with the User.',
       displayWidth: 80,
@@ -155,7 +155,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'department',
       documentation: `The department associated with the organization/business
         of the User.`,
@@ -202,7 +202,7 @@ foam.CLASS({
       view: { class: 'foam.u2.detail.VerticalDetailView' }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'phoneNumber',
       transient: true,
       documentation: `Omits properties of the phone number object and returns
@@ -222,7 +222,7 @@ foam.CLASS({
       view: { class: 'foam.u2.detail.VerticalDetailView' }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type',
       documentation: 'The type of the User.',
       tableWidth: 91,
@@ -264,7 +264,7 @@ foam.CLASS({
       value: 'en'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'timeZone',
       documentation: 'The preferred time zone of the User.',
       width: 5
@@ -315,7 +315,7 @@ foam.CLASS({
     // TODO: startDate, endDate,
     // TODO: do we want to replace 'note' with a simple ticket system?
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'note',
       documentation: 'A field for a note that can be added and appended to the User.',
       displayWidth: 70,
@@ -323,7 +323,7 @@ foam.CLASS({
     },
     // TODO: remove after demo
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'businessName',
       documentation: 'The name of the business associated with the User.',
       width: 50,
@@ -334,7 +334,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'bankIdentificationCode',
       width: 20,
       documentation: `The Bank Identification Code (BIC): an international bank code that

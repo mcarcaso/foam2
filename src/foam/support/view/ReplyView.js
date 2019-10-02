@@ -23,7 +23,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'message',
       view: 'foam.u2.tag.TextArea',
       postSet: function(oldValue, newValue){
@@ -35,7 +35,7 @@ foam.CLASS({
   imports: [
     'viewData'
   ],
-  
+
   css: `
     ^ {
       height: 250px;
@@ -140,15 +140,15 @@ foam.CLASS({
       code: function(X) {
         this.variant = false;
         this.message = "";
-      }             
+      }
     },
     {
       name: 'internalNote',
-      label: 'Internal Note',  
+      label: 'Internal Note',
       code: function(X) {
         this.variant = true;
         this.message = "";
-      }              
+      }
     }
   ]
 });

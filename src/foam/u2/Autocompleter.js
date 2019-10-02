@@ -30,7 +30,7 @@ foam.CLASS({
       documentation: 'The DAO to complete against.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'partial',
       documentation: 'The string the user has entered so far. Usually bound ' +
           'to some text field.'

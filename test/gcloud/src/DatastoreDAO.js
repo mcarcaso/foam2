@@ -88,11 +88,11 @@ describe('DatastoreDAO', function() {
 
         properties: [
           {
-            class: 'String',
+            class: 'StringProperty',
             name: 'firstName'
           },
           {
-            class: 'String',
+            class: 'StringProperty',
             name: 'lastName'
           },
           {
@@ -200,7 +200,7 @@ describe('DatastoreDAO', function() {
 
         properties: [
           {
-            class: 'String',
+            class: 'StringProperty',
             name: 'id'
           }
         ]
@@ -331,7 +331,7 @@ describe('DatastoreDAO', function() {
         name: 'InfoImporter',
         imports: [ 'datastoreTestInformation' ],
 
-        properties: [ { class: 'String', name: 'id' } ]
+        properties: [ { class: 'StringProperty', name: 'id' } ]
       });
       var InfoImporter = foam.lookup('test.dao.import.InfoImporter');
       var alphaPut = InfoImporter.create({ id: ID }, ctx);

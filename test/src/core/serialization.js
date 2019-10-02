@@ -170,7 +170,7 @@ describe('Serialization', function() {
 
       properties: [
         {
-          class: 'String',
+          class: 'StringProperty',
           name: 'str',
           value: 'Hello, world'
         },

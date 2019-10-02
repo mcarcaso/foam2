@@ -13,11 +13,11 @@ foam.CLASS({
   properties: [
     {
       name: 'cmd',
-      class: 'String'
+      class: 'StringProperty'
     },
     {
       name: 'dao',
-      class: 'String'
+      class: 'StringProperty'
     },
     {
       name: 'data',
@@ -25,15 +25,15 @@ foam.CLASS({
     },
     {
       name: 'email',
-      class: 'String'
+      class: 'StringProperty'
     },
     {
       name: 'format',
-      class: 'String'
+      class: 'StringProperty'
     },
     {
       name: 'id',
-      class: 'String'
+      class: 'StringProperty'
     }
   ]
 });

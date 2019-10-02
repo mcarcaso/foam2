@@ -9,7 +9,7 @@ foam.CLASS({
   name: 'FilterMapping',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'filterClass',
     },
     {
@@ -17,7 +17,7 @@ foam.CLASS({
       name: 'initParameters'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'pathSpec'
     }
   ]

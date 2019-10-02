@@ -14,20 +14,20 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'code',
       documentation: `[ISO 3166](https://www.iso.org/iso-3166-country-codes.html)
         -1 alpha-2 Country codes.`,
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'iso31661Code',
       label: 'ISO Code',
       documentation: `[ISO 3166](https://www.iso.org/iso-3166-country-codes.html)
         -1 alpha-3 country codes.`,
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       documentation: 'The name of the country.'
     },

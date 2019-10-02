@@ -53,11 +53,11 @@ foam.CLASS({
       name: 'bcc'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'subject'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'body',
       view: {
         class: 'foam.u2.MultiView',
@@ -68,17 +68,17 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'from',
       value: null
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'displayName',
       value: null
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'replyTo',
       value: null
     },

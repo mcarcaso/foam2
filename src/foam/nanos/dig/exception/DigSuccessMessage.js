@@ -10,7 +10,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'status',
       value: '200'
     },
@@ -20,11 +20,11 @@ foam.CLASS({
       value: 1006
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'message'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type',
       value: 'Success'
     }

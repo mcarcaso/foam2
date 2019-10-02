@@ -82,7 +82,7 @@ onDAOUpdate()
       swiftPostSet: 'newValue?.dataSource = self',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'reusableCellIdentifier',
       value: 'CellID',
     },

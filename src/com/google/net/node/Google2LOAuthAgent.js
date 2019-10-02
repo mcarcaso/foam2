@@ -32,19 +32,19 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'tokenURL',
       documentation: 'URL used for requesting new tokens.',
       value: 'https://www.googleapis.com/oauth2/v4/token'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'email',
       documentation: 'Email sent as a part of token request payload.',
       required: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'privateKey',
       documentation: 'Private key used to sign token requests.',
       required: true
@@ -68,7 +68,7 @@ foam.CLASS({
       factory: function() { return { alg: 'RS256', typ: 'JWT' }; }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'grantType',
       documentation: 'Grant type requested from OAuth2 server.',
       value: 'urn:ietf:params:oauth:grant-type:jwt-bearer'
@@ -83,14 +83,14 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'scope_',
       expression: function(scopes) {
         return scopes.join(' ');
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'base64urlEncodedJWTHeader_',
       documentation: `Base64url encoding of required header:
           '{"alg":"RS256","typ":"JWT"}'`,

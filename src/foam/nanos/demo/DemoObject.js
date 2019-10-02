@@ -20,11 +20,11 @@ foam.CLASS({
   name: 'DemoObject',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'label'
     },
     {

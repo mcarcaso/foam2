@@ -21,12 +21,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id',
       documentation: 'A GUID.'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'desiredModelId',
       documentation: `
         The id of the model that the referenced strategy is a strategy for.
@@ -40,7 +40,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'target',
       documentation: `
         This is a tag that the strategizer service can look at to return more
@@ -55,7 +55,7 @@ foam.CLASS({
         both the StrategyReferences where the desiredModelId matches and the
         target is not set and the StrategyReferences where the desiredModelId
         matches and the target is set and matches the one provided by the user.
-        
+
         For example, imagine a strategy for the 'Outputter' interface that
         outputs transactions in ISO20022 format, which is only applicable to
         transactions. If the user queried the Strategizer for 'Outputter'

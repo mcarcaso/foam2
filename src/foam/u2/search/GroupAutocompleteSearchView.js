@@ -34,7 +34,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'split',
       documentation: 'Set this to a string, and group values will be split ' +
           'on it. This can be used to split a comma-separated string into ' +

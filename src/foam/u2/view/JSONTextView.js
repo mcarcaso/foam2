@@ -14,7 +14,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       label: '',
       name: 'data_',
       view: function(_, x) {
@@ -40,7 +40,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'error'
     },
     'rows',

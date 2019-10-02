@@ -39,7 +39,7 @@ foam.CLASS({
     {
       /** The property to set with a random GUID value, if not already set
         on put() objects. */
-      class: 'String',
+      class: 'StringProperty',
       name: 'property',
       value: 'id'
     },

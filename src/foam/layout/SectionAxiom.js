@@ -10,11 +10,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title',
       expression: function(name) {
         if (name === '_defaultSection') return '';
@@ -22,7 +22,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'help'
     },
     {
@@ -76,7 +76,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'section',
       value: '_defaultSection'
     }
@@ -91,7 +91,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'section',
       value: '_defaultSection'
     }

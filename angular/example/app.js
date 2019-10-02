@@ -24,7 +24,7 @@ foam.CLASS({
       name: 'id',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'title',
       required: true,
     },
@@ -62,4 +62,3 @@ angular.module('testApp', ['foam']).controller('mainCtrl', function($scope, $q) 
     $scope.dao.delegate = q ? dao.where(q) : dao;
   });
 });
-

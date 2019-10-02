@@ -25,8 +25,8 @@ foam.CLASS({
 
   properties: [
     { name: 'id', hidden: true },
-    { class: 'String', name: 'description', width: 25 },
-    { class: 'String', name: 'url',         width: 50 }
+    { class: 'StringProperty', name: 'description', width: 25 },
+    { class: 'StringProperty', name: 'url',         width: 50 }
   ]
 });
 

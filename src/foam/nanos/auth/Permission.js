@@ -12,12 +12,12 @@
 
    properties: [
      {
-       class: 'String',
+       class: 'StringProperty',
        name: 'id',
        tableWidth: 400
      },
      {
-       class: 'String',
+       class: 'StringProperty',
        name: 'description',
        documentation: 'Description of the Group.'
      }

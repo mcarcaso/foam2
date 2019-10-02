@@ -15,28 +15,28 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftName',
       expression: function(name) { return name; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftCode',
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftAxiomName',
       expression: function(name) {
         return foam.String.constantize(name);
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftPrivateAxiomName',
       expression: function(swiftName) { return '_' + foam.String.constantize(swiftName) + '_'; },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'swiftSlotName',
       expression: function(swiftName) { return swiftName + '$'; },
     },

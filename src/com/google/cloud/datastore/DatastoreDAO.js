@@ -80,7 +80,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'projectId',
       factory: function() {
         foam.assert(this.gcloudProjectId, 'DatastoreDAO missing ' +
@@ -90,7 +90,7 @@ foam.CLASS({
       final: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'namespaceId',
       factory: function() {
         return this.datastoreNamespaceId || '';
@@ -98,13 +98,13 @@ foam.CLASS({
       final: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'protocol',
       value: 'https',
       final: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'host',
       value: 'datastore.googleapis.com',
       final: true
@@ -116,7 +116,7 @@ foam.CLASS({
       final: true
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'baseURL',
       factory: function() {
         return this.protocol + '://' + this.host + ':' + this.port +

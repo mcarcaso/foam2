@@ -18,7 +18,7 @@ foam.CLASS({
       swiftFactory: `return self.SimpleOutputterOutput_create()`,
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'str',
       expression: function(delegate$str) { return delegate$str }
     },

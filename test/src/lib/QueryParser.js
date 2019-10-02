@@ -25,7 +25,7 @@ describe('Query parser', function() {
         name: 'id'
       },
       {
-        class: 'String',
+        class: 'StringProperty',
         name: 'name'
       },
       {
@@ -40,7 +40,7 @@ describe('Query parser', function() {
         aliases: [ 'DEAD', 'trashed' ]
       },
       {
-        class: 'String',
+        class: 'StringProperty',
         name: 'optional'
       }
     ]

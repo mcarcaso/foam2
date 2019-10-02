@@ -37,7 +37,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'baseURL',
       documentation: 'URL for most rest calls. Some calls add "/<some-info>".',
       final: true,

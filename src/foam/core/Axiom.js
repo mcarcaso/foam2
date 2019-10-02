@@ -23,7 +23,7 @@ foam.CLASS({
   name: 'AnonymousAxiom',
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'name',
       value: 'anonymousAxiom'
     },

@@ -13,11 +13,11 @@ foam.CLASS({
       name: 'errorCode'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'exceptionType'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'location'
     }
   ]

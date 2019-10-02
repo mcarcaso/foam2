@@ -20,7 +20,7 @@ foam.CLASS({
       name: 'pos_'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'head_',
       javaFactory: `
         java.io.OutputStream os = new java.io.ByteArrayOutputStream(1);

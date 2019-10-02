@@ -14,7 +14,7 @@ foam.CLASS({
       name: 'id'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'email'
     },
     {
@@ -22,7 +22,7 @@ foam.CLASS({
       name: 'password'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'status',
       value: 'Pending'
     },

@@ -25,12 +25,12 @@ foam.CLASS({
     },
     {
       name: 'firstName',
-      class: 'String',
+      class: 'StringProperty',
       sqlType: 'VARCHAR(40)'
     },
     {
       name: 'lastName',
-      class: 'String',
+      class: 'StringProperty',
       sqlType: 'VARCHAR(40)'
     }
   ]
@@ -40,8 +40,8 @@ foam.CLASS({
 4- Add model declaration to foam's classes.js:
 
   'foam.dao.jdbc.TestEmployee'
-  
-  
+
+
 5- To verify that the JDBCConnectionSpec service is installed correctly in the context, Recompile and execute the following code:
 
  jdbcSpec = x.get("JDBCConnectionSpec");
@@ -65,7 +65,7 @@ foam.core.X xcopy = x.put("JDBCDataSource", source);
 8- Crerate a new JDBC DAO with the sub-context containing the data source:
 
  employeeJDBCDAO = new foam.dao.jdbc.MySQLDAO(xcopy, foam.dao.jdbc.TestEmployee.getOwnClassInfo());
- 
+
 
 9- To test the put() method:
 
@@ -78,7 +78,7 @@ foam.core.X xcopy = x.put("JDBCDataSource", source);
  foam.dao.Sink sink = employeeJDBCDAO.select();
  print(sink);
 
- 
+
 11- A select() with a where() clause:
 
  obj1 = employeeJDBCDAO.where(foam.mlang.MLang.EQ(foam.dao.jdbc.TestEmployee.ID, 2)).select();
@@ -110,7 +110,7 @@ foam.core.X xcopy = x.put("JDBCDataSource", source);
 
  foam.dao.jdbc.JDBCPooledDataSource source = new foam.dao.jdbc.JDBCPooledDataSource(x);
  foam.core.X xcopy = x.put("JDBCDataSource", source);
-  
+
  companyJDBCDAO = new foam.dao.jdbc.MySQLDAO(xcopy, foam.dao.jdbc.TestCompany.getOwnClassInfo());
  employeeJDBCDAO = new foam.dao.jdbc.MySQLDAO(xcopy, foam.dao.jdbc.TestEmployee.getOwnClassInfo());
 

@@ -12,12 +12,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'id',
       documentation: 'GUID'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'filename',
       documentation: 'Filename'
     },
@@ -27,7 +27,7 @@ foam.CLASS({
       documentation: 'Filesize'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'mimeType',
       documentation: 'File mime type'
     },
@@ -46,7 +46,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'address',
       transient: true,
       expression: function (id) {

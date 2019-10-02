@@ -39,7 +39,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'type',
       expression: function(axiom$type) {
         return axiom$type || 'Void';

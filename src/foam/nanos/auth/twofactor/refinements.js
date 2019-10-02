@@ -16,7 +16,7 @@ foam.CLASS({
       documentation: 'Two factor enabled flag'
     },
     {
-      class: 'String',
+      class: 'StringProperty',
       name: 'twoFactorSecret',
       documentation: 'Two factor secret',
       networkTransient: true
