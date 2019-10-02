@@ -163,7 +163,7 @@ foam.CLASS({
       precision: 2
     },
     {
-      class: 'Double',
+      class: 'DoubleProperty',
       name: 'defaultDouble'
     },
     {

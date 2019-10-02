@@ -111,7 +111,7 @@ foam.CLASS({
       name: 'shortProp'
     },
     {
-      class: 'foam.core.Double',
+      class: 'foam.core.DoubleProperty',
       name: 'doubleProp'
     },
     // {

@@ -3055,7 +3055,7 @@ foam.CLASS({
       name: 'arg1'
     },
     {
-      class: 'Double',
+      class: 'DoubleProperty',
       name: 'value',
       value: 0
     }
@@ -3083,7 +3083,7 @@ foam.CLASS({
       name: 'arg1'
     },
     {
-      class: 'Double',
+      class: 'DoubleProperty',
       name: 'value',
       value: 0
     },

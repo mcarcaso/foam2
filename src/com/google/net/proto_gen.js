@@ -119,7 +119,7 @@ function reverseMapType(property) {
   if ( foam.core.IntProperty.isInstance(property) ) return 'number';
   if ( foam.core.FloatProperty.isInstance(property) ) return 'number';
   if ( foam.core.LongProperty.isInstance(property) ) return 'number';
-  if ( foam.core.Double.isInstance(property) ) return 'number';
+  if ( foam.core.DoubleProperty.isInstance(property) ) return 'number';
   if ( foam.core.StringProperty.isInstance(property) ) return 'string';
   if ( foam.core.BooleanProperty.isInstance(property) ) return 'bool';
 

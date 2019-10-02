@@ -216,7 +216,7 @@ foam.CLASS({
  **/
 foam.CLASS({
   package: 'foam.core',
-  name: 'Double',
+  name: 'DoubleProperty',
   extends: 'FloatProperty',
   properties: [
     [ 'type', 'Double' ]

@@ -229,12 +229,12 @@ foam.CLASS({
       documentation: 'Determines whether the address is encrypted.'
     },
     {
-      class: 'Double',
+      class: 'DoubleProperty',
       name: 'latitude',
       documentation: 'The latitude of the postal address location.'
     },
     {
-      class: 'Double',
+      class: 'DoubleProperty',
       name: 'longitude',
       documentation: 'The longitude of the postal address location.'
     },

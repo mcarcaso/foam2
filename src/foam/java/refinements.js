@@ -1054,7 +1054,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'DoubleJavaRefinement',
-  refines: 'foam.core.Double',
+  refines: 'foam.core.DoubleProperty',
   flags: ['java'],
 
   properties: [

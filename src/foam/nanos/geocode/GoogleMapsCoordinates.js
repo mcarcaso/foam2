@@ -12,12 +12,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Double',
+      class: 'DoubleProperty',
       name: 'lat',
       documentation: 'Latitude'
     },
     {
-      class: 'Double',
+      class: 'DoubleProperty',
       name: 'lng',
       documentation: 'Longitude'
     }
