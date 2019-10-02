@@ -31,27 +31,27 @@ foam.CLASS({
       name: 'obj'
     },
     {
-      class: 'URL',
+      class: 'URLProperty',
       name: 'activeImageURL',
       value: 'images/Icon_More_Active.svg'
     },
     {
-      class: 'URL',
+      class: 'URLProperty',
       name: 'restingImageURL',
       value: 'images/Icon_More_Resting.svg'
     },
     {
-      class: 'URL',
+      class: 'URLProperty',
       name: 'hoverImageURL',
       value: 'images/Icon_More_Hover.svg'
     },
     {
-      class: 'URL',
+      class: 'URLProperty',
       name: 'disabledImageURL',
       value: 'images/Icon_More_Disabled.svg'
     },
     {
-      class: 'URL',
+      class: 'URLProperty',
       name: 'imageURL_',
       expression: function(restingImageURL, hoverImageURL, disabledImageURL, activeImageURL, hovered_, disabled_, active_) {
         if ( disabled_ ) return `url(${disabledImageURL})`;

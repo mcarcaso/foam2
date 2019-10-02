@@ -193,7 +193,7 @@ foam.CLASS({
       value: 'Dragon.png'
     },
     {
-      class: 'URL',
+      class: 'URLProperty',
       name: 'defaultURL'
     },
     {

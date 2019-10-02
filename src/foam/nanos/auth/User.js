@@ -358,7 +358,7 @@ foam.CLASS({
       documentation: 'Disables types for email notifications.'
     },
     {
-      class: 'URL',
+      class: 'URLProperty',
       name: 'website',
       documentation: 'A URL link to the website of the User.',
       displayWidth: 80,

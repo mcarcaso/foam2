@@ -204,7 +204,7 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'URL',
+      class: 'URLProperty',
       // TODO: appears not to work if named 'url', find out why.
       name: 'sugarURL',
       label: 'URL',

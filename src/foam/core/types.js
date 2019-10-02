@@ -444,7 +444,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'URL',
+  name: 'URLProperty',
   extends: 'StringProperty',
   // FUTURE: verify
   label: 'Web link (URL or internet address)',

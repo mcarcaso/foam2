@@ -90,7 +90,7 @@ foam.CLASS({
       view: { class: 'foam.nanos.dig.DigFileUploadView', data: this.dataFile$ },
     },
     {
-      class: 'URL',
+      class: 'URLProperty',
       name: 'postURL',
       hidden: true
     },

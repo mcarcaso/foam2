@@ -66,7 +66,7 @@ foam.CLASS({
       // TODO: set tableCellRenderer
     },
     {
-      class: 'URL',
+      class: 'URLProperty',
       name: 'url',
       label: 'URL',
       displayWidth: 100

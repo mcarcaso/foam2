@@ -15,7 +15,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'URL',
+      class: 'URLProperty',
       name: 'link'
     }
   ],

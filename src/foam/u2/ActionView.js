@@ -267,7 +267,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'URL',
+      class: 'URLProperty',
       name: 'icon',
       factory: function(action) { return this.action.icon; }
     },

@@ -123,7 +123,7 @@ foam.CLASS({
       name: 'imageProp'
     },
     {
-      class: 'foam.core.URL',
+      class: 'foam.core.URLProperty',
       name: 'urlProp'
     },
     {

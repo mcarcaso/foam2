@@ -127,7 +127,7 @@ foam.CLASS({
       name: 'imageProp'
     },
     {
-      class: 'foam.core.URL',
+      class: 'foam.core.URLProperty',
       name: 'urlProp'
     },
     {
@@ -316,7 +316,7 @@ foam.CLASS({
       name: 'transientImage'
     },
     {
-      class: 'foam.core.URL',
+      class: 'foam.core.URLProperty',
       transient: true,
       name: 'transientURL'
     },
