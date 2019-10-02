@@ -2277,7 +2277,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'TimeViewRefinement',
-  refines: 'foam.core.Time',
+  refines: 'foam.core.TimeProperty',
   requires: [ 'foam.u2.TimeView' ],
   properties: [
     [ 'view', { class: 'foam.u2.TimeView' } ]

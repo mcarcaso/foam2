@@ -22,12 +22,12 @@ foam.CLASS({
     },
     {
       // TODO: Time isn't modeled properly yet and used to be stored as a String in java.
-      // class: 'Time',
+      // class: 'TimeProperty',
       class: 'StringProperty',
       name: 'startTime'
     },
     {
-      // class: 'Time',
+      // class: 'TimeProperty',
       class: 'StringProperty',
       name: 'endTime'
     }

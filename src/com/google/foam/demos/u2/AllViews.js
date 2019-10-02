@@ -138,7 +138,7 @@ foam.CLASS({
       name: 'defaultDateTime'
     },
     {
-      class: 'Time',
+      class: 'TimeProperty',
       name: 'defaultTime'
     },
     {
