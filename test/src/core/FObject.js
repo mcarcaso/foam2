@@ -34,7 +34,7 @@ describe('copyFrom', function() {
           name: 'c'
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'd'
         }
       ]
@@ -134,7 +134,7 @@ describe('copyFrom', function() {
           name: 'c'
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'd'
         }
       ]
@@ -185,7 +185,7 @@ describe('copyFrom', function() {
           name: 'c'
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'd'
         }
       ]

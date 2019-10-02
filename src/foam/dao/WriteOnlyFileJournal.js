@@ -12,7 +12,7 @@ foam.CLASS({
   properties: [
     {
       name: 'outputClassNames',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: false
     },
     {

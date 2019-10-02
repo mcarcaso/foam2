@@ -29,7 +29,7 @@ foam.CLASS({
       required: true,
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'completed',
     },
   ]

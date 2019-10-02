@@ -27,7 +27,7 @@ foam.CLASS({
       name: 'label'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'alwaysFloatLabel'
     }
   ],

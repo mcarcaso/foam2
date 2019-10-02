@@ -31,19 +31,19 @@ foam.CLASS({
       name: 'State',
       properties: [
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'endArray',
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'endObj',
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'comma',
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'array',
         },
       ],

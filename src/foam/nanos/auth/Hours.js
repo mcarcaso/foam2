@@ -17,7 +17,7 @@ foam.CLASS({
       name: 'day'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'open'
     },
     {

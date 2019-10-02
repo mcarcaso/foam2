@@ -38,7 +38,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'trim',
       value: false
     },
@@ -764,7 +764,7 @@ foam.CLASS({
   refines: 'foam.core.AbstractMethod',
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'async',
       value: false
     }

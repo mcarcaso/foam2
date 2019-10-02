@@ -64,32 +64,32 @@ foam.CLASS({
       `
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'createEnabled',
       documentation: 'True to enable the create button.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'editEnabled',
       documentation: 'True to enable the edit button.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'selectEnabled',
       documentation: 'True to enable the select button.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'exportEnabled',
       documentation: 'True to enable the export button.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'exportCSVEnabled',
       documentation: 'True to enabled the export as CSV button'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'toggleEnabled',
       documentation: 'True to enable the toggle filters button.'
     },

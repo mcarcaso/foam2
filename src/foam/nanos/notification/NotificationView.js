@@ -16,7 +16,7 @@ foam.CLASS({
   properties: [
     'of',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'fullyVisible',
       documentation: `If a notification's body content is too long, it will be
           truncated and an ellipsis will be added to the cutoff point. Clicking

@@ -174,13 +174,13 @@ foam.CLASS({
       visibility: foam.u2.Visibility.RO
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'flag',
       documentation: 'to give a change event for argumentInfo',
       hidden: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'objFlag',
       documentation: 'to give a change event for Object argumentInfo',
       hidden: true

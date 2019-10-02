@@ -48,7 +48,7 @@ foam.CLASS({
     [ 'fillStyle', 'black' ],
     [ 'color',     'black' ],
     [ 'frequency', 1 ],
-    { class: 'Boolean', name: 'inColour',  value: true },
+    { class: 'BooleanProperty', name: 'inColour',  value: true },
     [ 'rotationPerSquare', 1/45 ],
   ],
 

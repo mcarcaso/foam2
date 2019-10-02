@@ -73,7 +73,7 @@ foam.CLASS({
       value: 0
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'removed'
     }
   ],

@@ -152,7 +152,7 @@ foam.CLASS({
       value: ''
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'pretty',
       value: true,
       postSet: function(_, p) {
@@ -168,7 +168,7 @@ foam.CLASS({
     },
     {
       // TODO: rename to FON
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'strict',
       value: true,
       postSet: function(_, s) {
@@ -204,46 +204,46 @@ foam.CLASS({
       value: ' '
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'useTemplateLiterals',
       help: 'If true, multiline strings will be outputted using template literals (i.e. surrounded by backticks)',
       value: false,
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'alwaysQuoteKeys',
       help: 'If true, keys are always quoted, as required by the JSON standard. If false, only quote keys which aren\'tvalid JS identifiers.',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'passPropertiesByReference',
       help: 'If true, Property objects are passed as __Property__ references rather than by value.',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'formatDatesAsNumbers',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'formatFunctionsAsStrings',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'outputDefaultValues',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'outputOwnPropertiesOnly',
       documentation: 'If true expressions are not stored.',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'outputClassNames',
       value: true
     },
@@ -259,23 +259,23 @@ foam.CLASS({
       value: function(k, v) { return true; }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'useShortNames',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'sortObjectKeys',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'convertUnserializableToStubs',
       value: false
     }
     /*
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'functionFormat',
       value: false
     },
@@ -578,7 +578,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'strict',
       value: true
     },

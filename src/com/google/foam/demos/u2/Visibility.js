@@ -49,7 +49,7 @@ foam.CLASS({
       visibility: foam.u2.Visibility.HIDDEN
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'flag',
       value: true
     },
@@ -61,7 +61,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'disabledBooleanExpression',
       visibilityExpression: function(flag) {
         return foam.u2.Visibility[flag ? 'RW' : 'DISABLED'];
@@ -82,7 +82,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'readOnlyBooleanExpression',
       visibilityExpression: function(flag) {
         return foam.u2.Visibility[flag ? 'RW' : 'RO'];

@@ -39,7 +39,7 @@ foam.CLASS({
       value: 'ACE'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isReadOnly',
       expression: function(controllerMode) {
         return controllerMode === foam.u2.ControllerMode.VIEW;

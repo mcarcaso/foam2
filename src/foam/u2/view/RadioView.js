@@ -36,12 +36,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isHorizontal',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isDisabled'
     }
   ],

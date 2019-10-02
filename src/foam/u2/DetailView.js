@@ -61,7 +61,7 @@ foam.CLASS({
       name: 'of'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'showActions',
       value: true
     },

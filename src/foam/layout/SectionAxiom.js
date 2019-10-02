@@ -31,7 +31,7 @@ foam.CLASS({
       value: Number.MAX_VALUE
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'permissionRequired'
     },
     {

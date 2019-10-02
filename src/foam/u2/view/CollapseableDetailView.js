@@ -31,7 +31,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isCollapsed',
       value: true
     },

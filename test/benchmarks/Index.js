@@ -49,7 +49,7 @@ xdescribe("Index benchmarks", function() {
       properties: [
         {                   name: 'id' },
         { class: 'Int',     name: 'intP' },
-        { class: 'Boolean', name: 'boolP' },
+        { class: 'BooleanProperty', name: 'boolP' },
         { class: 'StringProperty',  name: 'stringP' },
       ]
     });

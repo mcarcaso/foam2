@@ -887,6 +887,6 @@ describe('Bootstrap invariants', function() {
     expect(foam.core.Model.isInstance(foam.core.Slot.model_)).toBe(true);
     expect(foam.core.Model.isInstance(foam.core.internal.PropertySlot.model_)).toBe(true);
     expect(foam.core.Model.isInstance(foam.core.Topic.model_)).toBe(true);
-    expect(foam.core.Model.isInstance(foam.core.Boolean.model_)).toBe(true);
+    expect(foam.core.Model.isInstance(foam.core.BooleanProperty.model_)).toBe(true);
   });
 })

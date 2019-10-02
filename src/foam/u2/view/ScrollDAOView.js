@@ -140,7 +140,7 @@ foam.CLASS({
       value: 25
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'selectionEnabled',
       factory: function() {
         return !! this.importedSelectionEnabled;
@@ -240,7 +240,7 @@ foam.CLASS({
       transient: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'anchorLock_',
       documentation: `A synchronization variable to prevent unhandled scroll
           events from firing when "count_" (and therefore "sentinel_" location)

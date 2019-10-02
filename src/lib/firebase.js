@@ -57,7 +57,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'enableStreaming',
       value: true
     },

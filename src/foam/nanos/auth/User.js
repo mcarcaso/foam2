@@ -88,13 +88,13 @@ foam.CLASS({
       tableWidth: 50
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'enabled',
       documentation: 'Determines whether the User is permitted certain actions.',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'loginEnabled',
       documentation: 'Determines whether the User can login to the platform.',
       permissionRequired: true,
@@ -186,7 +186,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'emailVerified',
       documentation: 'Determines whether the email address of the User is valid.',
       permissionRequired: true
@@ -342,7 +342,7 @@ foam.CLASS({
       `,
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'businessHoursEnabled',
       documentation: 'Determines whether business hours are enabled for the User to set.',
       value: false

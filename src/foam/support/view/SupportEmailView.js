@@ -16,7 +16,7 @@ foam.CLASS({
   ],
 
   imports: [
-    'createLabel',  
+    'createLabel',
     'ctrl',
     'user'
   ],
@@ -46,7 +46,7 @@ foam.CLASS({
       color: #ffffff;
       position: relative;
       margin: auto;
-      margin-left: 
+      margin-left:
     }
     ^ .btn-mid {
       width: 100%;
@@ -117,7 +117,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'emptyDAO',
     }
   ],
@@ -130,7 +130,7 @@ foam.CLASS({
   methods: [
     function initE(){
       var self = this;
-      this.user.supportEmails.limit(1).select().then(function(a){ 
+      this.user.supportEmails.limit(1).select().then(function(a){
         self.emptyDAO = a.array.length == 0;
       });
 
@@ -141,7 +141,7 @@ foam.CLASS({
           .start()
             .add(this.title).addClass('title')
           .end()
-          .start().addClass('align').end() 
+          .start().addClass('align').end()
           .start({
             class: 'foam.u2.ListCreateController',
             dao: this.user.supportEmails,
@@ -156,7 +156,7 @@ foam.CLASS({
           .start().addClass('btn-mid')
             .start(this.NEW_EMAIL).end()
           .end()
-        .end()   
+        .end()
       .end();
     }
   ],
@@ -175,11 +175,11 @@ foam.CLASS({
     {
       name: 'EmailSupportTableView',
       extends: 'foam.u2.View',
-      
+
       exports: [ 'as data' ],
-      
+
       imports: [ 'user' ],
-      
+
       properties: [
         'selection',
         {
@@ -189,7 +189,7 @@ foam.CLASS({
           }
         }
       ],
-      
+
       methods: [
         function initE() {
           this
@@ -206,7 +206,7 @@ foam.CLASS({
             .addClass(this.myClass('table'))
             .end();
         }
-      ] 
+      ]
     }
   ]
 });

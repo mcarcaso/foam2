@@ -35,7 +35,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'logReads',
       value: false
     },

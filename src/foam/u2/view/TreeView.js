@@ -75,7 +75,7 @@ foam.CLASS({
       name: 'relationship'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'expanded',
       value: false
     },
@@ -84,13 +84,13 @@ foam.CLASS({
       name: 'formatter'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'draggable',
       documentation: 'Enable to allow drag&drop editing.',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'hasChildren'
     }
   ],
@@ -243,7 +243,7 @@ foam.CLASS({
       name: 'formatter'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'startExpanded',
       value: false
     }

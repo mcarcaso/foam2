@@ -57,12 +57,12 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'streaming',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'success',
       expression: function(status) {
         return status >= 200 && status <= 299;

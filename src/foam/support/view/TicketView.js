@@ -69,7 +69,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'hideSummary'
     }
   ],
@@ -92,7 +92,7 @@ foam.CLASS({
       })
     }
   ],
-  
+
   classes: [
     {
       name: 'TicketTableView',
@@ -102,7 +102,7 @@ foam.CLASS({
         'foam.u2.view.ScrollableTableView',
         'foam.support.model.Ticket',
       ],
-      
+
       imports: [ 'user'],
 
       properties: [
@@ -122,4 +122,3 @@ foam.CLASS({
     }
   ]
 });
-

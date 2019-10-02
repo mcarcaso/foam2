@@ -127,7 +127,7 @@ foam.CLASS({
   flags: ['java'],
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'generateJava',
       expression: function(flags) {
         return foam.util.flagFilter(['java'])(this);
@@ -219,12 +219,12 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'includeInDigest',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'includeInSignature',
       value: true
     },
@@ -435,7 +435,7 @@ foam.CLASS({
   properties: [
     {
       name: 'java',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: true
     }
   ],
@@ -454,7 +454,7 @@ foam.CLASS({
   flags: ['java'],
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'generateJava',
       expression: function(model) {
         return foam.util.flagFilter(['java'])(model);
@@ -648,11 +648,11 @@ foam.CLASS({
     },
     { class: 'foam.java.JavaType' },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'final'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'abstract',
       value: false
     },
@@ -661,14 +661,14 @@ foam.CLASS({
       name: 'javaThrows'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'javaSupport',
       expression: function(flags) {
         return foam.util.flagFilter(['java'])(this);
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'remote'
     }
   ],
@@ -797,7 +797,7 @@ foam.CLASS({
   flags: ['java'],
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'abstract',
       value: false
     }
@@ -1774,7 +1774,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'BooleanJavaRefinement',
-  refines: 'foam.core.Boolean',
+  refines: 'foam.core.BooleanProperty',
   flags: ['java'],
   properties: [
     ['javaType', 'boolean'],

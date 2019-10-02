@@ -39,7 +39,7 @@ foam.CLASS({
       name: 'results'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'halted'
     },
     {

@@ -27,7 +27,7 @@ foam.CLASS({
       name: 'indent',
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'needsNewLine',
     },
   ],

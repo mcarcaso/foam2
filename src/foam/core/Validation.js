@@ -146,7 +146,7 @@ foam.CLASS({
   refines: 'foam.core.FObjectProperty',
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'autoValidate'
     },
     {
@@ -172,7 +172,7 @@ foam.CLASS({
   refines: 'foam.core.Int',
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'autoValidate'
     },
     {

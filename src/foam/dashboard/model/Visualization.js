@@ -37,7 +37,7 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'descending',
       value: false
     },

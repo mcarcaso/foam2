@@ -181,7 +181,7 @@ describe('DatastoreDAO', function() {
 
         properties: [
           {
-            class: 'Boolean',
+            class: 'BooleanProperty',
             name: 'handledMultipleBatches'
           }
         ],
@@ -247,7 +247,7 @@ describe('DatastoreDAO', function() {
 
       properties: [
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'handledMultipleBatches'
         }
       ],

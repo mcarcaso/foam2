@@ -43,15 +43,15 @@ foam.CLASS({
       value: 'public'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'static'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'final'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'abstract'
     },
     {
@@ -93,17 +93,17 @@ foam.CLASS({
       factory: function() { return []; }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'anonymous',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'innerClass',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isEnum',
       value: false
     },

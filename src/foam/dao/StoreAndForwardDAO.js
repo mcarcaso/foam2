@@ -121,7 +121,7 @@ foam.CLASS({
       name: 'q_',
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isForwarding_',
     },
   ],

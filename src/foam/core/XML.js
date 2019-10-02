@@ -11,12 +11,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'xmlAttribute',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'xmlTextNode',
       value: false
     },
@@ -87,22 +87,22 @@ foam.CLASS({
       value: '\n'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'outputDefaultValues',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'outputDefinedValues',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'formatDatesAsNumbers',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'outputClassNames',
       value: true
     },
@@ -112,17 +112,17 @@ foam.CLASS({
       value: function(o, p) { return ! p.transient; }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'useShortNames',
       value: false
     },
         {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'sortObjectKeys',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'pretty',
       value: true,
       postSet: function(_, p) {

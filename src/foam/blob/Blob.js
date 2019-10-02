@@ -532,7 +532,7 @@ foam.CLASS({
       javaFactory: 'return File.separator + "sha256";'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isSet',
       value: false,
       hidden: true,

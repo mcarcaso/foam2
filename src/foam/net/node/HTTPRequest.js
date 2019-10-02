@@ -28,7 +28,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'followRedirect',
       value: true
     },

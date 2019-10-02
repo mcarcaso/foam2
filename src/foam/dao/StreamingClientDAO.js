@@ -44,7 +44,7 @@ foam.CLASS({
           name: 'sink'
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'detachOnEOF'
         },
         {

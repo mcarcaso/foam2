@@ -111,7 +111,7 @@ foam.CLASS({
       name: 'ProfilePictureImage'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'dragActive',
       value: false
     },

@@ -24,7 +24,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'hasPermission',
       value: true,
     },

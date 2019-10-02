@@ -11,7 +11,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isSet',
       visibility: 'RO'
     },

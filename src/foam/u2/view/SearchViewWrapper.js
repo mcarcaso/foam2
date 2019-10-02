@@ -88,7 +88,7 @@ foam.CLASS({
         can subscribe to events that it publishes.`,
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'active',
       documentation: `Tracks whether the property is being used as part of the
         filter criteria or not.`
@@ -100,7 +100,7 @@ foam.CLASS({
     'property',
     'dao',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'firstTime_',
       value: true
     },

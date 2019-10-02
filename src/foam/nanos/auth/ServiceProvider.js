@@ -21,7 +21,7 @@ foam.CLASS({
       documentation: 'Service provider name'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'enabled'
     },
     {

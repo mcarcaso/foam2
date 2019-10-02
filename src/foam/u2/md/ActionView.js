@@ -29,7 +29,7 @@ foam.CLASS({
     'data',
     'action',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'raised',
       documentation: 'Controls the "raised" attribute in Polymer. Defaults ' +
           'to false; set this to true for a raised, bordered button.'

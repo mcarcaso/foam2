@@ -42,7 +42,7 @@ foam.CLASS({
       javaFactory: 'return getNextScheduledTime();'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'enabled',
       value: false
     }

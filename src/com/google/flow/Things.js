@@ -171,7 +171,7 @@ foam.CLASS({
 //      hidden: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'feedback_',
       hidden: true
     },
@@ -471,7 +471,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'visible',
       value: true
     },
@@ -551,7 +551,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'visible',
       value: true
     },
@@ -724,7 +724,7 @@ foam.CLASS({
       value: '1'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'penDown',
       value: true
     },

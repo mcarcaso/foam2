@@ -69,7 +69,7 @@ foam.CLASS({
     [ 'backgroundColor', '#fff' ],
     {
       name: 'closeable',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: true
     },
     'onClose'

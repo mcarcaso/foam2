@@ -1359,7 +1359,7 @@ var examples = [
       // Test that a sub-class Property inherits its parent Property's class
       foam.CLASS({
         name: 'PropertyInheritA',
-        properties: [ {class: 'Boolean', name: 'sameName'} ]
+        properties: [ {class: 'BooleanProperty', name: 'sameName'} ]
       });
       foam.CLASS({
         name: 'PropertyInheritB',
@@ -3214,10 +3214,10 @@ For instance, my name is %%name
           { class: 'Float', name: 'undefinedFloat' },
           { class: 'Float', name: 'definedFloat' },
           { class: 'Float', name: 'defaultFloat', value: 3.14 },
-          { class: 'Boolean', name: 'undefinedBoolean' },
-          { class: 'Boolean', name: 'trueBoolean' },
-          { class: 'Boolean', name: 'falseBoolean' },
-          { class: 'Boolean', name: 'defaultBoolean', value: true },
+          { class: 'BooleanProperty', name: 'undefinedBoolean' },
+          { class: 'BooleanProperty', name: 'trueBoolean' },
+          { class: 'BooleanProperty', name: 'falseBoolean' },
+          { class: 'BooleanProperty', name: 'defaultBoolean', value: true },
           { class: 'Function', name: 'undefinedFunction' },
           { class: 'Function', name: 'definedFunction' },
           { name: 'undefinedFObject' },

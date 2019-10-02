@@ -30,7 +30,7 @@ foam.CLASS({
       view: { class: 'foam.u2.TextField', onKey: true}
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'starred'
     }
   ]

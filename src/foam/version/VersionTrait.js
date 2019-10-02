@@ -26,7 +26,7 @@ foam.CLASS({
       value: -1
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'deleted_'
     }
   ]

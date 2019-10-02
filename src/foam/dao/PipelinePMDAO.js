@@ -40,12 +40,12 @@ foam.CLASS({
       documentation: `true when createPipeline has been called.
 both enabled.postSet and Builder.init_() can call createPipeline.`,
       name: 'initialized',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: false
     },
     {
       name: 'enabled',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: true,
       javaPostSet: `
       if ( enabled_ != val ) {
@@ -79,7 +79,7 @@ both enabled.postSet and Builder.init_() can call createPipeline.`,
     {
       documentation: 'Enable PMs on DAO.find operations',
       name: 'pmFind',
-      class: 'Boolean'
+      class: 'BooleanProperty'
     },
     {
       name: 'putName',

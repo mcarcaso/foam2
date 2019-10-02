@@ -29,7 +29,7 @@ foam.CLASS({
       name: 'y'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'claimed',
       value: false
     }

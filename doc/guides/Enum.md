@@ -28,7 +28,7 @@ foam.ENUM({
   // and methods we want our enums to have are defined as follows.
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'consideredOpen',
       value: true
     }
@@ -124,7 +124,7 @@ The extent of all Enum values can be accessed from either the collection from an
 console.log(IssueStatus.VALUES, IssueStatus.CLOSED.VALUES);
 ```
 
-Values can be specified as just Strings if you don't want to explicitly the label or ordinal. 
+Values can be specified as just Strings if you don't want to explicitly the label or ordinal.
 
 ```js
 foam.ENUM({

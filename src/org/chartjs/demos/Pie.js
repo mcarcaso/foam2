@@ -21,7 +21,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'autoAdd',
       postSet: function() { this.maybeAdd() },
     },

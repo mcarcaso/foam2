@@ -165,7 +165,7 @@
     },
     'exportData',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'dragActive',
       value: false
     },

@@ -65,7 +65,7 @@ foam.CLASS({
       value: 'https://play.google.com/store?hl=en'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'forceHttps',
       value: false
     },

@@ -67,36 +67,36 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'createEnabled',
       documentation: 'True to enable the create button.',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'editEnabled',
       documentation: 'True to enable the edit button',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'selectEnabled',
       documentation: 'True to enable the select button.',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'exportEnabled',
       documentation: 'True to enable the export button.',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'exportCSVEnabled',
       documentation: 'True to enable export csv button'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'toggleEnabled',
       documentation: 'True to enable the toggle filters button.',
       value: true
@@ -110,7 +110,7 @@ foam.CLASS({
       factory: function() { return this.NullBorder.create(); }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'searchHidden',
       documentation: `Used internally to keep track of whether the search panel
         is currently hidden or not.`,

@@ -62,7 +62,7 @@ foam.CLASS({
       name: 'id'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'enabled',
       documentation: 'Enables script.',
       tableCellFormatter: function(value) {
@@ -104,7 +104,7 @@ foam.CLASS({
     },
     */
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'server',
       documentation: 'Runs on server side if enabled.',
       value: true,

@@ -29,7 +29,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'generateSwift',
       section: 'swiftProperties',
       value: true,

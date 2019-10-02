@@ -315,7 +315,7 @@ foam.CLASS({
       value: 'PRIMARY'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isDestructive',
       documentation: `
         When set to true, this action should be styled in a way that indicates

@@ -317,7 +317,7 @@ angular.module('foam').directive('foamDetails', [ '$compile',
           }
 
           // Otherwise we dispatch on the type of the property.
-          if ( foam.core.Boolean.isInstance(prop) ) {
+          if ( foam.core.BooleanProperty.isInstance(prop) ) {
             html += '<md-checkbox ng-model="object.' + prop.name + '">' +
                 prop.label + '</md-checkbox>';
           } else if ( foam.core.StringArray.isInstance(prop) ) {
@@ -385,4 +385,3 @@ angular.module('foam').directive('foamDetails', [ '$compile',
     }
   };
 } ]);
-

@@ -25,7 +25,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'read',
       documentation: 'Determines if notification has been read.',
       visibility: foam.u2.Visibility.RO
@@ -69,7 +69,7 @@ foam.CLASS({
       documentation: 'Notification body'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'broadcasted',
       documentation: 'Determines if notification is sent to all users in a group or system.'
     },
@@ -102,12 +102,12 @@ foam.CLASS({
       documentation: 'Email template name.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'emailIsEnabled',
       documentation: 'Determines an email is sent to user.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'sendSlackMessage',
       documentation: 'Sends notification as a Slack message.'
     },

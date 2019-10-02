@@ -21,7 +21,7 @@ foam.CLASS({
       of: 'foam.nanos.auth.User',
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'processed',
       value: false
     },

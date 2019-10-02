@@ -1146,7 +1146,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       documentation: `When true, use foam.Function.withArgs() to evaluate
           symbols function in its original script closure context. Otherwise,
           use with(language) { eval(symbols()); }.`,

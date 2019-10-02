@@ -57,7 +57,7 @@ foam.CLASS({
       name: 'searchManager'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'showCount',
       value: true
     }

@@ -127,7 +127,7 @@ foam.CLASS({
         }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'oneWay'
     },
     {
@@ -147,26 +147,26 @@ foam.CLASS({
       name: 'targetMethod'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'sourceInitialized',
       value: false,
       transient: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'targetInitialized',
       value: false,
       transient: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'junctionInitialized',
       value: false,
       transient: true
     },
     'order',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'enabled',
       expression: function(flags) {
         var enabledFlags = Object.keys(global.FOAM_FLAGS)

@@ -26,12 +26,12 @@ foam.CLASS({
       factory: function() { return new mdc.ripple.MDCRipple(this.el()); }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'raised',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'primary',
       value: false
     }

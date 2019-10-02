@@ -39,7 +39,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isReturn',
       value: true,
       view: {

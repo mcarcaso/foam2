@@ -54,7 +54,7 @@ foam.CLASS({
     'choiceData_',
     'otherData_',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'showOther_',
       expression: function(choiceData_, otherKey) {
         return foam.util.equals(choiceData_, otherKey);

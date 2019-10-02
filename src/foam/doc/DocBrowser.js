@@ -480,7 +480,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'showInherited',
       value: true
     },
@@ -520,14 +520,14 @@ foam.CLASS({
     },
     'subClassCount',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'conventionalUML',
       // this property will allow to switch from the conventional UML diagram (diagram contain
       // a set of properties ) to UML ++ diagram ( and vice versa ).
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'showOnlyProperties',
       value: true
     }

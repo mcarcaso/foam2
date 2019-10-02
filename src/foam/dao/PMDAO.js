@@ -28,7 +28,7 @@ foam.CLASS({
   properties: [
     {
       name: 'enabled',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: true
     },
     {
@@ -47,7 +47,7 @@ foam.CLASS({
     {
       documentation: 'Enable PMs on DAO.find operations',
       name: 'pmFind',
-      class: 'Boolean'
+      class: 'BooleanProperty'
     },
     {
       name: 'putName',

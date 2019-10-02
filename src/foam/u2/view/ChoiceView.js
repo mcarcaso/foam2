@@ -156,7 +156,7 @@ foam.CLASS({
       value: { class: 'foam.u2.tag.Select' }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'alwaysFloatLabel'
     },
     {
@@ -171,7 +171,7 @@ foam.CLASS({
         should be visible.`
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'dynamicSize',
       documentation: `The size of the select element (ie: the number of entries
         shown at one time) should match the number of entries in the list. If

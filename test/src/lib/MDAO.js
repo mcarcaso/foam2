@@ -41,11 +41,11 @@ describe('MDAO with TreeIndex', function() {
       properties: [
         { name: 'id' },
         { name: 'hash' },
-        { class: 'Boolean', name: 'isLocal' },
-        { class: 'Boolean', name: 'byAction' },
+        { class: 'BooleanProperty', name: 'isLocal' },
+        { class: 'BooleanProperty', name: 'byAction' },
         { class: 'Date', name: 'timestamp' },
         { name: 'albumId' },
-        { class: 'Boolean', name: 'isCoverPhoto' },
+        { class: 'BooleanProperty', name: 'isCoverPhoto' },
         { name: 'jspb', hidden: true }
       ]
     });
@@ -55,8 +55,8 @@ describe('MDAO with TreeIndex', function() {
       name: 'Album',
       properties: [
         { name: 'id', name: 'id' },
-        { class: 'Boolean', name: 'isLocal' },
-        { class: 'Boolean', name: 'byAction' },
+        { class: 'BooleanProperty', name: 'isLocal' },
+        { class: 'BooleanProperty', name: 'byAction' },
         { class: 'Date', name: 'timestamp' },
         { name: 'jspb', hidden: true }
       ],
@@ -345,9 +345,3 @@ describe('MDAO with TreeIndex', function() {
 
 
 });
-
-
-
-
-
-

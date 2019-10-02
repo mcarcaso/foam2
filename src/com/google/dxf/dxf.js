@@ -241,7 +241,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'shape',
       documentation: 'No idea what this means.'
     },

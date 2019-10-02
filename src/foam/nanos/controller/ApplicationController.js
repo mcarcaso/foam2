@@ -179,14 +179,14 @@ foam.CLASS({
       name: 'group'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'signUpEnabled',
       adapt: function(_, v) {
         return foam.String.isInstance(v) ? v !== 'false' : v;
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'loginSuccess'
     },
     {
@@ -494,6 +494,6 @@ foam.CLASS({
           .sort((a, b) => b.minWidth - a.minWidth)
           .find(o => o.minWidth <= window.innerWidth);
       }
-    } 
+    }
   ]
 });

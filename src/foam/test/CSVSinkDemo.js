@@ -49,7 +49,7 @@ foam.CLASS({
           name: 'str'
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'bool'
         },
         {

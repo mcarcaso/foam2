@@ -28,7 +28,7 @@ foam.CLASS({
       documentation: 'Unique name of the Group.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'enabled',
       value: true
     },

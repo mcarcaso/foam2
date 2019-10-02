@@ -30,17 +30,17 @@ foam.CLASS({
       documentation: 'The type of address.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'verified',
       documentation: 'Determines whether the address exists.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'deleted',
       documentation: 'Determines whether the address is deleted.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'structured',
       value: true,
       documentation: `Determines whether the address is shown in the following structure:
@@ -224,7 +224,7 @@ foam.CLASS({
         postalCodeIsSet_ = true;`
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'encrypted',
       documentation: 'Determines whether the address is encrypted.'
     },

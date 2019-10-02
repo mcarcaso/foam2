@@ -37,15 +37,15 @@ foam.CLASS({
       name: 'of'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'richSearch'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'keywordSearch'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'checkStrictEquality',
       documentation: `
         Set this flag if you want to match by strict equality instead of
@@ -90,7 +90,7 @@ foam.CLASS({
       value: 'query'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'onKey'
     }
   ],

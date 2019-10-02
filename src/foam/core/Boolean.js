@@ -17,7 +17,7 @@
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Boolean',
+  name: 'BooleanProperty',
   extends: 'Property',
 
   documentation: 'A Property for Boolean values.',

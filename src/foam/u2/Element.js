@@ -96,7 +96,7 @@ foam.CLASS({
       transient: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'expands_',
       documentation: 'True iff the CSS contains a ^ which needs to be expanded.',
       expression: function(code) {
@@ -857,7 +857,7 @@ foam.CLASS({
       transient: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'shown',
       value: true,
       postSet: function(o, n) {
@@ -936,7 +936,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'focused'
     },
     {
@@ -2149,13 +2149,13 @@ foam.CLASS({
       value: null
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'validationTextVisible',
       documentation: "If true, validation text will be displayed below the input when it's in an invalid state.",
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'validationStyleEnabled',
       documentation: 'If true, inputs will be styled when they are in an invalid state.',
       value: true
@@ -2324,7 +2324,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'BooleanViewRefinement',
-  refines: 'foam.core.Boolean',
+  refines: 'foam.core.BooleanProperty',
   requires: [ 'foam.u2.CheckBox' ],
   properties: [
     {
@@ -2658,7 +2658,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'abstract',
       section: 'classProperties',
       label2: 'Can this class get instantiated?'
@@ -2677,7 +2677,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'inheritCSS',
       section: 'htmlSection',
       value: true

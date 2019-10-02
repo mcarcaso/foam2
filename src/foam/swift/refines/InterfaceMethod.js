@@ -14,7 +14,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'swiftSupport',
       value: true,
     },

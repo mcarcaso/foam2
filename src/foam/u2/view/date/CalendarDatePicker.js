@@ -21,7 +21,7 @@ foam.CLASS({
       value: 'table'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'skipDateUpdate',
       value: false
     }

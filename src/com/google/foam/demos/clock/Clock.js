@@ -33,7 +33,7 @@ foam.CLASS({
     [ 'color', '#ffffff' ],
     [ 'arcWidth', 5 ],
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'drawTicks'
     },
     {

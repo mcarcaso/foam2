@@ -95,7 +95,7 @@ foam.CLASS({
       transient: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'polling',
       documentation: `If using a remote DAO without push capabilities, such as
           an HTTP server, polling will periodically attempt to synchronize.`,

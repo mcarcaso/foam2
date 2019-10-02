@@ -71,7 +71,7 @@
     },
     'selection',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'editColumnsEnabled',
       documentation: `
         Set to true if users should be allowed to choose which columns to use.
@@ -109,7 +109,7 @@
       value: true,
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'multiSelectEnabled',
       documentation: 'Pass through to UnstyledTableView.'
     },

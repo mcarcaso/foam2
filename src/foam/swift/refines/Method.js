@@ -37,7 +37,7 @@ foam.CLASS({
       expression: function(swiftName) { return swiftName + '$'; },
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'swiftSynchronized',
       expression: function(synchronized) { return !! synchronized; }
     },
@@ -52,7 +52,7 @@ foam.CLASS({
       expression: function(swiftName) { return swiftName + '_synchronized_' },
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'swiftThrows',
     },
     {
@@ -85,11 +85,11 @@ foam.CLASS({
       name: 'swiftCode',
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'swiftOverride',
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'swiftSupport',
     },
     {

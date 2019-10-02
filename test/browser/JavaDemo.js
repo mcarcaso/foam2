@@ -25,7 +25,7 @@ foam.CLASS({
       name: 'name'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'employed'
     }
   ]

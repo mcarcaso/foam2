@@ -269,7 +269,7 @@ return delegate;
       name: 'decorator'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       documentation: 'Creates pipelinePMDAOs around each decorator to measure their performance',
       name: 'pipelinePm'
     },
@@ -277,7 +277,7 @@ return delegate;
       /** Have EasyDAO use a sequence number to index items. Note that
         .seqNo and .guid features are mutually
         exclusive. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'seqNo',
       value: false
     },
@@ -288,7 +288,7 @@ return delegate;
     },
     {
       /** Have EasyDAO generate guids to index items. Note that .seqNo and .guid features are mutually exclusive. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'guid',
       label: 'GUID',
       value: false
@@ -306,14 +306,14 @@ return delegate;
     },
     {
       /** Enable local in-memory caching of the DAO. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'cache',
       generateJava: false,
       value: false
     },
     {
       /** Enable standard authorization. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'authorize',
       value: true
     },
@@ -340,19 +340,19 @@ return delegate;
      `
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'readOnly',
       value: false
     },
     {
       documentation: 'Wrap in PermissionedPropertiesDAO',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'permissioned',
       value: true
     },
     {
       /** Enable value de-duplication to save memory when caching. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'dedup',
       generateJava: false,
       value: false,
@@ -376,25 +376,25 @@ return delegate;
     },
     {
       /** Enable logging on the DAO. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'logging',
       value: false,
     },
     {
       /** Enable time tracking for concurrent DAO operations. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'timing',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'pm',
       value: false
     },
     {
       /** Contextualize objects on .find, re-creating them with this EasyDAO's
         exports, as if they were children of this EasyDAO. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'contextualize',
       value: false
     },
@@ -421,7 +421,7 @@ return delegate;
     },
     {
       /** Automatically generate indexes as necessary, if using an MDAO or cache. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       generateJava: false,
       name: 'autoIndex',
       documentation: 'not currently supported',
@@ -430,14 +430,14 @@ return delegate;
     {
       /** Turn on to activate synchronization with a server. Specify serverUri
         and syncProperty as well. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'syncWithServer',
       generateJava: false,
       value: false
     },
     {
       /** Turn on to enable remote listener support. Only useful with daoType = CLIENT. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       generateJava: false,
       name: 'remoteListenerSupport',
       value: false
@@ -446,7 +446,7 @@ return delegate;
       /** Setting to true activates polling, periodically checking in with
         the server. If sockets are used, polling is optional as the server
         can push changes to this client. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       generateJava: false,
       name: 'syncPolling',
       value: true
@@ -454,7 +454,7 @@ return delegate;
     {
       /** Set to true if you are running this on a server, and clients will
         synchronize with this DAO. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       generateJava: false,
       name: 'isServer',
       value: false
@@ -516,27 +516,27 @@ return delegate;
     },
     {
       name: 'deletedAware',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: false
     },
     {
       name: 'createdAware',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: false
     },
     {
       name: 'createdByAware',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: false
     },
     {
       name: 'lastModifiedAware',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: false
     },
     {
       name: 'lastModifiedByAware',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: false
     },
     {

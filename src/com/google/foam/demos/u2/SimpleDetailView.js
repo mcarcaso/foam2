@@ -26,7 +26,7 @@ foam.CLASS({
   name: 'Test2',
   label: 'Test 2',
 
-  properties: [ { class: 'Boolean', name: 'a' }, 'b', 'c', 'd' ]
+  properties: [ { class: 'BooleanProperty', name: 'a' }, 'b', 'c', 'd' ]
 });
 
 var timer = foam.util.Timer.create();

@@ -46,12 +46,12 @@ foam.CLASS({
       `
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isFirstRow',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isFirstColumn',
       value: true
     },

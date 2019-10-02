@@ -140,14 +140,14 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'allowDuplicateFilters',
       help: 'When this is true, you can create multiple filters for one ' +
           'property.',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'allowAddingFilters',
       help: 'When this is true, the controls for adding new filters is shown ' +
           'at the top. When it is false, just the CLEAR button and count are ' +
@@ -160,7 +160,7 @@ foam.CLASS({
       value: 'DIV'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'textSearch',
       help: 'Set this to true to enable freeform text search.',
       value: false
@@ -473,7 +473,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2.search',
   name: 'BooleanRefinement',
-  refines: 'foam.core.Boolean',
+  refines: 'foam.core.BooleanProperty',
 
   properties: [
     {

@@ -35,7 +35,7 @@ foam.CLASS({
       name: 'id'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'enabled'
     }
   ]

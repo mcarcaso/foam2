@@ -32,7 +32,7 @@ foam.CLASS({
       factory: function() { return this.Stack.create(); }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'showActions',
       value: true
     }

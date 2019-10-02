@@ -188,18 +188,18 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'transient'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'networkTransient',
       expression: function(transient) {
         return transient;
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'storageTransient',
       expression: function(transient) {
         return transient;

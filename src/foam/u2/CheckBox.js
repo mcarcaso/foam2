@@ -22,11 +22,11 @@ foam.CLASS({
   documentation: 'Checkbox View.',
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'data'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'showLabel',
       factory: function() { return !! this.label || this.labelFormatter },
     },

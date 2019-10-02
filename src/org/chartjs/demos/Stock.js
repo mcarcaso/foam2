@@ -21,12 +21,12 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'autoAddRandomOrder',
       postSet: function() { this.maybeAddRandomOrder() },
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'autoAddRandomSnapshots',
       postSet: function() { this.maybeAddRandomSnapshots() },
     },

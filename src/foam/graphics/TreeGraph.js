@@ -53,7 +53,7 @@
 
          if ( ! c ) return;
          c.expanded = ! c.expanded;
-         
+
          if ( ! c.expanded ) {
            for ( var i = 0 ; i < c.childNodes.length ; i++ ) {
              c.childNodes[i].y = this.nodeHeight;
@@ -66,7 +66,7 @@
      },
 
      function doLayout() {
-       if ( this.root ) { 
+       if ( this.root ) {
         this.root.layout();
         this.root.doLayout();
       }
@@ -111,7 +111,7 @@
          [ 'maxLeft',  0 ],
          [ 'maxRight', 0 ],
          {
-           class: 'Boolean',
+           class: 'BooleanProperty',
            name: 'expanded',
            value: true
          },
@@ -285,14 +285,14 @@
 
             var x = (-this.maxLeft+25)/w * gw + 55;
             needsLayout = this.convergeTo(this.x$, x) || needsLayout;
-            
+
             if ( this.layout() || needsLayout ) {
               this.doLayout();
             }
             else {
               this.graph.updateCWidth();
             }
-          
+
             this.graph.invalidate();
           }
         }
@@ -309,7 +309,7 @@
           maxLeft: 0,
           maxRight: 0
         };
-          
+
         function traverseAndCompare(root) {
           if ( root.maxLeft < maxes.maxLeft ) maxes.maxLeft = root.maxLeft;
           if ( root.maxRight > maxes.maxRight ) maxes.maxRight = root.maxRight;
@@ -323,7 +323,7 @@
 
         // needed to use the adjustments to width in order to account for proper fitting on the screen
         // since by default with out it, the leftmost node and right most node get cutoff by half
-        // padding adjustments are there to proper spacing and also for the edge connectors to 
+        // padding adjustments are there to proper spacing and also for the edge connectors to
         // fully render
         var width = Math.abs(maxes.maxLeft - maxes.maxRight) + this.nodeWidth + this.padding * 4;
         var delta = Math.abs(this.width - width) / width;

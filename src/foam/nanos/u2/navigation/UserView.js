@@ -159,7 +159,7 @@ foam.CLASS({
       name: 'countUnread'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'showCountUnread',
       expression: (countUnread) => countUnread > 0
     },

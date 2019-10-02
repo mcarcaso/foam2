@@ -32,7 +32,7 @@ foam.CLASS({
       value: 100
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'vertical',
       value: true
     },

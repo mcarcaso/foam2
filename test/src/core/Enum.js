@@ -21,7 +21,7 @@ describe('Enum tests', function() {
       name: 'TodoStatus',
       properties: [
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'isOpen',
           value: true
         }

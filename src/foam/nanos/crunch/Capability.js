@@ -70,14 +70,14 @@ foam.CLASS({
     },
     {
       name: 'enabled',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: true,
       documentation: `Capability is ignored by system when enabled is false.
       user will lose permissions implied by this capability and upper level capabilities will ignore this prerequisite`
     },
     {
       name: 'visible',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       documentation: `Hide sub-capabilities which aren't top-level and individually selectable. when true, capability is visible to the user`
     },
     {

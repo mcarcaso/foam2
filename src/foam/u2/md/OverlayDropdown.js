@@ -63,7 +63,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'opened',
       documentation: 'True when the overlay has been commanded to be open.'
     },

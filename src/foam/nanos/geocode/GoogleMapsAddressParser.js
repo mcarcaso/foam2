@@ -256,7 +256,7 @@ foam.CLASS({
           type: 'foam.nanos.geocode.GoogleMapsAddressComponent[]'
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'shortName'
         }
       ],

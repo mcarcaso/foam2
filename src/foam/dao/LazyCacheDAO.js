@@ -36,7 +36,7 @@ foam.CLASS({
   classes: [
     {
       name: 'AnySink',
-      properties: [ { class: 'Boolean', name: 'hasAny' } ],
+      properties: [ { class: 'BooleanProperty', name: 'hasAny' } ],
       methods: [ function put() { this.hasAny = true; }, function eof() {} ]
     }
   ],
@@ -79,7 +79,7 @@ foam.CLASS({
         When true, makes a network call in the background to
         update the record, even on a cache hit.
       */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'refreshOnCacheHit',
       value: false,
     },
@@ -87,7 +87,7 @@ foam.CLASS({
       /**
         Whether to populate the cache on select().
       */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'cacheOnSelect',
       value: false
     },

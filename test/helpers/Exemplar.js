@@ -52,7 +52,7 @@ foam.CLASS({
     },
     {
       /** Set to true if your code is a function that returns a promise */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isAsync',
       value: false
     },
@@ -92,7 +92,7 @@ foam.CLASS({
     },
     {
       /** Is true if this or any dependencies are async. */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'runsAsync',
       expression: function(dependencies) {
         var self = this;

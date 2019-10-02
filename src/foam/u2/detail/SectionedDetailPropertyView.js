@@ -266,7 +266,7 @@ foam.CLASS({
   properties: [
     'prop',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'refresh',
       documentation: 'Flipped to force a re-rendering.'
     },

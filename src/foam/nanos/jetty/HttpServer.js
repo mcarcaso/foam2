@@ -38,7 +38,7 @@ foam.CLASS({
       value: 8080
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'enableHttps'
     },
     {

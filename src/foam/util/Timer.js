@@ -88,7 +88,7 @@ return newValue as! Int
       value: 0
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isStarted',
       hidden: true
     },

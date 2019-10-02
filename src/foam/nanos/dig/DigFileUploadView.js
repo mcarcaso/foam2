@@ -99,7 +99,7 @@ foam.CLASS({
       name: 'data'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'dragActive',
       value: false
     },

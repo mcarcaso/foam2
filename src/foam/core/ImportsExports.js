@@ -96,7 +96,7 @@ foam.CLASS({
       name: 'type'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'required',
       value: true
     },

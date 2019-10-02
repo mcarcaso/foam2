@@ -52,7 +52,7 @@ return firstName + " " + lastName
       name: 'intProp',
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'boolProp',
     },
     {

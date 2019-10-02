@@ -115,12 +115,12 @@ foam.CLASS({
       value: '25'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'authenticate',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'starttls',
       value: false
     },

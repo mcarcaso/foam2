@@ -13,7 +13,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'parseFunctions',
       value: true
     },

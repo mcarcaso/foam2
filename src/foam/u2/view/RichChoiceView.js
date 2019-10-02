@@ -174,7 +174,7 @@ foam.CLASS({
       `
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isOpen_',
       documentation: `
         An internal property used to determine whether the options list is
@@ -222,7 +222,7 @@ foam.CLASS({
       `
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'search',
       documentation: 'Set to true to enable searching.'
     },

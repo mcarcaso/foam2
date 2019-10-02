@@ -29,7 +29,7 @@ foam.CLASS({
     'type',
     'synchronized',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'remote'
     },
     {

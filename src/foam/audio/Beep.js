@@ -57,7 +57,7 @@ foam.CLASS({
       view: { class: 'foam.u2.view.ChoiceView', choices: [ 'sine', 'square', 'sawtooth', 'triangle' ] },
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'envelope'
     },
     {

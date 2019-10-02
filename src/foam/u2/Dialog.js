@@ -52,7 +52,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'padding',
       documetation: 'Controls the padding inside the dialog.',
       attribute: true,

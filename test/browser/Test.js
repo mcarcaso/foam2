@@ -223,7 +223,7 @@ foam.CLASS({
   name: 'JTest',
   properties: [
     'a',
-    { class: 'Boolean', name: 'b' },
+    { class: 'BooleanProperty', name: 'b' },
     { class: 'Int', name: 'c' },
     { class: 'Float', name: 'd' },
     { class: 'StringProperty', name: 'e' },
@@ -298,7 +298,7 @@ foam.ENUM({
   // and methods we want our enums to have are defined as follows.
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'consideredOpen',
       value: true
     }

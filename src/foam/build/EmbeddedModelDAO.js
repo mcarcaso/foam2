@@ -17,7 +17,7 @@ foam.CLASS({
       name: 'json'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'loaded',
       value: false
     },

@@ -15,7 +15,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'replayed',
       javaPostSet: `
 // If replayed is true, this will unblock anything waiting.

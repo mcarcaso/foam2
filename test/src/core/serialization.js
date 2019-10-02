@@ -175,7 +175,7 @@ describe('Serialization', function() {
           value: 'Hello, world'
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'truthiness',
           value: true
         },

@@ -46,11 +46,11 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'showPassword'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isShowPasswordEnabled'
     }
   ],

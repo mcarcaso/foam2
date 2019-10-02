@@ -11,7 +11,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'twoFactorEnabled',
       documentation: 'Two factor enabled flag'
     },

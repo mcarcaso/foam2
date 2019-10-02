@@ -30,7 +30,7 @@ newValue.setTitle(self.action?.label, for: .normal)
       name: 'action',
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'dismissKeyboardOnTap',
       value: true,
     },

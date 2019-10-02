@@ -73,7 +73,7 @@ foam.CLASS({
       getter: function() { return false; }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'remote'
     }
   ],

@@ -65,7 +65,7 @@ foam.CLASS({
     'order',
 
     /* Hidden properties to not appear in GUI's by default. */
-    { class: 'Boolean', name: 'hidden' },
+    { class: 'BooleanProperty', name: 'hidden' },
 
     /**
       The default-value of this property.
@@ -169,7 +169,7 @@ foam.CLASS({
       When set to true, model.permission.property is needed for read / write on this property
      */
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'permissionRequired',
       value: false
     },
@@ -263,7 +263,7 @@ foam.CLASS({
         Identifies properties that contain Personally identifiable information,
         which may fall within the ambit of privacy regulations.
       */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'containsPII'
     },
     {
@@ -271,7 +271,7 @@ foam.CLASS({
         Identifies properties that contain Personally identifiable information which
         may be eligible for deletion on request.
       */
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'containsDeletablePII'
     },
     {

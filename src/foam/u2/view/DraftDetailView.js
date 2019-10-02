@@ -33,7 +33,7 @@ foam.CLASS({
       name: 'workingData'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'hasDiff'
     }
   ],

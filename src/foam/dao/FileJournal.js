@@ -112,12 +112,12 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'multiLineOutput',
       value: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'createFile',
       documentation: 'Flag to create file if not present',
       value: true,

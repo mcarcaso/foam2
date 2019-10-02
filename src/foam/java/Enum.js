@@ -22,7 +22,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isEnum',
       value: true
     },

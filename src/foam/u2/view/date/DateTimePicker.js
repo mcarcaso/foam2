@@ -215,7 +215,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isOpen_',
       value: false,
       documentation: `Used to show/hide the calendar.`

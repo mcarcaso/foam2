@@ -68,11 +68,11 @@ foam.CLASS({
       },
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'swiftRequiresEscaping',
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'swiftOptional',
       expression: function(required) {
         return !required;
@@ -172,7 +172,7 @@ foam.CLASS({
       value: 'outputter?.output(out, value)',
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'swiftSupport',
       value: true,
     },
@@ -184,7 +184,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'swiftWeak',
       value: false,
     },
@@ -579,7 +579,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.swift.refines',
   name: 'BooleanSwiftRefinement',
-  refines: 'foam.core.Boolean',
+  refines: 'foam.core.BooleanProperty',
   flags: ['swift'],
   properties: [
     {

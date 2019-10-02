@@ -2464,7 +2464,7 @@ foam.CLASS({
       factory: function() { return []; }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       hidden: true,
       name: 'processArrayValuesIndividually',
       documentation: 'If true, each value of an array will be entered into a separate group.',

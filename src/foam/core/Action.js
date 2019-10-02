@@ -58,7 +58,7 @@ foam.CLASS({
       name: 'icon'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'confirmationRequired',
       documentation: 'If confirmation is required. Recommended for destructive actions.'
     },
@@ -85,7 +85,7 @@ foam.CLASS({
       name: 'help'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isDefault',
       help: 'Indicates if this is the default action.',
       value: false

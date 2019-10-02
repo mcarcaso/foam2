@@ -72,7 +72,7 @@ foam.CLASS({
       name: 'uri'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'running',
       value: false
     },

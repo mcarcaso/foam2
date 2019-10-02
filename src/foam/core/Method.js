@@ -67,15 +67,15 @@ foam.CLASS({
       value: 'Void'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'async'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'synchronized'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'remote'
     },
     {

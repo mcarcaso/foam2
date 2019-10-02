@@ -44,7 +44,7 @@
  *   // and methods we want our enums to have are defined as follows.
  *   properties: [
  *     {
- *       class: 'Boolean',
+ *       class: 'BooleanProperty',
  *       name: 'consideredOpen',
  *       value: true
  *     }

@@ -54,16 +54,16 @@ foam.CLASS({
       factory: function() { return this.board.getMineCount(this); }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'covered',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'marked'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'mined',
       factory: function() { return Math.random() < 0.18; }
     },

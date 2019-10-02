@@ -44,7 +44,7 @@ describe('MLang', function() {
           name: 'guitar'
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'deceased',
           value: false,
         },

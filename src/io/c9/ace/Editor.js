@@ -23,7 +23,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'preventFeedback'
     },
     {
@@ -41,7 +41,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'showConfig'
     }
   ],
@@ -116,7 +116,7 @@ foam.CLASS({
       this.editor.setTheme(this.config.theme.path);
       this.editor.setReadOnly(this.config.isReadOnly);
       this.editor.resize();
-      this.editor.session.setMode(this.config.mode.path); 
+      this.editor.session.setMode(this.config.mode.path);
       this.editor.setKeyboardHandler(this.config.keyBinding.path);
     }
   ]

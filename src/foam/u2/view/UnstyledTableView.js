@@ -110,13 +110,13 @@ foam.CLASS({
       `
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'editColumnsEnabled',
       value: true,
       documentation: 'Set this to true to let the user select columns.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'disableUserSelection',
       value: false,
       documentation: 'Ignores selection by user.'
@@ -150,7 +150,7 @@ foam.CLASS({
       documentation: 'Set to false to not render the header.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'multiSelectEnabled',
       documentation: 'Set to true to support selecting multiple table rows.'
     },
@@ -176,12 +176,12 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'togglingCheckBoxes_',
       documentation: 'Used internally to improve performance when toggling all checkboxes on or off.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'allCheckBoxesEnabled_',
       documentation: 'Used internally to denote when the user has pressed the checkbox in the header to enable all checkboxes.'
     }

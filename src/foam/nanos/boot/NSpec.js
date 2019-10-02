@@ -40,7 +40,7 @@ foam.CLASS({
       width: 120
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'lazy',
       tableWidth: 65,
       value: true,
@@ -55,7 +55,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'serve',
       tableWidth: 72,
       tableCellFormatter: function(value, obj, property) {
@@ -70,7 +70,7 @@ foam.CLASS({
       documentation: 'If true, this service is served over the network.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'authenticate',
       value: true,
       tableCellFormatter: function(value, obj, property) {
@@ -84,7 +84,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'parameters',
       value: false,
       tableCellFormatter: function(value, obj, property) {
@@ -98,7 +98,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'pm',
       value: true,
       tableCellFormatter: function(value, obj, property) {

@@ -545,7 +545,7 @@ foam.CLASS({
       // whenever a child is added or removed, a property changes, or
       // a property of a child changes. Only works if this CView has
       // an associated Canvas (by calling toE()).
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'autoRepaint',
       hidden: true,
       value: true
@@ -848,7 +848,7 @@ foam.CLASS({
       value: '#000000'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'clip'
     }
   ],
@@ -1311,7 +1311,7 @@ foam.CLASS({
     'x1', 'y1', 'r1',
     {
       name: 'radial',
-      class: 'Boolean',
+      class: 'BooleanProperty',
       value: false
     },
     {

@@ -48,7 +48,7 @@ foam.CLASS({
       name: 'label'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'unrolled',
       documentation: 'Set this to true to get an unrolled list. Defaults to ' +
           'size > 1.',
@@ -62,7 +62,7 @@ foam.CLASS({
       value: 1
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'alwaysFloatLabel'
     }
   ],

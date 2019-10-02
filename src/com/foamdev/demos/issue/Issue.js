@@ -88,7 +88,7 @@ foam.CLASS({
       help: 'Date and time the issue was originally published.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'starred',
       help: 'Whether the authenticated user has starred this issue.'
     },

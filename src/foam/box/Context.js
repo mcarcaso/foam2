@@ -129,7 +129,7 @@ return __context__.lookup("foam.swift.net.SocketService")!.create(args: [
       */},
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'unsafe',
       value: true
     },

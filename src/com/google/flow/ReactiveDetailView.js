@@ -122,7 +122,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'reactive',
       postSet: function(_, r) {
         if ( ! r && this.data ) {

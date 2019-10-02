@@ -32,7 +32,7 @@ foam.CLASS({
       name: 'value'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isValid',
       value: true,
       javaValidateObj: `

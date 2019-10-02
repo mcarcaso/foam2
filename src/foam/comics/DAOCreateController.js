@@ -30,7 +30,7 @@ foam.CLASS({
       name: 'dao'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'inProgress'
     },
     {

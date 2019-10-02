@@ -26,12 +26,12 @@ foam.CLASS({
       factory: function() { return new mdc.textfield.MDCTextfield(this.el()); }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'raised',
       value: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'primary',
       value: false
     }

@@ -421,11 +421,11 @@ foam.CLASS({
       name: 'GroupPermission',
       properties: [
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'checked'
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'impliedByParentPermission'
         },
         {
@@ -433,18 +433,18 @@ foam.CLASS({
           name: 'impliedByGroups'
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'impliedByGroup'
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'implied',
           expression: function(impliedByParentPermission, impliedByGroup) {
             return impliedByParentPermission || impliedByGroup;
           }
         },
         {
-          class: 'Boolean',
+          class: 'BooleanProperty',
           name: 'granted',
           expression: function(checked, implied) {
             return checked || implied;

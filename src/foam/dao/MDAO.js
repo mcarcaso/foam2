@@ -52,7 +52,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'autoIndex'
     },
     {

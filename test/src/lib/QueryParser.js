@@ -35,7 +35,7 @@ describe('Query parser', function() {
         aliases: [ 'time', 'datestamp', 'd' ]
       },
       {
-        class: 'Boolean',
+        class: 'BooleanProperty',
         name: 'deleted',
         aliases: [ 'DEAD', 'trashed' ]
       },

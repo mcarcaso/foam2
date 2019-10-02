@@ -51,7 +51,7 @@ global.genericDAOTestBattery = function(daoFactory) {
             },
           */
           {
-            class: 'Boolean',
+            class: 'BooleanProperty',
             name: 'deceased',
           },
           // TODO(braden): Test serializing more values: Dates, nested FObjects,

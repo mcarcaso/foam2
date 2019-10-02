@@ -28,7 +28,7 @@ foam.CLASS({
       required: false
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'abstract',
       value: true
     }

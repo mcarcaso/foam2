@@ -26,7 +26,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'bounceOnWalls'
     },
     {
@@ -39,7 +39,7 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'stopped_',
       value: true,
       hidden: true

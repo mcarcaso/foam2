@@ -208,7 +208,7 @@ foam.CLASS({
       name: 'property'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'delegate',
       value: false
     },
@@ -243,7 +243,7 @@ foam.CLASS({
       factory: function() { return []; }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'active',
       value: false,
       postSet: function(old, a) {

@@ -61,15 +61,15 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'hovered_'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'disabled_'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'active_'
     },
     {
@@ -81,7 +81,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'overlayInitialized_'
     }
   ],

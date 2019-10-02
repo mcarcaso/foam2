@@ -417,7 +417,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'dirty_'
     },
     [ 'myControllerMode', 'update' ]

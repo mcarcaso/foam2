@@ -153,7 +153,7 @@ foam.CLASS({
       value: ng.tracker.IssueStatus.NEW
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'isOpen',
       hidden: true,
       expression: function(status) {

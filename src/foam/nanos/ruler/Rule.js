@@ -119,7 +119,7 @@
       documentation: 'Defines when the rules is to be applied: put/removed'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'after',
       permissionRequired: true,
       documentation: 'Defines if the rule needs to be applied before or after operation is completed'+
@@ -152,7 +152,7 @@
       documentation: 'The action to be executed asynchronously if predicates returns true for passed object.'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'enabled',
       value: true,
       documentation: 'Enables the rule.',
@@ -160,7 +160,7 @@
       tableWidth: 50
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'saveHistory',
       value: false,
       permissionRequired: true,

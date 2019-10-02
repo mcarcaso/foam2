@@ -565,7 +565,7 @@ foam.CLASS({
   extends: 'foam.u2.View',
 
   properties: [
-    { class: 'Boolean', name: 'showMe' }
+    { class: 'BooleanProperty', name: 'showMe' }
   ],
 
   methods: [
@@ -624,7 +624,7 @@ foam.CLASS({
       name: 'textField',
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'booleanField',
     },
     {

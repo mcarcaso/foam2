@@ -26,7 +26,7 @@ foam.CLASS({
 
   properties: [
     { class: 'StringProperty',  name: 'label' },
-    { class: 'Boolean', name: 'selected' }
+    { class: 'BooleanProperty', name: 'selected' }
   ],
 
   methods: [
@@ -401,7 +401,7 @@ foam.CLASS({
   properties: [
     'title',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'expanded',
       value: true
     }
@@ -511,7 +511,7 @@ foam.CLASS({
   properties: [
     'title',
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'expanded',
       value: true
     }

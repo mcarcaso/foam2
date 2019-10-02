@@ -220,13 +220,13 @@ foam.CLASS({
       name: 'defaultCurrency'
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'defaultBoolean',
       label: 'CheckBox',
       view: { class: 'foam.u2.CheckBox' }// default
     },
     {
-      class: 'Boolean',
+      class: 'BooleanProperty',
       name: 'mdCheckboxBoolean',
       label: 'md.CheckBox',
       view: { class: 'foam.u2.md.CheckBox' }
