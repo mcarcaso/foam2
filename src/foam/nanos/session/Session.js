@@ -70,7 +70,7 @@ foam.CLASS({
       storageTransient: true
     },
     {
-      class: 'Duration',
+      class: 'DurationProperty',
       name: 'ttl',
       label: 'TTL',
       documentation: 'The "time to live" of the session. The amount of time in milliseconds that the session should be kept alive after its last use before being destroyed. Must be a positive value or zero.',

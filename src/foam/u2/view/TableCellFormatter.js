@@ -223,7 +223,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2.view',
   name: 'DurationTableCellFormatterRefinement',
-  refines: 'foam.core.Duration',
+  refines: 'foam.core.DurationProperty',
 
   properties: [
     {

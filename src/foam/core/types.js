@@ -249,7 +249,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Duration',
+  name: 'DurationProperty',
   extends: 'LongProperty',
 
   documentation: `

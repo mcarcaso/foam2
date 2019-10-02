@@ -87,7 +87,7 @@ foam.CLASS({
       tableWidth: 140
     },
     {
-      class: 'Duration',
+      class: 'DurationProperty',
       name: 'lastDuration',
       documentation: 'Date and time the script took to complete.',
       visibility: 'RO',
