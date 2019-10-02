@@ -8,7 +8,7 @@ public class ProxyAgency implements Agency {
   }
 
   @Override
-  public void submit(X x, ContextAgent agent, String description) {
+  public void submit(X x, ContextAgent agent, java.lang.String description) {
     delegate_.submit(x, agent, description);
   }
 }

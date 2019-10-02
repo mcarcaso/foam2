@@ -18,10 +18,10 @@ public class SimpleFacetManager
   }
 
   public <T> T create(Class<T> type, X x) {
-    return create(type, Collections.<String, Object>emptyMap(), x);
+    return create(type, Collections.<java.lang.String, Object>emptyMap(), x);
   }
 
-  public <T> T create(Class<T> type, Map<String, Object> args, X x) {
+  public <T> T create(Class<T> type, Map<java.lang.String, Object> args, X x) {
     try {
       // Automatically load FooImpl if Foo is abstract.
       // KGR: Why/where do we do this?
@@ -57,7 +57,7 @@ public class SimpleFacetManager
       if ( obj instanceof ContextAware ) ((ContextAware) obj).setX(x);
 
       if ( obj instanceof FObject ) {
-        for ( Map.Entry<String, Object> entry : args.entrySet() )
+        for ( Map.Entry<java.lang.String, Object> entry : args.entrySet() )
           ((FObject) obj).setProperty(entry.getKey(), entry.getValue());
       }
 

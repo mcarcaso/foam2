@@ -87,7 +87,7 @@ public abstract class AbstractPropertyInfo
     }
   }
 
-  public void setFromString(Object obj, String value) {
+  public void setFromString(Object obj, java.lang.String value) {
     this.set(obj, fromString(value));
   }
 
@@ -113,7 +113,7 @@ public abstract class AbstractPropertyInfo
     this.set(o, resultSet.getObject(index));
   }
 
-  public String toString() {
+  public java.lang.String toString() {
     // TODO: generate static string in generated instances instead to avoid creating garbage.
     return parent.getId() + "." + getName();
   }
@@ -153,17 +153,17 @@ public abstract class AbstractPropertyInfo
   public void authorize(X x) {
     if ( this.getPermissionRequired() ) {
       AuthService auth = (AuthService) x.get("auth");
-      String simpleName = this.getClassInfo().getObjClass().getSimpleName();
-      String permission =
+      java.lang.String simpleName = this.getClassInfo().getObjClass().getSimpleName();
+      java.lang.String permission =
         simpleName.toLowerCase() +
         ".%s." +
         this.getName().toLowerCase();
 
       if (
-        ! auth.check(x, String.format(permission, "rw")) &&
-        ! auth.check(x, String.format(permission, "ro"))
+        ! auth.check(x, java.lang.String.format(permission, "rw")) &&
+        ! auth.check(x, java.lang.String.format(permission, "ro"))
       ) {
-        throw new AuthorizationException(String.format("Access denied. User lacks permission to access property '%s' on model '%s'.", this.getName(), simpleName));
+        throw new AuthorizationException(java.lang.String.format("Access denied. User lacks permission to access property '%s' on model '%s'.", this.getName(), simpleName));
       };
     }
   }

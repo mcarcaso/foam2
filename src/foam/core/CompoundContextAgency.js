@@ -71,7 +71,7 @@ return sb.toString();`
     {
       name: 'describeAgents',
       type: 'String[]',
-      javaCode: `String[] desc = new String[getAgents().size()];
+      javaCode: `java.lang.String[] desc = new java.lang.String[getAgents().size()];
 for ( int i = 0 ; i < getAgents().size() ; i++ ) {
   desc[i] = getAgents().get(i).toString();
 }
@@ -90,4 +90,3 @@ return desc;`
     }
   ]
 });
-

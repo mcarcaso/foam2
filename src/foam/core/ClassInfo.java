@@ -11,8 +11,8 @@ import java.util.List;
 /** Provides runtime information about a Class. **/
 // KGR: Why is this mutable?
 public interface ClassInfo extends java.lang.Comparable {
-  String      getId();
-  ClassInfo   setId(String id);
+  java.lang.String      getId();
+  ClassInfo   setId(java.lang.String id);
 
   ClassInfo   getParent();
   ClassInfo   addAxiom(Axiom a);
@@ -24,6 +24,6 @@ public interface ClassInfo extends java.lang.Comparable {
   Class       getObjClass();
 
   List        getAxioms();
-  Object      getAxiomByName(String name);
+  Object      getAxiomByName(java.lang.String name);
   <T> List<T> getAxiomsByClass(Class<T> cls);
 }

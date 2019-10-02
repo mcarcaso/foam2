@@ -37,7 +37,7 @@ public abstract class AbstractDatePropertyInfo
     return ((Date)o1).compareTo(((Date)o2));
   }
 
-  public Object fromString(String value) {
+  public Object fromString(java.lang.String value) {
     StringPStream ps = new StringPStream(value);
     ParserContextImpl x = new ParserContextImpl();
     ps = (StringPStream) jsonParser().parse(ps, x);

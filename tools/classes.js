@@ -5,6 +5,27 @@
  */
 
 var classes = [
+  'foam.core.Model',
+  'foam.pattern.Multiton',
+  'foam.pattern.Singleton',
+  'foam.pattern.Faceted',
+  'foam.core.AnonymousAxiom',
+  'foam.box.Remote',
+  'foam.u2.CSS',
+  'foam.u2.TextInputCSS',
+  'foam.core.Property',
+  'foam.core.Method',
+  'foam.core.ValidationPredicate',
+  'foam.core.String',
+  'foam.core.StringArray',
+  'foam.core.Boolean',
+  'foam.core.Int',
+  'foam.core.Long',
+  'foam.core.Date',
+  'foam.core.DateTime',
+  'foam.core.Time',
+  'foam.u2.view.Formatter',
+
   'foam.core.Axiom',
   'foam.core.Detachable',
   'foam.core.Serializable',

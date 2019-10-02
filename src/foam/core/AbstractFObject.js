@@ -52,7 +52,7 @@ foam.CLASS({
             return this.hash("SHA-256");
           }
 
-          public byte[] hash(String algorithm)
+          public byte[] hash(java.lang.String algorithm)
             throws NoSuchAlgorithmException
           {
             return this.hash(MessageDigest.getInstance(algorithm));
@@ -65,7 +65,7 @@ foam.CLASS({
             return this.sign(String.format("SHA256with%s", key.getAlgorithm()), key);
           }
 
-          public byte[] sign(String algorithm, PrivateKey key)
+          public byte[] sign(java.lang.String algorithm, PrivateKey key)
             throws NoSuchAlgorithmException, InvalidKeyException, SignatureException
           {
             Signature signer = Signature.getInstance(algorithm);
@@ -77,10 +77,10 @@ foam.CLASS({
           public boolean verify(byte[] signature, PublicKey key)
             throws NoSuchAlgorithmException, InvalidKeyException, SignatureException
           {
-            return this.verify(signature, String.format("SHA256with%s", key.getAlgorithm()), key);
+            return this.verify(signature, java.lang.String.format("SHA256with%s", key.getAlgorithm()), key);
           }
 
-          public boolean verify(byte[] signature, String algorithm, PublicKey key)
+          public boolean verify(byte[] signature, java.lang.String algorithm, PublicKey key)
             throws NoSuchAlgorithmException, InvalidKeyException, SignatureException
           {
             Signature verifier = Signature.getInstance(algorithm);

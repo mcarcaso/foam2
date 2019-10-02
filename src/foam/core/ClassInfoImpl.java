@@ -12,7 +12,7 @@ public class ClassInfoImpl
   implements ClassInfo
 {
   private List      axioms;
-  private String    id;
+  private java.lang.String    id;
   private HashMap   axiomsByName_ = new HashMap();
   private ClassInfo parent_       = null;
   private List      allAxioms_    = null;
@@ -23,7 +23,7 @@ public class ClassInfoImpl
     axioms = new ArrayList();
   }
 
-  public String getId() {
+  public java.lang.String getId() {
     return id;
   }
 
@@ -40,7 +40,7 @@ public class ClassInfoImpl
     return class_;
   }
 
-  public ClassInfo setId(String id) {
+  public ClassInfo setId(java.lang.String id) {
     this.id = id;
     return this;
   }
@@ -90,7 +90,7 @@ public class ClassInfoImpl
   public List getAxioms() {
     if ( allAxioms_ == null ) {
       allAxioms_ = new ArrayList() {
-        HashSet<String> keys = new HashSet<>();
+        HashSet<java.lang.String> keys = new HashSet<>();
 
         @Override
         public boolean add(Object o) {
@@ -119,7 +119,7 @@ public class ClassInfoImpl
     return allAxioms_;
   }
 
-  public Object getAxiomByName(String name) {
+  public Object getAxiomByName(java.lang.String name) {
     Object ret = axiomsByName_.get(name);
     if ( ret == null ) {
       ret = getParent().getAxiomByName(name);
@@ -133,7 +133,7 @@ public class ClassInfoImpl
     }
 
     ArrayList ret = new ArrayList() {
-      HashSet<String> keys = new HashSet<>();
+      HashSet<java.lang.String> keys = new HashSet<>();
 
       @Override
       public boolean add(Object o) {

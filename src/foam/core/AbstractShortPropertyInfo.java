@@ -37,7 +37,7 @@ public abstract class AbstractShortPropertyInfo
   //   this.set(obj, Short.valueOf(value));
   // }
 
-  public Object fromString(String value) {
+  public Object fromString(java.lang.String value) {
     return Short.valueOf(value);
   }
 

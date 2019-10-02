@@ -18,7 +18,7 @@ public abstract class AbstractBytePropertyInfo
     return java.lang.Byte.compare(b1, b2);
   }
 
-  public Object fromString(String value) {
+  public Object fromString(java.lang.String value) {
     return Byte.valueOf(value);
   }
 

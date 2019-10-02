@@ -33,7 +33,7 @@ public abstract class AbstractFloatPropertyInfo
     return Float.compare(d1, d2);
   }
 
-  public Object fromString(String value) {
+  public Object fromString(java.lang.String value) {
     return Float.valueOf(value);
   }
 

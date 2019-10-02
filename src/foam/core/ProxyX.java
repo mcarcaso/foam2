@@ -76,10 +76,10 @@ public class ProxyX
   }
 
   public <T> T create(Class<T> type) {
-    return create(type, Collections.<String, Object>emptyMap());
+    return create(type, Collections.<java.lang.String, Object>emptyMap());
   }
 
-  public <T> T create(Class<T> type, Map<String, Object> args) {
+  public <T> T create(Class<T> type, Map<java.lang.String, Object> args) {
     return ((FacetManager) getX().get("facetManager")).create(type, args, this);
   }
 }

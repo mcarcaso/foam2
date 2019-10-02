@@ -18,7 +18,7 @@ public abstract class AbstractBooleanPropertyInfo
     return Boolean.compare(b1, b2);
   }
 
-  public Object fromString(String value) {
+  public Object fromString(java.lang.String value) {
     return Boolean.parseBoolean(value);
   }
 

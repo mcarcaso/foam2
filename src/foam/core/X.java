@@ -41,5 +41,5 @@ public interface X
   // Facet Manager
   public Object getInstanceOf(Object value, Class type);
   public <T> T create(Class<T> type);
-  public <T> T create(Class<T> type, Map<String, Object> args);
+  public <T> T create(Class<T> type, Map<java.lang.String, Object> args);
 }

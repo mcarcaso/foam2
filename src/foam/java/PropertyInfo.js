@@ -31,7 +31,7 @@ foam.CLASS({
     {
       name: 'getAliasesBody',
       expression: function() {
-      var b = 'new String[] {';
+      var b = 'new java.lang.String[] {';
         for ( var i = 0 ; i < this.propAliases.length ; i++ ) {
           b += '"' + this.propAliases[i] + '"';
           if ( i < this.propAliases.length-1 ) b += ', ';
@@ -119,13 +119,13 @@ foam.CLASS({
           {
             name: 'getName',
             visibility: 'public',
-            type: 'String',
+            type: 'java.lang.String',
             body: 'return "' + this.propName + '";'
           },
           {
             name: 'getShortName',
             visibility: 'public',
-            type: 'String',
+            type: 'java.lang.String',
             body: this.propShortName ?
               'return "' + this.propShortName + '";' :
               'return null;'
@@ -133,7 +133,7 @@ foam.CLASS({
           {
             name: 'getAliases',
             visibility: 'public',
-            type: 'String[]',
+            type: 'java.lang.String[]',
             body: 'return ' + this.getAliasesBody
           },
           {
@@ -255,13 +255,13 @@ foam.CLASS({
           {
             name: 'getSQLType',
             visibility: 'public',
-            type: 'String',
+            type: 'java.lang.String',
             body: 'return "' + this.sqlType + '";'
           },
           {
             name: 'createStatement',
             visibility: 'public',
-            type: 'String',
+            type: 'java.lang.String',
             body: 'return "' + this.propName.toLowerCase() + '";'
           },
           {
@@ -315,7 +315,7 @@ foam.CLASS({
             visibility: 'public',
             type: 'void',
             args: [
-              { name: 'map', type: 'java.util.Map<String, foam.lib.csv.FromCSVSetter>' }
+              { name: 'map', type: 'java.util.Map<java.lang.String, foam.lib.csv.FromCSVSetter>' }
             ],
             body: this.fromCSVLabelMapping
           }

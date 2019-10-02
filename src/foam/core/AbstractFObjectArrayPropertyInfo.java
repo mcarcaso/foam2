@@ -22,12 +22,12 @@ public abstract class AbstractFObjectArrayPropertyInfo
     extends AbstractArrayPropertyInfo {
 
   @Override
-  public Object fromString(String value) {
+  public Object fromString(java.lang.String value) {
     //TODO
     return null;
   }
 
-  public abstract String of();
+  public abstract java.lang.String of();
 
   // NESTED ARRAY
   @Override

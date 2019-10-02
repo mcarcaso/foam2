@@ -33,7 +33,7 @@ public abstract class AbstractDoublePropertyInfo
     return Double.compare(d1, d2);
   }
 
-  public Object fromString(String value) {
+  public Object fromString(java.lang.String value) {
     return Double.valueOf(value);
   }
 

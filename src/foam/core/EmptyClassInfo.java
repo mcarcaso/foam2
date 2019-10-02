@@ -13,11 +13,11 @@ import java.util.List;
 public class EmptyClassInfo
   implements ClassInfo
 {
-  public String getId() {
+  public java.lang.String getId() {
     return "EmptyClassInfo";
   }
 
-  public ClassInfo setId(String id) {
+  public ClassInfo setId(java.lang.String id) {
     return this;
   }
 
@@ -55,7 +55,7 @@ public class EmptyClassInfo
     return Collections.emptyList();
   }
 
-  public Object getAxiomByName(String name) {
+  public Object getAxiomByName(java.lang.String name) {
     return null;
   }
 

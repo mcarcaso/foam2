@@ -24,8 +24,8 @@ public interface FObject extends
   boolean isFrozen();
   //Return is FObject that contain different fields between two FObjects.
   FObject hardDiff(FObject obj);
-  Object setProperty(String prop, Object value);
-  Object getProperty(String prop);
-  boolean isPropertySet(String prop);
-  boolean hasDefaultValue(String prop);
+  Object setProperty(java.lang.String prop, Object value);
+  Object getProperty(java.lang.String prop);
+  boolean isPropertySet(java.lang.String prop);
+  boolean hasDefaultValue(java.lang.String prop);
 }

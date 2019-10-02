@@ -33,7 +33,7 @@ public abstract class AbstractLongPropertyInfo
     return java.lang.Long.compare(o1, o2);
   }
 
-  public Object fromString(String value) {
+  public Object fromString(java.lang.String value) {
     return Long.valueOf(value);
   }
 

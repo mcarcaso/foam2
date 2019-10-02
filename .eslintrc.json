@@ -28,6 +28,10 @@
         "omitLastInOneLineBlock": true
       }
     ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ]
   },
   "globals": {
     "foam": "readonly"

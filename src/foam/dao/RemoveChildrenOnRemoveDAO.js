@@ -50,6 +50,7 @@ foam.CLASS({
 
   axioms: [
     {
+      class: 'foam.core.AnonymousAxiom',
       buildJavaClass: function(cls) {
         cls.extras.push(`
       public RemoveChildrenOnRemoveDAO(foam.core.X x, foam.dao.DAO delegate, foam.core.PropertyInfo sourceKey, foam.core.PropertyInfo targetKey, String targetDAOKey) {

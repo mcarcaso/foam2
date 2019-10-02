@@ -19,7 +19,7 @@ public abstract class AbstractArrayPropertyInfo
   extends AbstractPropertyInfo
 {
 
-  public Object fromString(String value) {
+  public Object fromString(java.lang.java.lang.String value) {
     if ( value == null )
       return null;
 
@@ -27,13 +27,13 @@ public abstract class AbstractArrayPropertyInfo
     return foam.util.StringUtil.split(value, ',');
   }
 
-  public abstract String of();
+  public abstract java.lang.String of();
 
   // NESTED ARRAY
   @Override
   public Object fromXML(X x, XMLStreamReader reader) {
     List objList = new ArrayList();
-    String startTag = reader.getLocalName();
+    java.lang.String startTag = reader.getLocalName();
     try {
       int eventType;
       while ( reader.hasNext() ) {
@@ -85,12 +85,12 @@ public abstract class AbstractArrayPropertyInfo
 
   @Override
   public void setFromResultSet(java.sql.ResultSet resultSet, int index, FObject o) throws java.sql.SQLException {
-    String value = (String) resultSet.getObject(index);
+    java.lang.String value = (java.lang.String) resultSet.getObject(index);
     setFromString(o, value);
   }
 
   private void escapeCommasAndAppend(StringBuilder builder, Object o) {
-    String s = o.toString();
+    java.lang.String s = o.toString();
     //replace backslash to double backslash
     s = s.replace("\\", "\\\\");
     //replace comma to backslash+comma

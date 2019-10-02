@@ -6,7 +6,7 @@
 package foam.core;
 
  /**
- * ContextualizingAgency takes two contexts in constructor: systemX_ is set for agent.x, 
+ * ContextualizingAgency takes two contexts in constructor: systemX_ is set for agent.x,
  * userX_ is used to submit the agent to agency.
  **/
 public class ContextualizingAgency
@@ -20,7 +20,7 @@ public class ContextualizingAgency
     systemX_ = systemX;
   }
 
-  public void submit(X x, ContextAgent agent, String description) {
+  public void submit(X x, ContextAgent agent, java.lang.String description) {
     if ( agent instanceof ContextAware) ((ContextAware) agent).setX(systemX_);
     super.submit(userX_, agent, description);
   }

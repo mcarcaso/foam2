@@ -28,7 +28,7 @@ public class InvalidX
   }
 
   @Override
-  public String toString() {
+  public java.lang.String toString() {
     throw exception_;
   }
 }

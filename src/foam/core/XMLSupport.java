@@ -63,7 +63,7 @@ public class XMLSupport {
 
   public static FObject createObj (X x, XMLStreamReader xmlr, Class defaultClass) {
     Object clsInstance = null;
-    String objClass;
+    java.lang.String objClass;
     try {
       //objClass = xmlr.getAttributeValue(null, "class");
 
@@ -88,7 +88,7 @@ public class XMLSupport {
     return (FObject) clsInstance;
   }
 
-  public static List<FObject> fromXML(X x, String fileName) throws IOException {
+  public static List<FObject> fromXML(X x, java.lang.String fileName) throws IOException {
     XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
     XMLStreamReader xmlr = null;
     try {

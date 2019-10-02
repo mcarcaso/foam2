@@ -155,7 +155,7 @@ foam.CLASS({
   extends: 'foam.core.type.SimpleType',
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   properties: [
-    ['java', 'String'],
+    ['java', 'java.lang.String'],
     ['swift', 'String'],
   ],
 });

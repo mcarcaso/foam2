@@ -52,6 +52,7 @@ foam.LIB({
         },
         Null: function(n) { return "null"; },
         Object: function(o) {
+          if ( foam.core.FObject.isSubClass(o) ) return 'null'; // TODO!
           return `
 new java.util.HashMap() {
   {
@@ -129,8 +130,11 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'generateJava',
-      expression: function(flags) {
-        return foam.util.flagFilter(['java'])(this);
+      // flags is used in the flagFilter so it's not touched directly in this
+      // expression but the expression needs to react to flags changing.
+      // eslint-disable-next-line no-unused-vars
+      expression: function (javaInfoType, flags) {
+        return javaInfoType && foam.util.flagFilter(['java'])(this);
       }
     },
     { class: 'foam.java.JavaType' },
@@ -249,7 +253,7 @@ foam.CLASS({
       value: `
         foam.core.PropertyInfo prop = this;
         map.put(getName(), new foam.lib.csv.FromCSVSetter() {
-          public void set(foam.core.FObject obj, String str) {
+          public void set(foam.core.FObject obj, java.lang.String str) {
             prop.set(obj, fromString(str));
           }
         });
@@ -268,12 +272,6 @@ foam.CLASS({
   ],
 
   methods: [
-    {
-      name: 'asJavaValue',
-      code: function() {
-        return `${this.forClass_}.${foam.String.constantize(this.name)}`;
-      }
-    },
     function createJavaPropertyInfo_(cls) {
       return foam.java.PropertyInfo.create({
         sourceCls:               cls,
@@ -344,13 +342,6 @@ foam.CLASS({
 
     function buildJavaClass(cls) {
       if ( ! this.generateJava ) return;
-
-      // Use javaInfoType as an indicator that this property should be
-      // generated to java code.
-
-      // TODO: Evaluate if we still want this behaviour.  It might be
-      // better to only respect the generateJava flag
-      if ( ! this.javaInfoType ) return;
 
       var privateName = this.name + '_';
       var capitalized = foam.String.capitalize(this.name);
@@ -569,6 +560,15 @@ foam.LIB({
         }).join(',')});`
       });
 
+      if ( this.id != 'foam.core.Model' ) {
+      cls.method({
+        name: 'getModel_',
+        type: 'foam.core.Model',
+        visibility: 'public',
+        body: `return ${this.model_.asJavaValue()};`
+      });
+    }
+
       if ( cls.name ) {
         var props = cls.allProperties;
 
@@ -596,10 +596,10 @@ foam.LIB({
             name: cls.name,
             type: '',
             args: props.map(function(f) {
-              return { name: f.name, type: f.type };
+              return { name: f.name + '_', type: f.type };
             }),
             body: props.map(function(f) {
-              return 'set' + foam.String.capitalize(f.name) + '(' + f.name + ')';
+              return 'set' + foam.String.capitalize(f.name) + '(' + f.name + '_)';
             }).join(';\n') + ';'
           });
 
@@ -610,10 +610,10 @@ foam.LIB({
             type: '',
             args: [{ name: 'x', type: 'foam.core.X' }]
               .concat(props.map(function(f) {
-                return { name: f.name, type: f.type };
+                return { name: f.name + '_', type: f.type };
               })),
             body: ['setX(x)'].concat(props.map(function(f) {
-              return 'set' + foam.String.capitalize(f.name) + '(' + f.name + ')';
+              return 'set' + foam.String.capitalize(f.name) + '(' + f.name + '_)';
             })).join(';\n') + ';'
           });
         }
@@ -877,11 +877,11 @@ foam.CLASS({
         var self = this;
         var props = self.cls_.getAxiomsByClass(foam.core.Property)
           .filter(function(a) {
-            return self.hasOwnProperty(a.name);
+            return self.hasOwnProperty(a.name) && a.generateJava;
           })
           .map(function(p) {
-            return `.set${foam.String.capitalize(p.name)}(${foam.java.asJavaValue(self[p.name], p)})`
-          })
+            return `.set${foam.String.capitalize(p.name)}(${foam.java.asJavaValue(self[p.name], p)})`;
+          });
         return `
 new ${self.cls_.id}.Builder(foam.core.EmptyX.instance())
   ${props.join('\n')}
@@ -1311,8 +1311,8 @@ foam.CLASS({
         try {
           if ( o instanceof Number ) {
             return new java.util.Date(((Number) o).longValue());
-          } else if ( o instanceof String ) {
-            return (java.util.Date) fromString((String) o);
+          } else if ( o instanceof java.lang.String ) {
+            return (java.util.Date) fromString((java.lang.String) o);
           } else {
             return (java.util.Date) o;
           }
@@ -1348,8 +1348,8 @@ foam.CLASS({
         try {
           if ( o instanceof Number ) {
             return new java.util.Date(((Number) o).longValue());
-          } else if ( o instanceof String ) {
-            return (java.util.Date) fromString((String) o);
+          } else if ( o instanceof java.lang.String ) {
+            return (java.util.Date) fromString((java.lang.String) o);
           } else {
             return (java.util.Date) o;
           }
@@ -1980,7 +1980,6 @@ foam.CLASS({
   ]
 });
 
-
 foam.CLASS({
   package: 'foam.java',
   name: 'ModelJavaRefinement',
@@ -2017,6 +2016,11 @@ foam.CLASS({
   ]
 });
 
+foam.core.Model.AXIOMS_.copyFrom({
+  javaType: 'foam.core.FObject[]',
+  javaInfoType: 'foam.core.AbstractObjectPropertyInfo',
+  javaJSONParser: 'foam.lib.json.AnyParser.instance()'
+});
 
 foam.CLASS({
   package: 'foam.java',

@@ -18,9 +18,9 @@ public abstract class AbstractObjectPropertyInfo
     return ((Comparable)o1).compareTo(o2);
   }
 
-  public void setFromString(Object obj, String value) { }
+  public void setFromString(Object obj, java.lang.String value) { }
 
-  public Object fromString(String value) {
+  public Object fromString(java.lang.String value) {
     return value;
   }
 

@@ -7,6 +7,5 @@
 package foam.core;
 
 public interface XArgsFactory<T> {
-  public T getInstance(java.util.Map<String, Object> args, X x);
+  public T getInstance(java.util.Map<java.lang.String, Object> args, X x);
 }
-

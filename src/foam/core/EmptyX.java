@@ -65,10 +65,10 @@ abstract class AbstractX
   }
 
   public <T> T create(Class<T> type) {
-    return create(type, Collections.<String, Object>emptyMap());
+    return create(type, Collections.<java.lang.String, Object>emptyMap());
   }
 
-  public <T> T create(Class<T> type, Map<String, Object> args) {
+  public <T> T create(Class<T> type, Map<java.lang.String, Object> args) {
     return ((FacetManager)get("facetManager")).create(type, args, this);
   }
 
@@ -84,14 +84,14 @@ abstract class AbstractXI
   protected X leftChild_;
   protected X rightChild_;
 
-  protected abstract String getKey();
+  protected abstract java.lang.String getKey();
   protected X getLeftChild()  { return leftChild_; }
   protected X getRightChild() { return rightChild_; }
   protected void setLeftChild(X child)  { leftChild_  = child; }
   protected void setRightChild(X child) { rightChild_ = child; }
 
   public X put(Object key, Object value) {
-    String skey = key.toString();
+    java.lang.String skey = key.toString();
     int comp = skey.compareTo(getKey());
     if ( comp == 0 ) return new XI(getLeftChild(), getRightChild(), skey, value);
     if ( comp < 0  ) return clone(getLeftChild().put(skey, value), getRightChild());
@@ -99,7 +99,7 @@ abstract class AbstractXI
   }
 
   public X putFactory(Object key, XFactory factory) {
-    String skey = key.toString();
+    java.lang.String skey = key.toString();
     int comp = skey.compareTo(getKey());
     if ( comp == 0 ) return new FactoryXI(getLeftChild(), getRightChild(), getKey(), factory);
     if ( comp < 0  ) return clone(getLeftChild().putFactory(skey, factory), getRightChild());
@@ -129,7 +129,7 @@ abstract class AbstractXI
 class XI
   extends AbstractXI
 {
-  final String key_;
+  final java.lang.String key_;
   final Object value_;
 
   XI(X leftChild, X rightChild, Object key, Object value) {
@@ -139,10 +139,10 @@ class XI
     value_      = value;
   }
   @Override
-  protected String getKey() { return key_; }
+  protected java.lang.String getKey() { return key_; }
 
   public Object get(X x, Object key) {
-    String skey = key.toString();
+    java.lang.String skey = key.toString();
     int comp = skey.compareTo(key_);
     if ( comp == 0 ) return value_;
     if ( comp < 0  ) return getLeftChild().get(x, skey);
@@ -150,7 +150,7 @@ class XI
   }
 
   @Override
-  public String toString() {
+  public java.lang.String toString() {
     return getLeftChild().toString() + ( "{Key: " + key_ + ", Object: "  + value_ + "}\n" ) + getRightChild().toString();
   }
 }
@@ -160,7 +160,7 @@ class XI
 class FactoryXI
   extends AbstractXI
 {
-  final String   key_;
+  final java.lang.String   key_;
   final XFactory factory_;
 
   FactoryXI(X leftChild, X rightChild, Object key, XFactory factory) {
@@ -171,10 +171,10 @@ class FactoryXI
   }
 
   @Override
-  protected String getKey() { return key_; }
+  protected java.lang.String getKey() { return key_; }
 
   public Object get(X x, Object key) {
-    String skey = key.toString();
+    java.lang.String skey = key.toString();
     int comp = skey.compareTo(key_);
     if ( comp == 0 ) return factory_.create(x);
     if ( comp < 0  ) return getLeftChild().get(x, skey);
@@ -182,7 +182,7 @@ class FactoryXI
   }
 
   @Override
-  public String toString() {
+  public java.lang.String toString() {
     return getLeftChild().toString() + ( "{Key: " + key_ + ", XFactory: "  + factory_ + "}\n" ) + getRightChild().toString();
   }
 }
@@ -209,5 +209,5 @@ public class EmptyX
   }
 
   @Override
-  public String toString() { return ""; }
+  public java.lang.String toString() { return ""; }
 }
