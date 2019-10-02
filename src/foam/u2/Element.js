@@ -2288,7 +2288,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'FloatViewRefinement',
-  refines: 'foam.core.Float',
+  refines: 'foam.core.FloatProperty',
   requires: [ 'foam.u2.FloatView' ],
   properties: [
     [ 'displayWidth', 12 ],

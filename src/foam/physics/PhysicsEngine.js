@@ -29,7 +29,7 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'gravityStrength',
       value: 1
     }

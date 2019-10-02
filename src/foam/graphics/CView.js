@@ -407,15 +407,15 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'width'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'height'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'rotation',
       preSet: function(_, r) {
         if ( r > 2 * Math.PI  ) return r - 2 * Math.PI;
@@ -430,43 +430,43 @@ foam.CLASS({
     },
     {
       name: 'originX',
-      class: 'Float'
+      class: 'FloatProperty'
     },
     {
       name: 'originY',
-      class: 'Float'
+      class: 'FloatProperty'
     },
     {
       name: 'scaleX',
-      class: 'Float',
+      class: 'FloatProperty',
       value: 1
     },
     {
       name: 'scaleY',
-      class: 'Float',
+      class: 'FloatProperty',
       value: 1
     },
     {
       name: 'skewX',
-      class: 'Float',
+      class: 'FloatProperty',
       hidden: true
     },
     {
       name: 'skewY',
-      class: 'Float',
+      class: 'FloatProperty',
       hidden: true
     },
     {
       name: 'x',
-      class: 'Float'
+      class: 'FloatProperty'
     },
     {
       name: 'y',
-      class: 'Float'
+      class: 'FloatProperty'
     },
     {
       name: 'alpha',
-      class: 'Float',
+      class: 'FloatProperty',
       view: {
         class: 'foam.u2.view.DualView',
         viewa: { class: 'foam.u2.FloatView', precision: 4, onKey: true },
@@ -775,15 +775,15 @@ foam.CLASS({
   ],
 
   properties: [
-    { class: 'Float', name: 'x' },
-    { class: 'Float', name: 'y' },
-    { class: 'Float', name: 'z' },
-    { class: 'Float', name: 'rotateX' },
-    { class: 'Float', name: 'rotateY' },
-    { class: 'Float', name: 'rotateZ' },
-    { class: 'Float', name: 'scaleX', value: 1 },
-    { class: 'Float', name: 'scaleY', value: 1 },
-    { class: 'Float', name: 'scaleZ', value: 1 },
+    { class: 'FloatProperty', name: 'x' },
+    { class: 'FloatProperty', name: 'y' },
+    { class: 'FloatProperty', name: 'z' },
+    { class: 'FloatProperty', name: 'rotateX' },
+    { class: 'FloatProperty', name: 'rotateY' },
+    { class: 'FloatProperty', name: 'rotateZ' },
+    { class: 'FloatProperty', name: 'scaleX', value: 1 },
+    { class: 'FloatProperty', name: 'scaleY', value: 1 },
+    { class: 'FloatProperty', name: 'scaleZ', value: 1 },
     {
       name: 'transform_',
       factory: function() {
@@ -831,15 +831,15 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'width'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'height'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'borderWidth',
       value: 1
     },
@@ -877,20 +877,20 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'startX',
       getter: function() { return this.x; },
       setter: function(v) { this.x = v; }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'startY',
       getter: function() { return this.y; },
       setter: function(v) { this.y = v; }
     },
-    { class: 'Float',  name: 'endX' },
-    { class: 'Float',  name: 'endY' },
-    { class: 'Float',  name: 'lineWidth', value: 1 },
+    { class: 'FloatProperty',  name: 'endX' },
+    { class: 'FloatProperty',  name: 'endY' },
+    { class: 'FloatProperty',  name: 'lineWidth', value: 1 },
     { class: 'StringProperty', name: 'color',     value: '#000000' },
     { name: 'lineDash', documentation: 'An Array of numbers which specify distances to alternately draw lines and gaps. Full line if not set.' },
   ],
@@ -954,7 +954,7 @@ foam.CLASS({
     { class: 'Array', of: 'Float', name: 'xCoordinates' },
     { class: 'Array', of: 'Float', name: 'yCoordinates' },
     { class: 'StringProperty', name: 'color', value: '#000' },
-    { class: 'Float', name: 'lineWidth', value: 1 }
+    { class: 'FloatProperty', name: 'lineWidth', value: 1 }
   ],
 
   methods: [
@@ -982,21 +982,21 @@ foam.CLASS({
   properties: [
     {
       name: 'radius',
-      class: 'Float',
+      class: 'FloatProperty',
       preSet: function(_, r) { return Math.max(0, r); }
     },
     {
       name: 'start',
-      class: 'Float'
+      class: 'FloatProperty'
     },
     {
       name: 'end',
-      class: 'Float'
+      class: 'FloatProperty'
     },
     {
       // TODO: rename this
       name: 'arcWidth',
-      class: 'Float'
+      class: 'FloatProperty'
     },
     {
       name: 'border',
@@ -1104,12 +1104,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'radiusX',
       preSet: function(_, r) { return Math.max(0, r); }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'radiusY',
       preSet: function(_, r) { return Math.max(0, r); }
     },
@@ -1133,20 +1133,20 @@ foam.CLASS({
     },
     {
       name: 'borderWidth',
-      class: 'Float'
+      class: 'FloatProperty'
     },
     {
       name: 'border',
       value: '#000000'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'width',
       getter: function() { return 2 * this.radiusX; },
       setter: function(w) { this.radiusX = w / 2; }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'height',
       getter: function() { return 2 * this.radiusY; },
       setter: function(h) { this.radiusY = h / 2; }
@@ -1377,7 +1377,7 @@ foam.CLASS({
       label: 'Border Color'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name:  'maxWidth',
       label: 'Maximum Width',
       value: -1

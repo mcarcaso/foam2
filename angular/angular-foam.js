@@ -343,7 +343,7 @@ angular.module('foam').directive('foamDetails', [ '$compile',
           } else {
             var type = 'text';
             if ( foam.core.IntProperty.isInstance(prop) ||
-                foam.core.Float.isInstance(prop) ) {
+                foam.core.FloatProperty.isInstance(prop) ) {
               type = 'number';
             }
 

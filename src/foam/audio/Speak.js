@@ -32,7 +32,7 @@ foam.CLASS({
       width: 60
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'volume',
       value: 0.5,
       view: {
@@ -42,7 +42,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'rate',
       value: 1,
       preSet: function(_, rate) {
@@ -55,7 +55,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'pitch',
       value: 1,
       preSet: function(_, rate) {

@@ -39,17 +39,17 @@ foam.CLASS({
       value: 'triangle',
       view: { class: 'foam.u2.view.ChoiceView', choices: [ 'sine', 'square', 'sawtooth', 'triangle' ] },
     },
-    { class: 'Float', name: 'frequency' , value: 220, units: 'Hz' },
-    { class: 'Float', name: 'fmFrequency', label: 'FM Frequency', value: 0, units: 'Hz' },
-    { class: 'Float', name: 'fmAmplitude', label: 'FM Amplitude', value: 20, units: '%' },
+    { class: 'FloatProperty', name: 'frequency' , value: 220, units: 'Hz' },
+    { class: 'FloatProperty', name: 'fmFrequency', label: 'FM Frequency', value: 0, units: 'Hz' },
+    { class: 'FloatProperty', name: 'fmAmplitude', label: 'FM Amplitude', value: 20, units: '%' },
     {
       name: 'fmType',
       label: 'FM Type',
       value: 'triangle',
       view: { class: 'foam.u2.view.ChoiceView', choices: [ 'sine', 'square', 'sawtooth', 'triangle' ] },
     },
-    { class: 'Float', name: 'amFrequency', label: 'AM Frequency', value: 0, units: 'Hz' },
-    { class: 'Float', name: 'amAmplitude', label: 'AM Amplitude', value: 20, units: '%' },
+    { class: 'FloatProperty', name: 'amFrequency', label: 'AM Frequency', value: 0, units: 'Hz' },
+    { class: 'FloatProperty', name: 'amAmplitude', label: 'AM Amplitude', value: 20, units: '%' },
     {
       name: 'amType',
       label: 'AM Type',
@@ -73,7 +73,7 @@ foam.CLASS({
       units: 'ms'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'sustain',
       value: 50,
       units: '%'

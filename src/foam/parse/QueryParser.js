@@ -348,7 +348,7 @@ foam.CLASS({
               foam.core.Reference.isInstance(prop) &&
               foam.core.IntProperty.isInstance(prop.of.ID);
 
-            var isFloat = foam.core.Float.isInstance(prop);
+            var isFloat = foam.core.FloatProperty.isInstance(prop);
 
             var isDateField = foam.core.DateProperty.isInstance(prop) ||
                 foam.core.DateTimeProperty.isInstance(prop);

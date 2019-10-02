@@ -21,7 +21,7 @@ foam.CLASS({
       name: 'symbol'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'price'
     }
   ],

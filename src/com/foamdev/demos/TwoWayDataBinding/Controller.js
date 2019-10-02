@@ -58,8 +58,8 @@ foam.CLASS({
   `,
 
   properties: [
-    { class: 'Float', name: 'f' , view: { class: 'foam.u2.TextField', onKey: true, className: 'fahrenheit' }},
-    { class: 'Float', name: 'c' , view: { class: 'foam.u2.TextField', onKey: true, className: 'celsius' }}
+    { class: 'FloatProperty', name: 'f' , view: { class: 'foam.u2.TextField', onKey: true, className: 'fahrenheit' }},
+    { class: 'FloatProperty', name: 'c' , view: { class: 'foam.u2.TextField', onKey: true, className: 'celsius' }}
   ],
 
   methods: [

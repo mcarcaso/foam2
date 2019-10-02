@@ -32,7 +32,7 @@ foam.CLASS({
         [ 'color',    'white' ],
         [ 'border',   null ],
         [ 'arcWidth', 0 ],
-        { class: 'Float', name: 'glowRadius' }
+        { class: 'FloatProperty', name: 'glowRadius' }
       ],
       methods: [
         function doTransform(x) {
@@ -65,7 +65,7 @@ foam.CLASS({
           z: 0,
           color: 'red',
           radius: 10
-        }); 
+        });
       }
     }
   ],

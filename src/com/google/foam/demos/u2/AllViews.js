@@ -154,11 +154,11 @@ foam.CLASS({
       name: 'defaultLong'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'defaultFloat'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'floatWithPrecision',
       precision: 2
     },

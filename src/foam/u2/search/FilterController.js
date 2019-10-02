@@ -596,7 +596,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2.search',
   name: 'FloatRefinement',
-  refines: 'foam.core.Float',
+  refines: 'foam.core.FloatProperty',
 
   properties: [
     {

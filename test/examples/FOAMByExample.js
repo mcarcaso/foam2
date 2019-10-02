@@ -878,7 +878,7 @@ var examples = [
       // the person class, rather than creating a new Employee sub-class.
       foam.CLASS({
         refines: 'Person',
-        properties: [ { class: 'Float', name: 'salary', value: 0 } ],
+        properties: [ { class: 'FloatProperty', name: 'salary', value: 0 } ],
         methods: [
           function toString() { return this.name + ' ' + this.sex + ' ' + this.salary; }
         ]
@@ -926,7 +926,7 @@ var examples = [
     code: function() {
       // Refining a type of Property after classes have already been created using
       // the old version will not propagate the changes to those existing classes.
-      foam.CLASS({ name: 'Salary', extends: 'Float' });
+      foam.CLASS({ name: 'Salary', extends: 'FloatProperty' });
       foam.CLASS({ name: 'Emp', properties: [ { class: 'Salary', name: 'salary' } ] });
 
       // Since Classes are not constructed until used, we create an instance to force
@@ -945,9 +945,9 @@ var examples = [
     dependencies: [ ],
     code: function() {
       // Property has special support for refinement or existing Property instances
-      foam.CLASS({ name: 'Emp', properties: [ { class: 'Float', name: 'salary' } ] });
+      foam.CLASS({ name: 'Emp', properties: [ { class: 'FloatProperty', name: 'salary' } ] });
       Emp.create();
-      foam.CLASS({ refines: 'Float', properties: [ [ 'javaClass', 'Float' ] ]});
+      foam.CLASS({ refines: 'FloatProperty', properties: [ [ 'javaClass', 'Float' ] ]});
       console.log(Emp.SALARY.javaClass);
     },
     postTestCode: function() {
@@ -1858,8 +1858,8 @@ var examples = [
       foam.CLASS({
         name: 'Temperature',
         properties: [
-          { class: 'Float', name: 'f' },
-          { class: 'Float', name: 'c' }
+          { class: 'FloatProperty', name: 'f' },
+          { class: 'FloatProperty', name: 'c' }
         ],
         methods: [
           function init() {
@@ -3211,9 +3211,9 @@ For instance, my name is %%name
           { class: 'IntProperty', name: 'undefinedInt' },
           { class: 'IntProperty', name: 'definedInt' },
           { class: 'IntProperty', name: 'defaultInt', value: 3 },
-          { class: 'Float', name: 'undefinedFloat' },
-          { class: 'Float', name: 'definedFloat' },
-          { class: 'Float', name: 'defaultFloat', value: 3.14 },
+          { class: 'FloatProperty', name: 'undefinedFloat' },
+          { class: 'FloatProperty', name: 'definedFloat' },
+          { class: 'FloatProperty', name: 'defaultFloat', value: 3.14 },
           { class: 'BooleanProperty', name: 'undefinedBoolean' },
           { class: 'BooleanProperty', name: 'trueBoolean' },
           { class: 'BooleanProperty', name: 'falseBoolean' },

@@ -46,7 +46,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'amount',
       documentation: `The number to filter by.`,
       view: {

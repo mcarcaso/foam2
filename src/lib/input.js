@@ -21,11 +21,11 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'x'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'y'
     },
     {

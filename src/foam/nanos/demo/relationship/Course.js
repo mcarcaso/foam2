@@ -22,7 +22,7 @@ foam.CLASS({
       name: 'description'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'cost'
     },
     {

@@ -36,7 +36,7 @@ foam.CLASS({
       value: 0
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'timeWarp',
       value: 1.0
     },
@@ -47,7 +47,7 @@ foam.CLASS({
       value: -1
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'percent',
       value: 0
     },

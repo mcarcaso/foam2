@@ -31,12 +31,12 @@ foam.CLASS({
 
   properties: [
     ['type', 'number'],
-    { class: 'Float', name: 'data' },
+    { class: 'FloatProperty', name: 'data' },
     'precision',
     'min',
     'max',
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'step',
       documentation: `The amount that the value should increment or decrement by
           when the arrow buttons in the input are clicked.`,

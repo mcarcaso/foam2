@@ -26,23 +26,23 @@ foam.CLASS({
   },
 
   properties: [
-    { class: 'Float', name: 'friction' },
-    { class: 'Float', name: 'gravity', value: 1 },
-    { class: 'Float', name: 'vx', value: 0 },
-    { class: 'Float', name: 'vy', value: 0 },
+    { class: 'FloatProperty', name: 'friction' },
+    { class: 'FloatProperty', name: 'gravity', value: 1 },
+    { class: 'FloatProperty', name: 'vx', value: 0 },
+    { class: 'FloatProperty', name: 'vy', value: 0 },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'velocity',
       getter: function() { return this.distance(this.vx, this.vy); },
       setter: function(v) { this.setVelocityAndAngle(v, this.angleOfVelocity); }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'angleOfVelocity',
       getter: function() { return Math.atan2(this.vy, this.vx); },
       setter: function(a) { this.setVelocityAndAngle(this.velocity, a); }
     },
-    { class: 'Float', name: 'mass', value: 1 }
+    { class: 'FloatProperty', name: 'mass', value: 1 }
   ],
 
   methods: [

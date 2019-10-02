@@ -1084,7 +1084,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'FloatJavaRefinement',
-  refines: 'foam.core.Float',
+  refines: 'foam.core.FloatProperty',
   flags: ['java'],
 
   properties: [

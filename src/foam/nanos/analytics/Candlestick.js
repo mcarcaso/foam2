@@ -26,17 +26,17 @@ foam.CLASS({
       tableWidth: '350'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'min',
       visibility: 'RO'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'max',
       visibility: 'RO'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'open',
       visibility: 'RO'
     },
@@ -53,7 +53,7 @@ foam.CLASS({
       tableWidth: 150
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'close',
       hidden: true
     },
@@ -64,17 +64,17 @@ foam.CLASS({
       tableWidth: 150
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'total',
       visibility: 'RO'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'count',
       visibility: 'RO'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'average',
       visibility: 'RO',
       transient: true,

@@ -30,7 +30,7 @@ foam.CLASS({
       value: 0,
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'duration',
       value: 1,
     },

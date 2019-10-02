@@ -290,7 +290,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'lineWidth',
       view: { class: 'foam.u2.RangeView', minValue: 0, maxValue: 5, step: 1, onKey: true },
       value: 1
@@ -484,7 +484,7 @@ foam.CLASS({
       name: 'tail'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'length',
       value: 100
     },
@@ -564,28 +564,28 @@ foam.CLASS({
       name: 'tail'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'length',
       value: 80
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'springWidth',
       value: 4
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       precision: 2,
       name: 'stretch',
       units: '%'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'compressionStrength',
       value: 1
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'stretchStrength',
       value: 4
     },
@@ -719,7 +719,7 @@ foam.CLASS({
       value: '#000000'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'penWidth',
       value: '1'
     },
@@ -930,8 +930,8 @@ foam.CLASS({
   imports: [ 'xyzToXY' ],
 
   properties: [
-    { class: 'Float',  name: 'startZ' },
-    { class: 'Float',  name: 'endZ' }
+    { class: 'FloatProperty',  name: 'startZ' },
+    { class: 'FloatProperty',  name: 'endZ' }
   ],
 
   methods: [
@@ -963,9 +963,9 @@ foam.CLASS({
       hidden: true,
       factory: function() { return this.cls_.create(); }
     },
-    { class: 'Float', name: 'x' },
-    { class: 'Float', name: 'y' },
-    { class: 'Float', name: 'z' },
+    { class: 'FloatProperty', name: 'x' },
+    { class: 'FloatProperty', name: 'y' },
+    { class: 'FloatProperty', name: 'z' },
     {
       name: 'memento',
       hidden: true,
@@ -1074,7 +1074,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'zRotation',
       preSet: function(_, r) {
         if ( r > 4 * Math.PI  ) return r - 2 * Math.PI;
@@ -1088,7 +1088,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'xRotation',
       preSet: function(_, r) {
         if ( r > 4 * Math.PI  ) return r - 2 * Math.PI;
@@ -1102,7 +1102,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'yRotation',
       preSet: function(_, r) {
         if ( r > 4 * Math.PI  ) return r - 2 * Math.PI;

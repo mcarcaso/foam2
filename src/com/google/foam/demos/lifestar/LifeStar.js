@@ -29,7 +29,7 @@ foam.CLASS({
         [ 'radius',   4 ],
         [ 'border',   null ],
         [ 'arcWidth', 0 ],
-        { class: 'Float', name: 'glowRadius' }
+        { class: 'FloatProperty', name: 'glowRadius' }
       ],
       methods: [
         function rotateY(a) {

@@ -27,7 +27,7 @@ foam.CLASS({
       name: 'int'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'float'
     },
     {

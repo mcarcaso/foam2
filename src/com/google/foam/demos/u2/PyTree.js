@@ -19,9 +19,9 @@ foam.CLASS({
   extends: 'foam.u2.Element',
 
   properties: [
-    { class: 'Float', name: 'w', value: 80 },
-    { class: 'Float', name: 'x' },
-    { class: 'Float', name: 'y' },
+    { class: 'FloatProperty', name: 'w', value: 80 },
+    { class: 'FloatProperty', name: 'x' },
+    { class: 'FloatProperty', name: 'y' },
     { class: 'StringProperty', name: 'rotate' },
     { name: 'heightFactor', value: 0.55 },
     { name: 'lean', value: 0 },

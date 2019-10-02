@@ -49,7 +49,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'navSize',
       value: 0.2,
       postSet: function(o, n) {
@@ -60,7 +60,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'scale',
       value: 1
     },
@@ -75,12 +75,12 @@ foam.CLASS({
       value: 'green'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'handleHeight',
       value: 20
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'navScalerSize',
       value: 20
     },

@@ -20,8 +20,8 @@ foam.CLASS({
   name: 'Point2',
 
   properties: [
-    { class: 'Float', name: 'x' },
-    { class: 'Float', name: 'y' }
+    { class: 'FloatProperty', name: 'x' },
+    { class: 'FloatProperty', name: 'y' }
   ]
 });
 
@@ -31,9 +31,9 @@ foam.CLASS({
   name: 'Point3',
 
   properties: [
-    { class: 'Float', name: 'x' },
-    { class: 'Float', name: 'y' },
-    { class: 'Float', name: 'z' }
+    { class: 'FloatProperty', name: 'x' },
+    { class: 'FloatProperty', name: 'y' },
+    { class: 'FloatProperty', name: 'z' }
   ]
 });
 
@@ -117,12 +117,12 @@ foam.CLASS({
       name: 'extrusionDirection'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'rotation'
     },
-    { class: 'Float', name: 'xScale' },
-    { class: 'Float', name: 'yScale' },
-    { class: 'Float', name: 'zScale' }
+    { class: 'FloatProperty', name: 'xScale' },
+    { class: 'FloatProperty', name: 'yScale' },
+    { class: 'FloatProperty', name: 'zScale' }
   ],
 
   methods: [
@@ -162,7 +162,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'lineweight',
       value: 1
     },
@@ -198,10 +198,10 @@ foam.CLASS({
   ],
 
   properties: [
-    { class: 'Float', name: 'angleLength' },
-    { class: 'Float', name: 'startAngle' },
-    { class: 'Float', name: 'endAngle' },
-    { class: 'Float', name: 'radius' },
+    { class: 'FloatProperty', name: 'angleLength' },
+    { class: 'FloatProperty', name: 'startAngle' },
+    { class: 'FloatProperty', name: 'endAngle' },
+    { class: 'FloatProperty', name: 'radius' },
     {
       class: 'FObjectProperty',
       of: 'com.google.dxf.model.Point3',
@@ -246,7 +246,7 @@ foam.CLASS({
       documentation: 'No idea what this means.'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'lineweight',
       units: '10um',
       documentation: 'The width of the line in 100ths of mm.'
@@ -377,7 +377,7 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'dxfScale',
       documentation: 'CAD drawings are often huge (many thousands of ' +
           'pixels). Give a scale factor here to shrink the diagram.',
@@ -387,13 +387,13 @@ foam.CLASS({
       }
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'translateX',
       hidden: true,
       value: 0
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'translateY',
       hidden: true,
       value: 0

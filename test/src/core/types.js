@@ -35,7 +35,7 @@ var createTestProperties = function createTestProperties() {
           name: 'long',
         },
         {
-          class: 'Float',
+          class: 'FloatProperty',
           name: 'float',
         },
         {

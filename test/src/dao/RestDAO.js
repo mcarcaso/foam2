@@ -232,7 +232,7 @@ describe('RestDAO', function() {
           name: 'i'
         },
         {
-          class: 'Float',
+          class: 'FloatProperty',
           name: 'f'
         }
       ]

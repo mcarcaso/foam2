@@ -18,7 +18,7 @@ foam.CLASS({
       name: 'name'
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'salary'
     }
   ]

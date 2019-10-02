@@ -83,7 +83,7 @@ return 0
 foam.CLASS({
   package: 'foam.swift.refines',
   name: 'FloatSwiftRefinement',
-  refines: 'foam.core.Float',
+  refines: 'foam.core.FloatProperty',
   flags: ['swift'],
   properties: [
     {

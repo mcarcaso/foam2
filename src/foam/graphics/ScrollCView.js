@@ -22,12 +22,12 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'width',
       value: 20
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'height',
       value: 100
     },
@@ -75,7 +75,7 @@ foam.CLASS({
       value: 10
     },
     {
-      class: 'Float',
+      class: 'FloatProperty',
       name: 'handleSize',
       expression: function(minHandleSize, size, extent, height, innerBorder) {
         var h  = height - 2 * innerBorder;

@@ -75,7 +75,7 @@ foam.CLASS({
       name: 'dateTimeProp'
     },
     {
-      class: 'foam.core.Float',
+      class: 'foam.core.FloatProperty',
       name: 'floatProp'
     },
     {
@@ -251,7 +251,7 @@ foam.CLASS({
       name: 'transientDateTime'
     },
     {
-      class: 'foam.core.Float',
+      class: 'foam.core.FloatProperty',
       transient: true,
       name: 'transientFloat'
     },

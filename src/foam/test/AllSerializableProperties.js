@@ -75,7 +75,7 @@ foam.CLASS({
       name: 'dateTimeProp'
     },
     {
-      class: 'foam.core.Float',
+      class: 'foam.core.FloatProperty',
       name: 'floatProp'
     },
     {

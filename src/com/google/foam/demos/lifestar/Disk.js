@@ -30,7 +30,7 @@ foam.CLASS({
         { name: 'r' },
         { name: 't' },
         { name: 'g' },
-        { class: 'Float', name: 'glowRadius' }
+        { class: 'FloatProperty', name: 'glowRadius' }
       ],
       methods: [
         function polar3D(r, t, g) {
