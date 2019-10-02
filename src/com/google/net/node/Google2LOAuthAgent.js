@@ -50,7 +50,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'scopes',
       documentation: `Scopes for which to request authorization. For listing,
           see: https://developers.google.com/identity/protocols/googlescopes`,

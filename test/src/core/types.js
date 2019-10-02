@@ -47,7 +47,7 @@ var createTestProperties = function createTestProperties() {
           name: 'blob',
         },
         {
-          class: 'StringArray',
+          class: 'StringArrayProperty',
           name: 'stringArray',
         },
         {

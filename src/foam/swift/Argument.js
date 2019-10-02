@@ -13,7 +13,7 @@ foam.CLASS({
     ['externalName', '_'],
     'localName',
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'annotations',
     },
     'type',

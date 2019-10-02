@@ -157,7 +157,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2.view',
   name: 'StringArrayTableCellFormatterRefinement',
-  refines: 'foam.core.StringArray',
+  refines: 'foam.core.StringArrayProperty',
   properties: [
     {
       class: 'foam.u2.view.TableCellFormatter',

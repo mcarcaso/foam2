@@ -94,7 +94,7 @@ foam.CLASS({
       value: null
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'propNames',
       required: true
     },

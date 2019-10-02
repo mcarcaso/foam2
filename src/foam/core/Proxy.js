@@ -101,18 +101,18 @@ foam.CLASS({
       factory: function() { return this.of; }
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'topics'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'forwards',
       factory: null,
       value: null
       //documentation: 'Methods that are forwarded to the proxies object.'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'delegates',
       factory: null,
       value: null
@@ -238,7 +238,7 @@ foam.CLASS({
       swiftType: 'Topic',
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'topic',
       factory: function() { return []; }
     },
@@ -480,7 +480,7 @@ foam.CLASS({
       name: 'prop'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'topics',
       factory: null
     },

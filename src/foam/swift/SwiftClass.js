@@ -26,11 +26,11 @@ foam.CLASS({
       name: 'name'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'implements'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'imports'
     },
     {
@@ -58,7 +58,7 @@ foam.CLASS({
       value: 'class',
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'annotations',
     },
   ],

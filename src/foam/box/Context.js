@@ -134,7 +134,7 @@ return __context__.lookup("foam.swift.net.SocketService")!.create(args: [
       value: true
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'classWhitelist'
     },
     {

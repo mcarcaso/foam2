@@ -179,7 +179,7 @@ foam.CLASS({
       name: 'shortName'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'aliases'
     },
     {
@@ -657,7 +657,7 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'javaThrows'
     },
     {
@@ -1516,7 +1516,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'StringArrayJavaRefinement',
-  refines: 'foam.core.StringArray',
+  refines: 'foam.core.StringArrayProperty',
   flags: ['java'],
 
   properties: [

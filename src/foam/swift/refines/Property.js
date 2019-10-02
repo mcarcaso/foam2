@@ -131,7 +131,7 @@ foam.CLASS({
       expression: function(name) { return '_' + name + '_postSet_'; },
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'swiftExpressionArgs',
     },
     {
@@ -549,7 +549,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.swift.refines',
   name: 'StringArraySwiftRefinement',
-  refines: 'foam.core.StringArray',
+  refines: 'foam.core.StringArrayProperty',
   flags: ['swift'],
   properties: [
     {
@@ -596,7 +596,7 @@ foam.CLASS({
   properties: [
     [ 'extends', 'foam.swift.ui.AbstractGenIBOutletDetailView' ],
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'classes',
     },
     {

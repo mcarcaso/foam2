@@ -57,7 +57,7 @@ foam.CLASS({
       expression: function(of) { return foam.String.pluralize(of.model_.label); }
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'defaultColumns',
       factory: null,
       expression: function(of) {

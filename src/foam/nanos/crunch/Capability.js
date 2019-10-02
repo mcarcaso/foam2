@@ -92,7 +92,7 @@ foam.CLASS({
     },
     {
       name: 'permissionsGranted',
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       documentation: `List of permissions granted by this capability`
     },
     {

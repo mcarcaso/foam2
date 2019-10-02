@@ -29,7 +29,7 @@ foam.CLASS({
       name: 'package'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'extends'
     },
     {

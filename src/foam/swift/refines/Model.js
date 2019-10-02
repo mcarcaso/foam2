@@ -35,7 +35,7 @@ foam.CLASS({
       value: true,
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'swiftImports',
       section: 'swiftProperties',
     },
@@ -49,7 +49,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'swiftImplements',
       section: 'swiftProperties',
     },

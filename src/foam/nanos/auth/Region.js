@@ -30,7 +30,7 @@ foam.CLASS({
       of: 'foam.nanos.auth.Country'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'alternativeNames'
     }
   ]

@@ -2247,7 +2247,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'StringArrayViewRefinement',
-  refines: 'foam.core.StringArray',
+  refines: 'foam.core.StringArrayProperty',
   properties: [
     [ 'view', { class: 'foam.u2.view.StringArrayView' } ]
   ]

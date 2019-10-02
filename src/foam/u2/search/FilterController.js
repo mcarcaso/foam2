@@ -200,7 +200,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'searchFields',
       documentation: 'Property names that are currently selected as filters.',
       factory: function() {

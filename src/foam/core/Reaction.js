@@ -20,7 +20,7 @@ foam.CLASS({
       name: 'target'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'topic'
     },
     {

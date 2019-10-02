@@ -34,7 +34,7 @@ foam.CLASS({
       documentation: 'Unique identifier that can be used with other Google APIs'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'types',
       documentation: 'Indicates the type of the returned result'
     }

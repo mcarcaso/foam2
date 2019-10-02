@@ -31,7 +31,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'classpaths',
       postSet: function(_, n) {
         var classloader = this.classloader;

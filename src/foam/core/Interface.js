@@ -61,7 +61,7 @@ foam.CLASS({
       of: 'foam.core.internal.InterfaceMethod'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'javaExtends'
     }
   ],

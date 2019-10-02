@@ -25,7 +25,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'methods',
       factory: function() { return null; }
     },
@@ -59,7 +59,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'notifications',
       factory: function() { return null; }
     },
@@ -84,7 +84,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'actions',
       factory: function() { return null; }
     },

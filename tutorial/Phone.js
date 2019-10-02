@@ -9,6 +9,6 @@ foam.CLASS({
     'availability', 'battery', 'camera', 'connectivity', 'description',
     'display', 'hardware', 'sizeAndWeight', 'storage', 'details',
     { name: 'imageUrl', view: 'foam.u2.ImageView' },
-    { name: 'images', class: 'StringArray' }
+    { name: 'images', class: 'StringArrayProperty' }
   ]
 });

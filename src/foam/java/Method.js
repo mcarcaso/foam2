@@ -37,7 +37,7 @@ foam.CLASS({
       of: 'foam.java.Argument',
       name: 'args'
     },
-    { class: 'StringArray', name: 'throws' },
+    { class: 'StringArrayProperty', name: 'throws' },
     { class: 'foam.java.CodeProperty', name: 'body' }
   ],
 

@@ -22,7 +22,7 @@ foam.CLASS({
       value: 'Test'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'dateFormats',
       hidden: true,
       factory: function () {

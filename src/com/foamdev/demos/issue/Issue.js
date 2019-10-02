@@ -24,17 +24,17 @@ foam.CLASS({
       subType: 'IssuePerson'
     },*/
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'blockedOn',
       help: 'References to issues this issue is blocked on.'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'blocking',
       help: 'References to issues blocking on this issue.'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'cc',
       help: 'List of people who are CC\'ed on updates to this issue.'
     },
@@ -49,7 +49,7 @@ foam.CLASS({
       help: 'Description of the issue.'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'labels',
       help: 'Labels for this issue.'
     },
@@ -70,7 +70,7 @@ foam.CLASS({
     },
     */
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'movedTo',
       help: 'Reference to the issue(s) this issue was moved to.'
     },

@@ -28,7 +28,7 @@ foam.CLASS({
       name: 'swiftDefaultValue',
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'swiftAnnotations',
       preSet: function(_, n) {
         var i = n.indexOf('inout');

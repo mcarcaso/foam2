@@ -952,12 +952,12 @@ describe('foam.mmethod', function() {
 
   it('handles subclasses', function() {
     var mm = foam.mmethod({
-      'foam.core.StringArray': function() { return 'stringarray'; },
+      'foam.core.StringArrayProperty': function() { return 'stringarray'; },
       'foam.core.Property': function() { return 'prop'; },
       'foam.core.FObject': function() { return 'FObject'; }
     });
 
-    expect(mm(foam.core.StringArray.create({name:'n'})))
+    expect(mm(foam.core.StringArrayProperty.create({name:'n'})))
       .toBe('stringarray');
     expect(mm(foam.core.StringProperty.create({name:'n'})))
       .toBe('prop');

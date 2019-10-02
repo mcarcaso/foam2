@@ -32,7 +32,7 @@ foam.CLASS({
       name: 'flags'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'requires'
     },
     'order'

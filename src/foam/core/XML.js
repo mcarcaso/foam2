@@ -408,7 +408,7 @@ foam.CLASS({
           // parse array property
           prop.get(obj).push(this.objectify(node, foam.lookup(prop.of)));
 
-        } else if ( foam.core.StringArray.isInstance(prop) ) {
+        } else if ( foam.core.StringArrayProperty.isInstance(prop) ) {
           // parse string array
           prop.get(obj).push(node.firstChild ? node.firstChild.nodeValue : null);
         } else {

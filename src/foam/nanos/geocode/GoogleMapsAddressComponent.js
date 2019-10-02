@@ -22,7 +22,7 @@ foam.CLASS({
       documentation: 'An abbreviated textual name for the address component, if available'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'types',
       documentation: 'An array indicating the type of the address component'
     }

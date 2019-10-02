@@ -22,7 +22,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'models',
     },
     {

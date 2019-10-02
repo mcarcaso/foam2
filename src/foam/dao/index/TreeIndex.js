@@ -71,7 +71,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.dao.index',
   name: 'StringArrayToIndexRefinement',
-  refines: 'foam.core.StringArray',
+  refines: 'foam.core.StringArrayProperty',
 
   requires: [
     'foam.dao.index.SetIndex',

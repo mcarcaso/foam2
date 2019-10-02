@@ -123,7 +123,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'personNames',
       factory: function() {
         return [
@@ -134,7 +134,7 @@ foam.CLASS({
       },
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'stockSymbols',
       factory: function() {
         return [

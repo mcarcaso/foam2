@@ -156,7 +156,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.lib.csv',
   name: 'StringArrayFromCSV',
-  refines: 'foam.core.StringArray',
+  refines: 'foam.core.StringArrayProperty',
   properties: [
     {
       class: 'FunctionProperty',

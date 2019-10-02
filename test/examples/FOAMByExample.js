@@ -3201,7 +3201,7 @@ For instance, my name is %%name
         properties: [
           { name: 'name', shortName: 'n' },
           { class: 'IntProperty', name: 'age', shortName: 'a' },
-          { class: 'StringArray', name: 'children', shortName: 'cs' },
+          { class: 'StringArrayProperty', name: 'children', shortName: 'cs' },
           { name: 'name That Needs Quoting' },
           { name: 'undefined' },
           { name: 'defined' },

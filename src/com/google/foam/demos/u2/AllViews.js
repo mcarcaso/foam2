@@ -167,11 +167,11 @@ foam.CLASS({
       name: 'defaultDouble'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'defaultStringArray'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'stringArrayRowView',
       view: 'foam.u2.view.StringArrayRowView',
       factory: function() { return ['row1', 'row2', 'row3']; }

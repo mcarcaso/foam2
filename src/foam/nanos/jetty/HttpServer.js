@@ -55,7 +55,7 @@ foam.CLASS({
       name: 'keystorePassword'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'welcomeFiles',
       factory: function() {
         return [
@@ -64,7 +64,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'forwardedForProxyWhitelist',
     },
     {

@@ -97,7 +97,7 @@ foam.CLASS({
     },
     {
       documentation: 'Intended to be used with long TTL sessions, further restricting to a known set of IPs.',
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'remoteHostWhiteList'
     },
     {

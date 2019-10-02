@@ -142,7 +142,7 @@ foam.CLASS({
       value: 'MEDIUM'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'colors',
       factory: function() {
         return [

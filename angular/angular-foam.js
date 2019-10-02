@@ -320,7 +320,7 @@ angular.module('foam').directive('foamDetails', [ '$compile',
           if ( foam.core.BooleanProperty.isInstance(prop) ) {
             html += '<md-checkbox ng-model="object.' + prop.name + '">' +
                 prop.label + '</md-checkbox>';
-          } else if ( foam.core.StringArray.isInstance(prop) ) {
+          } else if ( foam.core.StringArrayProperty.isInstance(prop) ) {
             html += '<md-input-container><label>' + prop.label + '</label>' +
                 '<md-chips ng-model="object.' + prop.name + '" ' +
                 'md-on-add="onPropertyChange(\'' + prop.name + '\')" ' +

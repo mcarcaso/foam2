@@ -39,7 +39,7 @@ foam.CLASS({
           value: 1000,
         },
         {
-          class: 'StringArray',
+          class: 'StringArrayProperty',
           name: 'colors',
           factory: function() {
             return [

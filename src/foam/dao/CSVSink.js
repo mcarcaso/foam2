@@ -32,7 +32,7 @@ foam.CLASS({
       visibility: 'HIDDEN'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'props',
       factory: function() {
         if ( ! this.of ) return [];

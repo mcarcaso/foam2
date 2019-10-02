@@ -308,7 +308,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'StringArray',
+  name: 'StringArrayProperty',
   extends: 'Property',
 
   documentation: 'An array of String values.',

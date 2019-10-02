@@ -41,15 +41,15 @@ foam.CLASS({
       documentation: 'User who created the entry',
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'to'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'cc',
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'bcc'
     },
     {

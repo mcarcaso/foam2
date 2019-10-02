@@ -27,7 +27,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'props',
       factory: null,
       expression: function(of) {

@@ -24,7 +24,7 @@ foam.CLASS({
       name: 'args'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'annotations'
     },
   ],

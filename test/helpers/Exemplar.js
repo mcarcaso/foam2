@@ -39,7 +39,7 @@ foam.CLASS({
     {
       /** Examplars to load and execute before this one. Output code will
         be the merged result of all dependencies. */
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'dependencies',
       preSet: function(old, nu) {
         // NOTE: this will also cause not-yet-declared dependencies to fail

@@ -348,12 +348,12 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'disabledTopics',
       documentation: 'Disables types for notifications.'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'disabledTopicsEmail',
       documentation: 'Disables types for email notifications.'
     },

@@ -111,13 +111,13 @@ foam.CLASS({
       value: null
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'availablePermissions',
       documentation: `Permissions required for the action to be available.
 If empty than no permissions are required.`
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'enabledPermissions',
       documentation: `Permissions required for the action to be enabled.
 If empty than no permissions are required.`,

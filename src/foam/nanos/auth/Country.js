@@ -32,7 +32,7 @@ foam.CLASS({
       documentation: 'The name of the country.'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'alternativeNames',
       documentation: `A list of known alternative country names.`,
     }

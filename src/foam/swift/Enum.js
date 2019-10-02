@@ -45,7 +45,7 @@ foam.CLASS({
       name: 'extends',
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'implements'
     },
   ],

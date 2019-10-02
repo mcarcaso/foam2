@@ -25,7 +25,7 @@ foam.CLASS({
       value: 'public'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'implements',
     },
     {
@@ -35,7 +35,7 @@ foam.CLASS({
       factory: function() { return []; }
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'imports'
     },
     {

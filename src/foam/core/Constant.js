@@ -42,7 +42,7 @@ foam.CLASS({
       name: 'type'
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'flags'
     },
     {

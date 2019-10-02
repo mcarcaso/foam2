@@ -548,12 +548,12 @@ foam.CLASS({
   name: 'StringArrayTest',
   properties: [
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'a1',
       value: [ 'abc', 'def', 'xyz' ]
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'a2',
       view: { class: 'foam.u2.view.StringArrayRowView' }
     }

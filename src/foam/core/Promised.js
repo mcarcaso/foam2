@@ -56,13 +56,13 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'methods',
       value: null,
       factory: null
     },
     {
-      class: 'StringArray',
+      class: 'StringArrayProperty',
       name: 'topics',
       value: null,
       factory: null
