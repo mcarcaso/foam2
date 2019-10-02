@@ -10,7 +10,7 @@ foam.CLASS({
   implements: ['foam.swift.parse.parser.Parser'],
   properties: [
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       of: 'foam.swift.parse.parser.Parser',
       name: 'parsers',
     },

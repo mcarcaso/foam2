@@ -87,7 +87,7 @@ foam.CLASS({
       factory: function() { return this.DefaultFObject.create(); }
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'putBacklog_',
     }
   ],

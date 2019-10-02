@@ -30,7 +30,7 @@ foam.CLASS({
       transient: true
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'queue',
       transient: true
     }

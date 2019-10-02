@@ -41,7 +41,7 @@ describe('ConsoleLogger', function() {
 
       properties: logLevels.map(function(name) {
         return {
-          class: 'Array',
+          class: 'ArrayProperty',
           name: name + 's',
         };
       }),

@@ -56,7 +56,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       type: 'foam.dao.Sink[]',
       name: 'args'
     },
@@ -636,7 +636,7 @@ foam.CLASS({
     {
       // TODO: Should be a map, but we need a HashMap in JS that
       // doesn't convert every key to a string.
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'partitions',
       factory: function() {
         return [];
@@ -1693,7 +1693,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'value'
     }
   ],

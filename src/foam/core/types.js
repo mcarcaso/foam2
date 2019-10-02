@@ -279,7 +279,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Array',
+  name: 'ArrayProperty',
   extends: 'Property',
 
   properties: [

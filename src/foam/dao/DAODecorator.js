@@ -114,7 +114,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'decorators'
     }
   ],

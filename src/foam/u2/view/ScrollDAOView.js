@@ -147,7 +147,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'selection',
       adapt: function(_, nu) {
         if ( foam.Null.isInstance(nu) || foam.Undefined.isInstance(nu) )
@@ -427,7 +427,7 @@ foam.CLASS({
           factory: function() { return {}; }
         },
         {
-          class: 'Array',
+          class: 'ArrayProperty',
           name: 'ranges'
         }
       ],

@@ -7,12 +7,12 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       type: 'foam.lib.PropertyPredicate[]',
       name: 'delegates'
     }
   ],
-    
+
   methods: [
     {
       name: 'propertyPredicateCheck',
@@ -28,4 +28,3 @@ foam.CLASS({
     }
   ]
 });
-    

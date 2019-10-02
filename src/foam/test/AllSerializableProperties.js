@@ -95,7 +95,7 @@ foam.CLASS({
     //   name: 'reference'
     // },
     {
-      class: 'foam.core.Array',
+      class: 'foam.core.ArrayProperty',
       name: 'arrayProp'
     },
     {

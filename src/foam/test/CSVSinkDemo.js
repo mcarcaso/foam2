@@ -53,7 +53,7 @@ foam.CLASS({
           name: 'bool'
         },
         {
-          class: 'Array',
+          class: 'ArrayProperty',
           name: 'arr'
         },
         {

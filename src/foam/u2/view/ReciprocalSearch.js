@@ -73,7 +73,7 @@ foam.CLASS({
       name: 'data'
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'filters',
       factory: null,
       expression: function(dao, searchColumns) {

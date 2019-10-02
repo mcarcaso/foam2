@@ -77,7 +77,7 @@ foam.CLASS({
       name: 'iconFontName'
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'keyboardShortcuts'
     },
     {

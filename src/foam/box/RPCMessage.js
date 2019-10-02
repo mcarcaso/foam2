@@ -25,7 +25,7 @@ foam.CLASS({
       name: 'name'
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'args'
     }
   ]

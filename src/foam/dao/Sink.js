@@ -689,7 +689,7 @@ foam.CLASS({
   documentation: 'A proxy that waits until the next frame to flush the calls to the delegate.',
 
   properties: [
-    { class: 'Array', name: 'calls' },
+    { class: 'ArrayProperty', name: 'calls' },
   ],
 
   methods: [

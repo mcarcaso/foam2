@@ -13,7 +13,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       of: 'foam.core.FObject',
       name: 'array',
       swiftFactory: 'return []',

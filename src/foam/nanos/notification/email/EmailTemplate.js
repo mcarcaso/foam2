@@ -68,7 +68,7 @@ foam.CLASS({
       documentation: 'Displayed as the from email field.'
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'bodyAsByteArray',
       hidden: true,
       transient: true,

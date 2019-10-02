@@ -1128,7 +1128,7 @@ foam.CLASS({
       name: 'symbols'
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'actions',
       adapt: function(_, v) {
         if ( foam.Array.isInstance(v) ) return v;

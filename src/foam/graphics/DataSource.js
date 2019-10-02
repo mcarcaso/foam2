@@ -12,12 +12,12 @@ foam.CLASS({
   documentation: 'DataSource is composed by [ Horizontal [ String ] , LegendEntries [ seriesName : String, seriesValues [ Float ] ]',
 
   properties: [ {
-      class: 'Array',
+      class: 'ArrayProperty',
       of: 'StringProperty',
       name: 'Horizontal' //Horizontal or Axis Labels [String]
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       of: 'foam.graphics.LegendEntries',
       name: 'LegendEntries'
     }, //LegendEntries  [ name ,  value [ float ] ]

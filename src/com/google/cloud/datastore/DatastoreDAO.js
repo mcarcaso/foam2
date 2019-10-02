@@ -35,7 +35,7 @@ foam.CLASS({
       name: 'requestPayload'
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'results'
     },
     {

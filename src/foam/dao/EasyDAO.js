@@ -506,7 +506,7 @@ return delegate;
       name: 'order'
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       javaType: 'foam.core.PropertyInfo[]',
       name: 'index'
     },

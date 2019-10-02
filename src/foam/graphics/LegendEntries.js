@@ -16,7 +16,7 @@ foam.CLASS({
       name: 'seriesName'
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       of: 'Float',
       name: 'seriesValues'
     },

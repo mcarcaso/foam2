@@ -19,7 +19,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'views'
     },
     'prop'

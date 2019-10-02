@@ -41,7 +41,7 @@ foam.CLASS({
               BroadcastRegistry.`
         },
         {
-          class: 'Array',
+          class: 'ArrayProperty',
           of: 'StringProperty',
           name: 'delegateNames',
           documentation: `Name under which registration delegate services
@@ -60,7 +60,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       of: 'foam.box.BoxRegistryBox',
       name: 'delegates',
       documentation: 'Delegates that recieve register()/unregister() calls.',
@@ -74,7 +74,7 @@ foam.CLASS({
       factory: function() { return this.RoundRobinBox.create(); }
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       // of: 'Registration',
       name: 'registrations_',
       documentation: `Array of Registration bindings used to coordinate

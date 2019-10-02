@@ -45,7 +45,7 @@ global.genericDAOTestBattery = function(daoFactory) {
           // supports them properly.
           /*
             {
-            class: 'Array',
+            class: 'ArrayProperty',
             of: 'StringProperty',
             name: 'tags',
             },

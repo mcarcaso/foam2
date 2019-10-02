@@ -41,7 +41,7 @@ describe('selector registry', function() {
 
       properties: [
         {
-          class: 'Array',
+          class: 'ArrayProperty',
           of: 'foam.box.Message',
           name: 'messages'
         }
@@ -71,7 +71,7 @@ describe('selector registry', function() {
           name: 'name'
         },
         {
-          class: 'Array',
+          class: 'ArrayProperty',
           of: 'Object',
           name: 'actions'
         }

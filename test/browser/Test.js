@@ -227,7 +227,7 @@ foam.CLASS({
     { class: 'IntProperty', name: 'c' },
     { class: 'FloatProperty', name: 'd' },
     { class: 'StringProperty', name: 'e' },
-    { class: 'Array', name: 'f' },
+    { class: 'ArrayProperty', name: 'f' },
   ]
 });
 

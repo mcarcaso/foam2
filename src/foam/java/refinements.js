@@ -1593,7 +1593,7 @@ return 0;*/
 foam.CLASS({
   package: 'foam.java',
   name: 'ArrayJavaRefinement',
-  refines: 'foam.core.Array',
+  refines: 'foam.core.ArrayProperty',
   flags: ['java'],
 
   properties: [
@@ -1733,7 +1733,7 @@ return 0;*/
 foam.CLASS({
   package: 'foam.core',
   name: 'ArrayList',
-  extends: 'foam.core.Array',
+  extends: 'foam.core.ArrayProperty',
   flags: ['java'],
   properties: [
     ['javaType', 'ArrayList'],

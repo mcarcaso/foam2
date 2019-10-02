@@ -77,7 +77,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       // of: 'Registration',
       name: 'selectorRegistrations_',
       documentation: `Array of bindings:

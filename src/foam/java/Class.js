@@ -34,7 +34,7 @@ foam.CLASS({
       name: 'package'
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'implements'
     },
     {

@@ -95,7 +95,7 @@ foam.CLASS({
     //   name: 'reference'
     // },
     {
-      class: 'foam.core.Array',
+      class: 'foam.core.ArrayProperty',
       name: 'arrayProp'
     },
     {
@@ -276,7 +276,7 @@ foam.CLASS({
     //   name: 'transientReference'
     // },
     {
-      class: 'foam.core.Array',
+      class: 'foam.core.ArrayProperty',
       transient: true,
       name: 'transientArray'
     },

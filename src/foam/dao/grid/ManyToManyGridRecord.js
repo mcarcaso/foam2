@@ -30,7 +30,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       of: 'Boolean',
       name: 'data'
     }

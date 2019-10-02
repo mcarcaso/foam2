@@ -37,7 +37,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'futures_'
     }
   ],

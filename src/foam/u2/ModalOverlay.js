@@ -29,7 +29,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'innerQueue_'
     },
   ],

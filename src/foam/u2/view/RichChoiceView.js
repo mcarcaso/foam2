@@ -194,7 +194,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Array',
+      class: 'ArrayProperty',
       name: 'sections',
       documentation: `
         This lets you pass different predicated versions of a dao in different
