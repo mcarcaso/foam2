@@ -61,9 +61,9 @@ foam.CLASS({
   ],
 
   constants: {
-    ERROR_ICON: 'images/inline-error-icon.svg',
-    WARNING_ICON: 'images/information-small-purple.svg',
-    SUCCESS_ICON: 'images/checkmark-small-green.svg'
+    ERROR_ICON: '/src/foam/u2/images/inline-error-icon.svg',
+    WARNING_ICON: '/src/foam/u2/images/information-small-purple.svg',
+    SUCCESS_ICON: '/src/foam/u2/images/checkmark-small-green.svg'
   },
 
   css: `

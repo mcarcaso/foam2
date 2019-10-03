@@ -362,7 +362,7 @@ foam.CLASS({
                       .show(errorSlot)
                       .start({
                         class: 'foam.u2.tag.Image',
-                        data: 'images/inline-error-icon.svg',
+                        data: '/src/foam/u2/images/inline-error-icon.svg',
                         displayHeight: 16,
                         displayWidth: 16
                       })

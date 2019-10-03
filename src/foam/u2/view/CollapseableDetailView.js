@@ -55,14 +55,14 @@ foam.CLASS({
     {
       name: 'showAction',
       label: '',
-      icon: 'images/expand-more.svg',
+      icon: '/src/foam/u2/images/expand-more.svg',
       isAvailable: function(isCollapsed) { return isCollapsed; },
       code: function() { this.isCollapsed = false; }
     },
     {
       name: 'hideAction',
       label: '',
-      icon: 'images/expand-less.svg',
+      icon: '/src/foam/u2/images/expand-less.svg',
       isAvailable: function(isCollapsed) { return ! isCollapsed; },
       code: function() { this.isCollapsed = true; }
     }
