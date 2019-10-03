@@ -46,7 +46,3 @@ p({"class":"foam.nanos.menu.Menu","id":"admin.p.1minute","label":"Performance - 
 p({"class":"foam.nanos.menu.Menu","id":"admin.p.hourly","label":"Performance - Hourly","handler":{"class":"foam.nanos.menu.DAOMenu","daoKey":"pmHourlyDAO","createEnabled":false,"editEnabled":false},"order":1000,"parent":"admin"})
 p({"class":"foam.nanos.menu.Menu","id":"admin.p.daily","label":"Performance - Daily","handler":{"class":"foam.nanos.menu.DAOMenu","daoKey":"pmDailyDAO","createEnabled":false,"editEnabled":false},"order":1000,"parent":"admin"})
 p({"class":"foam.nanos.menu.Menu","id":"modelDAO","label":"Model DAO","handler":{"class":"foam.nanos.menu.DAOMenu2","config":{"class":"foam.comics.v2.DAOControllerConfig","daoKey":"modelDAO"}}})
-p({"class":"foam.nanos.menu.Menu","id":"modelDAO","handler":{"class":"foam.nanos.menu.DAOMenu2","config":{"class":"foam.comics.v2.DAOControllerConfig","daoKey":"axiomWrapperDAO","searchMode":0}}})
-p({"class":"foam.nanos.menu.Menu","id":"modelDAO","label":"Axiom DAO"})
-p({"class":"foam.nanos.menu.Menu","id":"modelDAO","handler":{"class":"foam.nanos.menu.DAOMenu2","config":{"class":"foam.comics.v2.DAOControllerConfig","daoKey":"axiomWrapperDAO","searchMode":2}}})
-p({"class":"foam.nanos.menu.Menu","id":"modelDAO","handler":{"class":"foam.nanos.menu.DAOMenu2","config":{"class":"foam.comics.v2.DAOControllerConfig","daoKey":"axiomWrapperDAO","searchMode":2,"cannedQueries":[{"class":"foam.comics.v2.CannedQuery","label":"All","predicate":{"class":"foam.mlang.predicate.True"}},{"class":"foam.comics.v2.CannedQuery","label":"User"}]}}})
