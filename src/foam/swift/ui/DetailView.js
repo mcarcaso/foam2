@@ -54,7 +54,7 @@ return data?.ownClassInfo().label ?? self.ownClassInfo().label
       name: 'data',
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'config',
     },
   ],

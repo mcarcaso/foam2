@@ -21,7 +21,7 @@ foam.CLASS({
       name: 'modelDAO'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'loading'
     }
   ],

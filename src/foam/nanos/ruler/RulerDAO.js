@@ -108,7 +108,7 @@ foam.CLASS({
 );`
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'rulesList',
       javaFactory: `return new java.util.HashMap<Predicate, GroupBy>();`
     }

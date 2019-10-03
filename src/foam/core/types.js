@@ -486,7 +486,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Map',
+  name: 'MapProperty',
   extends: 'Property',
 
   // TODO: Remove need for sorting

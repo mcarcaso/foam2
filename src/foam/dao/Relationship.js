@@ -131,19 +131,19 @@ foam.CLASS({
       name: 'oneWay'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'sourceProperty'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'sourceMethod'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'targetProperty'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'targetMethod'
     },
     {
@@ -670,11 +670,11 @@ foam.CLASS({
       name: 'unauthorizedTargetDAOKey'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'propertyOverrides'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'methodOverrides'
     },
   ],
@@ -868,11 +868,11 @@ foam.CLASS({
       name: 'targetProperty'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'propertyOverrides'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'methodOverrides'
     },
   ],

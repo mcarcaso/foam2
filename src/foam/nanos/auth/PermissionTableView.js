@@ -127,15 +127,15 @@ foam.CLASS({
 
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'gpMap'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'gMap'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'pMap'
     },
     {
@@ -429,7 +429,7 @@ foam.CLASS({
           name: 'impliedByParentPermission'
         },
         {
-          class: 'Map',
+          class: 'MapProperty',
           name: 'impliedByGroups'
         },
         {

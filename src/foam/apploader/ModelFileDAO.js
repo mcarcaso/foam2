@@ -11,7 +11,7 @@ foam.CLASS({
   extends: 'foam.dao.AbstractDAO',
   properties: [
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'cache'
     },
     'fetcher',

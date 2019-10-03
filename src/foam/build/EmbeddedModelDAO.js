@@ -13,7 +13,7 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'json'
     },
     {
@@ -22,7 +22,7 @@ foam.CLASS({
       value: false
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'loading'
     },
     {

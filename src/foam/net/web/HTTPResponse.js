@@ -35,7 +35,7 @@ foam.CLASS({
       name: 'responseType'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'headers'
     },
     {

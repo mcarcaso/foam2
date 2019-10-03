@@ -9,7 +9,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'config',
       documentation: `
         The config map that is expected by chartjs. Structure and information can be found in chartjs.org's documentation.
@@ -21,7 +21,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'customDatasetStyling',
       documentation: `
         Property map that would hold the customization for each key type

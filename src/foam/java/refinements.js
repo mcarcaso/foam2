@@ -1366,7 +1366,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'MapJavaRefinement',
-  refines: 'foam.core.Map',
+  refines: 'foam.core.MapProperty',
   flags: ['java'],
 
   properties: [

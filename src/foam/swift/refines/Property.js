@@ -515,7 +515,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.swift.refines',
   name: 'MapSwiftRefinement',
-  refines: 'foam.core.Map',
+  refines: 'foam.core.MapProperty',
   flags: ['swift'],
   properties: [
     {

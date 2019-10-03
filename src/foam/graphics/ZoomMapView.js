@@ -35,7 +35,7 @@ foam.CLASS({
       value: 10
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       visibility: 'RO',
       name: 'viewPortPosition',
       preSet: function(_, n) {

@@ -21,7 +21,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'attributes',
       javaFactory: 'return new java.util.HashMap();'
     },
@@ -30,7 +30,7 @@ foam.CLASS({
       name: 'object'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       transient: true,
       name: 'localAttributes',
       javaFactory: 'return new java.util.HashMap();'

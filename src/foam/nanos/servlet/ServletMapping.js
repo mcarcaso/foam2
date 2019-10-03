@@ -23,7 +23,7 @@ foam.CLASS({
       name: 'pathSpec'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'initParameters'
     }
   ]

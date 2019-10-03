@@ -114,7 +114,7 @@
       documentation: 'Pass through to UnstyledTableView.'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'selectedObjects',
       documentation: `
         The objects selected by the user when multi-select support is enabled.
@@ -145,7 +145,7 @@
       }
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'renderedPages_'
     },
   ],

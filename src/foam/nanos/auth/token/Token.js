@@ -36,7 +36,7 @@ foam.CLASS({
       documentation: 'The token data'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'parameters',
       documentation: 'Additional token parameters'
     }

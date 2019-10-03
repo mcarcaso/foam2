@@ -99,7 +99,7 @@ foam.CLASS({
       name: 'arrayProp'
     },
     {
-      class: 'foam.core.Map',
+      class: 'foam.core.MapProperty',
       name: 'mapProp'
     },
     {
@@ -281,7 +281,7 @@ foam.CLASS({
       name: 'transientArray'
     },
     {
-      class: 'foam.core.Map',
+      class: 'foam.core.MapProperty',
       transient: true,
       name: 'transientMap'
     },

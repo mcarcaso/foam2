@@ -99,7 +99,7 @@ foam.CLASS({
       name: 'arrayProp'
     },
     {
-      class: 'foam.core.Map',
+      class: 'foam.core.MapProperty',
       name: 'mapProp'
     },
     {

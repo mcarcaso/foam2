@@ -155,7 +155,7 @@ foam.CLASS({
       documentation: 'Set to true to support selecting multiple table rows.'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'selectedObjects',
       documentation: `
         The objects selected by the user when multi-select support is enabled.

@@ -63,7 +63,7 @@ foam.CLASS({
       value: 'GET'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'headers'
     },
     {

@@ -43,7 +43,7 @@ foam.CLASS({
     },
     {
       name: 'values_',
-      class: 'Map',
+      class: 'MapProperty',
       hidden: true,
       transient: true,
       factory: function() {
@@ -53,7 +53,7 @@ foam.CLASS({
     },
     {
       name: 'props_',
-      class: 'Map',
+      class: 'MapProperty',
       hidden: true,
       transient: true,
       factory: function() {

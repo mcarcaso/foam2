@@ -14,7 +14,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'hostMapping'
     },
     {

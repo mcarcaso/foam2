@@ -88,7 +88,7 @@ foam.CLASS({
       view: { class: 'foam.u2.view.ReferenceView', placeholder: 'select group' }
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'emailArgs',
       visibility: foam.u2.Visibility.HIDDEN,
       documentation: 'Arguments for email template.',

@@ -2450,7 +2450,7 @@ foam.CLASS({
       name: 'arg2'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'groups',
       hidden: true,
       factory: function() { return {}; },

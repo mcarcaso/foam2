@@ -38,11 +38,11 @@ have multiple classloaders running alongside eachother`
   ],
   properties: [
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'pending'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'latched'
     },
     {

@@ -13,7 +13,7 @@ foam.CLASS({
       name: 'filterClass',
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'initParameters'
     },
     {

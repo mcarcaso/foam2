@@ -87,7 +87,7 @@ Implement LastModifiedByAware to suppress 'modified by' comment in journal outpu
     // TODO: implement via an additional method on Logger logger.flag(x, y).log(message)
     // {
     //   name: 'flags',
-    //   class: 'Map'
+    //   class: 'MapProperty'
     // },
     {
       name: 'exception',

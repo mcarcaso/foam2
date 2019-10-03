@@ -36,7 +36,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'registry_',
       hidden: true,
       javaFactory: 'return new java.util.concurrent.ConcurrentHashMap();'

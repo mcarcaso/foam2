@@ -2412,7 +2412,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'MapViewRefinement',
-  refines: 'foam.core.Map',
+  refines: 'foam.core.MapProperty',
   properties: [
     {
       name: 'view',

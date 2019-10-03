@@ -26,7 +26,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'config'
     }
   ],

@@ -18,7 +18,7 @@ foam.CLASS({
       name: 'data'
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'config',
       preSet: function(_, n) {
         // We do the responsiveness so don't rely on chartjs.

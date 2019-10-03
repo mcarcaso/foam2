@@ -35,7 +35,7 @@ foam.CLASS({
       value: 404
     },
     {
-      class: 'Map',
+      class: 'MapProperty',
       name: 'headers'
     },
     {
