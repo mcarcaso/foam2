@@ -35,7 +35,7 @@ foam.CLASS({
       tableWidth: 170
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.auth.User',
       name: 'createdBy',
       documentation: 'User who created the entry',
@@ -83,7 +83,7 @@ foam.CLASS({
       value: null
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.auth.User',
       name: 'lastModifiedBy',
       value: '1',

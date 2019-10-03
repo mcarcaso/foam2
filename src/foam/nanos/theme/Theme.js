@@ -68,7 +68,7 @@ foam.CLASS({
       tableWidth: 100
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       targetDAOKey: 'menuDAO',
       name: 'defaultMenu',
       documentation: 'Menu user redirects to after login.',

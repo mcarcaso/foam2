@@ -20,7 +20,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.ruler.Rule',
       name: 'rule'
     },

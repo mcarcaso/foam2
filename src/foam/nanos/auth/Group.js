@@ -38,7 +38,7 @@ foam.CLASS({
       documentation: 'Description of the Group.'
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       name: 'parent',
       targetDAOKey: 'groupDAO',
       of: 'foam.nanos.auth.Group',
@@ -49,14 +49,14 @@ foam.CLASS({
       documentation: 'Parent group to inherit permissions from.'
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       targetDAOKey: 'menuDAO',
       name: 'defaultMenu',
       documentation: 'Menu user redirects to after login.',
       of: 'foam.nanos.menu.Menu'
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       targetDAOKey: 'menuDAO',
       of: 'foam.nanos.menu.Menu',
       name: 'rootMenu',

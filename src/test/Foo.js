@@ -16,7 +16,7 @@ foam.CLASS({
       value: 12
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'test.Person',
       name: 'ref'
     }

@@ -16,7 +16,7 @@ foam.CLASS({
       name: 'id'
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       name: 'userId',
       of: 'foam.nanos.auth.User',
     },

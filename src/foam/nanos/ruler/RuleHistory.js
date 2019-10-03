@@ -31,7 +31,7 @@ foam.CLASS({
       documentation: 'Last modified date.'
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.ruler.Rule',
       name: 'ruleId',
       documentation: 'The applied rule.'

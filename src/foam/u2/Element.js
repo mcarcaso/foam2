@@ -2435,7 +2435,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'ReferenceViewRefinement',
-  refines: 'foam.core.Reference',
+  refines: 'foam.core.ReferenceProperty',
   properties: [
     {
       name: 'view',

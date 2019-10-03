@@ -17,7 +17,7 @@ foam.CLASS({
     Example usage for a Reference property on a model:
 
       {
-        class: 'Reference',
+        class: 'ReferenceProperty',
         of: 'foam.nanos.auth.User',
         name: 'exampleProperty',
         view: function(_, X) {

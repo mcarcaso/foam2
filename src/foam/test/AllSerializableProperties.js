@@ -91,7 +91,7 @@ foam.CLASS({
       name: 'colorProp'
     },
     // {
-    //   class: 'foam.core.Reference',
+    //   class: 'foam.core.ReferenceProperty',
     //   name: 'reference'
     // },
     {

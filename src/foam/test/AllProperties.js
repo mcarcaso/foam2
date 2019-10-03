@@ -91,7 +91,7 @@ foam.CLASS({
       name: 'colorProp'
     },
     // {
-    //   class: 'foam.core.Reference',
+    //   class: 'foam.core.ReferenceProperty',
     //   name: 'reference'
     // },
     {
@@ -271,7 +271,7 @@ foam.CLASS({
       name: 'transientColor'
     },
     // {
-    //   class: 'foam.core.Reference',
+    //   class: 'foam.core.ReferenceProperty',
     //   transient: true,
     //   name: 'transientReference'
     // },

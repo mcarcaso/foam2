@@ -640,7 +640,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2.search',
   name: 'ReferenceRefinement',
-  refines: 'foam.core.Reference',
+  refines: 'foam.core.ReferenceProperty',
 
   properties: [
     {

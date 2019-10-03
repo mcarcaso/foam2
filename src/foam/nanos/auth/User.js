@@ -257,7 +257,7 @@ foam.CLASS({
       view: { class: 'foam.nanos.auth.AddressDetailView' }
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       name: 'language',
       documentation: 'The default language preferred by the User.',
       of: 'foam.nanos.auth.Language',
@@ -569,7 +569,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.auth.Group',
       name: 'group'
     }

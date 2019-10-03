@@ -613,7 +613,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Reference',
+  name: 'ReferenceProperty',
   extends: 'Property',
 
   properties: [

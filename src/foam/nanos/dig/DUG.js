@@ -59,7 +59,7 @@ foam.CLASS({
       hidden: true
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.auth.User',
       name: 'owner',
       hidden: true

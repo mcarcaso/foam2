@@ -80,7 +80,7 @@ foam.CLASS({
       documentation: 'An unstructured field for the sub postal address.'
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       targetDAOKey: 'countryDAO',
       name: 'countryId',
       label: 'Country',
@@ -99,7 +99,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       targetDAOKey: 'regionDAO',
       name: 'regionId',
       label: 'Region',

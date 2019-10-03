@@ -17,7 +17,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.flow.Document',
       name: 'docKey',
       label: 'Document',

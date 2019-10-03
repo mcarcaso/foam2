@@ -58,7 +58,7 @@ foam.CLASS({
       visibility: 'RO'
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.auth.User',
       name: 'createdBy',
       visibility: 'RO'

@@ -74,14 +74,14 @@ foam.CLASS({
       documentation: 'Determines if notification is sent to all users in a group or system.'
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.auth.User',
       name: 'userId',
       documentation: 'User notification will be sent to.',
       view: { class: 'foam.u2.view.ReferenceView', placeholder: 'select user' }
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.auth.Group',
       name: 'groupId',
       documentation: 'Group notification will be sent to.',

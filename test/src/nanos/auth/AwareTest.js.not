@@ -42,7 +42,7 @@ describe('Created/LastModified Aware tests', function() {
           name: 'created'
         },
         {
-          class: 'Reference',
+          class: 'ReferenceProperty',
           of: 'foam.nanos.auth.User',
           name: 'createdBy'
         },
@@ -51,7 +51,7 @@ describe('Created/LastModified Aware tests', function() {
           name: 'lastModified'
         },
         {
-          class: 'Reference',
+          class: 'ReferenceProperty',
           of: 'foam.nanos.auth.User',
           name: 'lastModifiedBy'
         }

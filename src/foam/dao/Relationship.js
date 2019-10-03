@@ -243,7 +243,7 @@ foam.CLASS({
       var prop;
 
       if ( this.cardinality === '1:*' ) {
-        prop = foam.core.Reference.create({
+        prop = foam.core.ReferenceProperty.create({
           name: this.inverseName,
           of: this.sourceModel,
           targetDAOKey: this.sourceDAOKey,
@@ -293,13 +293,13 @@ foam.CLASS({
         ids: ['sourceId', 'targetId'],
         properties: [
           {
-            class: 'Reference',
+            class: 'ReferenceProperty',
             name: 'sourceId',
             shortName: 's',
             of: this.sourceModel,
           },
           {
-            class: 'Reference',
+            class: 'ReferenceProperty',
             name: 'targetId',
             shortName: 't',
             of: this.targetModel

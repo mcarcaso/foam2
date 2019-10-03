@@ -59,7 +59,7 @@ foam.CLASS({
       required: true,
       postSet: function(o, property) {
         var isIntProp = foam.core.IntProperty.isInstance(property) ||
-          foam.core.Reference.isInstance(property) &&
+          foam.core.ReferenceProperty.isInstance(property) &&
           foam.core.IntProperty.isInstance(property.of.ID);
         if ( ! this.op ) {
           this.op = isIntProp

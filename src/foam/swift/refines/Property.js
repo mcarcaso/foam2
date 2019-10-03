@@ -774,7 +774,7 @@ return Swift.type(of: self).${foam.String.constantize(propName)}().set(self, val
 foam.CLASS({
   package: 'foam.swift.refines',
   name: 'ReferenceSwiftRefinement',
-  refines: 'foam.core.Reference',
+  refines: 'foam.core.ReferenceProperty',
   flags: [ 'swift' ],
   requires: [
     'foam.swift.ProtocolMethod',

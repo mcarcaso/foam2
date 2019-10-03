@@ -59,14 +59,14 @@ Implement LastModifiedByAware to suppress 'modified by' comment in journal outpu
       visibility: 'RO'
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.auth.User',
       name: 'createdBy',
       documentation: 'User who created the entry',
       visibility: 'RO'
     },
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.auth.User',
       name: 'lastModifiedBy',
       value: '1',

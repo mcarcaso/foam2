@@ -10,7 +10,7 @@ foam.INTERFACE({
 
   properties: [
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.auth.User',
       name: 'lastModifiedBy',
       documentation: 'User who last modified entry'
@@ -34,7 +34,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.auth.User',
       name: 'lastModifiedBy',
       documentation: 'User who last modified entry'

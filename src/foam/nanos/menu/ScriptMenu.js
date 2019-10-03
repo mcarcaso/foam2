@@ -12,7 +12,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Reference',
+      class: 'ReferenceProperty',
       of: 'foam.nanos.script.Script',
       name: 'script'
     }

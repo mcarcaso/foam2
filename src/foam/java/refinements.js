@@ -1844,7 +1844,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.java',
   name: 'ReferenceJavaRefinement',
-  refines: 'foam.core.Reference',
+  refines: 'foam.core.ReferenceProperty',
   flags: [ 'java' ],
 
   properties: [
