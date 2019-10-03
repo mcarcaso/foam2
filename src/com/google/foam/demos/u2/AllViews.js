@@ -201,12 +201,12 @@ foam.CLASS({
       name: 'defaultColor'
     },
     {
-      class: 'Password',
+      class: 'PasswordProperty',
       name: 'defaultPassword',
       value: 'secret'
     },
     {
-      class: 'Password',
+      class: 'PasswordProperty',
       name: 'passwordView',
       view: 'foam.u2.view.PasswordView',
       value: 'secret'

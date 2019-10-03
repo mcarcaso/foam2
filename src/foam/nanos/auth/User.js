@@ -271,7 +271,7 @@ foam.CLASS({
       // TODO: create custom view or DAO
     },
     {
-      class: 'Password',
+      class: 'PasswordProperty',
       name: 'desiredPassword',
       label: 'Password',
       documentation: `The password that the individual person, or real user,
@@ -288,14 +288,14 @@ foam.CLASS({
       }
     },
     {
-      class: 'Password',
+      class: 'PasswordProperty',
       name: 'password',
       documentation: 'The password that is currently active with the User.',
       hidden: true,
       networkTransient: true
     },
     {
-      class: 'Password',
+      class: 'PasswordProperty',
       name: 'previousPassword',
       documentation: 'The password that was previously active with the User.',
       hidden: true,

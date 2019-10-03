@@ -18,7 +18,7 @@ foam.CLASS({
       width: 100
     },
     {
-      class: 'Password',
+      class: 'PasswordProperty',
       name: 'password',
       displayWidth: 30,
       width: 100

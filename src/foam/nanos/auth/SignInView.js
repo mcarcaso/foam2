@@ -91,7 +91,7 @@ foam.CLASS({
       view: { class: 'foam.u2.TextField', focused: true }
     },
     {
-      class: 'Password',
+      class: 'PasswordProperty',
       name: 'password',
       view: { class: 'foam.u2.view.PasswordView' }
     }

@@ -18,7 +18,7 @@ foam.CLASS({
       name: 'email'
     },
     {
-      class: 'Password',
+      class: 'PasswordProperty',
       name: 'password'
     },
     {

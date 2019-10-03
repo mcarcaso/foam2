@@ -131,7 +131,7 @@ foam.CLASS({
       name: 'urlProp'
     },
     {
-      class: 'foam.core.Password',
+      class: 'foam.core.PasswordProperty',
       name: 'passwordProp'
     },
     {
@@ -321,7 +321,7 @@ foam.CLASS({
       name: 'transientURL'
     },
     {
-      class: 'foam.core.Password',
+      class: 'foam.core.PasswordProperty',
       transient: true,
       name: 'transientPassword'
     },

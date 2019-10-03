@@ -463,7 +463,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Password',
+  name: 'PasswordProperty',
   extends: 'StringProperty',
   label: 'Password that displays protected or hidden text'
 });

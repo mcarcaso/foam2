@@ -127,7 +127,7 @@ foam.CLASS({
       name: 'urlProp'
     },
     {
-      class: 'foam.core.Password',
+      class: 'foam.core.PasswordProperty',
       name: 'passwordProp'
     },
     {

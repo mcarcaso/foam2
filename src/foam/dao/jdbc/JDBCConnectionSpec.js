@@ -26,7 +26,7 @@ foam.CLASS({
       name: 'userName'
     },
     {
-      class: 'Password',
+      class: 'PasswordProperty',
       name: 'userPassword'
     }
   ],

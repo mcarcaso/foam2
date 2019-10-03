@@ -11,13 +11,13 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'Password',
+      class: 'PasswordProperty',
       name: 'oldPassword',
       displayWidth: 30,
       width: 100
     },
     {
-      class: 'Password',
+      class: 'PasswordProperty',
       name: 'newPassword',
       displayWidth: 30,
       width: 100
