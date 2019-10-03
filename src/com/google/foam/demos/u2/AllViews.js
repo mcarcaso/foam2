@@ -212,7 +212,7 @@ foam.CLASS({
       value: 'secret'
     },
     {
-      class: 'PhoneNumber',
+      class: 'PhoneNumberProperty',
       name: 'defaultPhoneNumber'
     },
     {

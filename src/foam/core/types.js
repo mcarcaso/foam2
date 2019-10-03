@@ -471,7 +471,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'PhoneNumber',
+  name: 'PhoneNumberProperty',
   extends: 'StringProperty',
   label: 'Phone number'
 });

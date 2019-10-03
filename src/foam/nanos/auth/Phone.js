@@ -11,7 +11,7 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'PhoneNumber',
+      class: 'PhoneNumberProperty',
       name: 'number',
       label: 'Phone #',
       validationPredicates: [

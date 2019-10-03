@@ -131,7 +131,7 @@ foam.CLASS({
       name: 'passwordProp'
     },
     {
-      class: 'foam.core.PhoneNumber',
+      class: 'foam.core.PhoneNumberProperty',
       name: 'phoneNumberProp'
     },
     {

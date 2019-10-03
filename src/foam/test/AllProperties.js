@@ -135,7 +135,7 @@ foam.CLASS({
       name: 'passwordProp'
     },
     {
-      class: 'foam.core.PhoneNumber',
+      class: 'foam.core.PhoneNumberProperty',
       name: 'phoneNumberProp'
     },
     // {
@@ -326,7 +326,7 @@ foam.CLASS({
       name: 'transientPassword'
     },
     {
-      class: 'foam.core.PhoneNumber',
+      class: 'foam.core.PhoneNumberProperty',
       transient: true,
       name: 'transientPhoneNumber'
     },
