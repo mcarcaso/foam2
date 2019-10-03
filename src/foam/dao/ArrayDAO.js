@@ -96,7 +96,7 @@ foam.CLASS({
     function removeAll_(x, skip, limit, order, predicate) {
       predicate = predicate || this.True.create();
       skip = skip || 0;
-      limit = foam.Number.isInstance(limit) ? limit : Number.MAX_VALUE;
+      limit = foam.Number.isInstance(limit) ? limit : Number.MAX_SAFE_INTEGER;
 
       for ( var i = 0; i < this.array.length && limit > 0; i++ ) {
         if ( predicate.f(this.array[i]) ) {

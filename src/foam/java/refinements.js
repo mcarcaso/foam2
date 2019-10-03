@@ -563,6 +563,15 @@ foam.LIB({
         }).join(',')});`
       });
 
+      if (this.id != 'foam.core.Model') { // TODO: Remove this!
+        cls.method({
+          name: 'getModel_',
+          type: 'foam.core.Model',
+          visibility: 'public',
+          body: `return ${this.model_.asJavaValue()};`
+        });
+      }
+
       if ( cls.name ) {
         var props = cls.allProperties;
 

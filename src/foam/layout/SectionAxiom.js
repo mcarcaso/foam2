@@ -28,7 +28,7 @@ foam.CLASS({
     {
       class: 'IntProperty',
       name: 'order',
-      value: Number.MAX_VALUE
+      value: Number.MAX_SAFE_INTEGER
     },
     {
       class: 'BooleanProperty',

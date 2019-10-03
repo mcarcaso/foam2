@@ -678,7 +678,16 @@ foam.CLASS({
 
   properties: [
     {
-      class: 'IntProperty',
+      class: 'StringProperty',
+      name: 'id',
+      hidden: true,
+      transient: true,
+      getter: function () {
+        return this.package ? this.package + '.' + this.name : this.name;
+      }
+    },
+    {
+      class: 'LongProperty',
       name: 'order',
       section: 'advanced',
       value: Number.MAX_SAFE_INTEGER,

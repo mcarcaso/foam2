@@ -2166,7 +2166,7 @@ foam.CLASS({
       documentation: `
         The order to render the property in if rendering multiple properties.
       `,
-      value: Number.MAX_VALUE
+      value: Number.MAX_SAFE_INTEGER
     }
   ],
 

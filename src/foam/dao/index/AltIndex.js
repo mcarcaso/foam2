@@ -57,7 +57,7 @@ foam.CLASS({
 
     /** Returns smallest estimate from the delegates */
     function estimate(size, sink, skip, limit, order, predicate) {
-      var cost = Number.MAX_VALUE;
+      var cost = Number.MAX_SAFE_INTEGER;
       for ( var i = 0; i < this.delegates.length; i++ ) {
         cost = Math.min(
           cost,
@@ -143,7 +143,7 @@ foam.CLASS({
       if ( ! c ) {
         var nullSink = this.index.NullSink.create();
         var dfs = this.index.delegates;
-        var bestEst = Number.MAX_VALUE;
+        var bestEst = Number.MAX_SAFE_INTEGER;
         // Pick the best factory for the ordering, cache it
         for ( var i = 0; i < dfs.length; i++ ) {
           var est = dfs[i].estimate(1000, nullSink, undefined, undefined, order);

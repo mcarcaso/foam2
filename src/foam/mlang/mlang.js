@@ -1082,7 +1082,7 @@ return this;`
 
       if ( depth === 1 ) {
         // generate indexes, find costs, use the fastest
-        var bestCost = Number.MAX_VALUE;
+        var bestCost = Number.MAX_SAFE_INTEGER;
         var bestIndex;
         var args = this.args;
         for (var i = 0; i < args.length; i++ ) {
