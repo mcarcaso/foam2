@@ -479,7 +479,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Currency',
+  name: 'CurrencyProperty',
   extends: 'LongProperty'
 });
 

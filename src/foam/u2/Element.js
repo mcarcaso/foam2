@@ -2312,7 +2312,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'CurrencyViewRefinement',
-  refines: 'foam.core.Currency',
+  refines: 'foam.core.CurrencyProperty',
   requires: [ 'foam.u2.CurrencyView' ],
   properties: [
     [ 'displayWidth', 15 ],
