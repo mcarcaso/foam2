@@ -49,3 +49,4 @@ p({"class":"foam.nanos.menu.Menu","id":"modelDAO","label":"Model DAO","handler":
 p({"class":"foam.nanos.menu.Menu","id":"modelDAO","handler":{"class":"foam.nanos.menu.DAOMenu2","config":{"class":"foam.comics.v2.DAOControllerConfig","daoKey":"axiomWrapperDAO","searchMode":0}}})
 p({"class":"foam.nanos.menu.Menu","id":"modelDAO","label":"Axiom DAO"})
 p({"class":"foam.nanos.menu.Menu","id":"modelDAO","handler":{"class":"foam.nanos.menu.DAOMenu2","config":{"class":"foam.comics.v2.DAOControllerConfig","daoKey":"axiomWrapperDAO","searchMode":2}}})
+p({"class":"foam.nanos.menu.Menu","id":"modelDAO","handler":{"class":"foam.nanos.menu.DAOMenu2","config":{"class":"foam.comics.v2.DAOControllerConfig","daoKey":"axiomWrapperDAO","searchMode":2,"cannedQueries":[{"class":"foam.comics.v2.CannedQuery","label":"All","predicate":{"class":"foam.mlang.predicate.True"}},{"class":"foam.comics.v2.CannedQuery","label":"User"}]}}})

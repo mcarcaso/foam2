@@ -489,7 +489,7 @@ foam.CLASS({
   properties: [
     {
       name: 'anInt',
-      of: 'Int'
+      of: 'IntProperty'
     },
     {
       name: 'aString',
