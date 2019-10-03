@@ -52,6 +52,7 @@ foam.LIB({
         },
         Null: function(n) { return "null"; },
         Object: function(o) {
+          if (foam.core.FObject.isSubClass(o)) return 'null'; // TODO!
           return `
 new java.util.HashMap() {
   {
@@ -129,8 +130,8 @@ foam.CLASS({
     {
       class: 'BooleanProperty',
       name: 'generateJava',
-      expression: function(flags) {
-        return foam.util.flagFilter(['java'])(this);
+      expression: function (javaInfoType, flags) {
+        return javaInfoType && foam.util.flagFilter(['java'])(this);
       }
     },
     { class: 'foam.java.JavaType' },
@@ -344,13 +345,6 @@ foam.CLASS({
 
     function buildJavaClass(cls) {
       if ( ! this.generateJava ) return;
-
-      // Use javaInfoType as an indicator that this property should be
-      // generated to java code.
-
-      // TODO: Evaluate if we still want this behaviour.  It might be
-      // better to only respect the generateJava flag
-      if ( ! this.javaInfoType ) return;
 
       var privateName = this.name + '_';
       var capitalized = foam.String.capitalize(this.name);
@@ -596,10 +590,10 @@ foam.LIB({
             name: cls.name,
             type: '',
             args: props.map(function(f) {
-              return { name: f.name, type: f.type };
+              return { name: f.name + '_', type: f.type };
             }),
             body: props.map(function(f) {
-              return 'set' + foam.String.capitalize(f.name) + '(' + f.name + ')';
+              return 'set' + foam.String.capitalize(f.name) + '(' + f.name + '_' + ')';
             }).join(';\n') + ';'
           });
 
@@ -610,10 +604,10 @@ foam.LIB({
             type: '',
             args: [{ name: 'x', type: 'foam.core.X' }]
               .concat(props.map(function(f) {
-                return { name: f.name, type: f.type };
+                return { name: f.name + '_', type: f.type };
               })),
             body: ['setX(x)'].concat(props.map(function(f) {
-              return 'set' + foam.String.capitalize(f.name) + '(' + f.name + ')';
+              return 'set' + foam.String.capitalize(f.name) + '(' + f.name + '_' + ')';
             })).join(';\n') + ';'
           });
         }
@@ -877,7 +871,7 @@ foam.CLASS({
         var self = this;
         var props = self.cls_.getAxiomsByClass(foam.core.Property)
           .filter(function(a) {
-            return self.hasOwnProperty(a.name);
+            return self.hasOwnProperty(a.name) && a.generateJava;
           })
           .map(function(p) {
             return `.set${foam.String.capitalize(p.name)}(${foam.java.asJavaValue(self[p.name], p)})`
