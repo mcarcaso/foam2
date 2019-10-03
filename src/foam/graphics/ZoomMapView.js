@@ -15,12 +15,12 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'navBorder',
       value: 'black'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'viewBorder',
       value: 'red'
     },
@@ -70,7 +70,7 @@ foam.CLASS({
       required: true
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'handleColor',
       value: 'green'
     },

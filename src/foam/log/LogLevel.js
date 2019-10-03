@@ -29,7 +29,7 @@ foam.ENUM({
       name: 'consoleMethodName'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'color'
     }
   ],

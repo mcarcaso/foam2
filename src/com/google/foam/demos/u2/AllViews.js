@@ -197,7 +197,7 @@ foam.CLASS({
       name: 'defaultURL'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'defaultColor'
     },
     {

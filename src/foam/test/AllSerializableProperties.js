@@ -87,7 +87,7 @@ foam.CLASS({
       name: 'currencyProp'
     },
     {
-      class: 'foam.core.Color',
+      class: 'foam.core.ColorProperty',
       name: 'colorProp'
     },
     // {

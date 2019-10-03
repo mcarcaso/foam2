@@ -454,7 +454,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.core',
-  name: 'Color',
+  name: 'ColorProperty',
   extends: 'StringProperty',
   label: 'Color',
   properties: [ [ 'displayWidth', 20 ] ]

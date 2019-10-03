@@ -87,7 +87,7 @@ foam.CLASS({
       name: 'currencyProp'
     },
     {
-      class: 'foam.core.Color',
+      class: 'foam.core.ColorProperty',
       name: 'colorProp'
     },
     // {
@@ -266,7 +266,7 @@ foam.CLASS({
       name: 'transientCurrency'
     },
     {
-      class: 'foam.core.Color',
+      class: 'foam.core.ColorProperty',
       transient: true,
       name: 'transientColor'
     },

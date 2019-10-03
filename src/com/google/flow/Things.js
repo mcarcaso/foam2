@@ -714,7 +714,7 @@ foam.CLASS({
     [ 'radiusY', 12 ],
     [ 'color', 'green' ],
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'penColor',
       value: '#000000'
     },

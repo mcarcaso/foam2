@@ -2351,7 +2351,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.u2',
   name: 'ColorViewRefinement',
-  refines: 'foam.core.Color',
+  refines: 'foam.core.ColorProperty',
   properties: [
     {
       name: 'view',

@@ -475,15 +475,15 @@ foam.CLASS({
       value: 1
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'border'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'color'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'shadowColor'
     },
     {
@@ -1367,12 +1367,12 @@ foam.CLASS({
       name:  'font'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name:  'color',
       value: '#000000'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'border',
       label: 'Border Color'
     },

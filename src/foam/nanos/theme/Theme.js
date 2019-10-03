@@ -100,132 +100,132 @@ foam.CLASS({
       view: { class: 'foam.u2.tag.TextArea', rows: 16, cols: 60 },
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'primary1',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'primary2',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'primary3',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'primary4',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'primary5',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'approval1',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'approval2',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'approval3',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'approval4',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'approval5',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'warning1',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'warning2',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'warning3',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'warning4',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'warning5',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'destructive1',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'destructive2',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'destructive3',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'destructive4',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'destructive5',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'grey1',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'grey2',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'grey3',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'grey4',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'grey5',
       section: 'colours'
     },
     {
-      class: 'Color',
+      class: 'ColorProperty',
       name: 'black',
       section: 'colours'
     },
