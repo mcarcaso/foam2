@@ -30,3 +30,4 @@ src/notifications
 src/ruleHistory
 src/agentJunctions
 src/sessions
+*.class
