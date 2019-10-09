@@ -1094,7 +1094,13 @@ foam.CLASS({
     ['javaInfoType', 'foam.core.AbstractFloatPropertyInfo'],
     ['javaJSONParser', 'new foam.lib.json.FloatParser()'],
     ['javaCSVParser', 'new foam.lib.json.FloatParser()'],
-    ['sqlType', 'FLOAT']
+    ['sqlType', 'FLOAT'],
+    {
+      name: 'javaValue',
+      expression: function (value) {
+        return value + 'F';
+      }
+    },
   ],
 
   methods: [

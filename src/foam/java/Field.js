@@ -36,13 +36,14 @@ foam.CLASS({
   methods: [
     function outputJava(o) {
       o.indent();
-      o.out(this.visibility, this.visibility ? ' ' : '',
-        this.static ? 'static ' : '',
-        this.final ? 'final ' : '',
-        this.type, ' ', this.name);
+      this.visibility && o.out(this.visibility, ' ');
+      this.static && o.out('static ');
+      this.final && o.out('final ');
+      o.out(this.type, ' ', this.name);
       if ( this.initializer ) {
+        o.out(' =');
         o.increaseIndent();
-        o.out(' = ', this.initializer);
+        o.out(this.initializer);
         o.decreaseIndent();
       }
       o.out(';\n');

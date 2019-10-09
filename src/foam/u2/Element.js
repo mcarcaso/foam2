@@ -2161,7 +2161,7 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'IntProperty',
+      class: 'LongProperty',
       name: 'order',
       documentation: `
         The order to render the property in if rendering multiple properties.

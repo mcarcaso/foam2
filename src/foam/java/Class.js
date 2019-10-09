@@ -199,7 +199,8 @@ foam.CLASS({
       }
 
       if ( ! this.anonymous ) {
-        o.out(this.visibility, ' ', this.static ? 'static ' : '');
+        this.visibility && o.out(`${this.visibility} `);
+        this.static && o.out('static ');
 
         o.out(this.final    ? 'final '    : '');
         o.out(this.abstract ? 'abstract ' : '');

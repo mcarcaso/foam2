@@ -26,7 +26,7 @@ foam.CLASS({
       name: 'help'
     },
     {
-      class: 'IntProperty',
+      class: 'LongProperty',
       name: 'order',
       value: Number.MAX_SAFE_INTEGER
     },

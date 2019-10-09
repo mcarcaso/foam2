@@ -2728,16 +2728,26 @@ foam.CLASS({
 
   methods: [
     {
+      name: 'createStatement',
+      code: function () { return ''; },
+      javaCode: 'return "";'
+    },
+    {
+      name: 'prepareStatement',
+      code: function () { return; },
+      javaCode: 'return;'
+    },
+    {
       name: 'orderTail',
       code: function() { return; },
-      javaCode: 'return null;'
+      javaCode: 'return;'
     },
     {
       name: 'orderPrimaryProperty',
-      code: function() { return this; },
-      javaCode: 'return this;'
+      code: function() { return this; }
     },
     {
+      type: 'Integer',
       name: 'orderDirection',
       code: function() { return 1; },
       javaCode: 'return 1;'

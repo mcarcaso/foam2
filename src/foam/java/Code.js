@@ -29,9 +29,21 @@ foam.CLASS({
   methods: [
     function outputJava(o) {
       var lines = this.data.split('\n');
+
+      // It's common for the first and/or last lines to be empty.
+      if ( ! lines[0].trim() ) lines.shift();
+      if ( ! lines.length ) return;
+      if ( ! lines[lines.length-1].trim() ) lines.pop();
+      if ( ! lines.length ) return;
+
+      var leadingWhitespace = Math.max(lines[0].search(/\S/), 0);
       for ( var i = 0 ; i < lines.length ; i++ ) {
+        var spaceToTrim = Math.min(
+          leadingWhitespace,
+          Math.max(lines[i].search(/\S/), 0));
+        o.out('\n');
         o.indent();
-        o.out(lines[i], '\n');
+        o.out(lines[i].substring(spaceToTrim).trimRight());
       }
     }
   ]

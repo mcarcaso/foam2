@@ -89,7 +89,7 @@ foam.CLASS({
         o.out(' {\n');
 
         o.increaseIndent();
-        o.out(this.body);
+        o.out(this.body, '\n');
         o.decreaseIndent();
         o.indent();
         o.out('}');
