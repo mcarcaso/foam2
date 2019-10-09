@@ -321,6 +321,12 @@ foam.CLASS({
       documentation: 'The FOAM sub-type of this property.'
     },
     [ 'type', 'String[]' ],
+    {
+      name: 'value',
+      postSet: function() {
+        this.factory = null;
+      }
+    },
     [
       'factory',
       function() { return []; }
@@ -762,6 +768,7 @@ foam.CLASS({
       ]
     </pre>
     */
+    { class: 'StringProperty', name: 'name' },
     { class: 'StringProperty', name: 'shortName' }
   ]
 });
