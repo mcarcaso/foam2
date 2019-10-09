@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
 global.FOAM_FLAGS = {
-node: true,
-js: true,
-debug: true,
-java: true,
-swift: true
+  android: true,
+  debug: true,
+  java: true,
+  js: true,
+  node: true,
+  swift: true,
 };
 
 require('../src/foam.js');

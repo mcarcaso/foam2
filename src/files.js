@@ -680,6 +680,17 @@ FOAM_FILES([
 
   { name: "foam/apploader/ModelDAO" },
 
+  { name: "foam/android/tools/refines/FObject" }, // This must be first android refine.
+
+  { name: "foam/android/tools/refines/AbstractEnum" },
+  { name: "foam/android/tools/refines/EnumProperty" },
+  { name: "foam/android/tools/refines/FObjectArrayProperty" },
+  { name: "foam/android/tools/refines/FObjectProperty" },
+  { name: "foam/android/tools/refines/Lib" },
+  { name: "foam/android/tools/refines/Model" },
+  { name: "foam/android/tools/refines/Property" },
+  { name: "foam/android/tools/refines/ClassProperty" },
+
   // Strategy
   { name: "foam/strategy/StrategyReference" },
   { name: "foam/strategy/StrategizerService" },

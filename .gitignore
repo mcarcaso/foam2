@@ -31,3 +31,4 @@ src/ruleHistory
 src/agentJunctions
 src/sessions
 *.class
+android_build/*
