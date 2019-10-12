@@ -51,6 +51,7 @@ foam.CLASS({
           if ( id.indexOf('.') == -1 ) id = 'foam.core.' + id;
           if ( classes[id] ) continue;
           var cls = await this.classloader.load(id);
+          if ( ! flagFilter(cls.model_) ) continue;
           classes[id] = cls;
 
           var deps = {};
