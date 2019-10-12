@@ -2,6 +2,7 @@ foam.CLASS({
   package: 'foam.cross_platform',
   name: 'AbstractFObject',
   androidExtends: '',
+  androidParentClass: null,
   implements: [
     'foam.cross_platform.FObject'
   ],

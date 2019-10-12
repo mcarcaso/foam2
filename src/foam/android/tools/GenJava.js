@@ -7,10 +7,17 @@ foam.CLASS({
   properties: [
     {
       class: 'StringArrayProperty',
+      name: 'required_',
+      value: [
+        'foam.cross_platform.FoamClass',
+        'foam.cross_platform.AbstractFObject',
+      ]
+    },
+    {
+      class: 'StringArrayProperty',
       name: 'classIds',
       value: [
         'foam.core.Model',
-        'foam.cross_platform.AbstractFObject',
       ]
     },
     {
@@ -38,7 +45,7 @@ foam.CLASS({
         var flagFilter = foam.util.flagFilter(['android']);
 
         var classes = {};
-        var pending = this.classIds.concat();
+        var pending = this.classIds.concat(this.required_);
         while ( pending.length ) {
           var id = pending.pop();
           if ( id.indexOf('.') == -1 ) id = 'foam.core.' + id;

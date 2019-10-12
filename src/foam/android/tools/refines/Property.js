@@ -8,7 +8,7 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'androidValue',
       expression: function(value) {
-        return foam.android.tools.asJavaValue(value);
+        return foam.android.tools.asAndroidValue(value);
       }
     },
     {
@@ -19,10 +19,17 @@ foam.CLASS({
       }
     },
     {
-      class: 'BooleanProperty',
-      name: 'generateAndroid',
-      expression: function(generateJava) {
-        return generateJava;
+      class: 'StringProperty',
+      name: 'androidAxiomName',
+      expression: function(name) {
+        return foam.String.constantize(name);
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidAxiomInitializerName',
+      expression: function(androidAxiomName) {
+        return 'init_' + androidAxiomName;
       }
     },
     {
@@ -70,7 +77,6 @@ foam.CLASS({
   ],
   methods: [
     function buildAndroidClass(cls) {
-      if ( ! this.generateAndroid ) return;
       cls.field({
         visibility: 'protected',
         type: this.androidType,
@@ -126,12 +132,31 @@ foam.CLASS({
         args: [
           { type: this.androidType, name: 'value' }
         ],
+        // TODO: Do better.
         body: `
           ${this.androidPrivateVarName} = value;
         `
       });
 
+      cls.field({
+        visibility: 'public',
+        static: true,
+        type: 'foam.core.Property',
+        name: this.androidAxiomName,
+        initializer: this.androidAxiomInitializerName + '()'
+      });
+      cls.method({
+        visibility: 'private',
+        static: true,
+        type: 'foam.core.Property',
+        name: this.androidAxiomInitializerName,
+        body: `return ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};`
+      });
+
       return cls;
+    },
+    function asAndroidValue() {
+      return this.sourceCls_.id + '.' + this.androidAxiomName;
     }
   ]
 });

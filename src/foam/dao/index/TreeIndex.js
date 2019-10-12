@@ -21,7 +21,7 @@ foam.CLASS({
   refines: 'foam.core.Property',
 
   requires: [
-    'foam.dao.index.TreeIndex',
+    { path: 'foam.dao.index.TreeIndex', flags: ['web'] }
   ],
 
   methods: [
@@ -40,7 +40,7 @@ foam.CLASS({
   refines: 'foam.core.FObjectArray',
 
   requires: [
-    'foam.dao.index.SetIndex',
+    { path: 'foam.dao.index.SetIndex', flags: ['web'] }
   ],
 
   methods: [
@@ -57,7 +57,7 @@ foam.CLASS({
   refines: 'foam.core.AxiomArray',
 
   requires: [
-    'foam.dao.index.SetIndex',
+    { path: 'foam.dao.index.SetIndex', flags: ['web'] }
   ],
 
   methods: [
@@ -74,7 +74,7 @@ foam.CLASS({
   refines: 'foam.core.StringArrayProperty',
 
   requires: [
-    'foam.dao.index.SetIndex',
+    { path: 'foam.dao.index.SetIndex', flags: ['web'] }
   ],
 
   methods: [

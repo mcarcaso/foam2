@@ -2119,7 +2119,7 @@ foam.CLASS({
   refines: 'foam.core.Property',
 
   requires: [
-    'foam.u2.TextField'
+    { path: 'foam.u2.TextField', flags: ['web'] }
   ],
 
   properties: [
@@ -2278,7 +2278,9 @@ foam.CLASS({
   package: 'foam.u2',
   name: 'TimeViewRefinement',
   refines: 'foam.core.TimeProperty',
-  requires: [ 'foam.u2.TimeView' ],
+  requires: [
+    { path: 'foam.u2.TimeView', flags: ['web'] }
+  ],
   properties: [
     [ 'view', { class: 'foam.u2.TimeView' } ]
   ]
@@ -2289,7 +2291,9 @@ foam.CLASS({
   package: 'foam.u2',
   name: 'FloatViewRefinement',
   refines: 'foam.core.FloatProperty',
-  requires: [ 'foam.u2.FloatView' ],
+  requires: [
+    { path: 'foam.u2.FloatView', flags: ['web'] }
+  ],
   properties: [
     [ 'displayWidth', 12 ],
     [ 'view', { class: 'foam.u2.FloatView' } ]
@@ -2301,7 +2305,9 @@ foam.CLASS({
   package: 'foam.u2',
   name: 'IntViewRefinement',
   refines: 'foam.core.IntProperty',
-  requires: [ 'foam.u2.IntView' ],
+  requires: [
+    { path: 'foam.u2.IntView', flags: ['web'] }
+  ],
   properties: [
     [ 'displayWidth', 10 ],
     [ 'view', { class: 'foam.u2.IntView' } ]
@@ -2313,7 +2319,9 @@ foam.CLASS({
   package: 'foam.u2',
   name: 'CurrencyViewRefinement',
   refines: 'foam.core.CurrencyProperty',
-  requires: [ 'foam.u2.CurrencyView' ],
+  requires: [
+    { path: 'foam.u2.CurrencyView', flags: ['web'] }
+  ],
   properties: [
     [ 'displayWidth', 15 ],
     [ 'view', { class: 'foam.u2.CurrencyView' } ]
@@ -2325,7 +2333,9 @@ foam.CLASS({
   package: 'foam.u2',
   name: 'BooleanViewRefinement',
   refines: 'foam.core.BooleanProperty',
-  requires: [ 'foam.u2.CheckBox' ],
+  requires: [
+    { path: 'foam.u2.CheckBox', flags: ['web'] }
+  ],
   properties: [
     {
       name: 'view',
@@ -2593,7 +2603,7 @@ foam.CLASS({
   refines: 'foam.core.Action',
 
   requires: [
-    'foam.u2.ActionView'
+    { path: 'foam.u2.ActionView', flags: ['web'] }
   ],
 
   methods: [
@@ -2618,7 +2628,10 @@ foam.CLASS({
 
   properties: [
     [ 'name', 'tableColumns' ],
-    'columns'
+    {
+      class: 'StringArrayProperty',
+      name: 'columns'
+    }
   ]
 });
 

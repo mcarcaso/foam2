@@ -45,6 +45,12 @@ foam.CLASS({
     },
     {
       class: 'FObjectArray',
+      of: 'foam.java.Field',
+      name: 'fields',
+      factory: function() { return []; }
+    },
+    {
+      class: 'FObjectArray',
       of: 'foam.java.InterfaceMethod',
       name: 'methods',
       factory: function() { return []; }
@@ -57,7 +63,11 @@ foam.CLASS({
 
   methods: [
     function method(m) {
-      this.methods.push(foam.java.InterfaceMethod.create(m));
+      if ( m.static ) {
+        this.methods.push(foam.java.Method.create(m));
+      } else {
+        this.methods.push(foam.java.InterfaceMethod.create(m));
+      }
       return this;
     },
 
@@ -74,7 +84,10 @@ foam.CLASS({
       return this.constant.find(function(c) { return c.name == name; });
     },
 
-    function field() {
+    function field(f) {
+      if ( f.static ) {
+        this.fields.push(foam.java.Field.create(f));
+      }
       return this;
     },
 
@@ -132,6 +145,11 @@ foam.CLASS({
       for ( var i = 0 ; i < this.constants.length ; i++ ) {
         o.indent();
         o.out(this.constants[i]);
+        o.out('\n');
+      }
+
+      for ( var i = 0 ; i < this.fields.length ; i++ ) {
+        o.out(this.fields[i]);
         o.out('\n');
       }
 

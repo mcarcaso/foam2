@@ -3,7 +3,7 @@ foam.LIB({
   flags: ['android'],
   methods: [
     {
-      name: 'asJavaValue',
+      name: 'asAndroidValue',
       code: foam.mmethod({
         String: function(s) {
           return '"' + s.
@@ -18,26 +18,23 @@ foam.LIB({
           return '' + n + (n > Math.pow(2, 31) ? 'L' : '');
         },
         FObject: function(o) {
-          return 'null';//o.asJavaValue();
-        },
-        Undefined: function() {
-          // TODO: This probably isn't strictly right, but we do it in
-          // a number of places.
-          return null;
+          return o.asAndroidValue();
         },
         Array: function(a, prop) {
-          return "new " + (prop ? prop.javaType : 'Object[]') + " {" +
-            a.map(foam.android.tools.asJavaValue).join(',') +
+          return "new " + (prop ? prop.androidType : 'Object[]') + " {" +
+            a.map(foam.android.tools.asAndroidValue).join(',') +
             '}';
         },
-        Null: function(n) { return "null"; },
         Object: function(o) {
-          if (foam.core.FObject.isSubClass(o)) return 'null'; // TODO!
+          if (foam.core.FObject.isSubClass(o)) {
+            return (o.id == 'foam.core.FObject' ? 
+              'foam.cross_platform.AbstractFObject' : o.id) + '.CLS_';
+          }
           return `
-new java.util.HashMap() {
+new java.util.HashMap<String, Object>() {
   {
 ${Object.keys(o).map(function(k) {
-  return `  put(${foam.android.tools.asJavaValue(k)}, ${foam.android.tools.asJavaValue(o[k])});`
+  return `  put(${foam.android.tools.asAndroidValue(k)}, ${foam.android.tools.asAndroidValue(o[k])});`
 }).join('\n')}
   }
 }

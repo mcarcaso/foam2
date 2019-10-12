@@ -19,6 +19,23 @@ foam.CLASS({
         if ( e.indexOf('.') == -1 ) e = 'foam.core.' + e;
         return e;
       }
+    },
+    {
+      class: 'ClassProperty',
+      name: 'androidParentClass',
+      expression: function(id, extends$) {
+        if ( extends$ == 'FObject' ) return foam.cross_platform.AbstractFObject;
+        return foam.lookup(extends$);
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidImplements',
+      expression: function(id) {
+        return foam.lookup(id).getAxiomsByClass(foam.core.Implements)
+          .filter(foam.util.flagFilter(['android']))
+          .map(a => a.path);
+      }
     }
   ],
   methods: [

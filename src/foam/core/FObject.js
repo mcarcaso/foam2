@@ -420,6 +420,7 @@ foam.LIB({
 foam.CLASS({
   package: 'foam.core',
   name: 'FObject',
+  flags: ['js'],
 
   // Effectively imports the following methods, but imports: isn't available
   // yet, so we add with 'methods:'.

@@ -11,7 +11,10 @@ foam.CLASS({
   flags: ['swift'],
   requires: [
     'foam.swift.Field',
-    'foam.i18n.TranslationFormatStringParser',
+    {
+      path: 'foam.i18n.TranslationFormatStringParser',
+      flags: ['js']
+    }
   ],
   methods: [
     function writeToSwiftClass(cls, parentCls) {

@@ -690,6 +690,9 @@ FOAM_FILES([
   { name: "foam/android/tools/refines/Model" },
   { name: "foam/android/tools/refines/Property" },
   { name: "foam/android/tools/refines/ClassProperty" },
+  { name: "foam/android/tools/refines/Requires" },
+  { name: "foam/android/tools/refines/Implements" },
+  { name: "foam/android/tools/refines/AbstractInterface" },
 
   // Strategy
   { name: "foam/strategy/StrategyReference" },

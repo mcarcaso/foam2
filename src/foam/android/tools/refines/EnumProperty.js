@@ -11,7 +11,6 @@ foam.CLASS({
         if ( ! this.of ) return;
         console.log(this.of.id);
         deps[this.of.id] = true;
-        this.of.getDeps(flagFilter, deps);
       }
     }
   ]

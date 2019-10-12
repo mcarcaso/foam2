@@ -771,6 +771,8 @@ foam.CLASS({
   package: 'foam.parse',
   name: 'Parsers',
 
+  flags: ['js'],
+
   requires: [
     'foam.parse.Alternate',
     'foam.parse.AnyChar',
