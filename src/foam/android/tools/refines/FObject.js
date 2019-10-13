@@ -104,7 +104,7 @@ genProperties
           ${cls.name} o = new ${cls.name}();
 ${genProperties.map(p => `
           if ( ${p.androidIsSetVarName} ) {
-            ${p.androidSetterName}(${p.androidPrivateVarName});
+            o.${p.androidSetterName}(${p.androidPrivateVarName});
           }
 `).join('')}
           return o;

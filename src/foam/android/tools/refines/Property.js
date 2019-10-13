@@ -132,8 +132,8 @@ foam.CLASS({
         args: [
           { type: this.androidType, name: 'value' }
         ],
-        // TODO: Do better.
         body: `
+          ${this.androidIsSetVarName} = true;
           ${this.androidPrivateVarName} = value;
         `
       });
