@@ -16,15 +16,10 @@ foam.CLASS({
 
           this.addStaticClassInfo(cls);
 
-          return cls;
-          cls.implements = (this.implements || [])
-            .concat(this.model_.javaExtends || []);
-
-          var axioms = this.getAxioms().filter(foam.util.flagFilter(['java']));
-
-          for ( var i = 0 ; i < axioms.length ; i++ ) {
-            axioms[i].buildAndroidClass && axioms[i].buildAndroidClass(cls);
-          }
+          this.getAxioms()
+            .filter(foam.util.flagFilter(['android']))
+            .filter(a => a.buildAndroidClass)
+            .forEach(a => a.buildAndroidClass(cls));
 
           return cls;
         };

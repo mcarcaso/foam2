@@ -1,6 +1,9 @@
 foam.INTERFACE({
   package: 'foam.cross_platform',
   name: 'FObject',
+  implements: [
+    'foam.core.Detachable'
+  ],
   methods: [
     {
       name: 'setProperty',

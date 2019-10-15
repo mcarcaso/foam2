@@ -892,29 +892,38 @@ foam.CLASS({
     /**
       Create an integer hash code value based on all properties of this object.
     */
-    function hashCode() {
-      var hash = 17;
+    {
+      name: 'hashCode',
+      type: 'Integer',
+      code: function hashCode() {
+        var hash = 17;
 
-      var ps = this.cls_.getAxiomsByClass(foam.core.Property);
-      for ( var i = 0 ; i < ps.length ; i++ ) {
-        var prop = this[ps[i].name];
-        hash = ((hash << 5) - hash) + foam.util.hashCode(prop);
-        hash &= hash; // forces 'hash' back to a 32-bit int
+        var ps = this.cls_.getAxiomsByClass(foam.core.Property);
+        for ( var i = 0 ; i < ps.length ; i++ ) {
+          var prop = this[ps[i].name];
+          hash = ((hash << 5) - hash) + foam.util.hashCode(prop);
+          hash &= hash; // forces 'hash' back to a 32-bit int
+        }
+
+        return hash;
       }
-
-      return hash;
     },
 
-    function clone(opt_X) {
-      /** Create a deep copy of this object. **/
-      var m = {};
-      for ( var key in this.instance_ ) {
-        if ( this.instance_[key] === undefined ) continue; // Skip previously cleared keys.
 
-        var value = this[key];
-        this.cls_.getAxiomByName(key).cloneProperty(value, m);
+    {
+      name: 'clone',
+      flags: ['js'],
+      code: function clone(opt_X) {
+        /** Create a deep copy of this object. **/
+        var m = {};
+        for ( var key in this.instance_ ) {
+          if ( this.instance_[key] === undefined ) continue; // Skip previously cleared keys.
+
+          var value = this[key];
+          this.cls_.getAxiomByName(key).cloneProperty(value, m);
+        }
+        return this.cls_.create(m, opt_X || this.__context__);
       }
-      return this.cls_.create(m, opt_X || this.__context__);
     },
 
     /**
@@ -1000,10 +1009,14 @@ foam.CLASS({
       return this;
     },
 
-    function toString() {
-      // Distinguish between prototypes and instances.
-      return this.cls_.id + (
-          this.cls_.prototype === this ? 'Proto' : '');
+    {
+      name: 'toString',
+      type: 'String',
+      code: function toString() {
+        // Distinguish between prototypes and instances.
+        return this.cls_.id + (
+            this.cls_.prototype === this ? 'Proto' : '');
+      }
     },
 
     function toSummary() {

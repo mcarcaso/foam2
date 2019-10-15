@@ -13,14 +13,4 @@ foam.CLASS({
       name: 'x'
     }
   ],
-  methods: [
-    {
-      name: 'setProperty',
-      javaCode: `
-/*
-        this.getCls_().getAxiomByName(name).set(this, value);
- */
-      `
-    }
-  ]
 });

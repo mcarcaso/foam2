@@ -47,6 +47,10 @@ foam.INTERFACE({
       type: 'String',
     },
     {
+      name: 'toAndroidType',
+      type: 'String',
+    },
+    {
       name: 'toSwiftType',
       args: [
         { type: 'Boolean', name: 'optional' },
@@ -62,6 +66,11 @@ foam.CLASS({
   properties: [
     {
       class: 'StringProperty',
+      name: 'android',
+      expression: function(java) { return java }
+    },
+    {
+      class: 'StringProperty',
       name: 'java',
     },
     {
@@ -71,6 +80,7 @@ foam.CLASS({
   ],
   methods: [
     function refs() { return [] },
+    function toAndroidType() { return this.android },
     function toJavaType() { return this.java },
     function toSwiftType(optional) {
       return this.swift + (optional ? '?' : '')
@@ -85,6 +95,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   methods: [
     function refs() { return [] },
+    function toAndroidType() { return this.toJavaType() },
     function toJavaType() { return 'Object' },
     function toSwiftType() { return 'Any?' },
   ],
@@ -108,6 +119,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   methods: [
     function refs() { return []; },
+    function toAndroidType() { return this.toJavaType() },
     function toJavaType() { return 'byte'; },
     function toSwiftType() { return 'Int8'; }
   ]
@@ -120,6 +132,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   methods: [
     function refs() { return []; },
+    function toAndroidType() { return this.toJavaType() },
     function toJavaType() { return 'short'; },
     function toSwiftType() { return 'Int16'; }
   ]
@@ -132,6 +145,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   methods: [
     function refs() { return []; },
+    function toAndroidType() { return this.toJavaType() },
     function toJavaType() { return 'int'; },
     function toSwiftType() { return 'Int'; }
   ]
@@ -144,6 +158,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   methods: [
     function refs() { return []; },
+    function toAndroidType() { return this.toJavaType() },
     function toJavaType() { return 'void'; },
     function toSwiftType() { return 'Void'; }
   ]
@@ -167,6 +182,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   methods: [
     function refs() { return []; },
+    function toAndroidType() { return this.toJavaType() },
     function toJavaType() { return 'long'; },
     function toSwiftType() { return 'Int'; }
   ]
@@ -185,6 +201,7 @@ foam.CLASS({
   ],
   methods: [
     function refs() { return this.type.refs() },
+    function toAndroidType() { return this.toJavaType() },
     function toJavaType() {
       return `${this.type.toJavaType()}[]`
     },
@@ -201,6 +218,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   methods: [
     function refs() { return []; },
+    function toAndroidType() { return this.toJavaType() },
     function toJavaType() { return 'boolean'; },
     function toSwiftType() { return 'Bool'; }
   ]
@@ -219,6 +237,11 @@ foam.CLASS({
   ],
   methods: [
     function refs() { return [this.of.id] },
+    function toAndroidType() {
+      return this.of === foam.core.FObject ?
+        'foam.cross_platform.FObject' :
+        this.toJavaType();
+    },
     function toJavaType() { return this.of.id },
     function toSwiftType(optional) {
       return this.of.model_.swiftName + (optional ? '?' : '')
@@ -233,6 +256,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   methods: [
     function refs() { return []; },
+    function toAndroidType() { return this.toJavaType() },
     function toJavaType() { return 'char'; },
     function toSwiftType() { return 'Character'; }
   ]
@@ -277,6 +301,7 @@ foam.CLASS({
   extends: 'foam.core.type.SimpleType',
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   properties: [
+    ['android', 'foam.cross_platform.Context'],
     ['java', 'foam.core.X'],
     ['swift', 'Context'],
   ],

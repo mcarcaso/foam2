@@ -11,6 +11,11 @@ foam.CLASS({
         if ( ! this.of ) return;
         deps[this.of] = true;
       }
+    },
+    function fToAndroidValue(o) {
+      var v = this.f(o);
+      if ( ! foam.Array.isInstance(v) ) return this.SUPER(o);
+      return `new ${this.of}[] { ${v.map(s => foam.android.tools.asAndroidValue(s)).join(', ')} }`;
     }
   ]
 });

@@ -10,6 +10,9 @@ foam.CLASS({
         if ( ! flagFilter(this) ) return;
         deps[this.path] = true;
       }
+    },
+    function buildAndroidClass(cls) {
+      cls.implements = cls.implements.concat(this.path);
     }
   ]
 });

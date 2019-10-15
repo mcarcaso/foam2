@@ -179,46 +179,58 @@ foam.CLASS({
         }));
       }
     },
-    function getSwiftCode(parentCls) {
-      if (this.swiftCode) return this.swiftCode;
-      if (foam.core.internal.InterfaceMethod.isInstance(
-          parentCls.getSuperAxiomByName(this.name))) {
-        return 'fatalError()';
+    {
+      name: 'getSwiftCode',
+      flags: ['js'],
+      code: function getSwiftCode(parentCls) {
+        if (this.swiftCode) return this.swiftCode;
+        if (foam.core.internal.InterfaceMethod.isInstance(
+            parentCls.getSuperAxiomByName(this.name))) {
+          return 'fatalError()';
+        }
+        return '';
       }
-      return '';
     },
-    function getSwiftSupport(parentCls) {
-      if (this.hasOwnProperty('swiftSupport')) return this.swiftSupport;
-      return !!this.getSwiftCode(parentCls);
-    },
-    function getSwiftOverride(parentCls) {
-      if (this.hasOwnProperty('swiftOverride')) return this.swiftOverride;
-      if (this.name == 'init') return true;
-
-      var parentMethod = parentCls.getSuperAxiomByName(this.name);
-      if (!parentMethod) return false;
-
-      var InterfaceMethod = foam.core.internal.InterfaceMethod;
-
-      if (InterfaceMethod.isInstance(parentMethod)) {
-        // Find the interface that the method belongs to and determine if a
-        // parent implements this interface.
-        var methodInterface = parentCls.getAxiomsByClass(foam.core.Implements).find(function(i) {
-          return foam.lookup(i.path).getAxiomsByClass(InterfaceMethod).find(function(m) {
-            return m === parentMethod;
-          })
-        });
-        return ! methodInterface ||
-            !! parentCls.getSuperClass().getAxiomByName(methodInterface.name);
+    {
+      name: 'getSwiftSupport',
+      flags: ['js'],
+      code: function getSwiftSupport(parentCls) {
+        if (this.hasOwnProperty('swiftSupport')) return this.swiftSupport;
+        return !!this.getSwiftCode(parentCls);
       }
+    },
+    {
+      name: 'getSwiftOverride',
+      flags: ['js'],
+      code: function getSwiftOverride(parentCls) {
+        if (this.hasOwnProperty('swiftOverride')) return this.swiftOverride;
+        if (this.name == 'init') return true;
 
-      // Determine if anything that's extended implements this interface.
-      var pCl = parentCls
-      while (true) {
-        pCl = pCl.getSuperClass();
-        // Stop when we reach 'FObject' since we generate our own FObject.
-        if (pCl === pCl.getSuperClass()) return false;
-        if (pCl.hasOwnAxiom(this.name)) return true;
+        var parentMethod = parentCls.getSuperAxiomByName(this.name);
+        if (!parentMethod) return false;
+
+        var InterfaceMethod = foam.core.internal.InterfaceMethod;
+
+        if (InterfaceMethod.isInstance(parentMethod)) {
+          // Find the interface that the method belongs to and determine if a
+          // parent implements this interface.
+          var methodInterface = parentCls.getAxiomsByClass(foam.core.Implements).find(function(i) {
+            return foam.lookup(i.path).getAxiomsByClass(InterfaceMethod).find(function(m) {
+              return m === parentMethod;
+            })
+          });
+          return ! methodInterface ||
+              !! parentCls.getSuperClass().getAxiomByName(methodInterface.name);
+        }
+
+        // Determine if anything that's extended implements this interface.
+        var pCl = parentCls
+        while (true) {
+          pCl = pCl.getSuperClass();
+          // Stop when we reach 'FObject' since we generate our own FObject.
+          if (pCl === pCl.getSuperClass()) return false;
+          if (pCl.hasOwnAxiom(this.name)) return true;
+        }
       }
     },
   ],

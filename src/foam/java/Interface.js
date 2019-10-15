@@ -58,6 +58,10 @@ foam.CLASS({
     {
       name: 'imports',
       factory: function() { return []; }
+    },
+    {
+      class: 'StringArrayProperty',
+      name: 'implements'
     }
   ],
 
@@ -130,12 +134,9 @@ foam.CLASS({
       o.out(this.visibility, this.visibility ? ' ' : '',
         'interface ', this.name);
 
-      if ( this.implements && this.implements.length > 0 ) {
+      if ( this.implements.length > 0 ) {
         o.out(' extends ');
-        for ( var i = 0 ; i < this.implements.length ; i++ ) {
-          o.out(this.implements[i]);
-          if ( i != this.implements.length - 1 ) o.out(', ');
-        }
+        o.out(Array.from(new Set(this.implements)).join(', '));
       }
 
       o.out(' {\n\n');

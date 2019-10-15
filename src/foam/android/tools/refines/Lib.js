@@ -20,9 +20,9 @@ foam.LIB({
         FObject: function(o) {
           return o.asAndroidValue();
         },
-        Array: function(a, prop) {
-          return "new " + (prop ? prop.androidType : 'Object[]') + " {" +
-            a.map(foam.android.tools.asAndroidValue).join(',') +
+        Array: function(a) {
+          return 'new Object[] {' +
+            a.map(foam.android.tools.asAndroidValue).join(', ') +
             '}';
         },
         Object: function(o) {

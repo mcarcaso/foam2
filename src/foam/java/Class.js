@@ -34,7 +34,7 @@ foam.CLASS({
       name: 'package'
     },
     {
-      class: 'ArrayProperty',
+      class: 'StringArrayProperty',
       name: 'implements'
     },
     {
@@ -210,12 +210,9 @@ foam.CLASS({
           o.out(' extends ', this.extends);
         }
 
-        if ( this.implements && this.implements.length ) {
+        if ( this.implements.length > 0 ) {
           o.out(' implements ');
-          for ( var i = 0 ; i < this.implements.length ; i++ ) {
-            o.out(this.implements[i]);
-            if ( i != this.implements.length - 1 ) o.out(', ');
-          }
+          o.out(Array.from(new Set(this.implements)).join(', '));
         }
       }
 
