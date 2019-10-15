@@ -205,17 +205,6 @@ foam.CLASS({
       'isDefaultValue',
       function(v) { return ! this.comparePropertyValues(this.value, v); }
     ],
-
-    {
-      /** Makes Properties useful as map functions. */
-      name: 'f',
-      transient: true,
-      factory: function() {
-        var name = this.name;
-        return function f(o) { return o[name]; }
-      }
-    },
-
     {
       /** Makes Properties useful as comparators. */
       name: 'compare',
@@ -282,6 +271,9 @@ foam.CLASS({
   ],
 
   methods: [
+    function f(o) {
+      return o[this.name];
+    },
     /**
       Handle overriding of Property definition from parent class by
       copying undefined values from parent Property, if it exists.
@@ -615,7 +607,11 @@ foam.CLASS({
     },
 
     /** Returns a developer-readable description of this Property. **/
-    function toString() { return this.name; },
+    {
+      name: 'toString',
+      type: 'String',
+      code: function toString() { return this.name; },
+    },
 
     /** Flyweight getter for this Property. **/
     function get(o) { return o[this.name]; },
