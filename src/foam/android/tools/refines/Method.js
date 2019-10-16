@@ -26,9 +26,19 @@ foam.CLASS({
         return foam.String.constantize(name);
       }
     },
+    {
+      class: 'StringProperty',
+      name: 'androidAxiomInitializerName',
+      expression: function(androidAxiomName) {
+        return 'init_' + androidAxiomName;
+      }
+    },
   ],
   methods: [
-    function buildAndroidClass(cls) {
+    function buildAndroidClass(cls, parentCls) {
+      var superAxiom = parentCls.getSuperAxiomByName(this.name);
+      if ( superAxiom === this ) return;
+
       cls.method({
         visibility: 'public',
         static: this.androidIsStatic,
@@ -40,20 +50,27 @@ foam.CLASS({
         })),
         body: this.androidCode
       });
-      return cls;
-    }
-  ]
-});
 
-foam.CLASS({
-  package: 'foam.android.tools',
-  name: 'InterfaceMethodJavaRefinement',
-  refines: 'foam.core.internal.InterfaceMethod',
-  flags: ['android'],
-  methods: [
-    function buildAndroidClass(cls) {
+      cls.field({
+        visibility: 'public',
+        static: true,
+        type: this.cls_.id,
+        name: this.androidAxiomName,
+        initializer: this.androidAxiomInitializerName + '()'
+      });
+      cls.method({
+        visibility: 'private',
+        static: true,
+        type: this.cls_.id,
+        name: this.androidAxiomInitializerName,
+        body: `return ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};`
+      });
+
       return cls;
-    }
+    },
+    function asAndroidValue() {
+      return this.forClass_ + '.' + this.androidAxiomName;
+    },
   ]
 });
 
