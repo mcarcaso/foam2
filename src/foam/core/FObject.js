@@ -167,11 +167,13 @@ foam.LIB({
 
       for ( var i = 0 ; i < axs.length ; i++ ) {
         var a = axs[i];
+        if ( a.forClass_ ) a = a.clone();
 
         var superAxiom = this.getSuperAxiomByName(a.name);
 
         a.installInClass && a.installInClass(this,           superAxiom, existing[i]);
         a.installInProto && a.installInProto(this.prototype, superAxiom, existing[i]);
+        a.forClass_ = this.id;
 
         if ( a.name ) {
           this.pubsub_ && this.pubsub_.pub('installAxiom', a.name, a);
