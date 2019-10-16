@@ -2751,7 +2751,13 @@ foam.CLASS({
       name: 'orderDirection',
       code: function() { return 1; },
       javaCode: 'return 1;'
-    }
+    },
+    {
+      name: 'compare',
+      code: function(o1, o2) {
+        return this.comparePropertyValues(this.f(o1), this.f(o2));
+      },
+    },
   ]
 });
 
