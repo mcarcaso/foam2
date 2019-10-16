@@ -68,6 +68,8 @@ foam.CLASS({
   methods: [
     function method(m) {
       if ( m.static ) {
+        // static methods on an interface can't have a private visibility.
+        if ( m.visibility == 'private' ) delete m.visibility;
         this.methods.push(foam.java.Method.create(m));
       } else {
         this.methods.push(foam.java.InterfaceMethod.create(m));
