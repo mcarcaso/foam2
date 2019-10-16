@@ -696,6 +696,7 @@ FOAM_FILES([
   { name: "foam/android/tools/refines/AbstractInterface" },
   { name: "foam/android/tools/refines/Method" },
   { name: "foam/android/tools/refines/StringArrayProperty" },
+  { name: "foam/android/tools/refines/Constant" },
 
   // Strategy
   { name: "foam/strategy/StrategyReference" },

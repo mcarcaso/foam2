@@ -59,7 +59,7 @@ foam.CLASS({
   axioms: [ foam.pattern.Singleton.create() ],
 
   requires: [
-    'foam.parse.ImperativeGrammar as Grammar',
+    'foam.parse.ImperativeGrammar',
     'foam.templates.TemplateOutput',
   ],
 
@@ -75,7 +75,7 @@ foam.CLASS({
     {
       name: 'grammar',
       factory: function() {
-        var g = this.Grammar.create({
+        var g = this.ImperativeGrammar.create({
           symbols: function(repeat0, simpleAlt, sym, seq1, seq, repeat, notChars, anyChar, not, optional, literal) {
             return {
               START: sym('markup'),

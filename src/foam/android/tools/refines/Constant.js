@@ -1,7 +1,7 @@
 foam.CLASS({
   package: 'foam.android.tools',
-  name: 'RequiresRefinement',
-  refines: 'foam.core.Requires',
+  name: 'ConstantRefine',
+  refines: 'foam.core.Constant',
   flags: ['android'],
   properties: [
     {
@@ -36,13 +36,6 @@ foam.CLASS({
         body: `return ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};`
       });
       return cls;
-    },
-    {
-      name: 'getDeps',
-      code: function(flagFilter, deps) {
-        if ( ! flagFilter(this) ) return;
-        deps[this.path] = true;
-      }
     },
     function asAndroidValue() {
       return this.forClass_ + '.' + this.androidAxiomName;

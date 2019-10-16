@@ -156,7 +156,7 @@ foam.CLASS({
       return cls;
     },
     function asAndroidValue() {
-      return this.sourceCls_.id + '.' + this.androidAxiomName;
+      return this.forClass_ + '.' + this.androidAxiomName;
     },
     function fToAndroidValue(o) {
       return foam.android.tools.asAndroidValue(this.f(o));
