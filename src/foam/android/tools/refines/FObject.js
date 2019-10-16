@@ -14,9 +14,10 @@ foam.LIB({
 
       var flagFilter = foam.util.flagFilter(['android']);
 
-      this.getAxioms().filter(flagFilter).forEach(function(axiom) {
-        if ( axiom.buildAndroidClass ) axiom.buildAndroidClass(cls, this);
-      }.bind(this));
+      this.getAxioms()
+        .filter(flagFilter)
+        .filter(a => a.buildAndroidClass)
+        .forEach(a => a.buildAndroidClass(cls, this));
 
       var genProperties = this.getAxiomsByClass(foam.core.Property)
         .filter(flagFilter);
@@ -145,6 +146,7 @@ ${genProperties.map(p => `
           id: this.id,
           parent: this.model_.androidParentClass,
           axioms: this.getOwnAxioms()
+            .filter(a => a.forClass_ == this.id)
             .filter(flagFilter)
         }).asAndroidValue()};`
       });

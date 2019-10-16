@@ -19,7 +19,7 @@ foam.CLASS({
           this.getAxioms()
             .filter(foam.util.flagFilter(['android']))
             .filter(a => a.buildAndroidClass)
-            .forEach(a => a.buildAndroidClass(cls));
+            .forEach(a => a.buildAndroidClass(cls, this));
 
           return cls;
         };
