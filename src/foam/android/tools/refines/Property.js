@@ -141,14 +141,14 @@ foam.CLASS({
       cls.field({
         visibility: 'public',
         static: true,
-        type: 'foam.core.Property',
+        type: this.cls_.id,
         name: this.androidAxiomName,
         initializer: this.androidAxiomInitializerName + '()'
       });
       cls.method({
         visibility: 'private',
         static: true,
-        type: 'foam.core.Property',
+        type: this.cls_.id,
         name: this.androidAxiomInitializerName,
         body: `return ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};`
       });
