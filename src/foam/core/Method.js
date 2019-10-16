@@ -79,6 +79,10 @@ foam.CLASS({
       name: 'remote'
     },
     {
+      name: 'forClass_',
+      transient: true
+    },
+    {
       name: 'args',
       factory: function() {
         if ( this.code )

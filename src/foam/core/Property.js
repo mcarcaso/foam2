@@ -205,19 +205,6 @@ foam.CLASS({
       'isDefaultValue',
       function(v) { return ! this.comparePropertyValues(this.value, v); }
     ],
-    {
-      /** Makes Properties useful as comparators. */
-      name: 'compare',
-      transient: true,
-      factory: function() {
-        var comparePropertyValues = this.comparePropertyValues;
-        var f = this.f;
-        return function compare(o1, o2) {
-          return comparePropertyValues(f(o1), f(o2));
-        };
-      },
-
-    },
     // FUTURE: Move to refinement?
     {
       name: 'diffPropertyValues',
@@ -310,8 +297,6 @@ foam.CLASS({
 
         c.axiomMap_[prop.name] = prop;
       }
-
-      prop.forClass_ = c.id;
 
       // var reinstall = foam.events.oneTime(function reinstall(_,_,_,axiom) {
       //   // We only care about Property axioms.
