@@ -13,4 +13,19 @@ foam.CLASS({
       name: 'x'
     }
   ],
+  methods: [
+    {
+      name: 'detach',
+      androidCode: `
+        // TODO
+      `
+    },
+    {
+      name: 'toString',
+      androidCode: `
+        // TODO: JSONify
+        return super.toString();
+      `
+    },
+  ]
 });
