@@ -63,13 +63,21 @@ foam.CLASS({
     'foam.templates.TemplateOutput',
   ],
 
-  constants: {
-    HEADER: 'var self = this, ctx = this.__context__, Y = this.__subContext__;\n' +
+  constants: [
+    {
+      name: 'HEADER',
+      value: 'var self = this, ctx = this.__context__, Y = this.__subContext__;\n' +
       'var output = opt_outputter ? opt_outputter : TOC(this);\n' +
       'var out = output.output.bind(output);\n' +
       "out('",
-    FOOTER: "');\nreturn opt_outputter ? output : output.toString();\n"
-  },
+      type: 'String',
+    },
+    {
+      name: 'FOOTER',
+      value: "');\nreturn opt_outputter ? output : output.toString();\n",
+      type: 'String'
+    }
+  ],
 
   properties: [
     {

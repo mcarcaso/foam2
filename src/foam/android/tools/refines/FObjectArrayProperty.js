@@ -3,6 +3,20 @@ foam.CLASS({
   name: 'FObjectArrayPropertyJavaRefinement',
   refines: 'foam.core.FObjectArray',
   flags: ['android'],
+  properties: [
+    {
+      name: 'androidFAsAndroidValue',
+      expression: function() {
+        return o => {
+          var v = this.f(o);
+          if ( ! foam.Array.isInstance(v) ) {
+            return foam.android.tools.asAndroidValue(v);
+          }
+          return `new ${this.of}[] { ${v.map(s => foam.android.tools.asAndroidValue(s)).join(', ')} }`;
+        }
+      }
+    }
+  ],
   methods: [
     {
       name: 'getDeps',
@@ -11,11 +25,6 @@ foam.CLASS({
         if ( ! this.of ) return;
         deps[this.of] = true;
       }
-    },
-    function fToAndroidValue(o) {
-      var v = this.f(o);
-      if ( ! foam.Array.isInstance(v) ) return this.SUPER(o);
-      return `new ${this.of}[] { ${v.map(s => foam.android.tools.asAndroidValue(s)).join(', ')} }`;
     }
   ]
 });

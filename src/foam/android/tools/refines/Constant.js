@@ -4,6 +4,14 @@ foam.CLASS({
   refines: 'foam.core.Constant',
   flags: ['android'],
   properties: [
+    { class: 'foam.android.tools.AndroidType' },
+    {
+      class: 'StringProperty',
+      name: 'androidValue',
+      expression: function(value) {
+        return foam.android.tools.asAndroidValue(value);
+      }
+    },
     {
       class: 'StringProperty',
       name: 'androidAxiomName',
@@ -24,21 +32,18 @@ foam.CLASS({
       cls.field({
         visibility: 'public',
         static: true,
-        type: this.cls_.id,
+        type: this.androidType,
         name: this.androidAxiomName,
         initializer: this.androidAxiomInitializerName + '()'
       });
       cls.method({
         visibility: 'private',
         static: true,
-        type: this.cls_.id,
+        type: this.androidType,
         name: this.androidAxiomInitializerName,
-        body: `return ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};`
+        body: `return ${this.androidValue};`
       });
       return cls;
-    },
-    function asAndroidValue() {
-      return this.forClass_ + '.' + this.androidAxiomName;
-    },
+    }
   ]
 });

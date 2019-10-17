@@ -73,6 +73,13 @@ foam.CLASS({
       expression: function(name) {
         return `set${foam.String.capitalize(name)}`;
       }
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'androidFAsAndroidValue',
+      expression: function() {
+        return o => foam.android.tools.asAndroidValue(this.f(o));
+      }
     }
   ],
   methods: [
@@ -157,9 +164,6 @@ foam.CLASS({
     },
     function asAndroidValue() {
       return this.forClass_ + '.' + this.androidAxiomName;
-    },
-    function fToAndroidValue(o) {
-      return foam.android.tools.asAndroidValue(this.f(o));
     }
   ]
 });

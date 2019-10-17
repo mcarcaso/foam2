@@ -180,7 +180,7 @@ foam.CLASS({
           .filter(foam.util.flagFilter(['android']))
           .filter(p => this.hasOwnProperty(p.name))
           .forEach(p => {
-            body += `  .${p.androidSetterName}(${p.fToAndroidValue(this)})\n`;
+            body += `  .${p.androidSetterName}(${p.androidFAsAndroidValue(this)})\n`;
           });
         body += `  .build()`;
         return body;
