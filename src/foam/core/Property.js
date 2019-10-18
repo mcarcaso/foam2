@@ -41,10 +41,6 @@ foam.CLASS({
   name: 'Property',
   extends: 'FObject',
 
-  requires: [
-    'foam.core.internal.PropertySlot',
-  ],
-
   properties: [
     {
       name: 'name',
@@ -645,20 +641,5 @@ foam.CLASS({
 
       return slot;
     },
-
-    function toSlot(obj) {
-      /** Create a Slot for this Property. */
-      var slotName = this.slotName_ || ( this.slotName_ = this.name + '$' );
-      var slot     = obj.getPrivate_(slotName);
-
-      if ( ! slot ) {
-        slot = foam.core.internal.PropertySlot.create();
-        slot.obj  = obj;
-        slot.prop = this;
-        obj.setPrivate_(slotName, slot);
-      }
-
-      return slot;
-    }
   ]
 });

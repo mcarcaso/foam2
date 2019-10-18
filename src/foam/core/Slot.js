@@ -576,3 +576,28 @@ foam.CLASS({
     }
   ]
 });
+
+foam.CLASS({
+  package: 'foam.core',
+  name: 'PropertySlotRefine',
+  refines: 'foam.core.Property',
+  requires: [
+    'foam.core.internal.PropertySlot',
+  ],
+  methods: [
+    function toSlot(obj) {
+      /** Create a Slot for this Property. */
+      var slotName = this.slotName_ || ( this.slotName_ = this.name + '$' );
+      var slot     = obj.getPrivate_(slotName);
+
+      if ( ! slot ) {
+        slot = this.PropertySlot.create();
+        slot.obj  = obj;
+        slot.prop = this;
+        obj.setPrivate_(slotName, slot);
+      }
+
+      return slot;
+    }
+  ]
+});
