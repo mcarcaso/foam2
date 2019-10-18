@@ -11,13 +11,7 @@ foam.CLASS({
         return foam.android.tools.asAndroidValue(value);
       }
     },
-    {
-      class: 'StringProperty',
-      name: 'androidType',
-      expression: function(javaType) {
-        return javaType;
-      }
-    },
+    { class: 'foam.android.tools.AndroidType' },
     {
       class: 'StringProperty',
       name: 'androidAxiomName',
@@ -30,6 +24,13 @@ foam.CLASS({
       name: 'androidAxiomInitializerName',
       expression: function(androidAxiomName) {
         return 'init_' + androidAxiomName;
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidSlotGetterName',
+      expression: function(androidGetterName) {
+        return androidGetterName + '$';
       }
     },
     {
@@ -95,6 +96,18 @@ foam.CLASS({
         type: 'boolean',
         name: this.androidIsSetVarName,
         initializer: 'false'
+      });
+
+      cls.field({
+        visibility: 'public',
+        type: 'foam.core.Slot',
+        name: this.androidSlotGetterName,
+        initializer: `
+          foam.core.internal.PropertySlot.PropertySlotBuilder(getX())
+            .setObj(this)
+            .setProp(${this.androidAxiomName})
+            .build()
+        `
       });
 
       var getter = {

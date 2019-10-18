@@ -207,6 +207,18 @@ foam.CLASS({
   name: 'PropertySlot',
   extends: 'foam.core.Slot',
 
+  properties: [
+    {
+      class: 'FObjectProperty',
+      name: 'obj'
+    },
+    {
+      class: 'FObjectProperty',
+      of: 'foam.core.Property',
+      name: 'prop'
+    },
+  ],
+
   documentation: `
     Represents object properties as Slots.
     Created with calling obj.prop$ or obj.slot('prop').
