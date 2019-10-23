@@ -10,7 +10,6 @@ foam.LIB({
       cls.abstract = this.model_.abstract;
       cls.documentation = this.model_.documentation;
       cls.extends = this.model_.androidExtends;
-      cls.implements = this.model_.androidImplements;
 
       var flagFilter = foam.util.flagFilter(['android']);
 
@@ -21,6 +20,28 @@ foam.LIB({
 
       var genProperties = this.getAxiomsByClass(foam.core.Property)
         .filter(flagFilter);
+
+      cls.method({
+        visibility: 'public',
+        type: 'void',
+        name: 'clearProperty',
+        args: [
+          { type: 'String', name: 'name' }
+        ],
+        body: `
+        switch(name) {
+${
+genProperties
+  .map(a => `
+          case "${a.name}":
+            // TODO: clear it.
+            break;
+  `)
+  .join('\n')
+}
+        }
+        `
+      });
 
       cls.method({
         visibility: 'public',
@@ -37,11 +58,14 @@ genProperties
   .map(a => `
           case "${a.name}":
             ${a.androidSetterName}((${a.androidType}) value);
-            break;
+            return;
   `)
   .join('\n')
 }
         }
+${cls.extends ? `
+        super.setProperty(name, value);
+` : ''}
         `
       });
 

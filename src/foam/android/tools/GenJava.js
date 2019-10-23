@@ -17,7 +17,7 @@ foam.CLASS({
       class: 'StringArrayProperty',
       name: 'classIds',
       value: [
-        'foam.core.Model',
+        'foam.android.Tests',
       ]
     },
     {

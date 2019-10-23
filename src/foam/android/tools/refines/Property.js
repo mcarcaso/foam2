@@ -28,6 +28,13 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
+      name: 'androidSlotVarName',
+      expression: function(androidPrivateVarName) {
+        return androidPrivateVarName + '$';
+      }
+    },
+    {
+      class: 'StringProperty',
       name: 'androidSlotGetterName',
       expression: function(androidGetterName) {
         return androidGetterName + '$';
@@ -46,6 +53,10 @@ foam.CLASS({
       expression: function(name) {
         return `${name}_`;
       }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidSetter'
     },
     {
       class: 'StringProperty',
@@ -99,14 +110,22 @@ foam.CLASS({
       });
 
       cls.field({
+        visibility: 'private',
+        type: 'foam.core.Slot',
+        name: this.androidSlotVarName
+      });
+      cls.method({
         visibility: 'public',
         type: 'foam.core.Slot',
         name: this.androidSlotGetterName,
-        initializer: `
-          foam.core.internal.PropertySlot.PropertySlotBuilder(getX())
-            .setObj(this)
-            .setProp(${this.androidAxiomName})
-            .build()
+        body: `
+          if ( ${this.androidSlotVarName} == null ) {
+            ${this.androidSlotVarName} = foam.core.internal.PropertySlot.PropertySlotBuilder(getX())
+              .setObj(this)
+              .setProp(${this.androidAxiomName})
+              .build();
+          }
+          return ${this.androidSlotVarName};
         `
       });
 
@@ -152,9 +171,18 @@ foam.CLASS({
         args: [
           { type: this.androidType, name: 'value' }
         ],
-        body: `
+        body: this.androidSetter ? this.androidSetter : `
           ${this.androidIsSetVarName} = true;
           ${this.androidPrivateVarName} = value;
+          Object[] args = new Object[] {
+            "propertyChange",
+            "${this.name}",
+            null
+          };
+          if ( hasListeners(args) ) {
+            args[2] = ${this.androidSlotGetterName}();
+            pub(args);
+          }
         `
       });
 

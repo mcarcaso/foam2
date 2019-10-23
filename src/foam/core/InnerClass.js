@@ -44,6 +44,9 @@
 foam.CLASS({
   package: 'foam.core',
   name: 'InnerClass',
+  requires: [
+    'foam.core.Model'
+  ],
 
   documentation: 'Axiom for defining inner-classes. An inner-class is a class defined in the scope of the outer/owner class. This avoids poluting the package namespace with classes which are only used internally by a class.',
 

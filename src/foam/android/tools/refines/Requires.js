@@ -3,11 +3,18 @@ foam.CLASS({
   name: 'RequiresRefinement',
   refines: 'foam.core.Requires',
   flags: ['android'],
-  properties: [
-  ],
   methods: [
     function buildAndroidClass(cls) {
-      // TODO: create a method for creating a builder with the current context.
+      var model = this.__subContext__.lookup(this.path).model_;
+      if ( ! foam.util.flagFilter(['android'])(model) ) return cls;
+
+      cls.method({
+        visibility: 'protected',
+        type: this.path + '.' + 'Builder',
+        name: this.name + '_create',
+        body: `return ${this.path}.${model.name}Builder(getSubX());`
+      });
+
       return cls;
     },
     {
