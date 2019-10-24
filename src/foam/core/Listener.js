@@ -66,7 +66,11 @@ foam.CLASS({
           this.Argument.create({
             name: 'sub',
             type: 'Detachable'
-          })
+          }),
+          this.Argument.create({
+            name: 'args',
+            type: 'Object[]'
+          }),
         ];
       }
     }

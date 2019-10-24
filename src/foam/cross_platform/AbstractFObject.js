@@ -35,6 +35,14 @@ foam.CLASS({
   ],
   methods: [
     {
+      name: 'init',
+      documentation: `
+        Overwritten by any class that cares to. This is called when an object is
+        constructed.
+      `,
+      androidCode: `// NOOP`
+    },
+    {
       name: 'detach',
       androidCode: `
         // TODO
@@ -105,12 +113,14 @@ foam.CLASS({
       name: 'sub',
       androidCode: `
         foam.cross_platform.ListenerList listeners = getListeners_();
-        for ( String topic : topics ) {
-          if ( ! listeners.getChildren().containsKey(topic) ) {
-            listeners.getChildren().put(topic, ListenerList_create().build());
+        if ( topics != null ) {
+          for ( String topic : topics ) {
+            if ( ! listeners.getChildren().containsKey(topic) ) {
+              listeners.getChildren().put(topic, ListenerList_create().build());
+            }
+            listeners = (foam.cross_platform.ListenerList)
+              listeners.getChildren().get(topic);
           }
-          listeners = (foam.cross_platform.ListenerList)
-            listeners.getChildren().get(topic);
         }
 
         foam.cross_platform.ListenerList node = ListenerList_create()

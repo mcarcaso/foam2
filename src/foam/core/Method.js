@@ -169,6 +169,7 @@ foam.CLASS({
 
     function installInClass(cls, superMethod, existingMethod) {
       var method = this;
+      method.code = method.code || existingMethod && existingMethod.code || undefined;
 
       var parent = superMethod;
       if ( parent && foam.core.AbstractMethod.isInstance(parent) ) {
@@ -187,7 +188,8 @@ foam.CLASS({
   extends: 'foam.core.AbstractMethod',
 
   methods: [
-    function installInProto(proto, superAxiom) {
+    function installInProto(proto, superAxiom, existingMethod) {
+      if ( existingMethod && ! existingMethod.code && this.code ) return;
       proto[this.name] = this.override_(proto, this.code, superAxiom);
     },
 

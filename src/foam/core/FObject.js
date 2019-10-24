@@ -723,13 +723,22 @@ foam.CLASS({
         prev: listeners,
         l:    l
       };
-      node.sub.detach = function() {
+      var detach = function() {
         if ( node.next ) node.next.prev = node.prev;
         if ( node.prev ) node.prev.next = node.next;
 
         // Disconnect so that calling detach more than once is harmless
         node.next = node.prev = null;
       };
+      if ( foam.lookup('foam.core.AnonymousDetachable', true) ) {
+        // AnonymousDetachable doesn't exist until a little later but it's ideal
+        // to use over a loosely typed map especially when it's being passed to
+        // an FObjectProperty.
+        node.sub = foam.core.AnonymousDetachable.create(node.sub);
+        node.sub.detachFn = detach;
+      } else {
+        node.sub.detach = detach;
+      }
 
       if ( listeners.next ) listeners.next.prev = node;
       listeners.next = node;

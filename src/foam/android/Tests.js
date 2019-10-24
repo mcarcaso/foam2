@@ -8,7 +8,11 @@ foam.CLASS({
         {
           class: 'StringProperty',
           name: 'name'
-        }
+        },
+        {
+          class: 'DateProperty',
+          name: 'dateOfBirth'
+        },
       ],
       methods: [
         {
@@ -29,19 +33,25 @@ foam.CLASS({
   ],
   methods: [
     {
+      name: 'init',
+      androidCode: `
+        System.out.println("Tests initialized!");
+      `
+    },
+    {
       name: 'testListen',
       androidCode: `
         Person test = Person_create().build();
 
         final int[] numPubs = new int[] { 0, 0, 0 };
-        test.sub(new String[] {}, new foam.cross_platform.Listener() {
+        test.sub(null, new foam.cross_platform.Listener() {
           public void executeListener(foam.core.Detachable sub, Object[] args) {
             numPubs[0]++;
             sub.detach();
           }
         });
 
-        test.sub(new String[] {}, new foam.cross_platform.Listener() {
+        test.sub(null, new foam.cross_platform.Listener() {
           public void executeListener(foam.core.Detachable sub, Object[] args) {
             numPubs[1]++;
           }

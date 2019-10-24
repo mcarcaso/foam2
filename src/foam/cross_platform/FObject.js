@@ -49,6 +49,30 @@ foam.INTERFACE({
           name: 'value'
         }
       ]
+    },
+    {
+      type: 'Any',
+      name: 'getProperty',
+      args: [
+        {
+          type: 'String',
+          name: 'name'
+        }
+      ]
+    },
+    {
+      type: 'foam.core.Slot',
+      name: 'getSlot',
+      args: [
+        {
+          type: 'String',
+          name: 'name'
+        }
+      ]
+    },
+    {
+      type: 'foam.cross_platform.FoamClass',
+      name: 'getCls_'
     }
   ]
 });

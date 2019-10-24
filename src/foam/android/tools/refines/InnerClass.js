@@ -4,6 +4,9 @@ foam.CLASS({
   refines: 'foam.core.InnerClass',
   flags: ['android'],
   methods: [
+    function getDeps(flagFilter, deps) {
+      this.model.buildClass().getDeps(flagFilter, deps);
+    },
     function buildAndroidClass(cls, parentCls) {
       if ( ! parentCls.hasOwnAxiom(this.name) ) return;
       var innerClass = this.model.buildClass().buildAndroidClass();

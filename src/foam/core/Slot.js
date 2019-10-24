@@ -117,13 +117,13 @@ foam.CLASS({
 
       l2();
 
-      return {
-        detach: function() {
+      return foam.core.AnonymousDetachable.create({
+        detachFn: function() {
           sub1 && sub1.detach();
           sub2 && sub2.detach();
           sub1 = sub2 = null;
         }
-      };
+      });
     },
 
     function linkTo(other) {
@@ -215,7 +215,6 @@ foam.CLASS({
 
   methods: [
     function initArgs() { },
-    function init() { },
 
     function get() {
       return this.prop.get(this.obj);
@@ -263,11 +262,25 @@ foam.CLASS({
       'For internal use only. Is used to implement the Slot.dot() method.',
 
   properties: [
-    'of',
-    'parent', // parent slot, not parent object
-    'name',
+    {
+      class: 'ClassProperty',
+      name: 'of',
+    },
+    {
+      class: 'FObjectProperty',
+      of: 'foam.core.Slot',
+      name: 'parent'
+    },
+    {
+      class: 'StringProperty',
+      name: 'name'
+    },
     'value',
-    'prevSub'
+    {
+      class: 'FObjectProperty',
+      of: 'foam.core.Detachable',
+      name: 'prevSub'
+    }
   ],
 
   methods: [
@@ -532,9 +545,9 @@ foam.CLASS({
     function sub(l) {
       if ( arguments.length != 1 ) return this.SUPER.apply(this, arguments);
       var subs = this.slots.map(s => s.sub(l));
-      return {
-        detach: function() { subs.forEach(s => s.detach()); }
-      };
+      return foam.core.AnonymousDetachable.create({
+        detachFn: function() { subs.forEach(s => s.detach()); }
+      });
     }
   ]
 });

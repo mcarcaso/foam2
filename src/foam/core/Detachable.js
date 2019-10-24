@@ -15,3 +15,24 @@ foam.INTERFACE({
     }
   ]
 });
+
+foam.CLASS({
+  package: 'foam.core',
+  name: 'AnonymousDetachable',
+  implements: [
+    'foam.core.Detachable'
+  ],
+  properties: [
+    {
+      class: 'ClassProperty',
+      name: 'src'
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'detachFn'
+    }
+  ],
+  methods: [
+    function detach() { this.detachFn() }
+  ]
+});

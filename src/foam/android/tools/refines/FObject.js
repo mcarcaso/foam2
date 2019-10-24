@@ -45,6 +45,50 @@ genProperties
 
       cls.method({
         visibility: 'public',
+        type: 'Object',
+        name: 'getProperty',
+        args: [
+          { type: 'String', name: 'name' }
+        ],
+        body: `
+          switch(name) {
+${
+genProperties
+  .map(a => `
+            case "${a.name}":
+              return ${a.androidGetterName}();
+  `)
+  .join('\n')
+}
+          }
+          return ${cls.extends ? 'super.getProperty(name)' : 'null'};
+        `
+      });
+
+      cls.method({
+        visibility: 'public',
+        type: 'foam.core.Slot',
+        name: 'getSlot',
+        args: [
+          { type: 'String', name: 'name' }
+        ],
+        body: `
+          switch(name) {
+${
+genProperties
+  .map(a => `
+            case "${a.name}":
+              return ${a.androidSlotGetterName}();
+  `)
+  .join('\n')
+}
+          }
+          return ${cls.extends ? 'super.getSlot(name)' : 'null'};
+        `
+      });
+
+      cls.method({
+        visibility: 'public',
         type: 'void',
         name: 'setProperty',
         args: [
@@ -52,19 +96,19 @@ genProperties
           { type: 'Object', name: 'value' }
         ],
         body: `
-        switch(name) {
+          switch(name) {
 ${
 genProperties
   .map(a => `
-          case "${a.name}":
-            ${a.androidSetterName}((${a.androidType}) value);
-            return;
+            case "${a.name}":
+              ${a.androidSetterName}((${a.androidType}) value);
+              return;
   `)
   .join('\n')
 }
-        }
+          }
 ${cls.extends ? `
-        super.setProperty(name, value);
+          super.setProperty(name, value);
 ` : ''}
         `
       });
@@ -132,6 +176,7 @@ ${genProperties.map(p => `
             o.${p.androidSetterName}(${p.androidPrivateVarName});
           }
 `).join('')}
+          o.init();
           return o;
         `
       });

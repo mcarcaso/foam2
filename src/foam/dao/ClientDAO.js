@@ -41,7 +41,7 @@ foam.CLASS({
     {
       name: 'reset',
       code: function(sub) { this.doReset(sub); },
-      javaCode: `doReset(sub);`
+      javaCode: `doReset(sub, null);`
     }
   ],
   listeners: [
