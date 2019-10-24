@@ -406,7 +406,7 @@ ${isSet} = false;
         });
       }
 
-      cls.field({
+      ! foam.java.Interface.isInstance(cls) && cls.field({
         name: constantize,
         visibility: 'public',
         static: true,
