@@ -38,6 +38,16 @@ foam.INTERFACE({
       ]
     },
     {
+      name: 'hasPropertySet',
+      type: 'Boolean',
+      args: [
+        {
+          type: 'String',
+          name: 'name'
+        }
+      ]
+    },
+    {
       name: 'setProperty',
       args: [
         {

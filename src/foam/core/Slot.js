@@ -355,8 +355,6 @@ foam.CLASS({
   package: 'foam.core',
   name: 'ConstantSlot',
 
-  implements: [ 'foam.core.Slot' ],
-
   documentation: 'An immutable constant valued Slot.',
 
   properties: [
@@ -424,9 +422,17 @@ foam.CLASS({
   `,
 
   properties: [
-    'obj',
-    'code',
     {
+      class: 'FObjectProperty',
+      name: 'obj'
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'code'
+    },
+    {
+      class: 'FObjectArray',
+      of: 'foam.core.Slot',
       name: 'args',
       expression: function(obj) {
         foam.assert(obj, 'ExpressionSlot: "obj" or "args" required.');
@@ -498,6 +504,7 @@ foam.CLASS({
   `,
   properties: [
     {
+      class: 'PromiseProperty',
       name: 'promise',
       postSet: function(_, n) {
         n && n.then(function(v) {
@@ -516,8 +523,6 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'ArraySlot',
-
-  implements: [ 'foam.core.Slot' ],
 
   documentation: `
     A slot that takes an array of Slots and notifies when either changes.
@@ -555,7 +560,6 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'SimpleSlot',
-  implements: [ 'foam.core.Slot' ],
   properties: [
     {
       name: 'value'

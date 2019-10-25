@@ -675,6 +675,15 @@ foam.CLASS({
   ]
 });
 
+
+foam.CLASS({
+  package: 'foam.core',
+  name: 'PromiseProperty',
+  extends: 'Property'
+  // Refined later for cross platform support
+});
+
+
 foam.CLASS({
   package: 'foam.core',
   name: 'ModelUpgradeTypesRefinement',

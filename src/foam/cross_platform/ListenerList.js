@@ -17,7 +17,7 @@ foam.CLASS({
       name: 'children',
       androidSetter: `
         children_isSet_ = true;
-        children_ = value;
+        children_ = (java.util.Map) value;
       `
     },
     {

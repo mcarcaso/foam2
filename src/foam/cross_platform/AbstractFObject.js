@@ -19,7 +19,7 @@ foam.CLASS({
       `,
       androidSetter: `
         listeners__isSet_ = true;
-        listeners__ = value;
+        listeners__ = (foam.cross_platform.ListenerList) value;
       `
     },
     {

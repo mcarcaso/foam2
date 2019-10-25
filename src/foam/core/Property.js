@@ -264,6 +264,10 @@ foam.CLASS({
     function installInClass(c, superProp, existingProp) {
       var prop = this;
 
+      if ( existingProp ) {
+        prop = existingProp.createChildProperty_(prop);
+      }
+
       if ( superProp && foam.core.Property.isInstance(superProp) ) {
         prop = superProp.createChildProperty_(prop);
 
@@ -341,7 +345,7 @@ foam.CLASS({
       Install a property onto a prototype from a Property definition.
       (Property is 'this').
     */
-    function installInProto(proto) {
+    function installInProto(proto, superAxiom, existingProp) {
       // Take Axiom from class rather than using 'this' directly,
       // since installInClass() may have created a modified version
       // to inherit Property Properties from a super-Property.
@@ -350,8 +354,12 @@ foam.CLASS({
         // Delegate to the installInProto found in the class in case it
         // has custom behaviour it wants to do.  See Class property for
         // and example.
-        prop.installInProto(proto);
+        prop.installInProto(proto, superAxiom, existingProp);
         return;
+      }
+
+      if ( existingProp ) {
+        prop = existingProp.createChildProperty_(prop);
       }
 
       var name        = prop.name;

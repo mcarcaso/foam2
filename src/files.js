@@ -700,6 +700,8 @@ FOAM_FILES([
   { name: "foam/android/tools/refines/InnerClass" },
   { name: "foam/android/tools/refines/Slot" },
   { name: "foam/android/tools/refines/Listener" },
+  { name: "foam/android/tools/refines/FunctionProperty" },
+  { name: "foam/android/tools/refines/PromiseProperty" },
 
   // Strategy
   { name: "foam/strategy/StrategyReference" },

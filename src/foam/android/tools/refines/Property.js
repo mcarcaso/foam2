@@ -3,6 +3,9 @@ foam.CLASS({
   name: 'PropertyJavaRefinement',
   refines: 'foam.core.Property',
   flags: ['android'],
+  requires: [
+    'foam.core.ExpressionSlot'
+  ],
   properties: [
     {
       class: 'StringProperty',
@@ -57,6 +60,27 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'androidSetter'
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidPreSet',
+      expression: function(javaPreSet) {
+        return javaPreSet;
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidPostSet',
+      expression: function(javaPostSet) {
+        return javaPostSet;
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidAdapt',
+      expression: function(androidType) {
+        return `return (${androidType}) newValue;`
+      }
     },
     {
       class: 'StringProperty',
@@ -164,27 +188,84 @@ foam.CLASS({
       }
       cls.method(getter);
 
-      cls.method({
+      var setter = {
         visibility: 'public',
         type: 'void',
         name: this.androidSetterName,
         args: [
-          { type: this.androidType, name: 'value' }
-        ],
-        body: this.androidSetter ? this.androidSetter : `
-          ${this.androidIsSetVarName} = true;
-          ${this.androidPrivateVarName} = value;
-          Object[] args = new Object[] {
-            "propertyChange",
-            "${this.name}",
-            null
-          };
-          if ( hasListeners(args) ) {
-            args[2] = ${this.androidSlotGetterName}();
-            pub(args);
-          }
-        `
-      });
+          { type: 'Object', name: 'value' }
+        ]
+      };
+      if ( this.androidSetter ) {
+        setter.body = this.androidSetter;
+      } else { 
+        var adaptName = this.name + '_adapt';
+        cls.method({
+          visibility: 'private',
+          type: this.androidType,
+          name: adaptName,
+          args: [
+            { type: 'Object', name: 'oldValue' },
+            { type: 'Object', name: 'newValue' },
+            { type: 'boolean', name: 'oldValueSet' }
+          ],
+          body: this.androidAdapt
+        });
+        setter.body = `
+boolean hasOldValue = hasPropertySet("${this.name}");
+Object oldValue = hasOldValue ?
+  ${this.androidGetterName}() :
+  null;
+${this.androidType} castedValue = ${adaptName}(oldValue, value, hasOldValue);
+        `;
+
+        if ( this.androidPreSet ) {
+          var preSetName = this.name + '_preSet';
+          cls.method({
+            visibility: 'private',
+            type: this.androidType,
+            name: preSetName,
+            args: [
+              { type: 'Object', name: 'oldValue' },
+              { type: this.androidType, name: 'newValue' },
+              { type: 'boolean', name: 'oldValueSet' }
+            ],
+            body: this.androidPreSet
+          });
+          setter.body += `
+castedValue = ${preSetName}(oldValue, castedValue, hasOldValue);
+          `;
+        }
+        
+        setter.body += `
+${this.androidIsSetVarName} = true;
+${this.androidPrivateVarName} = castedValue;
+Object[] args = new Object[] { "propertyChange", "${this.name}", null };
+if ( hasListeners(args) ) {
+  args[2] = ${this.androidSlotGetterName}();
+  pub(args);
+}
+        `;
+
+        if ( this.androidPostSet ) {
+          var postSetName = this.name + '_postSet';
+          cls.method({
+            visibility: 'private',
+            type: 'void',
+            name: postSetName,
+            args: [
+              { type: 'Object', name: 'oldValue' },
+              { type: this.androidType, name: 'newValue' },
+              { type: 'boolean', name: 'oldValueSet' }
+            ],
+            body: this.androidPreSet
+          });
+          setter.body += `
+${postSetName}(oldValue, castedValue, hasOldValue);
+          `;
+        }
+      }
+      cls.method(setter);
 
       cls.field({
         visibility: 'public',

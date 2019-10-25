@@ -89,6 +89,32 @@ genProperties
 
       cls.method({
         visibility: 'public',
+        type: 'boolean',
+        name: 'hasPropertySet',
+        args: [
+          { type: 'String', name: 'name' }
+        ],
+        body: `
+          switch(name) {
+${
+genProperties
+  .map(a => `
+            case "${a.name}":
+              return ${a.androidIsSetVarName};
+  `)
+  .join('\n')
+}
+          }
+${cls.extends ? `
+          return super.hasPropertySet(name);
+` : `
+          return false;
+`}
+        `
+      });
+
+      cls.method({
+        visibility: 'public',
         type: 'void',
         name: 'setProperty',
         args: [

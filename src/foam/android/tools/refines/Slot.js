@@ -55,7 +55,7 @@ foam.CLASS({
       name: 'obj',
       androidSetter: `
         obj_isSet_ = true;
-        obj_ = value;
+        obj_ = (foam.cross_platform.FObject) value;
       `
     },
     {
@@ -64,7 +64,7 @@ foam.CLASS({
       name: 'prop',
       androidSetter: `
         prop_isSet_ = true;
-        prop_ = value;
+        prop_ = (foam.core.Property) value;
       `
     },
   ],
@@ -148,5 +148,9 @@ foam.CLASS({
   package: 'foam.android.tools.refines',
   name: 'ExpressionSlotRefines',
   refines: 'foam.core.ExpressionSlot',
-  // TODO
+  properties: [
+    {
+      name: 'args',
+    }
+  ]
 });
