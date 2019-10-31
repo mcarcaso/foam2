@@ -17,7 +17,7 @@ foam.CLASS({
       class: 'StringArrayProperty',
       name: 'classIds',
       value: [
-        'foam.android.Tests',
+        'foam.core.Model',
       ]
     },
     {
@@ -69,7 +69,7 @@ foam.CLASS({
             .concat(model.androidPackage.split('.'))
             .filter(s => s)
             .reduce((sum, next) => {
-              sum = sum ? sum + this.path.sep + next : next;
+              sum = sum + this.path.sep + next;
               try {
                 var stat = this.fs.statSync(sum);
                 if ( ! stat.isDirectory() ) throw sum + 'is not a directory';
@@ -77,7 +77,7 @@ foam.CLASS({
                 this.fs.mkdirSync(sum);
               }
               return sum;
-            }, '') + this.path.sep + model.name + '.java';
+            }, this.outputPath.startsWith(this.path.sep) ? '' : '.') + this.path.sep + model.name + '.java';
 
           this.fs.writeFileSync(path, cls.buildAndroidClass().toJavaSource());
           return path;
