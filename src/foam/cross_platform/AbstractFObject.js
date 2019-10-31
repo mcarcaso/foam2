@@ -43,9 +43,38 @@ foam.CLASS({
       androidCode: `// NOOP`
     },
     {
+      name: 'onDetach',
+      androidCode: `
+        final foam.core.Detachable d = detachable;
+        sub(new String[] {"detach"}, new foam.cross_platform.Listener() {
+          public void executeListener(foam.core.Detachable sub, Object[] args) {
+            sub.detach();
+            d.detach();
+          }
+        });
+      `
+    },
+    {
       name: 'detach',
       androidCode: `
-        // TODO
+        pub(new Object[] {"detach"});
+        detachListeners_(getListeners_());
+      `
+    },
+    {
+      name: 'detachListeners_',
+      args: [
+        { type: 'foam.cross_platform.ListenerList', name: 'listeners' }
+      ],
+      androidCode: `
+        foam.cross_platform.ListenerList l = listeners;
+        while ( l != null ) {
+          if ( l.getSubscription() != null ) l.getSubscription().detach();
+          for ( Object child : l.getChildren().values() ) {
+            detachListeners_((foam.cross_platform.ListenerList) child);
+          }
+          l = l.getNext();
+        }
       `
     },
     {

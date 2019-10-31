@@ -266,6 +266,7 @@ foam.CLASS({
 
       if ( existingProp ) {
         prop = existingProp.createChildProperty_(prop);
+        c.axiomMap_[prop.name] = prop;
       }
 
       if ( superProp && foam.core.Property.isInstance(superProp) ) {

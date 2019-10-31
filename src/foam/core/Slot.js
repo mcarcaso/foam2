@@ -354,6 +354,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'ConstantSlot',
+  extends: 'foam.core.Slot',
 
   documentation: 'An immutable constant valued Slot.',
 
@@ -469,7 +470,12 @@ foam.CLASS({
         }));
       }
     },
-    'cleanup_', // detachable to cleanup old subs when obj changes
+    {
+      class: 'FObjectProperty',
+      of: 'foam.core.Detachable',
+      name: 'cleanup_', 
+      documentation: 'Detachable to cleanup old subs when obj changes'
+    }
   ],
 
   methods: [
@@ -523,7 +529,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'ArraySlot',
-
+  extends: 'foam.core.Slot',
   documentation: `
     A slot that takes an array of Slots and notifies when either changes.
   `,
@@ -560,6 +566,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core',
   name: 'SimpleSlot',
+  extends: 'foam.core.Slot',
   properties: [
     {
       name: 'value'

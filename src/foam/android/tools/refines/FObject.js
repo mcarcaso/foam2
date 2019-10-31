@@ -34,12 +34,20 @@ ${
 genProperties
   .map(a => `
           case "${a.name}":
-            // TODO: clear it.
-            break;
+            ${a.androidIsSetVarName} = false;
+            Object[] ${a.name}Args = new Object[] { "propertyChange", "${a.name}", null };
+            if ( hasListeners(${a.name}Args) ) {
+              ${a.name}Args[2] = ${a.androidSlotGetterName}();
+              pub(${a.name}Args);
+            }
+            return;
   `)
   .join('\n')
 }
         }
+${cls.extends ? `
+        super.clearProperty(name);
+` : ''}
         `
       });
 

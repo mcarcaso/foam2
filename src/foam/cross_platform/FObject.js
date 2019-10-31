@@ -24,6 +24,15 @@ foam.INTERFACE({
       ]
     },
     {
+      name: 'onDetach',
+      args: [
+        {
+          type: 'foam.core.Detachable',
+          name: 'detachable'
+        }
+      ]
+    },
+    {
       name: 'sub',
       type: 'foam.core.Detachable',
       args: [

@@ -4,6 +4,7 @@ foam.CLASS({
   refines: 'foam.core.Property',
   flags: ['android'],
   requires: [
+    'foam.cross_platform.Lib',
     'foam.core.ExpressionSlot'
   ],
   properties: [
@@ -13,6 +14,14 @@ foam.CLASS({
       expression: function(value) {
         return foam.android.tools.asAndroidValue(value);
       }
+    },
+    {
+      class: 'StringArrayProperty',
+      name: 'androidExpressionArgs'
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidExpression'
     },
     { class: 'foam.android.tools.AndroidType' },
     {
@@ -119,7 +128,17 @@ foam.CLASS({
     }
   ],
   methods: [
-    function buildAndroidClass(cls) {
+    {
+      name: 'f',
+      type: 'Any',
+      args: [
+        { type: 'Any', name: 'o' }
+      ],
+      androidCode: `
+        return ((foam.cross_platform.FObject) o).getProperty(getName());
+      `
+    },
+    function buildAndroidClass(cls, parentCls) {
       cls.field({
         visibility: 'protected',
         type: this.androidType,
@@ -174,6 +193,57 @@ foam.CLASS({
           }
           return ${this.androidPrivateVarName};
         `;
+      } else if ( this.androidExpression ) {
+        var subName = this.name + '_expression_sub_';
+        cls.field({
+          visibility: 'private',
+          type: 'foam.core.Detachable',
+          name: subName
+        });
+        var expressionName = this.name + '_expression_';
+        cls.method({
+          visibility: 'protected',
+          type: this.androidType,
+          name: expressionName,
+          args: this.androidExpressionArgs.map(a => {
+            return {
+              type: parentCls.getAxiomByName(a).androidType,
+              name: a
+            }
+          }),
+          body: `
+            ${this.androidExpression}
+          `
+        });
+        getter.body = `
+          if ( ! ${this.androidIsSetVarName} && ${subName} == null ) {
+            final ${parentCls.name} obj = this;
+            final foam.core.ExpressionSlot eSlot = foam.core.ExpressionSlot.ExpressionSlotBuilder(getSubX())
+              .setArgs(new foam.core.Slot[] {
+                ${this.androidExpressionArgs.map(a => `getSlot("${a}")`).join(',')}
+              })
+              .setCode(new foam.cross_platform.GenericFunction() {
+                public Object executeFunction(Object[] args) {
+                  return obj.${expressionName}(
+                    ${this.androidExpressionArgs.map((a, i) => `
+                      (${parentCls.getAxiomByName(a).androidType}) args[${i}]
+                    `).join(',')}
+                  );
+                }
+              })
+              .build();
+            ${this.androidPrivateVarName} = (${this.androidType}) eSlot.slotGet();
+            ${subName} = eSlot.slotSub(new foam.cross_platform.Listener() {
+              public void executeListener(foam.core.Detachable sub, Object[] args) {
+                if ( foam.cross_platform.Lib.compare(eSlot.slotGet(), obj.${this.androidPrivateVarName}) != 0 ) {
+                  obj.${this.androidPrivateVarName} = (${this.androidType}) eSlot.slotGet();
+                  obj.pub(new Object[] { "propertyChange", "${this.name}", obj.${this.androidPrivateVarName} });
+                }
+              }
+            });
+          }
+          return ${this.androidPrivateVarName};
+        `;
       } else if ( this.androidValue ) {
         getter.body = `
           if ( ! ${this.androidIsSetVarName} ) {
@@ -219,6 +289,12 @@ Object oldValue = hasOldValue ?
 ${this.androidType} castedValue = ${adaptName}(oldValue, value, hasOldValue);
         `;
 
+        if ( this.androidExpression ) {
+          setter.body += `
+if ( ${subName} != null ) ${subName}.detach();
+          `;
+        }
+
         if ( this.androidPreSet ) {
           var preSetName = this.name + '_preSet';
           cls.method({
@@ -258,7 +334,7 @@ if ( hasListeners(args) ) {
               { type: this.androidType, name: 'newValue' },
               { type: 'boolean', name: 'oldValueSet' }
             ],
-            body: this.androidPreSet
+            body: this.androidPostSet
           });
           setter.body += `
 ${postSetName}(oldValue, castedValue, hasOldValue);

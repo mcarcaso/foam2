@@ -3,7 +3,7 @@ foam.CLASS({
   name: 'Promise',
   properties: [
     {
-      name: 'error'
+      name: 'error_'
     },
     {
       name: 'value'
@@ -22,6 +22,7 @@ foam.CLASS({
       type: 'Any',
       name: 'get',
       androidCode: `
+        // TODO!
         return null;
       `
     },
