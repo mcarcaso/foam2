@@ -1,5 +1,5 @@
 foam.CLASS({
-  package: 'foam.android.tools.refines',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'FunctionPropertyRefines',
   refines: 'foam.core.FunctionProperty',
   requires: [

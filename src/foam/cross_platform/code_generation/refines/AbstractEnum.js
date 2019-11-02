@@ -1,5 +1,5 @@
 foam.CLASS({
-  package: 'foam.swift.refines',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'AbstractEnumSwiftRefinement',
   refines: 'foam.core.AbstractEnum',
   flags: ['android'],

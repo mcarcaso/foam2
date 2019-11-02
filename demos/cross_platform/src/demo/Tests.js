@@ -1,5 +1,5 @@
 foam.CLASS({
-  package: 'foam.android',
+  package: 'demo',
   name: 'Tests',
   classes: [
     {
@@ -35,7 +35,6 @@ foam.CLASS({
             },
           ],
           androidCode: `
-            System.out.println("Hello " + name + " from " + getFullName());
             return "Hello " + name + " from " + getFullName();
           `
         }
@@ -101,10 +100,6 @@ foam.CLASS({
         test.setFirstName("1");
         test.setLastName("2");
         assert test.sayHi("3").equals("Hello 3 from 1 2");
-
-        for ( int i = 0 ; i < numPubs.length ; i++ ) {
-          System.out.println(numPubs[i]);
-        }
 
         assertEquals(numPubs[0], 1, "Listener detached after first change");
         assertEquals(numPubs[1], 4, "All events fired: firstName -> fullName + lastName -> fullName");

@@ -12,6 +12,6 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void runTests() {
-        foam.android.Tests.TestsBuilder(null).build().testListen();
+        demo.Tests.TestsBuilder(null).build().testListen();
     }
 }

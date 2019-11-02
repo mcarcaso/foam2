@@ -1,5 +1,5 @@
 foam.CLASS({
-  package: 'foam.android.tools',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'EnumPropertyJavaRefinement',
   refines: 'foam.core.Enum',
   flags: ['android'],
@@ -14,4 +14,3 @@ foam.CLASS({
     }
   ]
 });
-

@@ -1,5 +1,5 @@
 foam.CLASS({
-  package: 'foam.android.tools',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'ConstantRefine',
   refines: 'foam.core.Constant',
   flags: ['android'],

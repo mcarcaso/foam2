@@ -1,5 +1,5 @@
 foam.CLASS({
-  package: 'foam.android.tools',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'AbstractMethodJavaRefinement',
   refines: 'foam.core.AbstractMethod',
   flags: ['android'],
@@ -43,7 +43,7 @@ foam.CLASS({
 });
 
 foam.CLASS({
-  package: 'foam.android.tools',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'ArgumentJavaRefinement',
   refines: 'foam.core.Argument',
   flags: ['android'],

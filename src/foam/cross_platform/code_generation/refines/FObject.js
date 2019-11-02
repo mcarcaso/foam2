@@ -270,7 +270,7 @@ ${genProperties.map(p => `
 });
 
 foam.CLASS({
-  package: 'foam.android.tools',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'FObjectJavaRefinement',
   refines: 'foam.core.FObject',
   flags: ['java'],

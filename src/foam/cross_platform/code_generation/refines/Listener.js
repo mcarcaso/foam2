@@ -1,5 +1,5 @@
 foam.CLASS({
-  package: 'foam.android.tools.refines',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'ListenerRefinement',
   refines: 'foam.core.Listener',
   properties: [

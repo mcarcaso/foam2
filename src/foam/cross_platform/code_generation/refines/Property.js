@@ -1,5 +1,5 @@
 foam.CLASS({
-  package: 'foam.android.tools',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'PropertyJavaRefinement',
   refines: 'foam.core.Property',
   flags: ['android'],
@@ -268,7 +268,7 @@ foam.CLASS({
       };
       if ( this.androidSetter ) {
         setter.body = this.androidSetter;
-      } else { 
+      } else {
         var adaptName = this.name + '_adapt';
         cls.method({
           visibility: 'private',
@@ -312,7 +312,7 @@ if ( ${subName} != null ) ${subName}.detach();
 castedValue = ${preSetName}(oldValue, castedValue, hasOldValue);
           `;
         }
-        
+
         setter.body += `
 ${this.androidIsSetVarName} = true;
 ${this.androidPrivateVarName} = castedValue;

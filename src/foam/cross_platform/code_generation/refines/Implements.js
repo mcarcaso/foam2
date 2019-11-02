@@ -1,5 +1,5 @@
 foam.CLASS({
-  package: 'foam.android.tools',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'ImplementsRefinement',
   refines: 'foam.core.Implements',
   flags: ['android'],

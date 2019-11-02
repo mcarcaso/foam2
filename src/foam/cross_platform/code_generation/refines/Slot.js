@@ -23,7 +23,7 @@ foam.INTERFACE({
 });
 
 foam.CLASS({
-  package: 'foam.android.tools.refines',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'SlotRefines',
   refines: 'foam.core.Slot',
   implements: [
@@ -46,7 +46,7 @@ foam.CLASS({
 });
 
 foam.CLASS({
-  package: 'foam.android.tools.refines',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'PropertySlotRefines',
   refines: 'foam.core.internal.PropertySlot',
   properties: [
@@ -88,7 +88,7 @@ foam.CLASS({
 });
 
 foam.CLASS({
-  package: 'foam.android.tools.refines',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'SubSlotRefines',
   refines: 'foam.core.internal.SubSlot',
   methods: [
@@ -149,7 +149,7 @@ foam.CLASS({
 });
 
 foam.CLASS({
-  package: 'foam.android.tools.refines',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'SimpleSlotRefines',
   refines: 'foam.core.SimpleSlot',
   methods: [
@@ -171,7 +171,7 @@ foam.CLASS({
 });
 
 foam.CLASS({
-  package: 'foam.android.tools.refines',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'PromiseSlotRefines',
   refines: 'foam.core.PromiseSlot',
   requires: [
@@ -208,7 +208,7 @@ foam.CLASS({
 });
 
 foam.CLASS({
-  package: 'foam.android.tools.refines',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'ExpressionSlotRefines',
   refines: 'foam.core.ExpressionSlot',
   properties: [

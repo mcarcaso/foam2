@@ -1,5 +1,5 @@
 foam.CLASS({
-  package: 'foam.android.tools',
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'AbstractInterfaceJavaRefinement',
   refines: 'foam.core.AbstractInterface',
   flags: ['android'],
@@ -27,4 +27,3 @@ foam.CLASS({
     }
   ]
 });
-
