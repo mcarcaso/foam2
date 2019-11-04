@@ -108,6 +108,9 @@ foam.CLASS({
       o.indent();
       o.out('}');
     },
+    function toSource() {
+      return this.toSwiftSource();
+    },
     function toSwiftSource() {
       var output = this.Outputter.create({outputMethod: 'outputSwift'});
       output.out(this);

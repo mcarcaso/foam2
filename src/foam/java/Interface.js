@@ -101,6 +101,10 @@ foam.CLASS({
       return null;
     },
 
+    function toSource() {
+      return this.toJavaSource();
+    },
+
     function toJavaSource() {
       var output = foam.java.Outputter.create();
       output.out(this);

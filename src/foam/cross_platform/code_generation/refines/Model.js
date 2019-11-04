@@ -6,7 +6,7 @@ foam.CLASS({
   properties: [
     {
       class: 'StringProperty',
-      name: 'androidPackage',
+      name: 'crossPlatformPackage',
       expression: function(package) {
         return package;
       }

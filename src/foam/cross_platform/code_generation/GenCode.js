@@ -1,10 +1,15 @@
 foam.CLASS({
-  package: 'foam.android.tools',
-  name: 'GenJava',
+  package: 'foam.cross_platform.code_generation',
+  name: 'GenCode',
   imports: [
     'classloader'
   ],
   properties: [
+    {
+      class: 'StringProperty',
+      name: 'platform',
+      value: 'android'
+    },
     {
       class: 'StringArrayProperty',
       name: 'required_',
@@ -22,8 +27,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'outputPath',
-      value: 'android_build'
+      name: 'outputPath'
     },
     {
       name: 'fs',
@@ -42,7 +46,7 @@ foam.CLASS({
     {
       name: 'execute',
       code: async function() {
-        var flagFilter = foam.util.flagFilter(['android']);
+        var flagFilter = foam.util.flagFilter([this.platform]);
 
         var classes = {};
         var pending = this.classIds.concat(this.required_);
@@ -66,7 +70,7 @@ foam.CLASS({
           var model = cls.model_;
           var path = this.outputPath
             .split(this.path.sep)
-            .concat(model.androidPackage.split('.'))
+            .concat(model.crossPlatformPackage.split('.'))
             .filter(s => s)
             .reduce((sum, next) => {
               sum = sum + this.path.sep + next;
@@ -79,7 +83,7 @@ foam.CLASS({
               return sum;
             }, this.outputPath.startsWith(this.path.sep) ? '' : '.') + this.path.sep + model.name + '.java';
 
-          this.fs.writeFileSync(path, cls.buildAndroidClass().toJavaSource());
+          this.fs.writeFileSync(path, cls['build' + foam.String.capitalize(this.platform) + 'Class']().toSource());
           return path;
         });
 
