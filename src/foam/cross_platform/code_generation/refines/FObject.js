@@ -2,22 +2,30 @@ foam.LIB({
   name: 'foam.core.FObject',
   flags: ['android'],
   methods: [
-    function cross_platformWriteClassInfo(cls) {
+
+    function androidWriteClassInfo(cls) {
       cls.name = this.model_.name;
-      cls.package = this.model_.crossPlatformPackage;
+      cls.package = this.model_.package;
       cls.abstract = this.model_.abstract;
       cls.documentation = this.model_.documentation;
       cls.extends = this.model_.androidExtends;
     },
+
+    function swiftWriteClassInfo(cls) {
+      cls.name = this.model_.swiftName;
+      cls.documentation = this.model_.documentation;
+    },
+
     function buildSwiftClass(cls) {
       cls = cls || foam.swift.SwiftClass.create();
-      this.cross_platformWriteClassInfo(cls);
+      this.swiftWriteClassInfo(cls);
       return cls;
     },
+
     function buildAndroidClass(cls) {
       cls = cls || foam.java.Class.create();
 
-      this.cross_platformWriteClassInfo(cls);
+      this.androidWriteClassInfo(cls);
 
       var flagFilter = foam.util.flagFilter(['android']);
 

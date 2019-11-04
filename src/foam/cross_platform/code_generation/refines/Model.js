@@ -6,13 +6,6 @@ foam.CLASS({
   properties: [
     {
       class: 'StringProperty',
-      name: 'crossPlatformPackage',
-      expression: function(package) {
-        return package;
-      }
-    },
-    {
-      class: 'StringProperty',
       name: 'androidExtends',
       expression: function(extends$) {
         var e = extends$ == 'FObject' ? 'foam.cross_platform.AbstractFObject' : extends$;

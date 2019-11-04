@@ -6,9 +6,9 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'StringProperty',
-      name: 'platform',
-      value: 'android'
+      class: 'Enum',
+      of: 'foam.cross_platform.code_generation.Platform',
+      name: 'platform'
     },
     {
       class: 'StringArrayProperty',
@@ -46,7 +46,7 @@ foam.CLASS({
     {
       name: 'execute',
       code: async function() {
-        var flagFilter = foam.util.flagFilter([this.platform]);
+        var flagFilter = foam.util.flagFilter([this.platform.flag]);
 
         var classes = {};
         var pending = this.classIds.concat(this.required_);
@@ -68,22 +68,9 @@ foam.CLASS({
 
         var paths = Object.values(classes).map(cls => {
           var model = cls.model_;
-          var path = this.outputPath
-            .split(this.path.sep)
-            .concat(model.crossPlatformPackage.split('.'))
-            .filter(s => s)
-            .reduce((sum, next) => {
-              sum = sum + this.path.sep + next;
-              try {
-                var stat = this.fs.statSync(sum);
-                if ( ! stat.isDirectory() ) throw sum + 'is not a directory';
-              } catch(e) {
-                this.fs.mkdirSync(sum);
-              }
-              return sum;
-            }, this.outputPath.startsWith(this.path.sep) ? '' : '.') + this.path.sep + model.name + '.java';
-
-          this.fs.writeFileSync(path, cls['build' + foam.String.capitalize(this.platform) + 'Class']().toSource());
+          var path = this.outputPath + this.path.sep + this.platform.modelToPath(model);
+          this.ensurePath(path);
+          this.fs.writeFileSync(path, cls[this.platform.buildClassMethod]().toSource());
           return path;
         });
 
@@ -91,6 +78,24 @@ foam.CLASS({
         console.log(`javac ${paths.join(' ')}`);
         console.log();
       }
+    },
+    function ensurePath(path) {
+      var sep = this.path.sep;
+      path
+        .split(sep)
+        .filter(s => s)
+        .reduce((sum, next, i, arr) => {
+          sum = sum + sep + next;
+          if ( i + 1 != arr.length ) {
+            try {
+              var stat = this.fs.statSync(sum);
+              if ( ! stat.isDirectory() ) throw sum + 'is not a directory';
+            } catch (e) {
+              this.fs.mkdirSync(sum);
+            }
+          }
+          return sum;
+        }, path.startsWith(sep) ? '' : '.');
     }
   ]
 });
