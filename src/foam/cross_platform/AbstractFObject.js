@@ -2,6 +2,8 @@ foam.CLASS({
   package: 'foam.cross_platform',
   name: 'AbstractFObject',
   androidExtends: '',
+  swiftExtends: '',
+  swiftParentClass: null,
   androidParentClass: null,
   implements: [
     'foam.cross_platform.FObject'
@@ -13,13 +15,13 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ListenerList',
-      name: 'listeners_',
+      name: 'listeners__',
       androidFactory: `
         return ListenerList_create().build();
       `,
       androidSetter: `
-        listeners__isSet_ = true;
-        listeners__ = (foam.cross_platform.ListenerList) value;
+        listeners___isSet_ = true;
+        listeners___ = (foam.cross_platform.ListenerList) value;
       `
     },
     {
@@ -58,7 +60,7 @@ foam.CLASS({
       name: 'detach',
       androidCode: `
         pub(new Object[] {"detach"});
-        detachListeners_(getListeners_());
+        detachListeners_(getListeners__());
       `
     },
     {
@@ -112,7 +114,7 @@ foam.CLASS({
         { type: 'Any[]', name: 'args' }
       ],
       androidCode: `
-        foam.cross_platform.ListenerList listeners = getListeners_();
+        foam.cross_platform.ListenerList listeners = getListeners__();
         int i = 0;
         while ( listeners != null ) {
           if ( listeners.getNext() != null ) return true;
@@ -127,7 +129,7 @@ foam.CLASS({
     {
       name: 'pub',
       androidCode: `
-        foam.cross_platform.ListenerList listeners = getListeners_();
+        foam.cross_platform.ListenerList listeners = getListeners__();
         int count = notify(listeners.getNext(), args);
         for ( Object arg : args ) {
           if ( arg instanceof String == false ) break;
@@ -141,7 +143,7 @@ foam.CLASS({
     {
       name: 'sub',
       androidCode: `
-        foam.cross_platform.ListenerList listeners = getListeners_();
+        foam.cross_platform.ListenerList listeners = getListeners__();
         if ( topics != null ) {
           for ( String topic : topics ) {
             if ( ! listeners.getChildren().containsKey(topic) ) {

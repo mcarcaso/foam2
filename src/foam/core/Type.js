@@ -244,7 +244,9 @@ foam.CLASS({
     },
     function toJavaType() { return this.of.id },
     function toSwiftType(optional) {
-      return this.of.model_.swiftName + (optional ? '?' : '')
+      return (this.of === foam.core.FObject ?
+        'foam_cross_platform_FObject' :
+        this.of.model_.swiftName) + (optional ? '?' : '')
     },
   ],
 });
@@ -358,7 +360,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   properties: [
     ['java', 'foam.core.ClassInfo'],
-    ['swift', 'ClassInfo'],
+    ['swift', 'foam_cross_platform_FoamClass'],
   ],
 });
 

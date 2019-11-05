@@ -14,16 +14,16 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'androidAxiomName',
+      name: 'crossPlatformAxiomName',
       expression: function(name) {
         return foam.String.constantize(name);
       }
     },
     {
       class: 'StringProperty',
-      name: 'androidAxiomInitializerName',
-      expression: function(androidAxiomName) {
-        return 'init_' + androidAxiomName;
+      name: 'crossPlatformAxiomInitializerName',
+      expression: function(crossPlatformAxiomName) {
+        return 'init_' + crossPlatformAxiomName;
       }
     },
   ],
@@ -33,14 +33,14 @@ foam.CLASS({
         visibility: 'public',
         static: true,
         type: this.androidType,
-        name: this.androidAxiomName,
-        initializer: this.androidAxiomInitializerName + '()'
+        name: this.crossPlatformAxiomName,
+        initializer: this.crossPlatformAxiomInitializerName + '()'
       });
       cls.method({
         visibility: 'private',
         static: true,
         type: this.androidType,
-        name: this.androidAxiomInitializerName,
+        name: this.crossPlatformAxiomInitializerName,
         body: `return ${this.androidValue};`
       });
       return cls;

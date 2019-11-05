@@ -44,7 +44,7 @@ foam.CLASS({
       name: 'swiftExtends',
       section: 'swiftProperties',
       expression: function(extends$) {
-        if ( extends$ == 'FObject' ) return 'AbstractFObject';
+        if ( extends$ == 'FObject' ) return 'foam_cross_platform_AbstractFObject';
         return foam.swift.toSwiftType(extends$)
       },
     },

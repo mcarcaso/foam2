@@ -26,6 +26,10 @@ foam.CLASS({
       name: 'name'
     },
     {
+      class: 'StringProperty',
+      name: 'extends'
+    },
+    {
       class: 'StringArrayProperty',
       name: 'implements'
     },
@@ -93,7 +97,10 @@ foam.CLASS({
       o.indent();
       o.out(this.visibility ? this.visibility + ' ' : '');
       o.out(this.type, ' ', this.name);
-      if (this.implements.length) o.out(': ', this.implements.join(', '));
+      if ( this.extends || this.implements.length ) {
+        o.out(': ');
+        o.out([this.extends].concat(this.implements).filter(s => s).join(', '));
+      }
       o.out(' {\n');
       o.indent();
 

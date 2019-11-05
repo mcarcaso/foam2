@@ -16,7 +16,7 @@ foam.CLASS({
         {
           class: 'StringProperty',
           name: 'fullName',
-          androidExpressionArgs: ['firstName', 'lastName'],
+          expressionArgs: ['firstName', 'lastName'],
           androidExpression: `return firstName + " " + lastName;`
         },
         {

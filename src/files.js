@@ -680,12 +680,16 @@ FOAM_FILES([
 
   { name: "foam/apploader/ModelDAO" },
 
-  { name: "foam/cross_platform/code_generation/refines/FObject" }, // This must be first android refine.
+  { name: "foam/cross_platform/code_generation/refines/FObject" },
+  { name: "foam/cross_platform/code_generation/refines/android_java/FObject" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/FObject" },
 
   { name: "foam/android/tools/AndroidType" },
 
   { name: "foam/cross_platform/code_generation/refines/Method" },
   { name: "foam/cross_platform/code_generation/refines/Property" },
+  { name: "foam/cross_platform/code_generation/refines/android_java/Property" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/Property" },
   { name: "foam/cross_platform/code_generation/refines/AbstractEnum" },
   { name: "foam/cross_platform/code_generation/refines/EnumProperty" },
   { name: "foam/cross_platform/code_generation/refines/FObjectArrayProperty" },

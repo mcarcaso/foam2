@@ -28,6 +28,9 @@ foam.CLASS({
     },
     {
       name: 'toXML',
+      // TODO: This is a property on property but a method on FObject.
+      // Unite these and remove the flag.
+      flags: ['js'],
       value: function toXML(value, Outputter) { return value; }
     }
   ],

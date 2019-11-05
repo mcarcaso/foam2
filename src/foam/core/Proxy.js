@@ -234,8 +234,7 @@ foam.CLASS({
 
   properties: [
     {
-      name: 'dest',
-      swiftType: 'Topic',
+      name: 'dest'
     },
     {
       class: 'StringArrayProperty',
@@ -295,7 +294,6 @@ if (oldValue as? Bool ?? false) != newValue {
       }
     },
     {
-      swiftType: 'Subscription?',
       name: 'subscription',
     }
   ],

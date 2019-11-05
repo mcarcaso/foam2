@@ -12,7 +12,7 @@ foam.CLASS({
   properties: [
     'name',
     'visibility',
-    'returnType',
+    'type',
     'static',
     'class',
     'body',
@@ -51,7 +51,7 @@ foam.CLASS({
       o.out(
         ')',
         this.throws ? ' throws' : '',
-        this.returnType && this.returnType != 'Void' ? ' -> ' + this.returnType : '',
+        this.type && this.type != 'Void' ? ' -> ' + this.type : '',
         ' {\n');
 
       o.increaseIndent();
