@@ -305,7 +305,7 @@ foam.CLASS({
   properties: [
     ['android', 'foam.cross_platform.Context'],
     ['java', 'foam.core.X'],
-    ['swift', 'Context'],
+    ['swift', 'foam_cross_platform_Context'],
   ],
 });
 

@@ -61,13 +61,6 @@ foam.CLASS({
       expression: function(name) { return '_' + name + '_'; },
     },
     {
-      class: 'StringProperty',
-      name: 'swiftValueType',
-      expression: function(swiftType) {
-        return swiftType + (foam.swift.isNullable(swiftType) ? '' : '!')
-      },
-    },
-    {
       class: 'BooleanProperty',
       name: 'swiftRequiresEscaping',
     },
@@ -76,12 +69,6 @@ foam.CLASS({
       name: 'swiftOptional',
       expression: function(required) {
         return !required;
-      },
-    },
-    {
-      class: 'foam.swift.SwiftTypeProperty',
-      expression: function(type, swiftOptional) {
-        return foam.swift.toSwiftType(type, swiftOptional)
       },
     },
     {

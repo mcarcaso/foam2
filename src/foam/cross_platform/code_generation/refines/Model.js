@@ -6,7 +6,7 @@ foam.CLASS({
   properties: [
     {
       class: 'StringProperty',
-      name: 'androidExtends',
+      name: 'crossPlatformExtends',
       expression: function(extends$) {
         var e = extends$ == 'FObject' ? 'foam.cross_platform.AbstractFObject' : extends$;
         if ( e.indexOf('.') == -1 ) e = 'foam.core.' + e;
@@ -15,8 +15,8 @@ foam.CLASS({
     },
     {
       class: 'ClassProperty',
-      name: 'androidParentClass',
-      expression: function(id, extends$) {
+      name: 'crossPlatformParentClass',
+      expression: function(extends$) {
         if ( extends$ == 'FObject' ) return foam.cross_platform.AbstractFObject;
         return foam.lookup(extends$);
       }

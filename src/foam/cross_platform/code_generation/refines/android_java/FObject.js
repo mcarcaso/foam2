@@ -9,7 +9,7 @@ foam.LIB({
       cls.package = this.model_.package;
       cls.abstract = this.model_.abstract;
       cls.documentation = this.model_.documentation;
-      cls.extends = this.model_.androidExtends;
+      cls.extends = this.model_.crossPlatformExtends;
 
       var flagFilter = foam.util.flagFilter(['android']);
 
@@ -19,7 +19,8 @@ foam.LIB({
         .forEach(a => a.buildAndroidClass(cls, this));
 
       var genProperties = this.getAxiomsByClass(foam.core.Property)
-        .filter(flagFilter);
+        .filter(flagFilter)
+        .filter(p => this.hasOwnAxiom(p.name));
 
       cls.method({
         visibility: 'public',
@@ -164,10 +165,12 @@ ${cls.extends ? `
       this.addStaticClassInfo(cls);
 
       var builder = foam.java.Class.create();
+      var builderProperties = this.getAxiomsByClass(foam.core.Property)
+        .filter(flagFilter);
       builder.name = 'Builder';
       builder.innerClass = true;
       builder.static = true;
-      genProperties.forEach(p => {
+      builderProperties.forEach(p => {
         builder.field({
           visibility: 'private',
           type: 'boolean',
@@ -205,7 +208,7 @@ ${cls.extends ? `
         type: cls.name,
         body: `
           ${cls.name} o = new ${cls.name}();
-${genProperties.map(p => `
+${builderProperties.map(p => `
           if ( ${p.crossPlatformIsSetVarName} ) {
             o.${p.crossPlatformSetterName}(${p.crossPlatformPrivateVarName});
           }
@@ -247,7 +250,7 @@ ${genProperties.map(p => `
         name: 'initClassInfo_',
         body: `return ${foam.cross_platform.FoamClass.create({
           id: this.id,
-          parent: this.model_.androidParentClass,
+          parent: this.model_.crossPlatformParentClass,
           axioms: this.getOwnAxioms()
             .filter(a => a.forClass_ == this.id)
             .filter(flagFilter)

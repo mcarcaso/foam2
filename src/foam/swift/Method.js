@@ -39,7 +39,7 @@ foam.CLASS({
         this.override ? 'override ' : '',
         this.static ? 'static ' : '',
         this.class ? 'class ' : '',
-        this.name != 'init' ? 'func ' : '',
+        'func ',
         '`', this.name, '`',
         '(');
 

@@ -16,8 +16,44 @@ foam.LIB({
         .filter(a => a.buildSwiftClass)
         .forEach(a => a.buildSwiftClass(cls, this));
 
-      // var genProperties = this.getAxiomsByClass(foam.core.Property)
-      //   .filter(flagFilter);
+      var genProperties = this.getAxiomsByClass(foam.core.Property)
+        .filter(flagFilter)
+        .filter(p => this.hasOwnAxiom(p.name));
+
+      cls.method({
+        override: !! cls.extends,
+        visibility: 'public',
+        type: 'Void',
+        name: 'clearProperty',
+        args: [
+          { type: 'String', localName: 'name' }
+        ],
+        body: `
+        switch name {
+${
+genProperties
+  .map(a => `
+          case "${a.name}":
+            ${a.crossPlatformIsSetVarName} = false;
+            var searchViewArgs: [Any?] = ["propertyChange", "${a.name}", nil];
+            /*
+            if ( hasListeners(${a.name}Args) ) {
+              ${a.name}Args[2] = ${a.crossPlatformSlotGetterName}();
+              pub(${a.name}Args);
+            }
+            */
+            return;
+  `)
+  .join('\n')
+}
+          default:
+            break;
+        }
+${cls.extends ? `
+        super.clearProperty(name);
+` : ''}
+        `
+      });
 
       return cls;
     }
