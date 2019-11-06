@@ -13,6 +13,11 @@ foam.CLASS({
         return foam.swift.toSwiftType(type, true);
       },
     },
+    {
+      class: 'StringProperty',
+      name: 'swiftCode2',
+      value: 'fatalError()'
+    },
   ],
   methods: [
     function buildSwiftClass(cls, parentCls) {
@@ -26,7 +31,7 @@ foam.CLASS({
         type: this.swiftType,
         name: this.name,
         args: this.args.map(a => a.toSwiftArg()),
-        body: `fatalError()` //TODO
+        body: this.swiftCode2
       });
 
       return cls;
