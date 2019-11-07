@@ -2232,6 +2232,16 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.u2',
+  name: 'ViewSpecViewRefine',
+  refines: 'foam.u2.ViewSpec',
+  properties: [
+    ['view', { class: 'foam.u2.view.MapView' }],
+  ]
+});
+
+
+foam.CLASS({
+  package: 'foam.u2',
   name: 'StringDisplayWidthRefinement',
   refines: 'foam.core.StringProperty',
   properties: [

@@ -95,7 +95,6 @@ foam.CLASS({
       }
     ],
     */
-    ['view', { class: 'foam.u2.view.MapView' }],
     [ 'adapt', function(_, spec, prop) {
       return foam.String.isInstance(spec) ? { class: spec } : spec ;
     } ],

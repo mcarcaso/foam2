@@ -20,9 +20,9 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'crossPlatformAxiomInitializerName',
+      name: 'crossPlatformPrivateAxiom',
       expression: function(crossPlatformAxiomName) {
-        return 'init_' + crossPlatformAxiomName;
+        return crossPlatformAxiomName + '_var_';
       }
     },
     {

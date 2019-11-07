@@ -92,6 +92,8 @@ foam.CLASS({
 
     function field(f) {
       if ( f.static ) {
+        if ( f.visibility == 'private' ) f.visibility = '';
+        if ( ! f.initializer ) f.initializer = 'null';
         this.fields.push(foam.java.Field.create(f));
       }
       return this;

@@ -28,7 +28,7 @@ foam.LIB({
         Object: function(o) {
           if (foam.core.FObject.isSubClass(o)) {
             return (o.id == 'foam.core.FObject' ? 
-              'foam.cross_platform.AbstractFObject' : o.id) + '.CLS_';
+              'foam.cross_platform.AbstractFObject' : o.id) + '.CLS_()';
           }
           return `
 new java.util.HashMap<String, Object>() {

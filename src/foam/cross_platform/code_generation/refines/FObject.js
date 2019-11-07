@@ -2,6 +2,15 @@ foam.LIB({
   name: 'foam.core.FObject',
   flags: ['android'],
   methods: [
+    function toCrossPlatformClass(flagFilter) {
+      return foam.cross_platform.FoamClass.create({
+        id: this.id,
+        parent: this.model_.crossPlatformParentClass,
+        axioms: this.getOwnAxioms()
+          .filter(a => a.forClass_ == this.id)
+          .filter(flagFilter)
+      });
+    },
     function getDeps(flagFilter, deps) {
       if ( ! flagFilter(this.model_) ) return;
       if ( deps[this.id] ) return;

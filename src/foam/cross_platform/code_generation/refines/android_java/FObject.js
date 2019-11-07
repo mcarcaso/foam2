@@ -136,7 +136,7 @@ ${
 genProperties
   .map(a => `
             case "${a.name}":
-              ${a.crossPlatformSetterName}((${a.androidType}) value);
+              ${a.crossPlatformSetterName}(value);
               return;
   `)
   .join('\n')
@@ -159,15 +159,15 @@ ${cls.extends ? `
         visibility: 'public',
         type: 'foam.cross_platform.FoamClass',
         name: 'getCls_',
-        body: 'return CLS_;'
+        body: 'return CLS_();'
       });
 
-      this.addStaticClassInfo(cls);
+      this.addAndroidStaticClassInfo(cls);
 
       var builder = foam.java.Class.create();
       var builderProperties = this.getAxiomsByClass(foam.core.Property)
         .filter(flagFilter);
-      builder.name = 'Builder';
+      builder.name = cls.name + 'Builder_';
       builder.innerClass = true;
       builder.static = true;
       builderProperties.forEach(p => {
@@ -179,7 +179,7 @@ ${cls.extends ? `
         });
         builder.field({
           visibility: 'private',
-          type: p.androidType,
+          type: 'Object',
           name: p.crossPlatformPrivateVarName
         });
         builder.method({
@@ -187,7 +187,7 @@ ${cls.extends ? `
           type: builder.name,
           name: p.crossPlatformSetterName,
           args: [
-            { type: p.androidType, name: 'value' }
+            { type: 'Object', name: 'value' }
           ],
           body: `
             ${p.crossPlatformIsSetVarName} = true;
@@ -233,40 +233,23 @@ ${builderProperties.map(p => `
 
       return cls;
     },
-    function addStaticClassInfo(cls) {
+    function addAndroidStaticClassInfo(cls) {
       var flagFilter = foam.util.flagFilter(['android']);
-      cls.field({
-        visibility: 'public',
-        static: true,
-        type: 'foam.cross_platform.FoamClass',
-        name: 'CLS_',
-        initializer: 'initClassInfo_()'
-      });
-
       cls.method({
         visibility: 'public',
         static: true,
         type: 'foam.cross_platform.FoamClass',
-        name: 'initClassInfo_',
-        body: `return ${foam.cross_platform.FoamClass.create({
-          id: this.id,
-          parent: this.model_.crossPlatformParentClass,
-          axioms: this.getOwnAxioms()
-            .filter(a => a.forClass_ == this.id)
-            .filter(flagFilter)
-        }).asAndroidValue()};`
+        name: 'CLS_',
+        body: `
+          return initClassInfo_;
+        `
       });
-    },
-    function getDeps(flagFilter, deps) {
-      if ( ! flagFilter(this.model_) ) return;
-      if ( deps[this.id] ) return;
-      this.model_.getDeps(flagFilter, deps);
-      this.getAxioms().forEach(a => {
-        if ( flagFilter(a) ) {
-          if ( a.name == '__context__' ) return;
-          deps[a.cls_.id] = true;
-          a.getDeps && a.getDeps(flagFilter, deps);
-        }
+      cls.field({
+        visibility: 'private',
+        static: true,
+        type: 'foam.cross_platform.FoamClass',
+        name: 'initClassInfo_',
+        initializer: this.toCrossPlatformClass(flagFilter).asAndroidValue()
       });
     }
   ]

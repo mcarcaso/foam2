@@ -8,48 +8,72 @@ foam.LIB({
   name: 'foam.swift',
   flags: ['swift'],
   methods: [
-    function asSwiftValue(v) {
-      var type = foam.typeOf(v);
-
-      if ( type == foam.Number || type == foam.Boolean ) {
-        return `${v}`;
-      } else if ( type == foam.String ) {
-        return `"${v
-          .replace(/\\/g, '\\\\')
-          .replace(/"/g, '\\"')
-          .replace(/\n/g, '\\n')
-        }"`;
-      } else if ( type == foam.Array ) {
-        return `[${v.map(foam.swift.asSwiftValue).join(',')}]`;
-      } else if ( type == foam.Undefined ) {
+    {
+      name: 'asSwiftValue',
+      code: foam.mmethod({
+        String: function(s) {
+          return '"' + s.
+            replace(/\\/g, "\\\\").
+            replace(/"/g, '\\"').
+            replace(/\n/g, "\\n") + '"';
+        },
+        Boolean: function(b) {
+          return b ? "true" : "false";
+        },
+        Number: function(n) {
+          return '' + n;
+          return '' + n + (n > Math.pow(2, 31) ? 'L' : '');
+        },
+        FObject: function(o) {
+          return o.asSwiftValue();
+        },
+        Array: function(a) {
+          return `[
+            ${a.map(foam.swift.asSwiftValue).join(',\n')}
+          ] as [Any?]`;
+        },
+        Object: function(o) {
+          if (foam.core.FObject.isSubClass(o)) {
+            if ( foam.core.InterfaceModel.isInstance(o.model_) ) {
+              return o.model_.swiftName + 'Class.CLS_()';
+            }
+            if ( o.id == 'foam.core.AbstractInterface' ) {
+              return o.model_.swiftName + 'Class.CLS_()';
+            }
+            return (o.id == 'foam.core.FObject' ? 
+              foam.cross_platform.AbstractFObject.model_.swiftName :
+              o.model_.swiftName)
+              + '.CLS_()';
+          }
+          return `
+[
+${Object.keys(o).map(k => `
+  ${foam.swift.asSwiftValue(k)}: ${foam.swift.asSwiftValue(o[k])}
+`).join(',\n')}
+] as [String:Any?]
+          `;
+        },
+        RegExp: function(o) {
+          // TODO
+          return 'nil';
+        },
+      }, function(v) {
         return 'nil';
-      } else if ( type == foam.Function ) {
-        // Unable to convert functions.
-        return 'nil';
-      } else if ( type == foam.Null ) {
-        return 'nil';
-      } else if ( type == foam.RegExp ) {
-        return 'TODO: Output RegExp';
-      } else if ( type == foam.Object ) {
-        return 'TODO: Output objects';
-      } else if ( type == foam.core.FObject ) {
-        // TODO: Should be able to serialize an FObject to swift.
-        return 'nil';
-      } else  {
-        console.log('Encountered unexpected type while converting value to string:', v);
-        return 'nil';
-      }
+      })
     },
     function isNullable(type) {
+      debugger;
       return !! type.match(/[?!]$/);
     },
     function requiresCast(type) {
+      debugger;
       return type != 'Any?' && type != 'Any!'
     },
     function toSwiftType(type, optional) {
       return foam.core.type.toType(type).toSwiftType(optional)
     },
     function toSwiftName(id) {
+      debugger;
       return id.replace(/\./g, '_')
     },
   ],

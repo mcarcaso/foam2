@@ -10,6 +10,9 @@ foam.CLASS({
   flags: ['swift'],
 
   requires: [
+    'foam.swift.Field',
+    'foam.swift.Method',
+    'foam.swift.ProtocolField',
     'foam.swift.ProtocolMethod',
     'foam.swift.Outputter'
   ],
@@ -48,12 +51,18 @@ foam.CLASS({
 
   methods: [
     function method(m) {
-      if ( ! foam.core.FObject.isInstance(m) ) m = this.ProtocolMethod.create(m)
+      if ( ! this.ProtocolMethod.isInstance(m) ) {
+        m = this.ProtocolMethod.create().copyFrom(m);
+      }
       this.methods.push(m);
       return this;
     },
+
     function field(f) {
-      this.fields.push(f);
+      if ( ! this.ProtocolField.isInstance(m) ) {
+        m = this.ProtocolField.create().copyFrom(m);
+      }
+      this.fields.push(m);
       return this;
     },
 
@@ -82,17 +91,12 @@ foam.CLASS({
       );
 
       o.increaseIndent();
-      for ( var i = 0 ; i < this.methods.length ; i++ ) {
-        o.indent();
-        o.out(this.methods[i]);
-        o.out('\n');
-      }
-      for ( var i = 0 ; i < this.fields.length ; i++ ) {
-        o.indent();
-        o.out(this.fields[i]);
-        o.out('\n');
-      }
-
+      this.methods.concat(this.fields)
+        .forEach(m => {
+          o.indent();
+          o.out(m);
+          o.out('\n');
+        });
       o.decreaseIndent();
       o.out('}');
     }

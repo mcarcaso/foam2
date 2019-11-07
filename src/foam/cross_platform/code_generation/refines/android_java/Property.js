@@ -93,7 +93,7 @@ foam.CLASS({
           if ( ${this.crossPlatformSlotVarName} == null ) {
             ${this.crossPlatformSlotVarName} = foam.core.internal.PropertySlot.PropertySlotBuilder(getX())
               .setObj(this)
-              .setProp(${this.crossPlatformAxiomName})
+              .setProp(${this.crossPlatformAxiomName}())
               .build();
           }
           return ${this.crossPlatformSlotVarName};
@@ -272,24 +272,28 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
       cls.method(setter);
 
       cls.field({
+        visibility: 'private',
+        static: true,
+        type: this.cls_.id,
+        name: this.crossPlatformPrivateAxiom
+      });
+      cls.method({
         visibility: 'public',
         static: true,
         type: this.cls_.id,
         name: this.crossPlatformAxiomName,
-        initializer: this.crossPlatformAxiomInitializerName + '()'
-      });
-      cls.method({
-        visibility: 'private',
-        static: true,
-        type: this.cls_.id,
-        name: this.crossPlatformAxiomInitializerName,
-        body: `return ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};`
+        body: `
+          if ( ${this.crossPlatformPrivateAxiom} == null ) {
+            ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};
+          }
+          return ${this.crossPlatformPrivateAxiom};
+        `
       });
 
       return cls;
     },
     function asAndroidValue() {
-      return this.forClass_ + '.' + this.crossPlatformAxiomName;
+      return this.forClass_ + '.' + this.crossPlatformAxiomName + '()';
     }
   ]
 });

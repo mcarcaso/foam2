@@ -14,7 +14,7 @@ foam.CLASS({
           cls.package = this.model_.package;
           cls.documentation = this.model_.documentation;
 
-          this.addStaticClassInfo(cls);
+          this.addAndroidStaticClassInfo(cls);
 
           this.getAxioms()
             .filter(foam.util.flagFilter(['android']))
