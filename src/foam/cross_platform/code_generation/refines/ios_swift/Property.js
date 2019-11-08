@@ -41,6 +41,10 @@ foam.CLASS({
       name: 'swiftPostSet'
     },
     {
+      class: 'StringProperty',
+      name: 'swiftSetter',
+    },
+    {
       class: 'FunctionProperty',
       name: 'swiftFAsSwiftValue',
       expression: function() {
@@ -191,7 +195,7 @@ foam.CLASS({
         ]
       };
       if ( this.swiftSetter ) {
-        setter.body = this.androidSetter;
+        setter.body = this.swiftSetter;
       } else {
         var adaptName = this.name + '_adapt';
         cls.method({

@@ -1034,7 +1034,7 @@ foam.CLASS({
       },
     },
     {
-      name: 'swiftSetter',
+      name: 'swiftSetter_DELETE',
       flags: ['swift'],
       value: '// NOOP',
     },

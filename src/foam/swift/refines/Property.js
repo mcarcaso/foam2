@@ -94,7 +94,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftSetter',
+      name: 'swiftSetter_DELETE',
     },
     {
       class: 'StringProperty',
@@ -201,7 +201,7 @@ foam.CLASS({
         name: this.swiftVarName,
         type: this.swiftType,
         getter: this.swiftGetter || this.swiftGetterTemplate(),
-        setter: this.swiftSetter || this.swiftSetterTemplate(),
+        setter: this.swiftSetter_DELETE || this.swiftSetterTemplate(),
       }));
       cls.fields.push(this.Field.create({
         visibility: 'private',
@@ -413,7 +413,7 @@ class PInfo: PropertyInfo {
   public func set(_ obj: foam_core_FObject?, value: Any?) {
     let obj = obj as! <%=parentCls.model_.swiftName%>
 <% var p = this %>
-<% if ( p.swiftSetter ) { %>
+<% if ( p.swiftSetter_DELETE ) { %>
     obj.<%=this.swiftVarName%> = value<%if (this.swiftType != 'Any?') {%> as! <%=this.swiftType%><%}%>
 <% } else { %>
   <% if ( p.swiftExpression ) { %>
@@ -718,7 +718,7 @@ return self.__subContext__.create(${this.of.model_.swiftName}.self, args: args)!
       },
     },
     {
-      name: 'swiftSetter',
+      name: 'swiftSetter_DELETE',
       expression: function(propNames) {
         return `
 let propNames = ${foam.swift.asSwiftValue(propNames)}
@@ -748,7 +748,7 @@ return Swift.type(of: self).${foam.String.constantize(propName)}().get(self)
       },
     },
     {
-      name: 'swiftSetter',
+      name: 'swiftSetter_DELETE',
       expression: function(propName) {
         return `
 return Swift.type(of: self).${foam.String.constantize(propName)}().set(self, value: value)

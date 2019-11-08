@@ -20,6 +20,10 @@ foam.CLASS({
       androidSetter: `
         listeners___isSet_ = true;
         listeners___ = (foam.cross_platform.ListenerList) value;
+      `,
+      swiftSetter: `
+        listeners___isSet_ = true;
+        listeners___ = value as! foam_cross_platform_ListenerList;
       `
     },
     {
