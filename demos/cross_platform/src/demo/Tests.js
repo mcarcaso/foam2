@@ -12,7 +12,7 @@ foam.CLASS({
             System.out.println("First name has been set to: " + newValue);
           `,
           swiftPostSet: `
-            print("First name has been set to: " + newValue);
+            print("First name has been set to: " + newValue!);
           `
         },
         {

@@ -1,5 +1,5 @@
 foam.CLASS({
-  package: 'foam.cross_platform.code_generation.refines',
+  package: 'foam.cross_platform.code_generation.refines.android_java',
   name: 'InnerClassRefine',
   refines: 'foam.core.InnerClass',
   flags: ['android'],

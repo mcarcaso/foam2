@@ -91,7 +91,12 @@ foam.CLASS({
     function outputSwift(o) {
       o.indent();
       o.out('// GENERATED CODE. DO NOT MODIFY BY HAND.\n');
-      this.imports.forEach(function(i) { o.out('import ', i, '\n') });
+
+      var imports = this.imports.concat(this.classes.map(c => c.imports)).flat();
+      imports
+        .filter((str, i) => this.imports.indexOf(str) == i)
+        .forEach(i => o.out('import ', i, '\n'));
+
       o.indent();
       o.out(this.annotations.join('\n'), '\n');
       o.indent();
@@ -108,7 +113,10 @@ foam.CLASS({
 
       this.fields.forEach(function(f) { o.out('\n', f, '\n'); });
       this.methods.forEach(function(f) { o.out('\n', f, '\n'); });
-      this.classes.forEach(function(f) { o.out('\n', f, '\n'); });
+      this.classes.forEach(function(f) {
+        f.imports = [];
+        o.out('\n', f, '\n');
+      });
       o.out(this.code, '\n');
 
       o.decreaseIndent();

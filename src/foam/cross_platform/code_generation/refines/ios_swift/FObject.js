@@ -9,6 +9,7 @@ foam.LIB({
       cls.name = this.model_.swiftName;
       cls.extends = this.model_.swiftExtends;
       cls.documentation = this.model_.documentation;
+      cls.imports.push('Foundation');
 
       var flagFilter = foam.util.flagFilter(['swift']);
 
