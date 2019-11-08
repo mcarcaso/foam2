@@ -21,7 +21,7 @@ class FOAM_Demo_AppTests: XCTestCase {
   func testExample() {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
-    demo_Tests.demo_TestsBuilder(nil).build().testListen();
+    demo_Tests.demo_TestsBuilder(nil).build()//.testListen();
   }
 
   func testPerformanceExample() {

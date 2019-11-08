@@ -69,7 +69,7 @@ return firstName + " " + lastName
       class: 'StringProperty',
       name: 'firstName',
       value: 'John',
-      swiftPreSet: function() {/*
+      swiftPreSet_DELETE: function() {/*
 self.prevFirstName = oldValue as? String ?? ""
 return newValue
       */},

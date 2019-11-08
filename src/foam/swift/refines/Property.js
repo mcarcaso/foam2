@@ -98,7 +98,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftPreSet',
+      name: 'swiftPreSet_DELETE',
       expression: function() {
         return 'return newValue';
       },
@@ -288,7 +288,7 @@ foam.CLASS({
         visibility: 'private',
         name: this.swiftPreSetFuncName,
         returnType: this.swiftType,
-        body: this.swiftPreSet,
+        body: this.swiftPreSet_DELETE,
         args: [
           {
             externalName: '_',

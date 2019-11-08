@@ -33,6 +33,14 @@ foam.CLASS({
       }
     },
     {
+      class: 'StringProperty',
+      name: 'swiftPreSet',
+      expression: function (swiftType) {
+        if (swiftType == 'Any?') return 'return newValue;';
+        return `return newValue as! ${swiftType};`
+      }
+    },
+    {
       class: 'FunctionProperty',
       name: 'swiftFAsSwiftValue',
       expression: function() {
@@ -198,13 +206,11 @@ foam.CLASS({
           body: this.swiftAdapt
         });
         setter.body = `
-        /*
-boolean hasOldValue = hasPropertySet("${this.name}");
-Object oldValue = hasOldValue ?
+let hasOldValue = hasPropertySet("${this.name}");
+let oldValue = hasOldValue ?
   ${this.crossPlatformGetterName}() :
-  null;
-${this.androidType} castedValue = ${adaptName}(oldValue, value, hasOldValue);
-        */
+  nil;
+var castedValue = ${adaptName}(oldValue, value, hasOldValue);
         `;
 
         if ( this.swiftExpression ) {
@@ -217,14 +223,14 @@ if ( ${subName} != null ) ${subName}.detach();
           var preSetName = this.name + '_preSet';
           cls.method({
             visibility: 'private',
-            type: this.androidType,
+            type: this.swiftType,
             name: preSetName,
             args: [
-              { type: 'Object', name: 'oldValue' },
-              { type: this.androidType, name: 'newValue' },
-              { type: 'boolean', name: 'oldValueSet' }
+              { type: 'Any?', localName: 'oldValue' },
+              { type: this.swiftType, localName: 'newValue' },
+              { type: 'Bool', localName: 'oldValueSet' }
             ],
-            body: this.androidPreSet
+            body: this.swiftPreSet
           });
           setter.body += `
 castedValue = ${preSetName}(oldValue, castedValue, hasOldValue);
@@ -232,15 +238,13 @@ castedValue = ${preSetName}(oldValue, castedValue, hasOldValue);
         }
 
         setter.body += `
-        /*
 ${this.crossPlatformIsSetVarName} = true;
 ${this.crossPlatformPrivateVarName} = castedValue;
-Object[] args = new Object[] { "propertyChange", "${this.name}", null };
-if ( hasListeners(args) ) {
+var args: [Any?] = ["propertyChange", "${this.name}", nil];
+if hasListeners(args) {
   args[2] = ${this.crossPlatformSlotGetterName}();
-  pub(args);
+  _ = pub(args);
 }
-        */
         `;
 
         if ( this.swiftPostSet ) {

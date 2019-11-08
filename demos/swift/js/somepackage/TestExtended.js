@@ -13,7 +13,7 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'firstName',
       value: 'John',
-      swiftPreSet: function() {/*
+      swiftPreSet_DELETE: function() {/*
 return newValue + "EXTENDED"
       */},
     },
