@@ -32,7 +32,7 @@ foam.CLASS({
     {
       class: 'foam.dao.DAOProperty',
       name: 'dao',
-      swiftPostSet: `
+      swiftPostSet_DELETE: `
 if newValue == nil { return }
 
 
@@ -73,13 +73,13 @@ onDAOUpdate()
     {
       type: 'foam.core.Detachable',
       name: 'daoSub',
-      swiftPostSet: `if let o = oldValue as? ${foam.core.Detachable.model_.swiftName} { o.detach() }`,
+      swiftPostSet_DELETE: `if let o = oldValue as? ${foam.core.Detachable.model_.swiftName} { o.detach() }`,
     },
     {
       swiftType: 'UITableView?',
       swiftWeak: true,
       name: 'tableView',
-      swiftPostSet: 'newValue?.dataSource = self',
+      swiftPostSet_DELETE: 'newValue?.dataSource = self',
     },
     {
       class: 'StringProperty',

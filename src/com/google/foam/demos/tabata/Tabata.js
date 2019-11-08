@@ -76,7 +76,7 @@ foam.CLASS({
           this.state.next(this);
         }
       },
-      swiftPostSet: function() {/*
+      swiftPostSet_DELETE: function() {/*
 if newValue == 0 {
   state.next(self);
 }

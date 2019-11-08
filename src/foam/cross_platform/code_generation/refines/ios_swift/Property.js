@@ -34,11 +34,11 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftPreSet',
-      expression: function (swiftType) {
-        if (swiftType == 'Any?') return 'return newValue;';
-        return `return newValue as! ${swiftType};`
-      }
+      name: 'swiftPreSet'
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftPostSet'
     },
     {
       class: 'FunctionProperty',
@@ -251,14 +251,14 @@ if hasListeners(args) {
           var postSetName = this.name + '_postSet';
           cls.method({
             visibility: 'private',
-            type: 'void',
+            type: 'Void',
             name: postSetName,
             args: [
-              { type: 'Object', name: 'oldValue' },
-              { type: this.androidType, name: 'newValue' },
-              { type: 'boolean', name: 'oldValueSet' }
+              { type: 'Any?', localName: 'oldValue' },
+              { type: this.swiftType, localName: 'newValue' },
+              { type: 'Bool', localName: 'oldValueSet' }
             ],
-            body: this.androidPostSet
+            body: this.swiftPostSet
           });
           setter.body += `
 ${postSetName}(oldValue, castedValue, hasOldValue);

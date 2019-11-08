@@ -43,7 +43,7 @@ foam.CLASS({
     {
       swiftType: 'InputStream?',
       name: 'inputStream',
-      swiftPostSet: `
+      swiftPostSet_DELETE: `
 if let oldValue = oldValue as? InputStream {
   oldValue.close()
   _ = self.disconnect.pub()
@@ -58,7 +58,7 @@ DispatchQueue.main.async {
     {
       swiftType: 'OutputStream?',
       name: 'outputStream',
-      swiftPostSet: `
+      swiftPostSet_DELETE: `
 if let oldValue = oldValue as? OutputStream {
   oldValue.close()
   _ = self.disconnect.pub()

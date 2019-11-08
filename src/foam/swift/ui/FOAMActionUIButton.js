@@ -15,7 +15,7 @@ foam.CLASS({
       name: 'view',
       swiftType: 'UIButton',
       swiftFactory: 'return UIButton()',
-      swiftPostSet: function() {/*
+      swiftPostSet_DELETE: function() {/*
 newValue.addTarget(self, action: #selector(onButtonClick), for: .touchUpInside)
 newValue.setTitle(self.action?.label, for: .normal)
       */},

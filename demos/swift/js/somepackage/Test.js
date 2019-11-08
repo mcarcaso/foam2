@@ -78,7 +78,7 @@ return newValue
       class: 'StringProperty',
       name: 'lastName',
       value: 'Smith',
-      swiftPostSet: 'self.prevLastName = oldValue as? String ?? ""'
+      swiftPostSet_DELETE: 'self.prevLastName = oldValue as? String ?? ""'
     },
     {
       name: 'factoryProp',

@@ -13,7 +13,7 @@ foam.CLASS({
     {
       swiftType: '[foam_swift_core_Slot]',
       name: 'args',
-      swiftPostSet: 'subToArgs_(newValue)',
+      swiftPostSet_DELETE: 'subToArgs_(newValue)',
     },
     {
       swiftType: '(([Any?]) -> Any?)',

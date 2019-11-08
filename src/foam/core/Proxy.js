@@ -258,7 +258,7 @@ foam.CLASS({
           }
         }
       },
-      swiftPostSet: `
+      swiftPostSet_DELETE: `
 for child in children.values {
   child.active = !newValue
 }

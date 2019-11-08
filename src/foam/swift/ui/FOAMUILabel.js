@@ -15,20 +15,20 @@ foam.CLASS({
       name: 'view',
       swiftType: 'UILabel',
       swiftFactory: 'return UILabel()',
-      swiftPostSet: function() {/*
+      swiftPostSet_DELETE: function() {/*
 updateLabel();
       */},
     },
     {
       name: 'data',
-      swiftPostSet: function() {/*
+      swiftPostSet_DELETE: function() {/*
 updateLabel();
       */},
     },
     {
       swiftType: 'UIColor?',
       name: 'textColor',
-      swiftPostSet: function() {/*
+      swiftPostSet_DELETE: function() {/*
 updateLabel();
       */},
     },

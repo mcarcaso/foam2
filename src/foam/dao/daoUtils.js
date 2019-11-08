@@ -39,7 +39,7 @@ foam.CLASS({
         if ( old ) this.on.reset.pub();
       },
       swiftFactory: 'return NullDAO_create()',
-      swiftPostSet: `
+      swiftPostSet_DELETE: `
 if let oldValue = oldValue as? foam_dao_AbstractDAO {
   _ = oldValue.on["reset"].pub()
 }
@@ -130,12 +130,12 @@ foam.CLASS({
       postSet: function(_, s) {
         if (s) this.onDetach(s);
       },
-      swiftPostSet: 'if let s = newValue { onDetach(s) }',
+      swiftPostSet_DELETE: 'if let s = newValue { onDetach(s) }',
     },
     {
       class: 'foam.dao.DAOProperty',
       name: 'dao',
-      swiftPostSet: `
+      swiftPostSet_DELETE: `
 self.innerSub?.detach()
 try? self.innerSub = newValue?.listen_(__context__, self, predicate)
 if oldValue != nil {

@@ -81,7 +81,7 @@ if let of = dao?.get(key: "of") as? ClassInfo {
 
 return tvc
       */},
-      swiftPostSet: function() {/*
+      swiftPostSet_DELETE: function() {/*
 dataSource.tableView = newValue.tableView
 newValue.tableView.delegate = tableViewDelegate
       */}

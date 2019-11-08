@@ -39,7 +39,7 @@ foam.CLASS({
       },
       // TODO check if this leaks.
       swiftFactory: 'return SkeletonBox_create(["data": self])',
-      swiftPostSet: function() {/*
+      swiftPostSet_DELETE: function() {/*
 if let oldValue = oldValue as? foam_box_SkeletonBox {
   oldValue.clearProperty("data")
 }

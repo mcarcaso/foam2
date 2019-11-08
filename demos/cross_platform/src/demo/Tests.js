@@ -7,7 +7,13 @@ foam.CLASS({
       properties: [
         {
           class: 'StringProperty',
-          name: 'firstName'
+          name: 'firstName',
+          androidPostSet: `
+            System.out.println("First name has been set to: " + newValue);
+          `,
+          swiftPostSet: `
+            print("First name has been set to: " + newValue);
+          `
         },
         {
           class: 'StringProperty',

@@ -110,7 +110,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftPostSet',
+      name: 'swiftPostSet_DELETE',
     },
     {
       class: 'StringProperty',
@@ -306,7 +306,7 @@ foam.CLASS({
       cls.methods.push(this.Method.create({
         visibility: 'private',
         name: this.swiftPostSetFuncName,
-        body: this.swiftPostSet,
+        body: this.swiftPostSet_DELETE,
         args: [
           {
             externalName: '_',

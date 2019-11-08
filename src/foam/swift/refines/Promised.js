@@ -36,7 +36,7 @@ foam.CLASS({
       }
     },
     {
-      name: 'swiftPostSet',
+      name: 'swiftPostSet_DELETE',
       expression: function(name, stateName) {
         return `
 ${stateName} = newValue
