@@ -15,7 +15,7 @@ foam.CLASS({
       value: false,
     },
     {
-      name: 'swiftAdapt',
+      name: 'swiftAdapt_DELETE',
       factory: function() {
         return `
 var newValue = newValue
@@ -43,7 +43,7 @@ foam.CLASS({
   flags: ['swift'],
   properties: [
     {
-      name: 'swiftAdapt',
+      name: 'swiftAdapt_DELETE',
       factory: function() {
         return `
 var newValue = newValue
@@ -67,7 +67,7 @@ foam.CLASS({
   flags: ['swift'],
   properties: [
     {
-      name: 'swiftAdapt',
+      name: 'swiftAdapt_DELETE',
       factory: function() {
         return `
 var newValue = newValue
@@ -87,7 +87,7 @@ foam.CLASS({
   flags: ['swift'],
   properties: [
     {
-      name: 'swiftAdapt',
+      name: 'swiftAdapt_DELETE',
       factory: function() {
         return `
 var newValue = newValue

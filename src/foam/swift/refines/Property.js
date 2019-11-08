@@ -132,7 +132,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftAdapt',
+      name: 'swiftAdapt_DELETE',
       expression: function(swiftType) {
         if (!foam.swift.requiresCast(swiftType)) return 'return newValue';
         return 'return newValue as! ' + swiftType;
@@ -270,7 +270,7 @@ foam.CLASS({
         visibility: 'private',
         name: this.swiftAdaptFuncName,
         returnType: this.swiftType,
-        body: this.swiftAdapt,
+        body: this.swiftAdapt_DELETE,
         args: [
           {
             externalName: '_',
@@ -650,7 +650,7 @@ foam.CLASS({
   flags: ['swift'],
   properties: [
     {
-      name: 'swiftAdapt',
+      name: 'swiftAdapt_DELETE',
       value: `
 if let n = newValue as? Date {
   return n
@@ -682,7 +682,7 @@ foam.CLASS({
       },
     },
     {
-      name: 'swiftAdapt',
+      name: 'swiftAdapt_DELETE',
       expression: function(of, swiftType) {
         var name = of && of.model_.swiftName
         if (!name) return `return newValue as! ${swiftType}`;

@@ -15,7 +15,7 @@ foam.CLASS({
       value: false,
     },
     {
-      name: 'swiftAdapt',
+      name: 'swiftAdapt_DELETE',
       factory: function() {
         return `
 if let newValue = newValue as? String { return newValue }

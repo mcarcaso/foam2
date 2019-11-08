@@ -26,7 +26,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftAdapt2',
+      name: 'swiftAdapt',
       expression: function(swiftType) {
         if ( swiftType == 'Any?' ) return 'return newValue;';
         return `return newValue as! ${swiftType};`
@@ -195,7 +195,7 @@ foam.CLASS({
             { type: 'Any?', localName: 'newValue' },
             { type: 'Bool', localName: 'oldValueSet' }
           ],
-          body: this.swiftAdapt2
+          body: this.swiftAdapt
         });
         setter.body = `
         /*

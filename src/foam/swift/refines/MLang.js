@@ -11,7 +11,7 @@ foam.CLASS({
   flags: ['swift'],
   properties: [
     {
-      name: 'swiftAdapt',
+      name: 'swiftAdapt_DELETE',
       value: `
 if let newValue = newValue as? foam_mlang_Expr { return newValue }
 return Context.GLOBAL.create(foam_mlang_Constant.self, args: ["value": newValue])!

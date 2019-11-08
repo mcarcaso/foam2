@@ -61,7 +61,7 @@ foam.CLASS({
       name:  'time',
       help:  'The current time in milliseconds since epoch.',
       adapt: function(_, t) { return Math.ceil(t); },
-      swiftAdapt: function() {/*
+      swiftAdapt_DELETE: function() {/*
 if let newValue = newValue as? Double {
   return Int(ceil(newValue))
 }

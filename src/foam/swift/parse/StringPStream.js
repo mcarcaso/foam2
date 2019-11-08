@@ -14,7 +14,7 @@ foam.CLASS({
     {
       swiftType: '[Character]',
       name: 'str',
-      swiftAdapt: function() {/*
+      swiftAdapt_DELETE: function() {/*
 if let s = newValue as? String {
   return Array(s)
 }
