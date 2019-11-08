@@ -28,6 +28,7 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'swiftAdapt2',
       expression: function(swiftType) {
+        if ( swiftType == 'Any?' ) return 'return newValue;';
         return `return newValue as! ${swiftType};`
       }
     },

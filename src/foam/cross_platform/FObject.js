@@ -18,7 +18,7 @@ foam.INTERFACE({
       type: 'Integer',
       args: [
         {
-          type: 'Object[]',
+          type: 'Any[]',
           name: 'args'
         }
       ]

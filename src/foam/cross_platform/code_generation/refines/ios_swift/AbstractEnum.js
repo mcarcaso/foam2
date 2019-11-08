@@ -2,40 +2,43 @@ foam.CLASS({
   package: 'foam.cross_platform.code_generation.refines',
   name: 'AbstractEnumSwiftRefinement',
   refines: 'foam.core.AbstractEnum',
-  flags: ['android'],
+  flags: ['swift'],
   axioms: [
     {
       class: 'foam.core.AnonymousAxiom',
       installInClass: function(cls) {
-        var buildAndroidClass = cls.buildAndroidClass;
-        cls.buildAndroidClass = function() {
+        var buildSwiftClass = cls.buildSwiftClass;
+        cls.buildSwiftClass = function() {
           var self = this;
-          var cls = buildAndroidClass.call(self);
+          var cls = buildSwiftClass.call(self);
           self.VALUES.forEach(function(v) {
             cls.field({
               visibility: 'public',
               static: true,
-              type: self.id,
+              type: self.model_.swiftName,
               name: v.name,
+              defaultValue: v.asSwiftValue()
             });
           });
           if ( this.model_.id != 'foam.core.AbstractEnum' ) {
             cls.method({
               visibility: 'public',
               static: true,
-              type: self.id,
+              type: self.model_.swiftName + '?',
               name: 'fromOrdinal',
               args: [
-                { type: 'int', name: 'o' }
+                { type: 'Int', localName: 'o' }
               ],
               body: `
-                switch(o) {
+                switch o {
 ${self.VALUES.map(v => `
                   case ${v.ordinal}:
                     return ${v.name};
 `).join('')}
+                  default:
+                    break;
                 }
-                return null;
+                return nil;
               `,
             });
           }

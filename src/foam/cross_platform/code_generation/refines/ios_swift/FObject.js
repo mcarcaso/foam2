@@ -36,13 +36,11 @@ genProperties
   .map(a => `
           case "${a.name}":
             ${a.crossPlatformIsSetVarName} = false;
-            var searchViewArgs: [Any?] = ["propertyChange", "${a.name}", nil];
-            /*
-            if ( hasListeners(${a.name}Args) ) {
+            var ${a.name}Args: [Any?] = ["propertyChange", "${a.name}", nil];
+            if hasListeners(${a.name}Args) {
               ${a.name}Args[2] = ${a.crossPlatformSlotGetterName}();
-              pub(${a.name}Args);
+              _ = pub(${a.name}Args);
             }
-            */
             return;
   `)
   .join('\n')
