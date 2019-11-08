@@ -29,7 +29,7 @@ foam.CLASS({
         this.pub('on', 'put', obj);
         return Promise.resolve(obj);
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 _ = on["put"].pub([obj])
 return obj
       `,
@@ -45,7 +45,7 @@ return obj;
         this.pub('on', 'remove', obj);
         return Promise.resolve();
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 _ = on["remove"].pub([obj])
 return obj
       `,
@@ -60,7 +60,7 @@ return null;
       code: function find_(x, id) {
         return Promise.resolve(null);
       },
-      swiftCode: 'return nil',
+      swiftCode_DELETE: 'return nil',
       javaCode: 'return null;',
     },
 
@@ -71,7 +71,7 @@ return null;
         sink.eof();
         return Promise.resolve(sink);
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 sink?.eof()
 return sink
       `,
@@ -89,7 +89,7 @@ return sink;
       code: function removeAll_(x, skip, limit, order, predicate) {
         return Promise.resolve();
       },
-      swiftCode: 'return',
+      swiftCode_DELETE: 'return',
       javaCode: '// NOOP',
     },
   ]

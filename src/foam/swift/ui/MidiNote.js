@@ -57,7 +57,7 @@ return MIDINoteMessage(
   actions: [
     {
       name: 'play',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 // Creating the sequence
 
 var sequence: MusicSequence? = nil

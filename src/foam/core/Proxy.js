@@ -311,7 +311,7 @@ if (oldValue as? Bool ?? false) != newValue {
           }
         }, this));
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 onDetach(Subscription(detach: { [weak self] in
   self?.subscription?.detach()
   if let parent = self?.parent {
@@ -333,7 +333,7 @@ onDetach(Subscription(detach: { [weak self] in
         args.push(this.onEvent);
         this.subscription = this.src.sub.apply(this.src, args);
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 subscription?.detach()
 if let src = src as? Topic {
   subscription = src.sub(topics: topic, listener: onEvent_listener)
@@ -346,7 +346,7 @@ if let src = src as? Topic {
       code: function doUnsub() {
         if ( this.subscription ) this.subscription.detach();
       },
-      swiftCode: 'subscription?.detach()',
+      swiftCode_DELETE: 'subscription?.detach()',
     },
 
     {
@@ -365,7 +365,7 @@ if let src = src as? Topic {
           }
         }
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 for (key, child) in children {
   if child === c {
     children.removeValue(forKey: key)
@@ -395,7 +395,7 @@ for (key, child) in children {
         }
         return this.children[key];
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 let key = key!
 if children[key] == nil {
   children[key] = __context__.create(foam_core_EventProxy.self, args: [
@@ -427,7 +427,7 @@ return children[key]!
 
         c.active = active;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 let topics = topics!
 var c = self
 var active = true
@@ -451,7 +451,7 @@ c.active = active;
           if ( ! c ) this.detach();
         }
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 if active {
   let c = dest.pub(args);
   if c == 0 { detach() }

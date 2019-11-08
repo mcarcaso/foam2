@@ -62,7 +62,7 @@ return dv
   methods: [
     {
       name: 'init',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 super.__foamInit__()
 let onVcChange = { [weak self] () -> Void in
   guard let vc = self?.vc else {
@@ -84,7 +84,7 @@ onVcChange()
     {
       name: 'onSaveButtonPressed',
       swiftAnnotations: ['@objc'],
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 (view?.get(key: "view") as? UIView)?.endEditing(true)
 _ = try! dao.put(data)
 (stack as? UINavigationController)?.popViewController(animated: true)

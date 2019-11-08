@@ -20,7 +20,7 @@ foam.CLASS({
   methods: [
     {
       name: 'parse',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return delegate.parse(ps, x)
       */},
     },

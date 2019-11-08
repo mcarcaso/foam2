@@ -14,7 +14,7 @@ foam.CLASS({
   methods: [
     {
       name: 'parse',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 var ps = ps!
 while ps.valid() {
   let c = ps.head()

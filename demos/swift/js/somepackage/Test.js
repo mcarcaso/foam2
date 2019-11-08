@@ -105,7 +105,7 @@ return ["Hello", "World"]
     {
       name: 'swapFirstAndLast',
       code: function() {},
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let firstName = self.firstName
 self.firstName = self.lastName
 self.lastName = firstName
@@ -114,7 +114,7 @@ self.lastName = firstName
     {
       name: 'startLogger',
       code: function() {},
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 myListener()
       */},
     },
@@ -130,7 +130,7 @@ myListener()
         },
       ],
       code: function() {},
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return String(format: type(of: self).greeting, name!, "LASTNAME")
       */},
     }
@@ -141,7 +141,7 @@ return String(format: type(of: self).greeting, name!, "LASTNAME")
       isMerged: true,
       mergeDelay: 500,
       code: function() {},
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 NSLog("Hey")
 myListener()
       */},

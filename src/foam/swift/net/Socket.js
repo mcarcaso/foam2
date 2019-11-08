@@ -82,7 +82,7 @@ DispatchQueue.main.async {
   methods: [
     {
       name: 'init',
-      swiftCode: `
+      swiftCode_DELETE: `
 onDetach(Subscription(detach: { [weak self] in
   _ = self?.disconnect.pub()
   self?.outputStream?.close()
@@ -98,7 +98,7 @@ onDetach(Subscription(detach: { [weak self] in
           name: 'str',
         },
       ],
-      swiftCode: `
+      swiftCode_DELETE: `
 var size = Int32(str.count)
 var buffer = Data(buffer: UnsafeBufferPointer(start: &size, count: 1))
 buffer.append(str, count: str.count)
@@ -113,7 +113,7 @@ _ = buffer.withUnsafeBytes { outputStream?.write($0, maxLength: 4 + str.count) }
           type: 'String',
         },
       ],
-      swiftCode: `
+      swiftCode_DELETE: `
 let urlTokens = url.split(separator: ":")
 let host = urlTokens[0]
 let port = urlTokens[1]
@@ -130,7 +130,7 @@ set(key: "outputStream", value: writeStream?.takeRetainedValue())
     },
   ],
 
-  swiftCode: `
+  swiftCode_DELETE: `
 public func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
 
   if eventCode == .errorOccurred {

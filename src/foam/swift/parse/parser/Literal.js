@@ -22,7 +22,7 @@ foam.CLASS({
   methods: [
     {
       name: 'parse',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 var ps = ps!
 for i in 0..<string.count {
   if !ps.valid() || ps.head() != string.char(at: i) {

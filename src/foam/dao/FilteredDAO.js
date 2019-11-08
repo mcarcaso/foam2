@@ -36,7 +36,7 @@ if ( ret != null && getPredicate().f(ret) ) return ret;
 return null;`
     },
 
-    
+
     {
       name: 'select_',
       code: function(x, sink, skip, limit, order, predicate) {
@@ -46,7 +46,7 @@ return null;`
             this.And.create({ args: [this.predicate, predicate] }) :
             this.predicate);
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return try delegate.select_(
   x, sink, skip, limit, order,
   predicate != nil ?
@@ -77,7 +77,7 @@ return try delegate.select_(
             this.And.create({ args: [this.predicate, predicate] }) :
             this.predicate);
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 return try delegate.listen_(
   x, sink,
   predicate != nil ?

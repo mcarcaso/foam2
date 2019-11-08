@@ -35,15 +35,15 @@ return code(args.map { (slot) -> Any? in return slot.swiftGet() })
   methods: [
     {
       name: 'swiftGet',
-      swiftCode: 'return value',
+      swiftCode_DELETE: 'return value',
     },
     {
       name: 'swiftSet',
-      swiftCode: '// NOP',
+      swiftCode_DELETE: '// NOP',
     },
     {
       name: 'swiftSub',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return sub(topics: ["propertyChange", "value"], listener: listener)
       */},
     },
@@ -55,7 +55,7 @@ return sub(topics: ["propertyChange", "value"], listener: listener)
           swiftType: '[foam_swift_core_Slot]',
         },
       ],
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 cleanup();
 let subs = slots.map { (slot) -> Subscription in
   return slot.swiftSub(invalidate_listener)
@@ -68,11 +68,11 @@ cleanup_ = Subscription(detach: { for sub in subs { sub.detach() } })
   listeners: [
     {
       name: 'cleanup',
-      swiftCode: 'cleanup_?.detach()',
+      swiftCode_DELETE: 'cleanup_?.detach()',
     },
     {
       name: 'invalidate',
-      swiftCode: 'clearProperty("value")',
+      swiftCode_DELETE: 'clearProperty("value")',
     },
   ]
 });

@@ -15,13 +15,13 @@ foam.CLASS({
   methods: [
     {
       name: 'isInstance',
-      swiftCode: `
+      swiftCode_DELETE: `
         return o is [Any?]
       `,
     },
     {
       name: 'compare',
-      swiftCode: `
+      swiftCode_DELETE: `
         let a = o1 as! [Any?]
         guard let b = o2 as? [Any?] else { return 1 }
         let l = min(a.count, b.count)

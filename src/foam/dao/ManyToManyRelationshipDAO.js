@@ -84,7 +84,7 @@ foam.CLASS({
           .where(foam.mlang.MLang.IN(getPrimaryKey(), ((foam.dao.ArraySink) (junction.getDelegate())).getArray().toArray()))
           .select_(x, sink, skip, limit, order, predicate);
       `,
-      swiftCode: `
+      swiftCode_DELETE: `
         let pred = __context__.create(foam_mlang_predicate_Eq.self, args: [
           "arg1": relationship?.sourceProperty,
           "arg2": relationship?.sourceId

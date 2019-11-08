@@ -11,7 +11,7 @@ foam.CLASS({
     {
       name: 'swiftGet',
       swiftType: 'Any?',
-      swiftCode: 'fatalError()',
+      swiftCode_DELETE: 'fatalError()',
     },
     {
       name: 'swiftSet',
@@ -21,7 +21,7 @@ foam.CLASS({
           name: 'value',
         },
       ],
-      swiftCode: 'fatalError()',
+      swiftCode_DELETE: 'fatalError()',
     },
     {
       name: 'swiftSub',
@@ -33,7 +33,7 @@ foam.CLASS({
         },
       ],
       swiftType: 'Subscription',
-      swiftCode: 'fatalError()',
+      swiftCode_DELETE: 'fatalError()',
     },
     {
       name: 'linkFrom',
@@ -44,7 +44,7 @@ foam.CLASS({
         },
       ],
       swiftType: 'Subscription',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let s1 = self
 let s2 = s2!
 var feedback1 = false
@@ -94,7 +94,7 @@ return Subscription {
         },
       ],
       swiftType: 'Subscription',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return other!.linkFrom(self)
       */},
     },
@@ -107,7 +107,7 @@ return other!.linkFrom(self)
         },
       ],
       swiftType: 'Subscription',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let other = other!
 let l = { () -> Void in
   if !FOAM_utils.equals(self.swiftGet(), other.swiftGet()) {
@@ -132,7 +132,7 @@ return other.swiftSub { (_, _) in l() }
         },
       ],
       swiftType: 'Subscription',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let other = other!
 let l = { () -> Void in
   self.swiftSet(f(other.swiftGet()))
@@ -155,7 +155,7 @@ return other.swiftSub { (_, _) in l() }
         },
       ],
       swiftType: 'Subscription',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return other!.mapFrom(self, f)
       */},
     },
@@ -169,7 +169,7 @@ return other!.mapFrom(self, f)
         },
       ],
       type: 'foam.swift.core.ExpressionSlot',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return foam_swift_core_ExpressionSlot([
   "code": { (args: [Any?]) -> Any? in f(args[0]) },
   "args": [self]
@@ -185,7 +185,7 @@ return foam_swift_core_ExpressionSlot([
         },
       ],
       type: 'foam.swift.core.SubSlot',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let s = foam_swift_core_SubSlot([
   "parentSlot": self,
   "name": name,

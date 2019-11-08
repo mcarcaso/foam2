@@ -68,7 +68,7 @@ return { (o: foam_core_FObject) -> UIViewController in
       */},
     },
   ],
-  swiftCode: function() {/*
+  swiftCode_DELETE: function() {/*
 public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
   let data = (dataSource!.daoContents[indexPath.row] as! foam_core_FObject) // TODO: Clone?
 

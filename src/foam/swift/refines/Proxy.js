@@ -11,7 +11,7 @@ foam.CLASS({
   flags: ['swift'],
   properties: [
     {
-      name: 'swiftCode',
+      name: 'swiftCode_DELETE',
       getter: function() {
         var args = this.swiftArgs.map(function(arg) {
           return arg.localName;

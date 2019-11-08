@@ -20,42 +20,42 @@ foam.CLASS({
     {
       name: 'startObj',
       code: function() { this.out('{') },
-      swiftCode: `out("{")`,
+      swiftCode_DELETE: `out("{")`,
     },
     {
       name: 'endObj',
       code: function() { this.out('}') },
-      swiftCode: `out("}")`,
+      swiftCode_DELETE: `out("}")`,
     },
     {
       name: 'startArray',
       code: function() { this.out('[') },
-      swiftCode: `out("[")`,
+      swiftCode_DELETE: `out("[")`,
     },
     {
       name: 'endArray',
       code: function() { this.out(']') },
-      swiftCode: `out("]")`,
+      swiftCode_DELETE: `out("]")`,
     },
     {
       name: 'keySep',
       code: function() { this.out(':') },
-      swiftCode: `out(":")`,
+      swiftCode_DELETE: `out(":")`,
     },
     {
       name: 'out',
       code: function(s) { this.str += s },
-      swiftCode: `str += s!`,
+      swiftCode_DELETE: `str += s!`,
     },
     {
       name: 'comma',
       code: function(s) { this.out(',') },
-      swiftCode: `out(",")`,
+      swiftCode_DELETE: `out(",")`,
     },
     {
       name: 'output',
       code: function(s) { return this.str },
-      swiftCode: `return str`,
+      swiftCode_DELETE: `return str`,
     },
   ],
 })

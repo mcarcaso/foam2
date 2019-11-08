@@ -52,7 +52,7 @@ foam.CLASS({
 
         throw this.NoSuchNameException.create({ name: name });
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let name = name!
 if let exportBox = registry_[name] as? foam_box_ExportBox {
   return exportBox
@@ -90,7 +90,7 @@ return (foam.box.ExportBox)registration;
         return box;
       },
       swiftSynchronized: true,
-      swiftCode: `
+      swiftCode_DELETE: `
 let name: String = name ?? UUID().uuidString
 let box = ExportBox_create([
   "localBox": box,
@@ -123,7 +123,7 @@ return exportBox;
         delete this.registry_[name];
       },
       swiftSynchronized: true,
-      swiftCode: `
+      swiftCode_DELETE: `
 registry_.removeValue(forKey: name)
       `,
       javaCode: `

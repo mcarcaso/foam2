@@ -15,7 +15,7 @@ foam.CLASS({
       code: function(message) {
         this.__context__.returnBox.send(message);
       },
-      swiftCode: `try (__context__["returnBox"] as! foam_box_Box).send(msg)`,
+      swiftCode_DELETE: `try (__context__["returnBox"] as! foam_box_Box).send(msg)`,
       javaCode: `
 ((foam.box.Box)getX().get("returnBox")).send(msg);
 `

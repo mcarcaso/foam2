@@ -82,7 +82,7 @@ foam.CLASS({
         return this.SUPER(null, obj);
       },
       javaCode: 'return super.put_(null, obj);',
-      swiftCode: 'return try super.put_(nil, obj)'
+      swiftCode_DELETE: 'return try super.put_(nil, obj)'
     },
     {
       name: 'remove_',
@@ -90,7 +90,7 @@ foam.CLASS({
         return this.SUPER(null, obj);
       },
       javaCode: 'return super.remove_(null, obj);',
-      swiftCode: 'return try super.remove_(nil, obj)'
+      swiftCode_DELETE: 'return try super.remove_(nil, obj)'
     },
     {
       name: 'find_',
@@ -98,7 +98,7 @@ foam.CLASS({
         return this.SUPER(null, key);
       },
       javaCode: 'return super.find_(null, id);',
-      swiftCode: 'return try super.find_(nil, id)'
+      swiftCode_DELETE: 'return try super.find_(nil, id)'
     },
     {
       name: 'select_',
@@ -134,7 +134,7 @@ foam.CLASS({
         return this.SUPER(null, sink, skip, limit, order, predicate);
       },
       javaCode: 'return super.select_(null, sink, skip, limit, order, predicate);',
-      swiftCode: `
+      swiftCode_DELETE: `
 if sink is foam_core_Serializable {
   return try super.select_(nil, sink, skip, limit, order, predicate)
 }
@@ -160,7 +160,7 @@ return sink
         return this.SUPER(null, skip, limit, order, predicate);
       },
       javaCode: 'super.removeAll_(null, skip, limit, order, predicate);',
-      swiftCode: 'try super.removeAll_(nil, skip, limit, order, predicate)'
+      swiftCode_DELETE: 'try super.removeAll_(nil, skip, limit, order, predicate)'
     },
 
     {
@@ -170,7 +170,7 @@ return sink
         return foam.core.FObject.create();
       },
       javaCode: `super.listen_(null, sink, predicate);`,
-      swiftCode: `return try super.listen_(nil, sink, predicate)`
+      swiftCode_DELETE: `return try super.listen_(nil, sink, predicate)`
     },
   ]
 });

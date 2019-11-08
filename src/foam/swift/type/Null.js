@@ -15,13 +15,13 @@ foam.CLASS({
   methods: [
     {
       name: 'isInstance',
-      swiftCode: `
+      swiftCode_DELETE: `
         return o == nil
       `,
     },
     {
       name: 'compare',
-      swiftCode: `
+      swiftCode_DELETE: `
         return o2 == nil ? 0 : 1
       `,
     },

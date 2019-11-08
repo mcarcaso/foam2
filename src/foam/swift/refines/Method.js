@@ -82,7 +82,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftCode',
+      name: 'swiftCode_DELETE',
     },
     {
       class: 'BooleanProperty',
@@ -183,7 +183,7 @@ foam.CLASS({
       name: 'getSwiftCode',
       flags: ['js'],
       code: function getSwiftCode(parentCls) {
-        if (this.swiftCode) return this.swiftCode;
+        if (this.swiftCode_DELETE) return this.swiftCode_DELETE;
         if (foam.core.internal.InterfaceMethod.isInstance(
             parentCls.getSuperAxiomByName(this.name))) {
           return 'fatalError()';

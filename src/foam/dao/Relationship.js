@@ -501,7 +501,7 @@ foam.CLASS({
       javaCode: `getJunctionDAO()
               .put_(getX(), createJunction(((foam.core.Identifiable)target)
               .getPrimaryKey()));`,
-      swiftCode: `_ = try junctionDAO!
+      swiftCode_DELETE: `_ = try junctionDAO!
               .put(createJunction((target as? foam_core_Identifiable)?
               .getPrimaryKey()))`,
       code: function add(target) {
@@ -513,7 +513,7 @@ foam.CLASS({
       javaCode: `getJunctionDAO()
               .remove_(getX(), createJunction(((foam.core.Identifiable)target)
               .getPrimaryKey()));`,
-      swiftCode: `_ = try junctionDAO!
+      swiftCode_DELETE: `_ = try junctionDAO!
               .remove(createJunction((target as? foam_core_Identifiable)?
               .getPrimaryKey()))`,
       code: function remove(target) {
@@ -538,25 +538,25 @@ getTargetProperty().set(junction, targetId);
 getSourceProperty().set(junction, getSourceId());
 return junction;`,
 
-      swiftCode: `let junction: foam_core_FObject = self.junction.create(x: __context__) as! foam_core_FObject
+      swiftCode_DELETE: `let junction: foam_core_FObject = self.junction.create(x: __context__) as! foam_core_FObject
 targetProperty.set(junction, value: targetId)
 sourceProperty.set(junction, value: sourceId)
 return junction`
     },
     {
       name: 'getJunctionDAO',
-      swiftCode: 'return junctionDAO!',
+      swiftCode_DELETE: 'return junctionDAO!',
       code: function() { return this.junctionDAO; }
     },
     {
       name: 'getTargetDAO',
-      swiftCode: 'return targetDAO!',
+      swiftCode_DELETE: 'return targetDAO!',
       code: function() { return this.targetDAO; }
     },
     {
       name: 'getDAO',
       javaCode: 'return getDao();',
-      swiftCode: 'return dao!',
+      swiftCode_DELETE: 'return dao!',
       code: function getDAO() { return this.dao; }
     }
   ],
@@ -783,7 +783,7 @@ foam.CLASS({
       },
     },
     {
-      name: 'swiftCode',
+      name: 'swiftCode_DELETE',
       flags: ['swift'],
       expression: function(target, targetPropertyName, targetDAOKey, unauthorizedTargetDAOKey) {
         return `
@@ -958,7 +958,7 @@ foam.CLASS({
       },
     },
     {
-      name: 'swiftCode',
+      name: 'swiftCode_DELETE',
       flags: ['swift'],
       expression: function(junction, sourceProperty, targetProperty, targetDAOKey, junctionDAOKey, unauthorizedTargetDAOKey) {
         return `

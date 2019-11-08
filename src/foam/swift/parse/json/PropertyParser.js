@@ -22,7 +22,7 @@ foam.CLASS({
     {
       name: 'delegate',
       swiftFactory: function() {/*
-return 
+return
   Seq1_create(["index": 5, "parsers": [
     Whitespace_create(),
     KeyParser_create(["key": self.property.name]),
@@ -38,7 +38,7 @@ return
   methods: [
     {
       name: 'parse',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let ps = super.parse(ps, x);
 if ps == nil { return nil }
 let args = x.get("obj") as! Reference<[String:Any?]>

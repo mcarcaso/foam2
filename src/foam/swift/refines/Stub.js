@@ -11,7 +11,7 @@ foam.CLASS({
   flags: ['swift'],
   properties: [
     {
-      name: 'swiftCode',
+      name: 'swiftCode_DELETE',
       getter: function() {
         return this.swiftThrows ? this.swiftCodeGenerator() : 'fatalError()';
       }
@@ -65,7 +65,7 @@ foam.CLASS({
   flags: ['swift'],
   properties: [
     {
-      name: 'swiftCode',
+      name: 'swiftCode_DELETE',
       expression: function(swiftName, swiftType, swiftArgs, swiftThrows) {
         return swiftThrows ? this.swiftCodeGenerator() : 'fatalError()';
       }

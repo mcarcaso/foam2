@@ -93,25 +93,25 @@ foam.CLASS({
     {
       name: 'put',
       code: function() {},
-      swiftCode: '// NOOP',
+      swiftCode_DELETE: '// NOOP',
       javaCode: '// NOOP'
     },
     {
       name: 'remove',
       code: function() {},
-      swiftCode: '// NOOP',
+      swiftCode_DELETE: '// NOOP',
       javaCode: '// NOOP'
     },
     {
       name: 'eof',
       code: function() {},
-      swiftCode: '// NOOP',
+      swiftCode_DELETE: '// NOOP',
       javaCode: '// NOOP'
     },
     {
       name: 'reset',
       code: function() {},
-      swiftCode: '// NOOP',
+      swiftCode_DELETE: '// NOOP',
       javaCode: '// NOOP'
     }
   ]
@@ -151,14 +151,14 @@ foam.CLASS({
       code: function put(_, sub) {
         this.reset(sub);
       },
-      swiftCode: 'reset(sub)',
+      swiftCode_DELETE: 'reset(sub)',
     },
     {
       name: 'remove',
       code: function remove(_, sub) {
         this.reset(sub);
       },
-      swiftCode: 'reset(sub)',
+      swiftCode_DELETE: 'reset(sub)',
     },
   ]
 });
@@ -347,7 +347,7 @@ foam.CLASS({
       code: function put(obj, sub) {
         if ( this.predicate.f(obj) ) this.delegate.put(obj, sub);
       },
-      swiftCode: 'if predicate.f(obj) { delegate.put(obj, sub) }',
+      swiftCode_DELETE: 'if predicate.f(obj) { delegate.put(obj, sub) }',
       javaCode: `
         try {
           if ( getPredicate().f(obj) ) getDelegate().put(obj, sub);
@@ -360,7 +360,7 @@ foam.CLASS({
       code: function remove(obj, sub) {
         if ( this.predicate.f(obj) ) this.delegate.remove(obj, sub);
       },
-      swiftCode: 'if predicate.f(obj) { delegate.remove(obj, sub) }',
+      swiftCode_DELETE: 'if predicate.f(obj) { delegate.remove(obj, sub) }',
       javaCode: 'if ( getPredicate().f(obj) ) getDelegate().remove(obj, sub);'
     }
   ]
@@ -394,7 +394,7 @@ foam.CLASS({
           this.delegate.put(obj, sub);
         }
       },
-      swiftCode: `count += 1
+      swiftCode_DELETE: `count += 1
 if count <= limit {
   delegate.put(obj, sub)
 }`,
@@ -414,7 +414,7 @@ if count <= limit {
           this.delegate.remove(obj, sub);
         }
       },
-      swiftCode: `count += 1
+      swiftCode_DELETE: `count += 1
 if count <= limit {
   delegate.remove(obj, sub)
 }`,
@@ -457,7 +457,7 @@ foam.CLASS({
 
         this.delegate.put(obj, sub);
       },
-      swiftCode: `if count < skip {
+      swiftCode_DELETE: `if count < skip {
   count += 1
   return
 }
@@ -473,7 +473,7 @@ delegate.put(obj, sub)`,
       code: function remove(obj, sub) {
         this.reset(sub);
       },
-      swiftCode: `if count < skip {
+      swiftCode_DELETE: `if count < skip {
   count += 1
   return
 }
@@ -490,7 +490,7 @@ delegate.remove(obj, sub)`,
         this.count = 0;
         this.delegate.reset(sub);
       },
-      swiftCode: `count = 0;
+      swiftCode_DELETE: `count = 0;
 delegate.reset(sub);`,
       javaCode: `setCount(0);getDelegate().reset(sub);`
     }
@@ -523,7 +523,7 @@ foam.CLASS({
       code: function put(obj, sub) {
         this.array.push(obj);
       },
-      swiftCode: 'array.append(obj)',
+      swiftCode_DELETE: 'array.append(obj)',
       javaCode: 'if ( getArray() == null ) setArray(new java.util.ArrayList());\n'
         + 'getArray().add(obj);'
     },
@@ -543,7 +543,7 @@ foam.CLASS({
           if ( detached ) break;
         }
       },
-      swiftCode: `array.sort(by: {
+      swiftCode_DELETE: `array.sort(by: {
   return comparator.compare($0, $1) < 0
 });
 
@@ -568,7 +568,7 @@ for obj in array {
       code: function remove(obj, sub) {
         // TODO
       },
-      swiftCode: '// TODO',
+      swiftCode_DELETE: '// TODO',
       javaCode: '// TODO'
     },
   ]
@@ -658,14 +658,14 @@ foam.CLASS({
       code: function(obj, s) {
         this.fn('put', obj, s);
       },
-      swiftCode: 'fn("put", obj, sub)',
+      swiftCode_DELETE: 'fn("put", obj, sub)',
     },
     {
       name: 'remove',
       code: function(obj, s) {
         this.fn('remove', obj, s);
       },
-      swiftCode: 'fn("remove", obj, sub)',
+      swiftCode_DELETE: 'fn("remove", obj, sub)',
     },
     function eof() {
       this.fn('eof');
@@ -675,7 +675,7 @@ foam.CLASS({
       code: function(s) {
         this.fn('reset', s);
       },
-      swiftCode: 'fn("reset", nil, sub)',
+      swiftCode_DELETE: 'fn("reset", nil, sub)',
     },
   ]
 });
@@ -763,7 +763,7 @@ foam.CLASS({
         this.dao.put(o);
       },
       javaCode: `getDao().put((foam.core.FObject)obj);`,
-      swiftCode: '_ = try? dao?.put(obj as? foam_core_FObject)'
+      swiftCode_DELETE: '_ = try? dao?.put(obj as? foam_core_FObject)'
     },
     {
       name: 'remove',
@@ -771,13 +771,13 @@ foam.CLASS({
         this.dao.remove(o);
       },
       javaCode: `getDao().remove((foam.core.FObject)obj);`,
-      swiftCode: '_ = try? dao?.remove(obj as? foam_core_FObject)'
+      swiftCode_DELETE: '_ = try? dao?.remove(obj as? foam_core_FObject)'
     },
     {
       name: 'eof',
       code: function() {},
       javaCode: `// NOOP`,
-      swiftCode: '// NOOP',
+      swiftCode_DELETE: '// NOOP',
     },
     {
       name: 'reset',
@@ -785,7 +785,7 @@ foam.CLASS({
         this.dao.removeAll();
       },
       javaCode: `getDao().removeAll();`,
-      swiftCode: '_ = try? dao?.removeAll()',
+      swiftCode_DELETE: '_ = try? dao?.removeAll()',
     }
   ]
 });

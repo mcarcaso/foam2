@@ -42,7 +42,7 @@ return vc
       */},
     },
   ],
-  swiftCode: function() {/*
+  swiftCode_DELETE: function() {/*
 class VC_: UIViewController {
   let scrollView: UIScrollView = {
     let scrollView = UIScrollView()

@@ -71,7 +71,7 @@ if let oldValue = oldValue as? foam_dao_AbstractDAO {
 
         return listener;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 let listener = ProxyListener_create([
   "delegate": sink,
   "predicate": predicate
@@ -151,7 +151,7 @@ if oldValue != nil {
       code: function put(obj, s) {
         this.delegate.put(obj, this);
       },
-      swiftCode: 'delegate.put(obj, self)',
+      swiftCode_DELETE: 'delegate.put(obj, self)',
     },
 
     function outputJSON(outputter) {
@@ -163,7 +163,7 @@ if oldValue != nil {
       code: function remove(obj, s) {
         this.delegate.remove(obj, this);
       },
-      swiftCode: 'delegate.remove(obj, self)',
+      swiftCode_DELETE: 'delegate.remove(obj, self)',
     },
 
     {
@@ -171,7 +171,7 @@ if oldValue != nil {
       code: function reset(s) {
         this.delegate.reset(this);
       },
-      swiftCode: 'delegate.reset(self)',
+      swiftCode_DELETE: 'delegate.reset(self)',
     },
   ],
   listeners: [

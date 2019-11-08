@@ -62,7 +62,7 @@ foam.CLASS({
         }));
         return this;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         e();
         out.startObj()
         state.append(State_create([
@@ -85,7 +85,7 @@ foam.CLASS({
         }));
         return this;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         e()
         out.startArray()
         state.append(State_create([
@@ -102,7 +102,7 @@ foam.CLASS({
       code: function() {
         return this.state[this.state.length - 1];
       },
-      swiftCode: `return state.last!`,
+      swiftCode_DELETE: `return state.last!`,
     },
     {
       name: 'key',
@@ -117,7 +117,7 @@ foam.CLASS({
 
         return this;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         if top().comma { out.comma() }
         else { top().comma = true }
 
@@ -135,7 +135,7 @@ foam.CLASS({
           this.top().comma = true;
         }
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         if top().array {
           if top().comma { out.comma() }
           top().comma = true
@@ -156,7 +156,7 @@ foam.CLASS({
                               c.charCodeAt(0).toString(16));
           }) + '"';
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         // TODO handle more stuff
         let s = s!
         return "\\"" + s.replacingOccurrences(of: "\\"", with: "\\\\\\"") + "\\""
@@ -171,7 +171,7 @@ foam.CLASS({
         this.out.out(this.string(s));
         return this;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         e()
         out.out(string(s))
         return self
@@ -186,7 +186,7 @@ foam.CLASS({
         this.out.out(n);
         return this;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         e()
         out.out(n.stringValue)
         return self
@@ -201,7 +201,7 @@ foam.CLASS({
         this.out.out(b);
         return this;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         e()
         out.out(b ? "true" : "false")
         return self
@@ -215,7 +215,7 @@ foam.CLASS({
         this.out.out('null');
         return this;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         e()
         out.out("null")
         return self
@@ -230,7 +230,7 @@ foam.CLASS({
         if ( s.endArray ) this.out.endArray();
         return this;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         let s = state.popLast()!
         if s.endObj { out.endObj() }
         if s.endArray { out.endArray() }

@@ -21,7 +21,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftCode',
+      name: 'swiftCode_DELETE',
     },
     {
       class: 'StringProperty',
@@ -47,13 +47,13 @@ foam.CLASS({
     {
       class: 'BooleanProperty',
       name: 'swiftSupport',
-      expression: function(swiftCode) { return !!swiftCode },
+      expression: function(swiftCode_DELETE) { return !!swiftCode_DELETE },
     },
   ],
   methods: [
     function writeToSwiftClass(cls, parentCls) {
       if ( ! parentCls.hasOwnAxiom(this.name) ) return;
-      if ( ! this.swiftCode ) return;
+      if ( ! this.swiftCode_DELETE ) return;
       cls.fields.push(this.Field.create({
         lazy: true,
         name: this.swiftSlotName,
@@ -62,7 +62,7 @@ foam.CLASS({
       }));
       cls.methods.push(this.Method.create({
         name: this.swiftName,
-        body: this.swiftCode,
+        body: this.swiftCode_DELETE,
         visibility: 'public',
       }));
       cls.fields.push(this.Field.create({

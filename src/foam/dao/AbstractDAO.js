@@ -88,7 +88,7 @@ return getOf() == null ? null : (foam.core.PropertyInfo) getOf().getAxiomByName(
       code: function(x) {
         return this.ProxyDAO.create({delegate: this}, x);
       },
-      swiftCode: `return ProxyDAO_create(["delegate": self], x)`,
+      swiftCode_DELETE: `return ProxyDAO_create(["delegate": self], x)`,
       javaCode: `return new ProxyDAO.Builder(x).setDelegate(this).build();`,
     },
 
@@ -104,7 +104,7 @@ return getOf() == null ? null : (foam.core.PropertyInfo) getOf().getAxiomByName(
           predicate: p
         });
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
         return FilteredDAO_create([
           "delegate": self,
           "predicate": predicate,
@@ -125,7 +125,7 @@ return getOf() == null ? null : (foam.core.PropertyInfo) getOf().getAxiomByName(
           comparator: foam.compare.toCompare(Array.from(arguments))
         });
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 return OrderedDAO_create([
   "delegate": self,
   "comparator": comparator
@@ -148,7 +148,7 @@ return new OrderedDAO(this.getX(), comparator, this);
           skip_: s
         });
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return SkipDAO_create([
   "delegate": self,
   "skip_": count,
@@ -171,7 +171,7 @@ return new SkipDAO(this.getX(), count, this);
           limit_: l
         });
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return LimitedDAO_create([
   "delegate": self,
   "limit_": count,
@@ -187,7 +187,7 @@ return new LimitedDAO(this.getX(), count, this);
       code: function(obj) {
         return this.put_(this.__context__, obj);
       },
-      swiftCode: 'return try put_(__context__, obj)',
+      swiftCode_DELETE: 'return try put_(__context__, obj)',
       javaCode: `return this.put_(this.getX(), obj);`,
     },
 
@@ -202,7 +202,7 @@ return new LimitedDAO(this.getX(), count, this);
       code: function(sink) {//, skip, limit, order, predicate) {
         this.pipe_(this.__context__, sink, undefined);
       },
-      swiftCode: 'return try pipe_(__context__, sink)',
+      swiftCode_DELETE: 'return try pipe_(__context__, sink)',
       javaCode: `this.pipe_(this.getX(), sink, null);`,
     },
 
@@ -234,7 +234,7 @@ throw new UnsupportedOperationException();
         }
         return this.listen_(this.__context__, sink, undefined);
       },
-      swiftCode: 'return try listen_(__context__, sink)',
+      swiftCode_DELETE: 'return try listen_(__context__, sink)',
       javaCode: `this.listen_(this.getX(), sink, predicate);`,
     },
 
@@ -264,7 +264,7 @@ throw new UnsupportedOperationException();
 
         return sub;
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let mySink = decorateListener_(sink, predicate)
 return on.sub(listener: { (sub: Subscription, args: [Any?]) -> Void in
   guard let topic = args[1] as? String else { return }
@@ -309,7 +309,7 @@ listeners_.add(new DAOListener(sink, listeners_));
 
         return sink;
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 // TODO: There are probably optimizations we can make here
 // but every time I try it comes out broken.  So for the time being,
 // if you have any sort of skip/limit/order/predicate we will just
@@ -391,7 +391,7 @@ return sink;
 
         return sink;
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 var sink = sink
 if limit > 0 {
   sink = LimitedSink_create([
@@ -429,7 +429,7 @@ return decorateSink(getX(), sink, skip, limit, order, predicate);
       code: function remove(obj) {
         return this.remove_(this.__context__, obj);
       },
-      swiftCode: 'return try remove_(__context__, obj)',
+      swiftCode_DELETE: 'return try remove_(__context__, obj)',
       javaCode: `return this.remove_(this.getX(), obj);`,
     },
 
@@ -438,7 +438,7 @@ return decorateSink(getX(), sink, skip, limit, order, predicate);
       code: function removeAll() {
         return this.removeAll_(this.__context__, undefined, undefined, undefined, undefined);
       },
-      swiftCode: 'return try removeAll_(__context__)',
+      swiftCode_DELETE: 'return try removeAll_(__context__)',
       javaCode: `
 this.removeAll_(this.getX(), 0, this.MAX_SAFE_INTEGER, null, null);
       `,
@@ -480,7 +480,7 @@ this.removeAll_(this.getX(), 0, this.MAX_SAFE_INTEGER, null, null);
       code: function select(sink) {
         return this.select_(this.__context__, this.prepareSink_(sink), undefined, undefined, undefined, undefined);
       },
-      swiftCode: 'return try select_(__context__, sink)',
+      swiftCode_DELETE: 'return try select_(__context__, sink)',
       javaCode: `
 sink = prepareSink(sink);
 return this.select_(this.getX(), sink, 0, this.MAX_SAFE_INTEGER, null, null);
@@ -502,7 +502,7 @@ return this.select_(this.getX(), sink, 0, this.MAX_SAFE_INTEGER, null, null);
 
         return this.find_(this.__context__, id);
       },
-      swiftCode: 'return try find_(__context__, id)',
+      swiftCode_DELETE: 'return try find_(__context__, id)',
       javaCode: `
 // Temporary until DAO supports find_(Predicate) directly
 if ( id instanceof foam.mlang.predicate.Predicate ) {
@@ -734,7 +734,7 @@ foam.CLASS({
       code: function (x, sink, skip, limit, order, predicate) {
         return this.delegate.select_(x, sink, skip, limit, order || this.comparator, predicate);
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         return try self.delegate.select_(x, sink, skip, limit, order ?? self.comparator ?? nil, predicate);
       `
     },
@@ -743,7 +743,7 @@ foam.CLASS({
       code: function (x, skip, limit, order, predicate) {
         return this.delegate.removeAll_(x, skip, limit, order || this.comparator, predicate);
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         return try self.delegate.removeAll_(x, skip, limit, order ?? self.comparator ?? nil, predicate);
       `
     },
@@ -769,7 +769,7 @@ foam.CLASS({
       code: function select_(x, sink, skip, limit, order, predicate) {
         return this.delegate.select_(x, sink, this.skip_, limit, order, predicate);
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return try delegate.select_(x, sink, skip_, limit, order, predicate)
       */},
     },
@@ -801,7 +801,7 @@ foam.CLASS({
           limit !== undefined ? Math.min(this.limit_, limit) : this.limit_,
           order, predicate);
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return try delegate.select_(
     x, sink, skip,
     min(limit_, limit),

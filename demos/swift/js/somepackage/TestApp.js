@@ -100,7 +100,7 @@ return dvc
   methods: [
     {
       name: 'init',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 DispatchQueue.global(qos: .background).async {
   var i = 1
   Async.aWhile(

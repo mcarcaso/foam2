@@ -89,7 +89,7 @@ foam.CLASS({
           }));
         }
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let message = message!
 do {
   guard let object = message.object as? foam_box_RPCMessage,
@@ -132,7 +132,7 @@ do {
           messageType: message.cls_ && message.cls_.id
         });
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let msg = msg!
 if let _ = msg.object as? foam_box_RPCMessage {
   call(msg)

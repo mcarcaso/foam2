@@ -98,7 +98,7 @@ foam.CLASS({
         return this.SUPER(x, this.adaptTarget(obj));
       },
       javaCode: `return super.put_(x, adaptTarget(obj));`,
-      swiftCode: `return try super.put_(x, adaptTarget(obj))`
+      swiftCode_DELETE: `return try super.put_(x, adaptTarget(obj))`
     },
     {
       name: 'adaptTarget',
@@ -117,7 +117,7 @@ foam.CLASS({
         this.targetProperty.set(target, this.sourceId);
         return target;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         targetProperty.set(target, value: sourceId)
         return target;
       `,

@@ -62,7 +62,7 @@ foam.CLASS({
         ]);
         this.delegate && this.delegate.send(message);
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 let output = msg!.object;
 let logMsg = [
   name,

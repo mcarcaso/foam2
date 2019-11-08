@@ -30,18 +30,18 @@ foam.CLASS({
     {
       name: 'put',
       code: function() { this.value++ },
-      swiftCode: 'value+=1',
+      swiftCode_DELETE: 'value+=1',
       javaCode: 'setValue(this.getValue() + 1);'
     },
     {
       name: 'remove',
       code: function() { this.value-- },
-      swiftCode: 'value-=1',
+      swiftCode_DELETE: 'value-=1',
     },
     {
       name: 'reset',
       code: function() { this.value = 0 },
-      swiftCode: 'value = 0',
+      swiftCode_DELETE: 'value = 0',
     },
     function toString() { return 'COUNT()'; }
   ]
@@ -390,7 +390,7 @@ foam.CLASS({
         }
       ],
       javaCode: 'return false;',
-      swiftCode: 'return false',
+      swiftCode_DELETE: 'return false',
     },
     {
       name: 'toIndex',
@@ -402,13 +402,13 @@ foam.CLASS({
       name: 'toDisjunctiveNormalForm',
       flags: ['js'],
       code: function() { return this },
-      swiftCode: 'return self',
+      swiftCode_DELETE: 'return self',
     },
 
     {
       name: 'partialEval',
       code: function() { return this },
-      swiftCode: 'return self',
+      swiftCode_DELETE: 'return self',
       javaCode: 'return this;'
     },
 
@@ -429,7 +429,7 @@ foam.CLASS({
       name: 'createStatement',
       type: 'String',
       javaCode: 'return "";',
-      swiftCode: 'return "";',
+      swiftCode_DELETE: 'return "";',
     },
     {
       name: 'prepareStatement',
@@ -442,7 +442,7 @@ foam.CLASS({
         }
       ],
       javaCode: '//noop',
-      swiftCode: '//noop'
+      swiftCode_DELETE: '//noop'
     },
     {
       name: 'authorize',
@@ -505,7 +505,7 @@ foam.CLASS({
     {
       name: 'f',
       code: function() { return true; },
-      swiftCode: 'return true',
+      swiftCode_DELETE: 'return true',
       javaCode: 'return true;'
     },
   ]
@@ -814,7 +814,7 @@ foam.CLASS({
         }
         return false;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 for arg in args {
   if arg.f(obj) { return true }
 }
@@ -965,7 +965,7 @@ foam.CLASS({
         }
         return true;
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 for arg in args {
   if !arg.f(obj) { return false }
 }
@@ -1517,7 +1517,7 @@ foam.CLASS({
 
         return rhs ? rhs.indexOf(lhs) !== -1 : false;
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 let lhs = arg1!.f(obj)
 let rhs = arg2!.f(obj)
 if ( rhs == nil ) {
@@ -1656,7 +1656,7 @@ foam.CLASS({
     {
       name: 'f',
       code: function() { return this.value; },
-      swiftCode: `return value`,
+      swiftCode_DELETE: `return value`,
       javaCode: 'return getValue();'
     },
     {
@@ -1729,7 +1729,7 @@ foam.CLASS({
     {
       name: 'f',
       code: function() { return this.value; },
-      swiftCode: 'return value',
+      swiftCode_DELETE: 'return value',
       javaCode: 'return getValue();',
     },
     {
@@ -1843,7 +1843,7 @@ foam.CLASS({
         // First check is so that EQ(Class.PROPERTY, null | undefined) works.
         return ( v1 === undefined && v2 === null ) || foam.util.equals(v1, v2);
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 let v1 = arg1!.f(obj)
 let v2 = arg2!.f(obj)
 return FOAM_utils.equals(v1, v2)
@@ -1908,7 +1908,7 @@ foam.CLASS({
                   v2 !== null ) &&
           ! foam.util.equals(v1, v2);
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 let v1 = arg1!.f(obj)
 let v2 = arg2!.f(obj)
 return !FOAM_utils.equals(v1, v2)
@@ -2394,14 +2394,14 @@ foam.CLASS({
       type: 'Any',
       args: [ { name: 'obj', type: 'Any' } ],
       code: function f(obj) { return this.arg1.f(obj); },
-      swiftCode: `return arg1?.f(obj)`,
+      swiftCode_DELETE: `return arg1?.f(obj)`,
       javaCode: `return getArg1().f(obj);`
     },
 
     {
       name: 'put',
       code: function put(o, sub) { this.delegate.put(this.f(o), sub); },
-      swiftCode: `delegate.put(f(obj)!, sub)`,
+      swiftCode_DELETE: `delegate.put(f(obj)!, sub)`,
       javaCode: 'getDelegate().put(f(obj), sub);'
     },
 
@@ -2791,7 +2791,7 @@ foam.CLASS({
         return -1 * this.arg1.compare(o1, o2);
       },
       javaCode: 'return -1 * getArg1().compare(o1, o2);',
-      swiftCode: 'return -1 * self.arg1!.compare(o1, o2);'
+      swiftCode_DELETE: 'return -1 * self.arg1!.compare(o1, o2);'
     },
     {
       name: 'createStatement',
@@ -3014,7 +3014,7 @@ foam.CLASS({
           this.value = this.arg1.f(obj);
         }
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         let arg1 = self.arg1!
         if !hasOwnProperty("value") || FOAM_utils.compare(value, arg1.f(obj)) < 0 {
           value = arg1.f(obj);
@@ -3387,7 +3387,7 @@ foam.CLASS({
       args: [ { name: 'a', type: 'foam.mlang.order.Comparator' } ],
       type: 'foam.mlang.order.Comparator',
       code: function DESC(a) { return this._unary_("Desc", a); },
-      swiftCode: `return Desc_create(["arg1": a])`,
+      swiftCode_DELETE: `return Desc_create(["arg1": a])`,
     },
     function THEN_BY(a, b) { return this.ThenBy.create({head: a, tail: b}); },
 

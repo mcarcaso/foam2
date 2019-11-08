@@ -15,7 +15,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftCode2',
+      name: 'swiftCode',
       value: 'fatalError()'
     },
   ],
@@ -31,7 +31,7 @@ foam.CLASS({
         type: this.swiftType,
         name: this.name,
         args: this.args.map(a => a.toSwiftArg()),
-        body: this.swiftCode2
+        body: this.swiftCode
       });
 
       return cls;

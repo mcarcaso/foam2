@@ -62,7 +62,7 @@ return self.LookupBox_create([
           name: this.name.substring(0, this.name.lastIndexOf('/'))
         }, this);
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 var name = ""
 if let index = self.name.range(of: "/", options: .backwards)?.lowerBound {
   name = String(self.name[..<index])
@@ -78,7 +78,7 @@ return ownClassInfo().create(args: [
       code: function getBaseName() {
         return this.name.substring(this.name.lastIndexOf('/') + 1);
       },
-      swiftCode: function getBaseName() {/*
+      swiftCode_DELETE: function getBaseName() {/*
 if let index = name.range(of: "/", options: .backwards)?.lowerBound {
   return String(name[name.index(after: index)..<name.endIndex])
 }

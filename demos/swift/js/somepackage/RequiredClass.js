@@ -14,7 +14,7 @@ foam.CLASS({
     {
       name: 'sayHi',
       code: function() {},
-      swiftCode: 'NSLog("HELLO %@", firstName as? String ?? "FAILED")',
+      swiftCode_DELETE: 'NSLog("HELLO %@", firstName as? String ?? "FAILED")',
     },
   ],
 });

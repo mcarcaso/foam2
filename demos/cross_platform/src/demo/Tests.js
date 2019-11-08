@@ -44,7 +44,7 @@ foam.CLASS({
   methods: [
     {
       name: 'init',
-      swiftCode2: `
+      swiftCode: `
         print("Tests initialized!");
       `,
       androidCode: `

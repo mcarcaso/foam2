@@ -17,7 +17,7 @@ foam.CLASS({
   methods: [
     {
       name: 'select_',
-      swiftCode: `
+      swiftCode_DELETE: `
 usleep(UInt32(delayMs * 1000))
 return try super.select_(x, sink, skip, limit, order, predicate)
       `,
@@ -32,7 +32,7 @@ return super.select_(x, sink, skip, limit, order, predicate);
     },
     {
       name: 'put_',
-      swiftCode: `
+      swiftCode_DELETE: `
 usleep(UInt32(delayMs * 1000))
 return try super.put_(x, obj)
       `,
@@ -47,7 +47,7 @@ return super.put_(x, obj);
     },
     {
       name: 'remove_',
-      swiftCode: `
+      swiftCode_DELETE: `
 usleep(UInt32(delayMs * 1000))
 return try super.remove_(x, obj)
       `,
@@ -62,7 +62,7 @@ return super.remove_(x, obj);
     },
     {
       name: 'removeAll_',
-      swiftCode: `
+      swiftCode_DELETE: `
 usleep(UInt32(delayMs * 1000))
 return try super.removeAll_(x)
       `,
@@ -77,7 +77,7 @@ super.removeAll_(x, skip, limit, order, predicate);
     },
     {
       name: 'find_',
-      swiftCode: `
+      swiftCode_DELETE: `
 usleep(UInt32(delayMs * 1000))
 return try super.find_(x, id)
       `,

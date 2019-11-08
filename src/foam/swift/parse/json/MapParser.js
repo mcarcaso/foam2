@@ -24,7 +24,7 @@ foam.CLASS({
     {
       name: 'delegate',
       swiftFactory: function() {/*
-return 
+return
   Seq1_create(["index": 2, "parsers": [
     Whitespace_create(),
     Literal_create(["string": "{"]),
@@ -53,7 +53,7 @@ return
   methods: [
     {
       name: 'parse',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let ps = super.parse(ps, x)
 if ps != nil {
   let values = ps!.value() as! [Any?]

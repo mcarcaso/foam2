@@ -140,7 +140,7 @@ return t
           return roundLength - elapsed;
         });
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 elapsed$ = ExpressionSlot([
   "args": [seconds$, roundStart$],
   "code": { (args: [Any?]) -> Any? in
@@ -169,7 +169,7 @@ remaining$ = ExpressionSlot([
             t.roundStart = t.seconds;
             t.action = 'Warmup';
           },
-          swiftCode: function() {/*
+          swiftCode_DELETE: function() {/*
 t.roundLength = t.setupTime
 t.roundStart = t.seconds
 t.action = "Warmup"
@@ -181,7 +181,7 @@ t.action = "Warmup"
             t.state = t.Work.create();
             t.state.start(t);
           },
-          swiftCode: function() {/*
+          swiftCode_DELETE: function() {/*
 t.state = t.Work_create();
 t.state.start(t);
           */},
@@ -205,7 +205,7 @@ t.state.start(t);
             t.roundStart = t.seconds;
             t.action = this.action_string;
           },
-          swiftCode: function() {/*
+          swiftCode_DELETE: function() {/*
 t.roundLength = t.workTime
 t.roundStart = t.seconds
 t.action = type(of: self).action_string
@@ -224,7 +224,7 @@ t.action = type(of: self).action_string
 
             t.state.start(t);
           },
-          swiftCode: function() {/*
+          swiftCode_DELETE: function() {/*
 t.currentRound += 1
 if t.currentRound >= t.rounds + 1 {
   t.state = t.Finish_create()
@@ -254,7 +254,7 @@ t.state.start(t);
             t.roundStart = t.seconds;
             t.action = this.action_string;
           },
-          swiftCode: function() {/*
+          swiftCode_DELETE: function() {/*
 t.roundLength = t.restTime
 t.roundStart = t.seconds
 t.action = type(of: self).action_string
@@ -266,7 +266,7 @@ t.action = type(of: self).action_string
             t.state = t.Work.create();
             t.state.start(t);
           },
-          swiftCode: function() {/*
+          swiftCode_DELETE: function() {/*
 t.state = t.Work_create();
 t.state.start(t);
           */},
@@ -291,7 +291,7 @@ t.state.start(t);
             t.roundStart = t.seconds;
             t.stop();
           },
-          swiftCode: function() {/*
+          swiftCode_DELETE: function() {/*
 t.action = type(of: self).action_string
 t.roundLength = 0;
 t.roundStart = t.seconds;
@@ -301,7 +301,7 @@ t.stop()
         {
           name: 'next',
           code: function(t) {},
-          swiftCode: '// Finished!',
+          swiftCode_DELETE: '// Finished!',
         },
       ]
     }
@@ -314,7 +314,7 @@ t.stop()
         this.timer.start();
         this.state.start(this);
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 timer.start()
 state.start(self)
       */}
@@ -322,7 +322,7 @@ state.start(self)
     {
       name: 'stop',
       code: function() { this.timer.stop(); },
-      swiftCode: 'timer.stop()',
+      swiftCode_DELETE: 'timer.stop()',
     },
     {
       name: 'reset',
@@ -333,7 +333,7 @@ state.start(self)
         this.state = undefined;
         this.action = undefined;
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 stop();
 clearProperty("timer")
 clearProperty("currentRound")

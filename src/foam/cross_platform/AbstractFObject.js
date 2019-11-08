@@ -40,7 +40,7 @@ foam.CLASS({
         Overwritten by any class that cares to. This is called when an object is
         constructed.
       `,
-      swiftCode2: `// NOOP`,
+      swiftCode: `// NOOP`,
       androidCode: `// NOOP`
     },
     {

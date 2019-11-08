@@ -15,11 +15,11 @@ foam.CLASS({
   methods: [
     {
       name: 'isInstance',
-      swiftCode: `return o is Date`,
+      swiftCode_DELETE: `return o is Date`,
     },
     {
       name: 'compare',
-      swiftCode: `
+      swiftCode_DELETE: `
         let a = o1 as! Date
         guard let b = o2 as? Date else { return 1 }
         return FOAM_utils.compare(a.timeIntervalSince1970, b.timeIntervalSince1970)

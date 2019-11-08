@@ -114,7 +114,7 @@ foam.CLASS({
         });
       },
       swiftSynchronized: true,
-      swiftCode: `
+      swiftCode_DELETE: `
         if !property_.hasOwnProperty(obj) {
           property_.set(obj, value: value_)
           value_ += 1

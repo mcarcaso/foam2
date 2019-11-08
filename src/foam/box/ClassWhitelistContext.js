@@ -68,7 +68,7 @@ return w
         }
         return this.__context__.lookup.call(X, id);
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let id = id!
 if whitelist.contains(id) {
   throw FoamError("Class " + id + " is not whitelisted.")

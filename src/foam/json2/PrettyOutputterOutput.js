@@ -41,7 +41,7 @@ foam.CLASS({
           this.needsNewLine = false
         }
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         if needsNewLine {
           delegate.out("\\n")
           delegate.out(String(repeating: "  ", count: indent))
@@ -57,7 +57,7 @@ foam.CLASS({
         this.indent += 1
         this.needsNewLine = true
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         e()
         delegate.startObj()
         indent += 1
@@ -72,7 +72,7 @@ foam.CLASS({
         this.e()
         this.delegate.endObj()
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         indent -= 1
         needsNewLine = true
         e()
@@ -87,7 +87,7 @@ foam.CLASS({
         this.indent += 1
         this.needsNewLine = true
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         e()
         delegate.startArray()
         indent += 1
@@ -102,7 +102,7 @@ foam.CLASS({
         this.e()
         this.delegate.endArray()
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         indent -= 1
         needsNewLine = true
         e()
@@ -112,7 +112,7 @@ foam.CLASS({
     {
       name: 'keySep',
       code: function() { this.out(": ") },
-      swiftCode: `out(": ")`,
+      swiftCode_DELETE: `out(": ")`,
     },
     {
       name: 'out',
@@ -120,7 +120,7 @@ foam.CLASS({
         this.e()
         this.delegate.out(s)
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         e()
         delegate.out(s)
       `,
@@ -131,7 +131,7 @@ foam.CLASS({
         this.delegate.comma()
         this.needsNewLine = true
       },
-      swiftCode: `
+      swiftCode_DELETE: `
         delegate.comma()
         needsNewLine = true
       `,

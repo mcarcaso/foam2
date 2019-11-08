@@ -61,7 +61,7 @@ return data?.ownClassInfo().label ?? self.ownClassInfo().label
   methods: [
     {
       name: 'init',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 onDetach(of$.sub(listener: { (_, _) in
   self.reset()
 }))
@@ -69,7 +69,7 @@ onDetach(of$.sub(listener: { (_, _) in
     },
     {
       name: 'reset',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 self.actionViews = [:]
 self.propertyViews = [:]
 for (_, sub) in subViewSubscriptions {
@@ -80,7 +80,7 @@ subViewSubscriptions = [:]
     },
     {
       name: 'initAllViews',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 var properties: [PropertyInfo] = []
 var actions: [ActionInfo] = []
 if let fobj = data as AnyObject as? foam_core_FObject {
@@ -185,7 +185,7 @@ if let bottom: UIView = actionViews.first ?? labelViews.last {
         }
       ],
       swiftType: 'foam_core_FObject?',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 if let c = config[a.name] as? [String:Any?],
     let vf = c["viewFactory"] as? (Context) -> foam_core_FObject? {
   return vf(__context__)
@@ -194,7 +194,7 @@ return a.viewFactory(x: __context__)
       */},
     },
   ],
-  swiftCode: function() {/*
+  swiftCode_DELETE: function() {/*
 public subscript(key: String) -> foam_core_FObject? {
   guard let of = self.of else { return nil }
   if let v = self.propertyViews[key] ?? self.actionViews[key] {

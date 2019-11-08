@@ -38,19 +38,19 @@ return newValue as! [Character]
   methods: [
     {
       name: 'head',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return str[pos]
       */},
     },
     {
       name: 'valid',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return pos < str.count
       */},
     },
     {
       name: 'tail',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 if tail_ == nil {
   tail_ = foam_swift_parse_StringPStream([
     "str": str,
@@ -62,7 +62,7 @@ return tail_!
     },
     {
       name: 'substring',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let startIndex = pos
 let endIndex = (end as! foam_swift_parse_StringPStream).pos
 return String(str[startIndex..<endIndex])
@@ -70,13 +70,13 @@ return String(str[startIndex..<endIndex])
     },
     {
       name: 'value',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return value_
       */},
     },
     {
       name: 'setValue',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let ps = foam_swift_parse_StringPStream([
   "str": str,
   "pos": pos,

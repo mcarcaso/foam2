@@ -31,7 +31,7 @@ foam.CLASS({
       code: function(m) {
         throw 'unimplemented';
       },
-      swiftCode: 'throw FoamError("unimplemented")',
+      swiftCode_DELETE: 'throw FoamError("unimplemented")',
       javaCode: `
 try {
   javax.servlet.http.HttpServletResponse response = (javax.servlet.http.HttpServletResponse)getX().get("httpResponse");

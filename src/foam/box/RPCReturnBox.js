@@ -84,7 +84,7 @@ foam.CLASS({
 setMessage(msg);
 getSemaphore().release();
 `,
-      swiftCode: `
+      swiftCode_DELETE: `
 let msg = msg!
 if let o = msg.object as? foam_box_RPCReturnMessage {
   promise.set(o.data)

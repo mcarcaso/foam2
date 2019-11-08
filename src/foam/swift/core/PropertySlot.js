@@ -22,19 +22,19 @@ foam.CLASS({
   methods: [
     {
       name: 'swiftGet',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return object?.get(key: propertyName) ?? nil
       */},
     },
     {
       name: 'swiftSet',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 object?.set(key: propertyName, value: value)
       */},
     },
     {
       name: 'swiftSub',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return object?.sub(topics: ["propertyChange", propertyName], listener: listener) ?? Subscription(detach: {})
       */},
     },

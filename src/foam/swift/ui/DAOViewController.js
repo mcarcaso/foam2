@@ -92,7 +92,7 @@ newValue.tableView.delegate = tableViewDelegate
     {
       name: 'onCreate',
       swiftAnnotations: ['@objc'],
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 createVc.clearProperty("data")
 (stack as? UINavigationController)?.pushViewController(createVc.vc, animated: true)
       */}

@@ -38,7 +38,7 @@ newValue.setTitle(self.action?.label, for: .normal)
   methods: [
     {
       name: 'onButtonClick',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 if dismissKeyboardOnTap {
   UIApplication.shared.keyWindow?.rootViewController?.view.endEditing(true)
 }

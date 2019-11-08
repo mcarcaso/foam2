@@ -68,7 +68,7 @@ foam.CLASS({
       missingMethods.forEach(function(m) {
         if (m.getSwiftOverride(parentCls)) return;
         var method = foam.core.Method.create(m);
-        method.swiftCode = m.swiftCode;
+        method.swiftCode_DELETE = m.swiftCode_DELETE;
         method.writeToSwiftClass_(cls, parentCls);
       });
 

@@ -50,7 +50,7 @@ if let oldValue = oldValue as? foam_box_SkeletonBox {
   methods: [
     {
       name: 'init',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 self.onDetach(Subscription(detach: {
   if self.hasOwnProperty("registrySkeleton") {
     (self.registrySkeleton as? foam_core_FObject)?.clearProperty("data")
@@ -61,7 +61,7 @@ self.onDetach(Subscription(detach: {
     },
     {
       name: 'send',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let msg = msg!
 if let object = msg.object as? foam_box_SubBoxMessage {
   let name = object.name

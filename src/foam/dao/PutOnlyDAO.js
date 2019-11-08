@@ -13,7 +13,7 @@ foam.CLASS({
       {
         name: 'find_',
         javaCode: `throw new UnsupportedOperationException("Cannot find from PutOnlyDAO");`,
-        swiftCode: `throw FoamError("Cannot find from PutOnlyDAO")`,
+        swiftCode_DELETE: `throw FoamError("Cannot find from PutOnlyDAO")`,
         code: function find_(x, obj) {
           return Promise.reject('Cannot find from PutOnlyDAO');
         }
@@ -21,7 +21,7 @@ foam.CLASS({
       {
         name: 'select_',
         javaCode: `throw new UnsupportedOperationException("Cannot select from PutOnlyDAO");`,
-        swiftCode: `throw FoamError("Cannot select from PutOnlyDAO")`,
+        swiftCode_DELETE: `throw FoamError("Cannot select from PutOnlyDAO")`,
         code: function select_(x, obj) {
           return Promise.reject('Cannot select from PutOnlyDAO');
         }
@@ -29,7 +29,7 @@ foam.CLASS({
       {
         name: 'remove_',
         javaCode: `throw new UnsupportedOperationException("Cannot remove from PutOnlyDAO");`,
-        swiftCode: `throw FoamError("Cannot remove from PutOnlyDAO")`,
+        swiftCode_DELETE: `throw FoamError("Cannot remove from PutOnlyDAO")`,
         code: function remove_() {
           return Promise.reject('Cannot remove from PutOnlyDAO');
         }
@@ -37,7 +37,7 @@ foam.CLASS({
       {
         name: 'cmd_',
         javaCode: `throw new UnsupportedOperationException("Cannot cmd from PutOnlyDAO");`,
-        swiftCode: `throw FoamError("Cannot cmd from PutOnlyDAO")`,
+        swiftCode_DELETE: `throw FoamError("Cannot cmd from PutOnlyDAO")`,
         code: function cmd_() {
           return Promise.reject('Cannot cmd from PutOnlyDAO');
         }
@@ -45,11 +45,10 @@ foam.CLASS({
       {
         name: 'removeAll',
         javaCode: `throw new UnsupportedOperationException("Cannot removeAll from PutOnlyDAO");`,
-        swiftCode: `throw FoamError("Cannot removeAll from PutOnlyDAO")`,
+        swiftCode_DELETE: `throw FoamError("Cannot removeAll from PutOnlyDAO")`,
         code: function removeAll_() {
           return Promise.reject('Cannot removeAll from PutOnlyDAO');
         }
       }
     ]
   });
-  

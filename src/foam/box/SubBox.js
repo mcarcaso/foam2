@@ -41,7 +41,7 @@ foam.CLASS({
         });
         this.delegate.send(msg);
       },
-      swiftCode: `
+      swiftCode_DELETE: `
 msg?.object = SubBoxMessage_create([
   "name": name,
   "object": msg?.object

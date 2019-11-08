@@ -52,7 +52,7 @@ foam.CLASS({
           name: 'socket',
         },
       ],
-      swiftCode: `
+      swiftCode_DELETE: `
 let X = creationContext.createSubContext(args: [
   "returnBox": RawSocketBox_create(["socket": socket])
 ])
@@ -92,7 +92,7 @@ _ = socket.disconnect.sub(listener: { s, _ in
         },
       ],
       swiftType: 'Future<FObject>',
-      swiftCode: `
+      swiftCode_DELETE: `
 if let fut = futureMap[address] { return fut }
 
 let fut = Future<FObject>()

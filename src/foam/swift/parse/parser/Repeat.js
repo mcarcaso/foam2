@@ -29,7 +29,7 @@ foam.CLASS({
   methods: [
     {
       name: 'parse',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 var ps = ps!
 var values: [Any?] = []
 var result: foam_swift_parse_PStream?

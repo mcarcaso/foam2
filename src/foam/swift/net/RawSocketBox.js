@@ -50,7 +50,7 @@ foam.CLASS({
       name: 'JSONOutputter',
       extends: 'foam.swift.parse.json.output.Outputter',
       requires: [ 'foam.box.ReturnBox' ],
-      imports: [ 
+      imports: [
         {
           name: 'me',
           key: 'me',
@@ -60,7 +60,7 @@ foam.CLASS({
       methods: [
         {
           name: 'output',
-          swiftCode: `
+          swiftCode_DELETE: `
 if data as AnyObject === me as AnyObject {
   return super.output(&out, ReturnBox_create())
 }
@@ -74,7 +74,7 @@ return super.output(&out, data)
   methods: [
     {
       name: 'send',
-      swiftCode: `
+      swiftCode_DELETE: `
 let msg = msg!
 let replyBox = msg.attributes["replyBox"] as? Box
 if replyBox != nil {

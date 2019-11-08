@@ -11,7 +11,7 @@ foam.CLASS({
   methods: [
     {
       name: 'parse',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let start = ps!
 let ps = super.parse(ps, x)
 if ps != nil {
@@ -22,4 +22,3 @@ return ps
     },
   ]
 });
-

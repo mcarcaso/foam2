@@ -15,11 +15,11 @@ foam.CLASS({
   methods: [
     {
       name: 'isInstance',
-      swiftCode: `return o is foam_core_FObject`,
+      swiftCode_DELETE: `return o is foam_core_FObject`,
     },
     {
       name: 'compare',
-      swiftCode: `
+      swiftCode_DELETE: `
         let a = o1 as! foam_core_FObject
         guard let b = o2 as? foam_core_FObject else { return 1 }
         return a.compareTo(b)

@@ -39,13 +39,13 @@ foam.CLASS({
             type: foam.json2.Outputter.model_.swiftName + '?'
           }),
         ],
-        body: this.swiftCode(),
+        body: this.swiftCode_DELETE(),
       }));
     }
   ],
   templates: [
     {
-      name: 'swiftCode',
+      name: 'swiftCode_DELETE',
       template: `
 let out = out!
 let outputter = outputter!

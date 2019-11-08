@@ -33,7 +33,7 @@ foam.CLASS({
   methods: [
     {
       name: 'init',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 onDetach(parentSlot.swiftSub(parentChange_listener))
 parentChange()
       */},
@@ -41,7 +41,7 @@ parentChange()
 
     {
       name: 'swiftGet',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 if let o = parentSlot.swiftGet() as? foam_core_FObject { return o.get(key: name) }
 return nil
       */},
@@ -49,14 +49,14 @@ return nil
 
     {
       name: 'swiftSet',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 if let o = parentSlot.swiftGet() as? foam_core_FObject { o.set(key: name, value: value) }
       */},
     },
 
     {
       name: 'swiftSub',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return sub(topics: ["propertyChange", "value"], listener: listener)
       */},
     },
@@ -66,7 +66,7 @@ return sub(topics: ["propertyChange", "value"], listener: listener)
   listeners: [
     {
       name: 'parentChange',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 prevSub?.detach()
 prevSub = nil
 if let o = parentSlot.swiftGet() as? foam_core_FObject {
@@ -79,7 +79,7 @@ valueChange()
 
     {
       name: 'valueChange',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 if let parentValue = parentSlot.swiftGet() as? foam_core_FObject {
   value = parentValue.get(key: name)
 } else {

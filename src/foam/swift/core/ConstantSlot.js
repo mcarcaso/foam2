@@ -16,7 +16,7 @@ foam.CLASS({
   methods: [
     {
       name: 'swiftGet',
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 return value
       */},
     },

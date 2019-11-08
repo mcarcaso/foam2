@@ -197,7 +197,7 @@ protected class ResponseThread implements Runnable {
           replyBox && replyBox.send(foam.box.Message.create({ object: foam.box.HTTPException.create({ response: r }) }));
         });
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let msg = msg!
 let replyBox = msg.attributes["replyBox"] as? foam_box_Box
 msg.attributes["replyBox"] = HTTPReplyBox_create()

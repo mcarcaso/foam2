@@ -109,7 +109,7 @@ onDAOUpdate()
     {
       name: 'onDAOUpdate',
       isMerged: true,
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let sink = try? dao!.select(ArraySink_create()) as? foam_dao_ArraySink
 daoContents = sink?.array ?? []
 tableView?.reloadData()
@@ -118,7 +118,7 @@ tableView?.reloadData()
   ],
   methods: [
   ],
-  swiftCode: function() {/*
+  swiftCode_DELETE: function() {/*
 public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
   return daoContents.count
 }

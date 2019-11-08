@@ -15,13 +15,13 @@ foam.CLASS({
   methods: [
     {
       name: 'isInstance',
-      swiftCode: `
+      swiftCode_DELETE: `
         return o is Bool
       `,
     },
     {
       name: 'compare',
-      swiftCode: `
+      swiftCode_DELETE: `
         let a = o1 as! Bool
         guard let b = o2 as? Bool else { return 1 }
         return a ? (b ? 0 : 1) : (b ? -1 : 0)

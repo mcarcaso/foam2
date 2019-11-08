@@ -62,7 +62,7 @@ return x.create(foam_swift_parse_json_output_Outputter.self, args: [
           name: 'data',
         },
       ],
-      swiftCode: `
+      swiftCode_DELETE: `
 let out = out!
 if let data = data as? JSONOutputter {
   data.toJSON(outputter: self, out: out)
@@ -125,7 +125,7 @@ if let data = data as? JSONOutputter {
           name: 'data',
         },
       ],
-      swiftCode: `
+      swiftCode_DELETE: `
 let data = data!
 let out = out!
 let info = data.ownClassInfo()
@@ -155,7 +155,7 @@ _ = out.end()
         },
       ],
       type: 'String',
-      swiftCode: `
+      swiftCode_DELETE: `
 let s = outputterFactory(__subContext__)
 output(s, data)
 return s.out.output()

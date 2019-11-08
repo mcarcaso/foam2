@@ -128,7 +128,7 @@ return newValue as! Int
         if ( arguments.length === 2 ) return s * a;
         return a + (1 + s) * (b-a)/2;
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 let s = sin(Float(time)/1000*frequency*Float.pi*2)
 if a == nil { return s }
 if b == nil { return s * a! }
@@ -143,7 +143,7 @@ return a! + (1 + s) * (b!-a!)/2;
       help:  'Start the timer.',
       isEnabled: function(isStarted) { return ! isStarted; },
       code:      function() { this.startTime_ = Date.now(); this.isStarted = true; this.tick(); },
-      swiftCode: `
+      swiftCode_DELETE: `
         startTime_ = Int(Date().timeIntervalSince1970 * Double(1000))
         isStarted = true
         tick()
@@ -159,7 +159,7 @@ return a! + (1 + s) * (b!-a!)/2;
         this.minute = this.time /   60000 % 60 << 0;
         this.hour   = this.time / 3600000 % 24 << 0;
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 i+=1
 time  += Int(Float(interval) * timeWarp)
 second = time /    1000 % 60 << 0;
@@ -172,7 +172,7 @@ hour   = time / 3600000 % 24 << 0;
       help:  'Stop the timer.',
       isEnabled: function(isStarted) { return isStarted; },
       code:      function() { this.isStarted = false; },
-      swiftCode: 'isStarted = false'
+      swiftCode_DELETE: 'isStarted = false'
     }
   ],
 
@@ -189,7 +189,7 @@ hour   = time / 3600000 % 24 << 0;
         this.step();
         this.tick();
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 if !isStarted { return }
 
 let prevTime = startTime_

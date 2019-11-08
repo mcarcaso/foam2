@@ -50,7 +50,7 @@ foam.CLASS({
         this.record[id] = id;
         return this.__context__.lookup.call(X, id, opt_suppress);
       },
-      swiftCode: function() {/*
+      swiftCode_DELETE: function() {/*
 record[id] = id;
 return X!.lookup(id)
       */}

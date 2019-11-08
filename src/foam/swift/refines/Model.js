@@ -55,7 +55,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftCode',
+      name: 'swiftCode_DELETE',
       section: 'swiftProperties',
     },
   ],

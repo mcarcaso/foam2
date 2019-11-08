@@ -11,7 +11,7 @@ foam.CLASS({
   flags: ['swift'],
   properties: [
     {
-      name: 'swiftCode',
+      name: 'swiftCode_DELETE',
       getter: function() {
         return `
 if !self.delegate!.hasOwnProperty("${this.property}") { self.delegate!.${this.property}Sem.wait() }

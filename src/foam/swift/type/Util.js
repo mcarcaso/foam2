@@ -91,7 +91,7 @@ foam.CLASS({
         { name: 'o' },
       ],
       type: 'foam.swift.type.Type',
-      swiftCode: `
+      swiftCode_DELETE: `
         if tNull.isInstance(o) { return tNull }
         if tBoolean.isInstance(o) { return tBoolean }
         if tString.isInstance(o) { return tString }
@@ -110,7 +110,7 @@ foam.CLASS({
         { name: 'b' },
       ],
       swiftType: 'Int',
-      swiftCode: `
+      swiftCode_DELETE: `
         let aType = typeOf(a)!
         let bType = typeOf(b)!
         return aType.ordinal > bType.ordinal ? 1 :
