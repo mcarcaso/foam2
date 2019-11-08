@@ -33,13 +33,13 @@ foam.CLASS({
     {
       swiftType: '[String:Future<FObject>]',
       name: 'futureMap',
-      swiftFactory: `return [:]`,
+      swiftFactory_DELETE: `return [:]`,
     },
     {
       class: 'FObjectProperty',
       of: 'foam.swift.parse.json.FObjectParser',
       name: 'parser',
-      swiftFactory: `return FObjectParser_create()`,
+      swiftFactory_DELETE: `return FObjectParser_create()`,
     }
   ],
 

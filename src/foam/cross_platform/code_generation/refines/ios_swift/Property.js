@@ -34,6 +34,10 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
+      name: 'swiftFactory'
+    },
+    {
+      class: 'StringProperty',
       name: 'swiftPreSet'
     },
     {
@@ -109,13 +113,12 @@ foam.CLASS({
       } else if ( this.swiftFactory ) {
         var factoryName = this.name + '_factory_';
         cls.method({
-          visibility: 'protected',
-          type: this.androidType,
+          type: this.swiftType,
           name: factoryName,
-          body: this.androidFactory
+          body: this.swiftFactory
         });
         getter.body = `
-          if ( ! ${this.crossPlatformIsSetVarName} ) {
+          if !${this.crossPlatformIsSetVarName} {
             setProperty("${this.name}", ${factoryName}());
           }
           return ${this.crossPlatformPrivateVarName};

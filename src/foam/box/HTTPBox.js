@@ -102,7 +102,7 @@ foam.CLASS({
             this.creationContext
         });
       },
-      swiftFactory: 'return FObjectParser_create()',
+      swiftFactory_DELETE: 'return FObjectParser_create()',
     },
     {
       class: 'FObjectProperty',
@@ -110,7 +110,7 @@ foam.CLASS({
       swiftType: 'foam_swift_parse_json_output_Outputter',
       name: 'outputter',
       generateJava: false,
-      swiftFactory: 'return SwiftOutputter_create()',
+      swiftFactory_DELETE: 'return SwiftOutputter_create()',
       factory: function() {
         return this.Outputter.create().copyFrom(foam.json.Network);
       }

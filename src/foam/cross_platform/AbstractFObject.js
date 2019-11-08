@@ -17,13 +17,16 @@ foam.CLASS({
       androidFactory: `
         return ListenerList_create().build();
       `,
+      swiftFactory: `
+        return ListenerList_create().build();
+      `,
       androidSetter: `
         listeners___isSet_ = true;
         listeners___ = (foam.cross_platform.ListenerList) value;
       `,
       swiftSetter: `
         listeners___isSet_ = true;
-        listeners___ = value as! foam_cross_platform_ListenerList;
+        listeners___ = value as! foam_cross_platform_ListenerList?;
       `
     },
     {

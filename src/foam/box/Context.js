@@ -66,7 +66,7 @@ foam.CLASS({
           }, this);
         }
       },
-      swiftFactory: `
+      swiftFactory_DELETE: `
 return __context__.lookup("foam.swift.net.SocketService")!.create(args: [
   "delegate$": registry$,
 ], x: __subContext__)
@@ -89,7 +89,7 @@ return __context__.lookup("foam.swift.net.SocketService")!.create(args: [
       factory: function() {
         return this.BoxRegistryBox.create();
       },
-      swiftFactory: 'return BoxRegistryBox_create()',
+      swiftFactory_DELETE: 'return BoxRegistryBox_create()',
     },
     {
       class: 'FObjectProperty',
@@ -105,7 +105,7 @@ return __context__.lookup("foam.swift.net.SocketService")!.create(args: [
       class: 'StringProperty',
       name: 'myname',
       hidden: true,
-      swiftFactory:
+      swiftFactory_DELETE:
           'return "/com/foamdev/anonymous/" + UUID().uuidString',
       factory: function() {
         return foam.isServer ?
@@ -122,7 +122,7 @@ return __context__.lookup("foam.swift.net.SocketService")!.create(args: [
         me.delegate = this.registry;
         return me;
       },
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
         let me = NamedBox_create(["name": self.myname])
         me.delegate = self.registry!
         return me
@@ -153,7 +153,7 @@ return __context__.lookup("foam.swift.net.SocketService")!.create(args: [
           whitelist: this.classWhitelist
         }, this).__subContext__;
       },
-      swiftFactory: `
+      swiftFactory_DELETE: `
 return ClassWhitelistContext_create([
   "whitelist$": classWhitelist$,
 ]).__subContext__

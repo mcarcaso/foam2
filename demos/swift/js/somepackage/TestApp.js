@@ -19,7 +19,7 @@ foam.CLASS({
     {
       swiftType: 'UINavigationController',
       name: 'stack',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return UINavigationController(rootViewController: daoController.vc)
       */},
     },
@@ -27,7 +27,7 @@ return UINavigationController(rootViewController: daoController.vc)
       class: 'foam.dao.DAOProperty',
       of: 'somepackage.Test',
       name: 'dao',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return ArrayDAO_create([
   "of": somepackage_Test.classInfo(),
 ])
@@ -38,7 +38,7 @@ return ArrayDAO_create([
       of: 'foam.swift.ui.DAOViewController',
       required: true,
       name: 'daoController',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 let x = __subContext__
 let dvc = DAOViewController_create([
   "dao$": dao$,

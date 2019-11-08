@@ -16,7 +16,7 @@ foam.CLASS({
     {
       name: 'view',
       swiftType: 'UITextField',
-      swiftFactory: 'return UITextField()',
+      swiftFactory_DELETE: 'return UITextField()',
       swiftPostSet_DELETE: function() {/*
 let updateTextField: Listener = { [weak self] _, _ in
   if self == nil { return }

@@ -37,7 +37,7 @@ foam.CLASS({
       of: 'foam.swift.ui.DAOTableViewSource',
       required: true,
       name: 'dataSource',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 let dataSource = DAOTableViewSource_create([
   "dao$": self.dao$,
 ])
@@ -48,7 +48,7 @@ return dataSource
       class: 'FObjectProperty',
       of: 'foam.swift.ui.DAOUITableViewDelegate',
       name: 'tableViewDelegate',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return DAOUITableViewDelegate_create([
   "dataSource$": dataSource$,
 ])
@@ -59,7 +59,7 @@ return DAOUITableViewDelegate_create([
       of: 'foam.swift.ui.DAOCreateViewController',
       required: true,
       name: 'createVc',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return DAOCreateViewController_create([
   "dao": dao,
 ])
@@ -68,7 +68,7 @@ return DAOCreateViewController_create([
     {
       swiftType: 'UITableViewController',
       name: 'vc',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 let tvc = UITableViewController()
 tvc.navigationItem.rightBarButtonItem = UIBarButtonItem(
     barButtonSystemItem: .add,

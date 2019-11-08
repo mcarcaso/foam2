@@ -11,8 +11,8 @@ foam.CLASS({
   properties: [
     {
       name: 'view',
-      swiftFactory: function() {/*
-let t = UITextField() 
+      swiftFactory_DELETE: function() {/*
+let t = UITextField()
 t.keyboardType = .numberPad
 return t
       */},

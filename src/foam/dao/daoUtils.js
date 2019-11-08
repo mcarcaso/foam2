@@ -38,7 +38,7 @@ foam.CLASS({
       postSet: function(old, nu) {
         if ( old ) this.on.reset.pub();
       },
-      swiftFactory: 'return NullDAO_create()',
+      swiftFactory_DELETE: 'return NullDAO_create()',
       swiftPostSet_DELETE: `
 if let oldValue = oldValue as? foam_dao_AbstractDAO {
   _ = oldValue.on["reset"].pub()

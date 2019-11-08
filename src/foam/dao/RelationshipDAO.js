@@ -56,7 +56,7 @@ foam.CLASS({
         return this.Eq.create({ arg1: this.targetProperty, arg2: this.sourceId });
       },
       javaFactory: 'return foam.mlang.MLang.EQ(getTargetProperty(), getSourceId());',
-      swiftFactory: `
+      swiftFactory_DELETE: `
         return Eq_create([
           "arg1": self.targetProperty,
           "arg2": self.sourceId
@@ -86,7 +86,7 @@ foam.CLASS({
         throw e;
       }
       `,
-      swiftFactory: `return __context__[targetDAOKey] as! foam_dao_DAO`,
+      swiftFactory_DELETE: `return __context__[targetDAOKey] as! foam_dao_DAO`,
     }
   ],
 

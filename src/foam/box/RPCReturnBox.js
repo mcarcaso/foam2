@@ -36,7 +36,7 @@ foam.CLASS({
         }.bind(this));
       },
       swiftType: 'Future<Any?>',
-      swiftFactory: 'return Future()'
+      swiftFactory_DELETE: 'return Future()'
     },
     {
       name: 'resolve_'

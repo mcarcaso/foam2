@@ -73,7 +73,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftFactory'
+      name: 'swiftFactory_DELETE'
     },
     {
       class: 'StringProperty',
@@ -258,12 +258,12 @@ foam.CLASS({
           setter: this.swiftSlotSetter(),
         }));
       }
-      if (this.swiftFactory) {
+      if (this.swiftFactory_DELETE) {
         cls.methods.push(this.Method.create({
           visibility: 'private',
           name: this.swiftFactoryName,
           returnType: this.swiftType,
-          body: this.swiftFactory,
+          body: this.swiftFactory_DELETE,
         }));
       }
       cls.methods.push(this.Method.create({
@@ -349,7 +349,7 @@ self.set(key: "<%=this.name%>", value: value)
 if <%=this.swiftInitedName%> {
   return <%=this.swiftValueName%><% if ( this.swiftType != this.swiftValueType ) { %>!<% } %>
 }
-<% if ( this.swiftFactory ) { %>
+<% if ( this.swiftFactory_DELETE ) { %>
 self.set(key: "<%=this.name%>", value: <%=this.swiftFactoryName%>())
 return <%=this.swiftValueName%><% if ( foam.swift.requiresCast(this.swiftType) ) { %>!<% } %>
 <% } else if ( this.swiftExpression ) { %>
@@ -493,7 +493,7 @@ foam.CLASS({
       value: false,
     },
     {
-      name: 'swiftFactory',
+      name: 'swiftFactory_DELETE',
       value: 'return []',
     },
   ],
@@ -510,7 +510,7 @@ foam.CLASS({
       value: false,
     },
     {
-      name: 'swiftFactory',
+      name: 'swiftFactory_DELETE',
       value: 'return [:]',
     },
   ],
@@ -527,7 +527,7 @@ foam.CLASS({
       value: false,
     },
     {
-      name: 'swiftFactory',
+      name: 'swiftFactory_DELETE',
       value: 'return []',
     },
   ],
@@ -544,7 +544,7 @@ foam.CLASS({
       value: false,
     },
     {
-      name: 'swiftFactory',
+      name: 'swiftFactory_DELETE',
       value: 'return []',
     },
   ],

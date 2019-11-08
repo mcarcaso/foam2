@@ -23,7 +23,7 @@ foam.CLASS({
   properties: [
     {
       name: 'delegate',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return Alt_create(["parsers": [
   NullParser_create(),
   StringParser_create(),

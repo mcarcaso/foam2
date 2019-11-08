@@ -17,7 +17,7 @@ foam.CLASS({
   properties: [
   {
     name: 'delegate',
-    swiftFactory: 'return Literal_create(["string": "null", "value": nil])',
+    swiftFactory_DELETE: 'return Literal_create(["string": "null", "value": nil])',
   },
   ],
 });

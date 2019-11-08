@@ -678,6 +678,8 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/android_java/ClassProperty" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/ClassProperty" },
   { name: "foam/cross_platform/code_generation/refines/Requires" },
+  { name: "foam/cross_platform/code_generation/refines/android_java/Requires" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/Requires" },
   { name: "foam/cross_platform/code_generation/refines/Implements" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Implements" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Implements" },

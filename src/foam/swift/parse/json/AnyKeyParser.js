@@ -22,7 +22,7 @@ foam.CLASS({
   properties: [
     {
       name: 'delegate',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return Alt_create(["parsers": [
   Seq1_create(["index": 1, "parsers": [
     Literal_create(["string": "\""]),

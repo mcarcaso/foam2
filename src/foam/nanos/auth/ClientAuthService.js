@@ -32,7 +32,7 @@ foam.CLASS({
           url: this.serviceName
         })});
       },
-      swiftFactory: `
+      swiftFactory_DELETE: `
 return SessionClientBox_create(["delegate": HTTPBox_create([
   "method": "POST",
   "url": serviceName

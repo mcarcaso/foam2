@@ -21,7 +21,7 @@ foam.CLASS({
     },
     {
       name: 'delegate',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return
   Seq1_create(["index": 5, "parsers": [
     Whitespace_create(),

@@ -22,7 +22,7 @@ foam.CLASS({
   properties: [
     {
       name: 'delegate',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return
   Seq1_create(["index": 4, "parsers": [
     KeyParser_create(["key": "class"]),

@@ -47,7 +47,7 @@ foam.CLASS({
           address: this.address
         }, this);
       },
-      swiftFactory: `
+      swiftFactory_DELETE: `
 return SocketConnectBox_create([
   "address$": address$,
 ])

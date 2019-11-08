@@ -14,7 +14,7 @@ foam.CLASS({
     {
       name: 'view',
       swiftType: 'UILabel',
-      swiftFactory: 'return UILabel()',
+      swiftFactory_DELETE: 'return UILabel()',
       swiftPostSet_DELETE: function() {/*
 updateLabel();
       */},

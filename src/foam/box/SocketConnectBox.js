@@ -42,7 +42,7 @@ foam.CLASS({
               return this.RawSocketBox.create({ socket: s });
             }.bind(this));
       },
-      swiftFactory: `
+      swiftFactory_DELETE: `
 let socketService = __context__["socketService"] as! SocketService // TODO import
 return socketService.getSocketBoxFuture(address)
       `

@@ -82,7 +82,7 @@ return newValue
     },
     {
       name: 'factoryProp',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return ["Hello", "World"]
       */},
     },

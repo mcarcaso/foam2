@@ -18,7 +18,7 @@ foam.CLASS({
     {
       name: 'view',
       swiftType: 'UIView',
-      swiftFactory: 'return UIView()',
+      swiftFactory_DELETE: 'return UIView()',
     },
     {
       class: 'StringProperty',
@@ -31,17 +31,17 @@ return data?.ownClassInfo().label ?? self.ownClassInfo().label
     {
       name: 'propertyViews',
       swiftType: '[String:foam_core_FObject]',
-      swiftFactory: 'return [:]',
+      swiftFactory_DELETE: 'return [:]',
     },
     {
       name: 'actionViews',
       swiftType: '[String:foam_swift_ui_FOAMActionUIButton]',
-      swiftFactory: 'return [:]',
+      swiftFactory_DELETE: 'return [:]',
     },
     {
       name: 'subViewSubscriptions',
       swiftType: '[String:Subscription]',
-      swiftFactory: 'return [:]',
+      swiftFactory_DELETE: 'return [:]',
     },
     {
       swiftType: 'ClassInfo?',

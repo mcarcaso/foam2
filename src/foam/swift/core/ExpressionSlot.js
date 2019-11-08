@@ -22,7 +22,7 @@ foam.CLASS({
     },
     {
       name: 'value',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return code(args.map { (slot) -> Any? in return slot.swiftGet() })
       */}
     },

@@ -455,7 +455,7 @@ foam.CLASS({
         }
         `
   ,
-      swiftFactory:
+      swiftFactory_DELETE:
 `return __context__.create(foam_dao_ManyToManyRelationshipDAO.self, args: [
   "relationship": self,
   "delegate": __context__[targetDAOKey]
@@ -469,7 +469,7 @@ foam.CLASS({
         return this.__context__[this.junctionDAOKey];
       },
       javaFactory: 'return (foam.dao.DAO)getX().get(getJunctionDAOKey());',
-      swiftFactory: 'return __context__[junctionDAOKey] as? (foam_dao_DAO & foam_core_FObject)'
+      swiftFactory_DELETE: 'return __context__[junctionDAOKey] as? (foam_dao_DAO & foam_core_FObject)'
     },
     {
       class: 'foam.dao.DAOProperty',
@@ -490,7 +490,7 @@ foam.CLASS({
           throw e;
         }
       `,
-      swiftFactory: 'return __context__[targetDAOKey] as? (foam_dao_DAO & foam_core_FObject)'
+      swiftFactory_DELETE: 'return __context__[targetDAOKey] as? (foam_dao_DAO & foam_core_FObject)'
     }
   ],
 

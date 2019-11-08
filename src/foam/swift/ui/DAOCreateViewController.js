@@ -52,7 +52,7 @@ return of.create(x: self.__context__) as! foam_core_FObject
     },
     {
       name: 'view',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 let dv = DetailView_create(["data$": data$])
 dv.initAllViews()
 return dv

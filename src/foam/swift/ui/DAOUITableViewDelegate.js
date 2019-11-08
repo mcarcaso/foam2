@@ -38,7 +38,7 @@ foam.CLASS({
     {
       swiftType: 'UITableViewRowAction',
       name: 'deleteAction',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return UITableViewRowAction(style: .destructive, title: "Delete") { (_, indexPath) in
   _ = try? self.dataSource?.dao?.remove(
       self.dataSource?.daoContents[indexPath.row] as! foam_core_FObject?)
@@ -49,7 +49,7 @@ return UITableViewRowAction(style: .destructive, title: "Delete") { (_, indexPat
       swiftType: '((foam_core_FObject) -> UIViewController)',
       swiftRequiresEscaping: true,
       name: 'updateVcFactory',
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return { (o: foam_core_FObject) -> UIViewController in
   let v = self.DetailView_create([
     "data": o,

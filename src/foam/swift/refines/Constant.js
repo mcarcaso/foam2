@@ -31,13 +31,13 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftFactory',
+      name: 'swiftFactory_DELETE',
     },
     {
       class: 'StringProperty',
       name: 'swiftValue',
-      expression: function(value, swiftFactory) {
-        return swiftFactory ? '' : foam.swift.asSwiftValue(value);
+      expression: function(value, swiftFactory_DELETE) {
+        return swiftFactory_DELETE ? '' : foam.swift.asSwiftValue(value);
       }
     },
   ],
@@ -55,7 +55,7 @@ foam.CLASS({
         static: true,
         final: true,
         defaultValue: this.swiftValue,
-        initializer: this.swiftFactory,
+        initializer: this.swiftFactory_DELETE,
       }));
     },
   ]

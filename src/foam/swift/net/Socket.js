@@ -75,7 +75,7 @@ DispatchQueue.main.async {
       of: 'foam.swift.parse.json.output.Outputter',
       name: 'outputter',
       required: true,
-      swiftFactory: 'return Outputter_create()',
+      swiftFactory_DELETE: 'return Outputter_create()',
     },
   ],
 

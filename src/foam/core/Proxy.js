@@ -282,7 +282,7 @@ if (oldValue as? Bool ?? false) != newValue {
         return {};
       },
       swiftType: '[String:foam_core_EventProxy]',
-      swiftFactory: 'return [:]',
+      swiftFactory_DELETE: 'return [:]',
     },
     {
       name: 'src',

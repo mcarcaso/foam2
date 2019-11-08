@@ -41,7 +41,7 @@ foam.CLASS({
     {
       swiftType: 'JSONOutputter',
       name: 'outputter',
-      swiftFactory: `return JSONOutputter_create()`,
+      swiftFactory_DELETE: `return JSONOutputter_create()`,
     },
   ],
 

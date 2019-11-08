@@ -44,7 +44,7 @@ foam.CLASS({
           parentBox: this.getParentBox()
         });
       },
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return self.LookupBox_create([
   "name": self.getBaseName(),
   "parentBox": self.getParentBox()

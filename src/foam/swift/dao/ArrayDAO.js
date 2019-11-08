@@ -16,7 +16,7 @@ foam.CLASS({
       class: 'ArrayProperty',
       of: 'foam.core.FObject',
       name: 'array',
-      swiftFactory: 'return []',
+      swiftFactory_DELETE: 'return []',
     },
   ],
   methods: [

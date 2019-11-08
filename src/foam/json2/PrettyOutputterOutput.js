@@ -15,7 +15,7 @@ foam.CLASS({
     {
       name: 'delegate',
       factory: function() { return this.SimpleOutputterOutput.create() },
-      swiftFactory: `return self.SimpleOutputterOutput_create()`,
+      swiftFactory_DELETE: `return self.SimpleOutputterOutput_create()`,
     },
     {
       class: 'StringProperty',

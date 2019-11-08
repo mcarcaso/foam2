@@ -109,7 +109,7 @@ if newValue == 0 {
         this.seconds$ = t.time$.map(function(t) { return Math.floor(t / 1000); });
         return t;
       },
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 let t = Timer_create()
 self.seconds$ = t.time$.map({ t in
   let t = t as! Int
@@ -124,7 +124,7 @@ return t
       name: 'state',
       required: true,
       factory: function() { return this.Warmup.create(); },
-      swiftFactory: 'return Warmup_create()',
+      swiftFactory_DELETE: 'return Warmup_create()',
       hidden: true
     }
   ],

@@ -14,7 +14,7 @@ foam.CLASS({
   properties: [
     {
       name: 'delegate',
-      swiftFactory: 'return KeyValueParser0_create()',
+      swiftFactory_DELETE: 'return KeyValueParser0_create()',
     },
   ],
 });

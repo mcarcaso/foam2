@@ -42,7 +42,7 @@ foam.CLASS({
       factory: function() {
         return this.Beep.create({duration: 150, frequency: 330, type: 'triangle'});
       },
-      swiftFactory: 'return MidiNote_create(["note": 65, "duration": Float(0.15)])',
+      swiftFactory_DELETE: 'return MidiNote_create(["note": 65, "duration": Float(0.15)])',
     },
     {
       swiftType: 'MidiNote',
@@ -50,7 +50,7 @@ foam.CLASS({
       factory: function() {
         return this.Beep.create({duration: 700, frequency: 500, type: 'square'});
       },
-      swiftFactory: 'return MidiNote_create(["note": 75, "duration": Float(0.7)])',
+      swiftFactory_DELETE: 'return MidiNote_create(["note": 75, "duration": Float(0.7)])',
     }
   ],
 

@@ -43,7 +43,7 @@ foam.CLASS({
           delegate: this.parentBox
         });
       },
-      swiftFactory: function() {/*
+      swiftFactory_DELETE: function() {/*
 return ClientBoxRegistry_create([
   "delegate": parentBox
 ])
@@ -55,7 +55,7 @@ return ClientBoxRegistry_create([
       factory: function() {
         return this.registry.doLookup(this.name);
       },
-      swiftFactory: 'return try! registry!.doLookup(name)!',
+      swiftFactory_DELETE: 'return try! registry!.doLookup(name)!',
     }
   ],
   methods: [

@@ -14,12 +14,12 @@ foam.CLASS({
     {
       name: 'DEFAULT',
       type: 'foam.swift.parse.json.output.Outputter',
-      swiftFactory: `return Context.GLOBAL.create(foam_swift_parse_json_output_Outputter.self)!`,
+      swiftFactory_DELETE: `return Context.GLOBAL.create(foam_swift_parse_json_output_Outputter.self)!`,
     },
     {
       name: 'PRETTY',
       type: 'foam.swift.parse.json.output.Outputter',
-      swiftFactory: `
+      swiftFactory_DELETE: `
 let x = Context.GLOBAL
 return x.create(foam_swift_parse_json_output_Outputter.self, args: [
   "outputterFactory": { (_: Context) -> foam_json2_Outputter in

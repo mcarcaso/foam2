@@ -114,7 +114,7 @@ foam.CLASS({
           factory: function() {
             return this[pendingState].create({ delegate: this });
           },
-          swiftFactory: `
+          swiftFactory_DELETE: `
             return ${pendingState}_create(["delegate": self])
           `,
           javaFactory: `

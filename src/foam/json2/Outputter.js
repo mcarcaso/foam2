@@ -17,12 +17,12 @@ foam.CLASS({
       required: true,
       name: 'out',
       factory: function() { return this.SimpleOutputterOutput.create() },
-      swiftFactory: `return SimpleOutputterOutput_create()`,
+      swiftFactory_DELETE: `return SimpleOutputterOutput_create()`,
     },
     {
       name: 'state',
       swiftType: '[State]',
-      swiftFactory: 'return [State_create()]',
+      swiftFactory_DELETE: 'return [State_create()]',
       factory: function() { return [this.State.create() ] },
     }
   ],

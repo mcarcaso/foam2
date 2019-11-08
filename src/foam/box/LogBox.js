@@ -39,14 +39,14 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'name',
       factory: function() { return `LogBox${this.$UID}`; },
-      swiftFactory: 'return "LogBox$"+UUID().uuidString',
+      swiftFactory_DELETE: 'return "LogBox$"+UUID().uuidString',
     },
     {
       class: 'FObjectProperty',
       of: 'foam.log.LogLevel',
       name: 'logLevel',
       factory: function() { return this.LogLevel.INFO; },
-      swiftFactory: 'return foam_log_LogLevel.INFO',
+      swiftFactory_DELETE: 'return foam_log_LogLevel.INFO',
     }
   ],
 

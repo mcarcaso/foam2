@@ -14,10 +14,9 @@ foam.CLASS({
   properties: [
   {
     name: 'delegate',
-    swiftFactory: function() {/*
+    swiftFactory_DELETE: function() {/*
 fatalError("TODO: Learn to parse exprs.")
     */},
   },
   ],
 });
-
