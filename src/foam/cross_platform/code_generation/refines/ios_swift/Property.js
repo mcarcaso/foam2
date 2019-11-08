@@ -161,8 +161,8 @@ foam.CLASS({
         `;
       } else if ( this.swiftValue ) {
         getter.body = `
-          if ( ! ${this.crossPlatformIsSetVarName} ) {
-            return ${this.androidValue};
+          if !${this.crossPlatformIsSetVarName} {
+            return ${this.swiftValue};
           }
           return ${this.crossPlatformPrivateVarName};
         `;
