@@ -28,7 +28,7 @@ foam.LIB({
         type: 'Void',
         name: 'clearProperty',
         args: [
-          { type: 'String', localName: 'name' }
+          { type: 'String?', localName: 'name' }
         ],
         body: `
         switch name {
@@ -61,7 +61,7 @@ ${cls.extends ? `
         type: 'Any?',
         name: 'getProperty',
         args: [
-          { type: 'String', localName: 'name' }
+          { type: 'String?', localName: 'name' }
         ],
         body: `
           switch name {
@@ -86,7 +86,7 @@ genProperties
         type: foam.core.Slot.model_.swiftName + '?',
         name: 'getSlot',
         args: [
-          { type: 'String', localName: 'name' }
+          { type: 'String?', localName: 'name' }
         ],
         body: `
           switch name {
@@ -111,7 +111,7 @@ genProperties
         type: 'Bool',
         name: 'hasPropertySet',
         args: [
-          { type: 'String', localName: 'name' }
+          { type: 'String?', localName: 'name' }
         ],
         body: `
           switch name {
@@ -140,7 +140,7 @@ ${cls.extends ? `
         type: 'Void',
         name: 'setProperty',
         args: [
-          { type: 'String', localName: 'name' },
+          { type: 'String?', localName: 'name' },
           { type: 'Any?', localName: 'value' }
         ],
         body: `
@@ -166,7 +166,7 @@ ${cls.extends ? `
       cls.method({
         override: !! cls.extends,
         visibility: 'public',
-        type: foam.cross_platform.FoamClass.model_.swiftName,
+        type: foam.cross_platform.FoamClass.model_.swiftName + '?',
         name: 'getCls_',
         body: 'return Self.CLS_()'
       });

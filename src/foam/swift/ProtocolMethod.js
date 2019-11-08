@@ -13,7 +13,7 @@ foam.CLASS({
   ],
   properties: [
     'name',
-    'returnType',
+    'type',
     'throws',
     {
       class: 'FObjectArray',
@@ -41,7 +41,7 @@ foam.CLASS({
       o.out(
         ')',
         this.throws ? ' throws' : '',
-        this.returnType && this.returnType != 'Void' ? ' -> ' + this.returnType : ''
+        this.type && this.type != 'Void' ? ' -> ' + this.type : ''
       )
     }
   ]

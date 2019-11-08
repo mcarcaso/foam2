@@ -210,7 +210,7 @@ let hasOldValue = hasPropertySet("${this.name}");
 let oldValue = hasOldValue ?
   ${this.crossPlatformGetterName}() :
   nil;
-var castedValue = ${adaptName}(oldValue, value, hasOldValue);
+${this.swiftPreSet ? 'var' : 'let'} castedValue = ${adaptName}(oldValue, value, hasOldValue);
         `;
 
         if ( this.swiftExpression ) {
