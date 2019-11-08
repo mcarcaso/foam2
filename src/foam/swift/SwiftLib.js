@@ -50,7 +50,7 @@ foam.LIB({
 ${Object.keys(o).map(k => `
   ${foam.swift.asSwiftValue(k)}: ${foam.swift.asSwiftValue(o[k])}
 `).join(',\n')}
-] as [String:Any?]
+] as [AnyHashable:Any?]
           `;
         },
         RegExp: function(o) {

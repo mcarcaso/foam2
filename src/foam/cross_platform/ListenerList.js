@@ -15,6 +15,10 @@ foam.CLASS({
     {
       class: 'MapProperty',
       name: 'children',
+      swiftSetter: `
+        children_isSet_ = true;
+        children_ = value as! [AnyHashable:Any?]?;
+      `,
       androidSetter: `
         children_isSet_ = true;
         children_ = (java.util.Map) value;
