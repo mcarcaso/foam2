@@ -10,7 +10,7 @@ foam.CLASS({
 
       cls.method({
         visibility: 'protected',
-        type: this.path + '.' + 'Builder',
+        type: this.path + '.' + model.name + 'Builder_',
         name: this.name + '_create',
         body: `return ${this.path}.${model.name}Builder(getSubX());`
       });
