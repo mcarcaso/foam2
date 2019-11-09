@@ -51,7 +51,7 @@ if let oldValue = oldValue as? foam_dao_AbstractDAO {
         return this.delegate.of;
       },
       swiftExpressionArgs: ['delegate$of'],
-      swiftExpression: 'return delegate$of as! ClassInfo',
+      swiftExpression_DELETE: 'return delegate$of as! ClassInfo',
       javaFactory: `return getDelegate().getOf();`,
     }
   ],

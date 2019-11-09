@@ -20,7 +20,7 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'title',
       swiftExpressionArgs: ['view$title'],
-      swiftExpression: function() {/*
+      swiftExpression_DELETE: function() {/*
 return view$title as? String ?? ""
       */},
     },
@@ -33,7 +33,7 @@ return view$title as? String ?? ""
       swiftType: 'UIViewController',
       name: 'vc',
       swiftExpressionArgs: ['view$view', 'title', 'backgroundColor'],
-      swiftExpression: function() {/*
+      swiftExpression_DELETE: function() {/*
 let vc = VC_()
 vc.innerView = view$view as? UIView
 vc.title = title

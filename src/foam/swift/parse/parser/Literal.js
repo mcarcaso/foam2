@@ -16,7 +16,7 @@ foam.CLASS({
     {
       name: 'value',
       swiftExpressionArgs: ['string'],
-      swiftExpression: 'return string'
+      swiftExpression_DELETE: 'return string'
     },
   ],
   methods: [

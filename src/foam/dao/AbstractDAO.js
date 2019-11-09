@@ -71,7 +71,7 @@ foam.CLASS({
       swiftType: 'PropertyInfo',
       name: 'primaryKey',
       swiftExpressionArgs: ['of'],
-      swiftExpression: 'return of.axiom(byName: "id") as! PropertyInfo',
+      swiftExpression_DELETE: 'return of.axiom(byName: "id") as! PropertyInfo',
       javaFactory: `
 return getOf() == null ? null : (foam.core.PropertyInfo) getOf().getAxiomByName("id");
       `,

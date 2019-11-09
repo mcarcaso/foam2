@@ -6,6 +6,8 @@ foam.CLASS({
   methods: [
     function buildAndroidClass(cls, parentCls) {
       if ( ! parentCls.hasOwnAxiom(this.name) ) return;
+      if ( foam.cross_platform.AbstractFObject != parentCls &&
+           foam.cross_platform.AbstractFObject.hasOwnAxiom(this.name) ) return;
 
       var model = this.__subContext__.lookup(this.path).model_;
       if ( ! foam.util.flagFilter(['android'])(model) ) return cls;

@@ -29,7 +29,7 @@ foam.CLASS({
       name: 'id',
       hidden: true,
       swiftExpressionArgs: ['firstName'],
-      swiftExpression: 'return firstName',
+      swiftExpression_DELETE: 'return firstName',
       expression: function(firstName) { return firstName },
     },
     {
@@ -43,7 +43,7 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'exprProp',
       swiftExpressionArgs: ['firstName', 'lastName'],
-      swiftExpression: function() {/*
+      swiftExpression_DELETE: function() {/*
 return firstName + " " + lastName
       */},
     },

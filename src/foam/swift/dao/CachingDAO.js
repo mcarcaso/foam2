@@ -19,7 +19,7 @@ foam.CLASS({
     {
       name: 'of',
       swiftExpressionArgs: ['src$of'],
-      swiftExpression: 'return src$of as! ClassInfo',
+      swiftExpression_DELETE: 'return src$of as! ClassInfo',
     },
     {
       /** The source DAO on which to add caching. Writes go straight
@@ -52,7 +52,7 @@ foam.CLASS({
       hidden: true,
       forwards: [ 'find_', 'select_' ],
       swiftExpressionArgs: ['src', 'cache'],
-      swiftExpression: `
+      swiftExpression_DELETE: `
 let pDao = self.PromisedDAO_create(["of": self.of])
 DispatchQueue.global(qos: .background).async {
   try? cache.removeAll()

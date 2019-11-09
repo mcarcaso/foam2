@@ -123,7 +123,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftExpression',
+      name: 'swiftExpression_DELETE',
     },
     {
       class: 'StringProperty',
@@ -219,7 +219,7 @@ foam.CLASS({
         body: 'return ' + this.swiftPrivateAxiomName,
         override: isOverride,
       }));
-      if (this.swiftExpression) {
+      if (this.swiftExpression_DELETE) {
         cls.fields.push(this.Field.create({
           visibility: 'private',
           name: this.swiftExpressionSubscriptionName,
@@ -352,13 +352,13 @@ if <%=this.swiftInitedName%> {
 <% if ( this.swiftFactory_DELETE ) { %>
 self.set(key: "<%=this.name%>", value: <%=this.swiftFactoryName%>())
 return <%=this.swiftValueName%><% if ( foam.swift.requiresCast(this.swiftType) ) { %>!<% } %>
-<% } else if ( this.swiftExpression ) { %>
+<% } else if ( this.swiftExpression_DELETE ) { %>
 if <%= this.swiftExpressionSubscriptionName %> != nil { return <%= this.swiftValueName %> }
 let valFunc = { [unowned self] () -> <%= this.swiftType %> in
   <% for (var i = 0, arg; arg = this.swiftExpressionArgs[i]; i++) { arg = arg.split('$') %>
   let <%=arg.join('$')%> = self.<%=arg[0]%><% if (arg.length > 1) {%>$<% arg.slice(1).forEach(function(a) { %>.dot("<%=a%>")!<% }) %>.swiftGet()<% } %>
   <% } %>
-  <%= this.swiftExpression %>
+  <%= this.swiftExpression_DELETE %>
 }
 let detach: Listener = { [unowned self] _,_ in
   if self.<%=this.swiftExpressionSubscriptionName%> == nil { return }
@@ -416,7 +416,7 @@ class PInfo: PropertyInfo {
 <% if ( p.swiftSetter_DELETE ) { %>
     obj.<%=this.swiftVarName%> = value<%if (this.swiftType != 'Any?') {%> as! <%=this.swiftType%><%}%>
 <% } else { %>
-  <% if ( p.swiftExpression ) { %>
+  <% if ( p.swiftExpression_DELETE ) { %>
     if obj.<%= p.swiftExpressionSubscriptionName %> != nil {
       for s in obj.<%=p.swiftExpressionSubscriptionName%>! { s.detach() }
     }
@@ -452,7 +452,7 @@ class PInfo: PropertyInfo {
     obj.<%= p.swiftInitedName %> = false
     obj.<%= p.swiftValueName %> = nil
 
-<% if ( p.swiftExpression ) { %>
+<% if ( p.swiftExpression_DELETE ) { %>
     if obj.<%= p.swiftExpressionSubscriptionName %> != nil {
       for s in obj.<%=p.swiftExpressionSubscriptionName%>! { s.detach() }
     }

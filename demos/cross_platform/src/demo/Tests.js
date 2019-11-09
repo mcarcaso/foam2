@@ -23,7 +23,8 @@ foam.CLASS({
           class: 'StringProperty',
           name: 'fullName',
           expressionArgs: ['firstName', 'lastName'],
-          androidExpression: `return firstName + " " + lastName;`
+          androidExpression: `return firstName + " " + lastName;`,
+          swiftExpression: `return firstName! + " " + lastName!;`
         },
         {
           class: 'DateProperty',

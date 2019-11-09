@@ -24,7 +24,7 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'title',
       swiftExpressionArgs: ['data'],
-      swiftExpression: function() {/*
+      swiftExpression_DELETE: function() {/*
 return data?.ownClassInfo().label ?? self.ownClassInfo().label
       */},
     },
@@ -47,7 +47,7 @@ return data?.ownClassInfo().label ?? self.ownClassInfo().label
       swiftType: 'ClassInfo?',
       name: 'of',
       swiftExpressionArgs: ['data'],
-      swiftExpression: 'return data?.ownClassInfo() ?? nil',
+      swiftExpression_DELETE: 'return data?.ownClassInfo() ?? nil',
     },
     {
       swiftType: 'foam_core_FObject?',

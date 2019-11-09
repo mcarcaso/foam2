@@ -56,6 +56,10 @@ foam.CLASS({
       androidSetter: `
         obj_isSet_ = true;
         obj_ = (foam.cross_platform.FObject) value;
+      `,
+      swiftSetter: `
+        obj_isSet_ = true;
+        obj_ = value as! foam_cross_platform_FObject? ;
       `
     },
     {
@@ -65,13 +69,18 @@ foam.CLASS({
       androidSetter: `
         prop_isSet_ = true;
         prop_ = (foam.core.Property) value;
+      `,
+      swiftSetter: `
+        prop_isSet_ = true;
+        prop_ = value as! foam_core_Property?;
       `
     },
   ],
   methods: [
     {
       name: 'slotGet',
-      androidCode: `return getProp().f(getObj());`
+      androidCode: `return getProp().f(getObj());`,
+      swiftCode: `return getProp()!.f(getObj());`
     },
     {
       name: 'slotSub',
@@ -81,6 +90,14 @@ foam.CLASS({
             "propertyChange",
             getProp().getName()
           },
+          listener);
+      `,
+      swiftCode: `
+        return getObj()!.sub(
+          [ 
+            "propertyChange",
+            getProp()!.getName()!
+          ],
           listener);
       `
     }
@@ -97,6 +114,10 @@ foam.CLASS({
       androidCode: `
         getParent().sub(null, parentChange_listener());
         parentChange(null, null);
+      `,
+      swiftCode: `
+        _ = getParent()!.sub(nil, parentChange_listener());
+        parentChange(nil, nil);
       `
     },
     {
@@ -105,6 +126,10 @@ foam.CLASS({
         foam.cross_platform.FObject o =
           (foam.cross_platform.FObject) getParent().slotGet();
         return o != null ? o.getProperty(getName()) : null;
+      `,
+      swiftCode: `
+        let o = getParent()!.slotGet() as! foam_cross_platform_FObject?;
+        return o != nil ? o!.getProperty(getName()) : nil;
       `
     },
     {
@@ -113,11 +138,18 @@ foam.CLASS({
         foam.cross_platform.FObject o =
           (foam.cross_platform.FObject) getParent().slotGet();
         if ( o != null ) o.setProperty(getName(), value);
+      `,
+      swiftCode: `
+        let o = getParent()!.slotGet() as! foam_cross_platform_FObject?;
+        o?.setProperty(getName(), value);
       `
     },
     {
       name: 'slotSub',
       androidCode: `
+        return getValue$().slotSub(listener);
+      `,
+      swiftCode: `
         return getValue$().slotSub(listener);
       `
     }
@@ -135,6 +167,16 @@ foam.CLASS({
         setPrevSub(o != null && o.getSlot(getName()) != null ?
           o.getSlot(getName()).slotSub(valueChange_listener()) : null);
         valueChange(null, null);
+      `,
+      swiftCode: `
+        getPrevSub()?.detach();
+        let o = getParent()!.slotGet() as! foam_cross_platform_FObject?;
+
+        if getOf() == nil && o != nil { setOf(o!.getCls_()); }
+
+        setPrevSub(o != nil && o!.getSlot(getName()) != nil ?
+          o!.getSlot(getName())!.slotSub(valueChange_listener()) : nil);
+        valueChange(nil, nil);
       `
     },
     {
@@ -143,6 +185,10 @@ foam.CLASS({
         foam.cross_platform.FObject parentValue =
           (foam.cross_platform.FObject) getParent().slotGet();
         setValue(parentValue != null ? parentValue.getProperty(getName()) : null);
+      `,
+      swiftCode: `
+        let parentValue = getParent()!.slotGet() as! foam_cross_platform_FObject?;
+        setValue(parentValue != nil ? parentValue!.getProperty(getName()) : nil);
       `
     }
   ]
@@ -156,16 +202,19 @@ foam.CLASS({
     {
       name: 'slotGet',
       code: function() { return this.get(); },
-      androidCode: `return getValue();`
+      androidCode: `return getValue();`,
+      swiftCode: `return getValue();`
     },
     {
       name: 'slotSet',
       code: function(value) { return this.set(value); },
-      androidCode: `setValue(value);`
+      androidCode: `setValue(value);`,
+      swiftCode: `setValue(value);`
     },
     {
       name: 'slotSub',
-      androidCode: `return getValue$().slotSub(listener);`
+      androidCode: `return getValue$().slotSub(listener);`,
+      swiftCode: `return getValue$().slotSub(listener);`
     }
   ]
 });
@@ -194,6 +243,20 @@ foam.CLASS({
           })
           .build()
           .executeFunction(null);
+      `,
+      swiftPostSet: `
+        if newValue == nil { return; }
+        _ = AsyncFunction_create()
+          .setDelegate(AnonymousGenericFunction_create()
+            .setFn({(args: [Any?]?) -> Any? in
+              if self.getPromise() !== newValue { return nil; }
+              self.setValue(self.getPromise()!.get());
+              return nil;
+            })
+            .build()
+          )
+          .build()
+          .executeFunction(nil);
       `
     }
   ],
@@ -202,6 +265,9 @@ foam.CLASS({
       name: 'slotSet',
       androidCode: `
         throw new RuntimeException(getCls_().getId() + " does not support setting.");
+      `,
+      swiftCode: `
+        fatalError(getCls_()!.getId()! + " does not support setting.");
       `
     }
   ]
@@ -217,10 +283,17 @@ foam.CLASS({
       androidPreSet: `
         if ( newValue instanceof foam.cross_platform.Promise ) {
           setPromise((foam.cross_platform.Promise) newValue);
-          newValue = oldValue;
-        } else {
-          setPromise(null);
+          return oldValue;
         }
+        setPromise(null);
+        return newValue;
+      `,
+      swiftPreSet: `
+        if newValue is foam_cross_platform_Promise {
+          setPromise(newValue);
+          return oldValue;
+        }
+        setPromise(nil);
         return newValue;
       `,
       androidFactory: `
@@ -229,6 +302,13 @@ foam.CLASS({
           args[i] = getArgs()[i].slotGet();
         }
         return getCode().executeFunction(args);
+      `,
+      swiftFactory: `
+        var args = [Any?](repeating: nil, count: getArgs()!.count);
+        for i in 0..<args.count {
+          args[i] = getArgs()![i].slotGet();
+        }
+        return getCode()!.executeFunction(args);
       `
     },
     {
@@ -244,7 +324,19 @@ foam.CLASS({
         }
         return slots;
       `,
-      androidPostSet: `subToArgs_(newValue);`
+      swiftAdapt: `
+        if !(newValue is [String]) {
+          return newValue as! [foam_core_Slot]?;
+        }
+        let propNames = newValue as! [String];
+        var slots = [foam_core_Slot?](repeating: nil, count: propNames.count);
+        for i in 0..<slots.count {
+          slots[i] = getObj()!.getSlot(propNames[i]);
+        }
+        return slots as? [foam_core_Slot];
+      `,
+      androidPostSet: `subToArgs_(newValue);`,
+      swiftPostSet: `subToArgs_(newValue);`
     }
   ],
   methods: [
@@ -255,6 +347,15 @@ foam.CLASS({
         onDetach(new foam.core.Detachable() {
           public void detach() { l.executeListener(null, null); }
         });
+      `,
+      swiftCode: `
+        let l = cleanup_listener();
+        onDetach(AnonymousDetachable_create()
+          .setFn({() -> Void in
+            l.executeListener(nil, nil);
+          })
+          .build()
+        );
       `
     },
     {
@@ -273,6 +374,19 @@ foam.CLASS({
             for ( foam.core.Detachable sub : subs ) sub.detach();
           }
         });
+      `,
+      swiftCode: `
+        cleanup(nil, nil);
+        var subs = [foam_core_Detachable?](repeating: nil, count: args!.count);
+        for i in 0..<args!.count {
+          subs[i] = args![i].slotSub(invalidate_listener());
+        }
+        setCleanup_(AnonymousDetachable_create()
+          .setFn({() -> Void in
+            for sub in subs { sub?.detach(); }
+          })
+          .build()
+        );
       `
     }
   ],
@@ -281,11 +395,17 @@ foam.CLASS({
       name: 'cleanup',
       androidCode: `
         if ( getCleanup_() != null ) getCleanup_().detach();
+      `,
+      swiftCode: `
+        getCleanup_()?.detach();
       `
     },
     {
       name: 'invalidate',
       androidCode: `
+        clearProperty("value");
+      `,
+      swiftCode: `
         clearProperty("value");
       `
     }

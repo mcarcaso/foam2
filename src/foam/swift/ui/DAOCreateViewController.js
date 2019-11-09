@@ -32,7 +32,7 @@ foam.CLASS({
     {
       name: 'title',
       swiftExpressionArgs: ['data'],
-      swiftExpression: function() {/*
+      swiftExpression_DELETE: function() {/*
 return String(
     format: type(of: self).CREATE_VC_TITLE,
     data.ownClassInfo().label)
@@ -43,7 +43,7 @@ return String(
       required: true,
       name: 'data',
       swiftExpressionArgs: ['dao$of'],
-      swiftExpression: function() {/*
+      swiftExpression_DELETE: function() {/*
 guard let of = dao$of as? ClassInfo else {
   fatalError("no dao of over here!")
 }

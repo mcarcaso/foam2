@@ -41,7 +41,7 @@ foam.CLASS({
       name: 'value_',
       documentation: 'The next value to be used.',
       swiftExpressionArgs: ['delegate', 'property_', 'startingValue'],
-      swiftExpression: `
+      swiftExpression_DELETE: `
         let max = self.Max_create(["arg1": property_])
         _ = try? delegate.select(max)
         let v = max.value is Int ? (max.value as! Int) + 1 : 1
@@ -78,7 +78,7 @@ foam.CLASS({
       hidden: true,
       swiftType: 'PropertyInfo',
       swiftExpressionArgs: ['property', 'of'],
-      swiftExpression: `
+      swiftExpression_DELETE: `
         return of.axiom(byName: property) as! PropertyInfo
       `,
       expression: function(property, of) {

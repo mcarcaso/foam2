@@ -37,7 +37,7 @@ foam.CLASS({
       },
       swiftType: 'Set<String>',
       swiftExpressionArgs: ['whitelist'],
-      swiftExpression: function() {/*
+      swiftExpression_DELETE: function() {/*
 var w = Set<String>()
 for i in whitelist {
   w.insert(i)

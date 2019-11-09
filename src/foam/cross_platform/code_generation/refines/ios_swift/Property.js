@@ -34,6 +34,10 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
+      name: 'swiftExpression'
+    },
+    {
+      class: 'StringProperty',
       name: 'swiftFactory'
     },
     {
@@ -89,16 +93,13 @@ foam.CLASS({
         type: 'foam_core_Slot',
         name: this.crossPlatformSlotGetterName,
         body: `
-        fatalError()
-        /*
-          if ( ${this.crossPlatformSlotVarName} == null ) {
-            ${this.crossPlatformSlotVarName} = foam.core.internal.PropertySlot.PropertySlotBuilder(getX())
-              .setObj(this)
-              .setProp(${this.crossPlatformAxiomName}())
+          if ${this.crossPlatformSlotVarName} == nil {
+            ${this.crossPlatformSlotVarName} = PropertySlot_create()
+              .setObj(self)
+              .setProp(Self.${this.crossPlatformAxiomName}())
               .build();
           }
-          return ${this.crossPlatformSlotVarName};
-          */
+          return ${this.crossPlatformSlotVarName}!;
         `
       });
 
@@ -127,50 +128,50 @@ foam.CLASS({
         var subName = this.name + '_expression_sub_';
         cls.field({
           visibility: 'private',
-          type: 'foam.core.Detachable',
+          type: foam.core.Detachable.model_.swiftName + '?',
           name: subName
         });
         var expressionName = this.name + '_expression_';
         cls.method({
-          visibility: 'protected',
-          type: this.androidType,
+          type: this.swiftType,
           name: expressionName,
           args: this.expressionArgs.map(a => {
             return {
-              type: parentCls.getAxiomByName(a).androidType,
-              name: a
+              type: parentCls.getAxiomByName(a).swiftType,
+              localName: a
             }
           }),
           body: `
-            ${this.androidExpression}
+            ${this.swiftExpression}
           `
         });
         getter.body = `
-          if ( ! ${this.crossPlatformIsSetVarName} && ${subName} == null ) {
-            final ${parentCls.name} obj = this;
-            final foam.core.ExpressionSlot eSlot = foam.core.ExpressionSlot.ExpressionSlotBuilder(getSubX())
-              .setArgs(new foam.core.Slot[] {
+          if !${this.crossPlatformIsSetVarName} && ${subName} == nil {
+            let eSlot = foam_core_ExpressionSlot.foam_core_ExpressionSlotBuilder(getSubX())
+              .setArgs([
                 ${this.expressionArgs.map(a => `getSlot("${a}")`).join(',')}
-              })
-              .setCode(new foam.cross_platform.GenericFunction() {
-                public Object executeFunction(Object[] args) {
-                  return obj.${expressionName}(
+              ])
+              .setCode(AnonymousGenericFunction_create()
+                .setFn({(args: [Any?]?) -> Any? in
+                  return self.${expressionName}(
                     ${this.expressionArgs.map((a, i) => `
-                      (${parentCls.getAxiomByName(a).androidType}) args[${i}]
-                    `).join(',')}
-                  );
+                      args![${i}] as! ${parentCls.getAxiomByName(a).swiftType}
+                    `).join(',')})
+                })
+                .build()
+              )
+              .build();
+            ${this.crossPlatformPrivateVarName} = eSlot.slotGet() as! ${this.swiftType};
+            
+            ${subName} = eSlot.slotSub(AnonymousListener_create()
+              .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+                if foam_cross_platform_Lib.compare(eSlot.slotGet(), self.${this.crossPlatformPrivateVarName}) != 0 {
+                  self.${this.crossPlatformPrivateVarName} = eSlot.slotGet() as! ${this.swiftType};
+                  _ = self.pub(["propertyChange", "${this.name}", self.${this.crossPlatformPrivateVarName}]);
                 }
               })
-              .build();
-            ${this.crossPlatformPrivateVarName} = (${this.androidType}) eSlot.slotGet();
-            ${subName} = eSlot.slotSub(new foam.cross_platform.Listener() {
-              public void executeListener(foam.core.Detachable sub, Object[] args) {
-                if ( foam.cross_platform.Lib.compare(eSlot.slotGet(), obj.${this.crossPlatformPrivateVarName}) != 0 ) {
-                  obj.${this.crossPlatformPrivateVarName} = (${this.androidType}) eSlot.slotGet();
-                  obj.pub(new Object[] { "propertyChange", "${this.name}", obj.${this.crossPlatformPrivateVarName} });
-                }
-              }
-            });
+              .build()
+            );
           }
           return ${this.crossPlatformPrivateVarName};
         `;
@@ -222,7 +223,7 @@ ${this.swiftPreSet ? 'var' : 'let'} castedValue = ${adaptName}(oldValue, value, 
 
         if ( this.swiftExpression ) {
           setter.body += `
-if ( ${subName} != null ) ${subName}.detach();
+${subName}?.detach();
           `;
         }
 

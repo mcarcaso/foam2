@@ -692,8 +692,12 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/ios_swift/InnerClass" },
   { name: "foam/cross_platform/code_generation/refines/Slot" },
   { name: "foam/cross_platform/code_generation/refines/Listener" },
+  { name: "foam/cross_platform/code_generation/refines/android_java/Listener" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/Listener" },
   { name: "foam/cross_platform/code_generation/refines/FunctionProperty" },
   { name: "foam/cross_platform/code_generation/refines/PromiseProperty" },
+  { name: "foam/cross_platform/code_generation/refines/android_java/PromiseProperty" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/PromiseProperty" },
 
   // Strategy
   { name: "foam/strategy/StrategyReference" },

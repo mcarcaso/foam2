@@ -23,7 +23,7 @@ foam.CLASS({
     {
       name: 'delegate',
       swiftExpressionArgs: ['key'],
-      swiftExpression: function() {/*
+      swiftExpression_DELETE: function() {/*
 return self.Alt_create(["parsers": [
   self.Literal_create(["string": "\"" + key + "\""]),
   self.Literal_create(["string": key]),

@@ -98,7 +98,7 @@ foam.CLASS({
             ( localStorage[this.sessionName] = foam.uuid.randomGUID() );
       },
       swiftExpressionArgs: [ 'sessionName' ],
-      swiftExpression: `
+      swiftExpression_DELETE: `
 let defaults = UserDefaults.standard // TODO allow us to configure?
 if let id = defaults.string(forKey: sessionName) {
   return id

@@ -69,7 +69,7 @@ foam.CLASS({
           }),
           this.Argument.create({
             name: 'args',
-            type: 'Object[]'
+            type: 'Any[]'
           }),
         ];
       }

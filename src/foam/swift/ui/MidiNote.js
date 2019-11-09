@@ -44,7 +44,7 @@ foam.CLASS({
         'releaseVelocity',
         'duration'
       ],
-      swiftExpression: function() {/*
+      swiftExpression_DELETE: function() {/*
 return MIDINoteMessage(
     channel: UInt8(channel),
     note: UInt8(note),
