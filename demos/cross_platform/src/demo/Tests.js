@@ -238,6 +238,35 @@ foam.CLASS({
         t1.clearProperty("firstName")
         assertEquals(t1.compareTo(t2), -1, "t1 is not equal to t2");
       `
+    },
+    {
+      name: 'testExpression',
+      androidCode: `
+        Person t = Person_create().build();
+        t.setFirstName("Mike");
+        t.setLastName("C");
+        assertEquals(t.getFullName(), "Mike C", "Full name is as expected.");
+        t.setLastName("D");
+        assertEquals(t.getFullName(), "Mike D", "Full name is as expected.");
+        t.setFullName("OVERRIDE");
+        assertEquals(t.getFullName(), "OVERRIDE", "Full name is as expected.");
+        t.setFirstName("Nope");
+        assertEquals(t.getFullName(), "OVERRIDE", "Full name is as expected.");
+        t.detach();
+      `,
+      swiftCode: `
+        let t = Person_create().build();
+        t.setFirstName("Mike");
+        t.setLastName("C");
+        assertEquals(t.getFullName(), "Mike C", "Full name is as expected.");
+        t.setLastName("D");
+        assertEquals(t.getFullName(), "Mike D", "Full name is as expected.");
+        t.setFullName("OVERRIDE");
+        assertEquals(t.getFullName(), "OVERRIDE", "Full name is as expected.");
+        t.setFirstName("Nope");
+        assertEquals(t.getFullName(), "OVERRIDE", "Full name is as expected.");
+        t.detach();
+      `
     }
   ]
 });

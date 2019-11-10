@@ -16,6 +16,7 @@ public class ExampleUnitTest {
         t.testListen();
         t.testFollow();
         t.testCompare();
+        t.testExpression();
         t.detach();
     }
 }

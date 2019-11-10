@@ -7,6 +7,7 @@ class FOAM_Demo_AppTests: XCTestCase {
     t.testListen();
     t.testFollow();
     t.testCompare();
+    t.testExpression();
     t.detach();
   }
 }
