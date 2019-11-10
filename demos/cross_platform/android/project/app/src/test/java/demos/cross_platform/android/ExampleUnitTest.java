@@ -18,6 +18,8 @@ public class ExampleUnitTest {
         t.testCompare();
         t.testExpression();
         t.testExpressionSlot();
+        t.testHasOwnProperty();
+        t.testSubSlot();
         t.detach();
     }
 }

@@ -30,6 +30,9 @@ foam.CLASS({
           swiftExpression: `return firstName! + " " + lastName!;`
         },
         {
+          name: 'anyProp',
+        },
+        {
           class: 'DateProperty',
           name: 'dateOfBirth'
         },
@@ -314,6 +317,90 @@ foam.CLASS({
         o.detach();
         slot.detach();
       `
-    }
+    },
+    {
+      name: 'testHasOwnProperty',
+      androidCode: `
+        Person o = Person_create().build();
+
+        assertEquals(o.hasPropertySet("firstName"), false, "First name is not considered set.");
+        o.setFirstName("Mike");
+        assertEquals(o.hasPropertySet("firstName"), true, "First name is considered set.");
+        assertEquals(o.getFirstName(), "Mike", "First name is as expected.");
+
+        o.setLastName("C");
+        assertEquals(o.getFullName(), "Mike C", "Full name is as expected.");
+        assertEquals(o.hasPropertySet("fullName"), false, "Full name is not considered set.");
+
+        o.clearProperty("firstName");
+        assertEquals(o.hasPropertySet("firstName"), false, "First name is not considered set.");
+        assertEquals(o.getFullName(), " C", "Full name is as expected.");
+
+        o.detach();
+      `,
+      swiftCode: `
+        let o = Person_create().build();
+
+        assertEquals(o.hasPropertySet("firstName"), false, "First name is not considered set.");
+        o.setFirstName("Mike");
+        assertEquals(o.hasPropertySet("firstName"), true, "First name is considered set.");
+        assertEquals(o.getFirstName(), "Mike", "First name is as expected.");
+
+        o.setLastName("C");
+        assertEquals(o.getFullName(), "Mike C", "Full name is as expected.");
+        assertEquals(o.hasPropertySet("fullName"), false, "Full name is not considered set.");
+
+        o.clearProperty("firstName");
+        assertEquals(o.hasPropertySet("firstName"), false, "First name is not considered set.");
+        assertEquals(o.getFullName(), " C", "Full name is as expected.");
+
+        o.detach();
+      `
+    },
+    {
+      name: 'testSubSlot',
+      androidCode: `
+        Person t = Person_create().build();
+        Person t2 = Person_create().build();
+        t2.setFirstName("YO");
+        t.setAnyProp(t2);
+        
+        foam.core.SlotInterface s = t.getAnyProp$().dot("firstName");
+        assertEquals(s.slotGet(), "YO", "Slot value is as expected");
+        
+        final int[] i = {0};
+        final Tests self = this;
+        s.slotSub(new foam.cross_platform.Listener() {
+          public void executeListener(foam.core.Detachable sub, Object[] args) {
+            i[0] += 1;
+            self.assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
+          }
+        });
+        t2.setFirstName("YO2");
+        assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
+        assertEquals(i[0], 1, "Slot listener fired.");
+      `,
+      swiftCode: `
+        let t = Person_create().build();
+        let t2 = Person_create().build();
+        t2.setFirstName("YO");
+        t.setAnyProp(t2);
+
+        let s = t.getAnyProp$().dot("firstName")!;
+        assertEquals(s.slotGet(), "YO", "Slot value is as expected");
+
+        var i = 0;
+        _ = s.slotSub(AnonymousListener_create()
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            i += 1;
+            self.assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
+          })
+          .build()
+        );
+        t2.setFirstName("YO2");
+        assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
+        assertEquals(i, 1, "Slot listener fired.");
+      `
+    },
   ]
 });
