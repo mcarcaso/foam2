@@ -28,7 +28,7 @@ foam.CLASS({
         String a = (String) o1;
         if ( o2 instanceof String == false ) return 1;
         String b = (String) o2;
-        return a.compareTo(b);
+        return Math.max(-1, Math.min(1, a.compareTo(b)));
       `,
       swiftCode: `
         let a = o1 as! String

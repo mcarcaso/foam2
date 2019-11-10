@@ -297,7 +297,18 @@ foam.CLASS({
     {
       name: 'compareTo',
       androidCode: `
-        throw new RuntimeException("TODO");
+        if ( o == null ) return 1;
+        if ( this == o ) return 0;
+        foam.cross_platform.FObject data = (foam.cross_platform.FObject) o;
+        if ( getCls_() != data.getCls_() ) {
+          return foam.cross_platform.Lib.compare(getCls_().getId(), data.getCls_().getId());
+        }
+        for ( Object a : data.getCls_().getAxiomsByClass(foam.core.Property.CLS_()) ) {
+          foam.core.Property p = (foam.core.Property) a;
+          int diff = foam.cross_platform.Lib.compare(p.f(this), p.f(data));
+          if ( diff != 0 ) return diff;
+        }
+        return 0;
       `,
       swiftCode: `
         if o == nil { return 1 }

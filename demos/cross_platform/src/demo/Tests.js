@@ -216,6 +216,17 @@ foam.CLASS({
     },
     {
       name: 'testCompare',
+      androidCode: `
+        Person t1 = Person_create().build();
+        Person t2 = Person_create().build();
+        assertEquals(t1.compareTo(t2), 0, "t1 is equal to t2");
+        t1.setFirstName("NOT T2");
+        assertEquals(t1.compareTo(t2), 1, "t1 is not equal to t2");
+        t2.setFirstName("NOT T2");
+        assertEquals(t1.compareTo(t2), 0, "t1 is equal to t2");
+        t1.clearProperty("firstName");
+        assertEquals(t1.compareTo(t2), -1, "t1 is not equal to t2");
+      `,
       swiftCode: `
         let t1 = Person_create().build();
         let t2 = Person_create().build();
