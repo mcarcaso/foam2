@@ -1,6 +1,9 @@
 foam.CLASS({
   package: 'demo',
   name: 'Tests',
+  requires: [
+    'foam.core.ExpressionSlot'
+  ],
   classes: [
     {
       name: 'Person',
@@ -266,6 +269,50 @@ foam.CLASS({
         t.setFirstName("Nope");
         assertEquals(t.getFullName(), "OVERRIDE", "Full name is as expected.");
         t.detach();
+      `
+    },
+    {
+      name: 'testExpressionSlot',
+      androidCode: `
+        Person o = Person_create().build();
+        foam.core.ExpressionSlot slot = ExpressionSlot_create().build();
+        slot.setArgs(new foam.core.SlotInterface[] {o.getFirstName$(), o.getLastName$()});
+        slot.setCode(new foam.cross_platform.GenericFunction() {
+          public Object executeFunction(Object[] args) {
+            return args[0] + " " + args[1];
+          }
+        });
+        
+        o.setFirstName("Mike");
+        o.setLastName("C");
+        assertEquals(slot.slotGet(), "Mike C", "Slot's value is as expected");
+        
+        o.setLastName("D");
+        assertEquals(slot.slotGet(), "Mike D", "Slot's value is as expected");
+        
+        o.detach();
+        slot.detach();
+      `,
+      swiftCode: `
+        let o = Person_create().build();
+        let slot = ExpressionSlot_create().build();
+        slot.setArgs([o.getFirstName$(), o.getLastName$()]);
+        slot.setCode(AnonymousGenericFunction_create()
+          .setFn({(args: [Any?]?) -> Any? in
+            return (args![0] as! String) + " " + (args![1] as! String);
+          })
+          .build()
+        )
+
+        o.setFirstName("Mike");
+        o.setLastName("C");
+        assertEquals(slot.slotGet(), "Mike C", "Slot's value is as expected");
+
+        o.setLastName("D");
+        assertEquals(slot.slotGet(), "Mike D", "Slot's value is as expected");
+
+        o.detach();
+        slot.detach();
       `
     }
   ]

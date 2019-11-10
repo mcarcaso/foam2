@@ -8,6 +8,7 @@ class FOAM_Demo_AppTests: XCTestCase {
     t.testFollow();
     t.testCompare();
     t.testExpression();
+    t.testExpressionSlot();
     t.detach();
   }
 }

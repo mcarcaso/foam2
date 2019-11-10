@@ -504,10 +504,10 @@ foam.CLASS({
       name: 'args',
       androidAdapt: `
         if ( newValue instanceof String[] == false ) {
-          return (foam.core.Slot[]) newValue;
+          return (foam.core.SlotInterface[]) newValue;
         }
         String[] propNames = (String[]) newValue;
-        foam.core.Slot[] slots = new foam.core.Slot[propNames.length];
+        foam.core.SlotInterface[] slots = new foam.core.SlotInterface[propNames.length];
         for ( int i = 0; i < slots.length ; i++ ) {
           slots[i] = getObj().getSlot(propNames[i]);
         }
@@ -515,14 +515,14 @@ foam.CLASS({
       `,
       swiftAdapt: `
         if !(newValue is [String]) {
-          return newValue as! [foam_core_Slot]?;
+          return newValue as! [foam_core_SlotInterface]?;
         }
         let propNames = newValue as! [String];
-        var slots = [foam_core_Slot?](repeating: nil, count: propNames.count);
+        var slots = [foam_core_SlotInterface?](repeating: nil, count: propNames.count);
         for i in 0..<slots.count {
           slots[i] = getObj()!.getSlot(propNames[i]);
         }
-        return slots as? [foam_core_Slot];
+        return slots as? [foam_core_SlotInterface];
       `,
       androidPostSet: `subToArgs_(newValue);`,
       swiftPostSet: `subToArgs_(newValue);`
@@ -550,7 +550,7 @@ foam.CLASS({
     {
       name: 'subToArgs_',
       args: [
-        { type: 'foam.core.Slot[]', name: 'args' }
+        { type: 'foam.core.SlotInterface[]', name: 'args' }
       ],
       androidCode: `
         cleanup(null, null);

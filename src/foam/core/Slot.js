@@ -433,7 +433,7 @@ foam.CLASS({
     },
     {
       class: 'FObjectArray',
-      of: 'foam.core.Slot',
+      of: 'foam.core.SlotInterface',
       name: 'args',
       expression: function(obj) {
         foam.assert(obj, 'ExpressionSlot: "obj" or "args" required.');
