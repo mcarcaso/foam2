@@ -300,7 +300,18 @@ foam.CLASS({
         throw new RuntimeException("TODO");
       `,
       swiftCode: `
-        fatalError("TODO");
+        if o == nil { return 1 }
+        if self === o as AnyObject { return 0 }
+        let data = o as! foam_cross_platform_FObject
+        if getCls_() !== data.getCls_() {
+          return foam_cross_platform_Lib.compare(getCls_()!.getId(), data.getCls_()!.getId());
+        }
+        for a in data.getCls_()!.getAxiomsByClass(foam_core_Property.CLS_())! {
+          let p = a as! foam_core_Property
+          let diff = foam_cross_platform_Lib.compare(p.f(self), p.f(data))
+          if diff != 0 { return diff }
+        }
+        return 0
       `
     }
   ]

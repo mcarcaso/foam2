@@ -701,6 +701,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/ios_swift/MapProperty" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/StringProperty" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/AnonymousDetachable" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/ArrayProperty" },
 
   // Strategy
   { name: "foam/strategy/StrategyReference" },

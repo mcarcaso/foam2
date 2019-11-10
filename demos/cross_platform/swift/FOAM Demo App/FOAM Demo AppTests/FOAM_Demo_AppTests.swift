@@ -3,7 +3,10 @@ import XCTest
 
 class FOAM_Demo_AppTests: XCTestCase {
   func testExample() {
-    demo_Tests.demo_TestsBuilder(nil).build().testListen();
-    demo_Tests.demo_TestsBuilder(nil).build().testFollow();
+    let t = demo_Tests.demo_TestsBuilder(nil).build()
+    t.testListen();
+    t.testFollow();
+    t.testCompare();
+    t.detach();
   }
 }

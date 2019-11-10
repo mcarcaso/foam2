@@ -15,5 +15,6 @@ public class ExampleUnitTest {
         demo.Tests t = demo.Tests.TestsBuilder(null).build();
         t.testListen();
         t.testFollow();
+        t.detach();
     }
 }

@@ -296,13 +296,18 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
         name: this.crossPlatformAxiomName,
         body: `
           if ${this.crossPlatformPrivateAxiom} == nil {
-            ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject.getAxiomByName('asSwiftValue').code.call(this)};
+            ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject
+              .getAxiomByName('asSwiftValue')
+              .code.call(this)};
           }
           return ${this.crossPlatformPrivateAxiom}!;
         `
       });
 
       return cls;
+    },
+    function asSwiftValue() {
+      return this.sourceCls_.model_.swiftName + '.' + this.crossPlatformAxiomName + '()';
     }
   ]
 });

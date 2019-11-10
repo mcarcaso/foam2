@@ -237,6 +237,7 @@ ${builderProperties.map(p => `
     },
     function addSwiftStaticClassInfo(cls) {
       var flagFilter = foam.util.flagFilter(['swift']);
+      var cInfo = this.toCrossPlatformClass(flagFilter);
       cls.method({
         override: !! cls.extends,
         visibility: 'public',
@@ -245,7 +246,16 @@ ${builderProperties.map(p => `
         name: 'CLS_',
         body: `
           if initClassInfo_ == nil {
-            initClassInfo_ = ${this.toCrossPlatformClass(flagFilter).asSwiftValue()};
+            initClassInfo_ = foam_cross_platform_FoamClass
+              .foam_cross_platform_FoamClassBuilder(nil)
+              .build();
+            ${cInfo.cls_.getAxiomsByClass(foam.core.Property)
+                .filter(flagFilter)
+                .map(a => `
+            initClassInfo_!.${a.crossPlatformSetterName}(${foam.swift.asSwiftValue(cInfo[a.name])});
+                `)
+                .join('\n')
+            }
           }
           return initClassInfo_!
         `
