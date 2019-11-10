@@ -178,6 +178,25 @@ foam.CLASS({
 
         test.detach();
       `
+    },
+    {
+      name: 'testFollow',
+      swiftCode: `
+        let o1 = Person_create()
+          .setFirstName("A")
+          .build();
+        let o2 = Person_create()
+          .build();
+
+        _ = o2.getFirstName$().linkFrom(o1.getFirstName$());
+        assertEquals(o2.getFirstName(), "A", "o2 is following o1 firstName");
+
+        o2.setFirstName("B");
+        assertEquals(o1.getFirstName(), "B", "o1 is following o2 firstName");
+
+        o1.detach();
+        o2.detach();
+      `
     }
   ]
 });

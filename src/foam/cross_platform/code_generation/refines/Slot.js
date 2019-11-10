@@ -18,7 +18,35 @@ foam.INTERFACE({
       args: [
         { type: 'foam.cross_platform.Listener', name: 'listener' }
       ]
-    }
+    },
+    {
+      type: 'foam.core.Detachable',
+      name: 'follow',
+      args: [
+        { type: 'foam.core.SlotInterface', name: 'other' }
+      ]
+    },
+    {
+      type: 'foam.core.SlotInterface',
+      name: 'dot',
+      args: [
+        { type: 'String', name: 'name' }
+      ]
+    },
+    {
+      type: 'foam.core.Detachable',
+      name: 'linkFrom',
+      args: [
+        { type: 'foam.core.SlotInterface', name: 'slot' }
+      ]
+    },
+    {
+      type: 'foam.core.Detachable',
+      name: 'linkTo',
+      args: [
+        { type: 'foam.core.SlotInterface', name: 'slot' }
+      ]
+    },
   ]
 });
 
@@ -28,6 +56,9 @@ foam.CLASS({
   refines: 'foam.core.Slot',
   implements: [
     'foam.core.SlotInterface'
+  ],
+  requires: [
+    'foam.core.internal.SubSlot',
   ],
   methods: [
     {
@@ -41,7 +72,85 @@ foam.CLASS({
     {
       name: 'slotSub',
       code: function(l) { return this.sub(l) },
-    }
+    },
+    {
+      name: 'dot',
+      swiftCode: `
+        return SubSlot_create()
+          .setParent(self)
+          .setName(name)
+          .build();
+      `
+    },
+    {
+      name: 'linkFrom',
+      swiftCode: `
+        let s1 = self;
+        let s2 = slot!;
+        var feedback1 = false;
+        var feedback2 = false;
+        let l1 = AnonymousListener_create()
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            if feedback1 { return; }
+            if !foam_cross_platform_Lib.equals(s1.slotGet(), s2.slotGet()) {
+              feedback1 = true;
+              s2.slotSet(s1.slotGet());
+              if !foam_cross_platform_Lib.equals(s1.slotGet(), s2.slotGet()) {
+                s1.slotSet(s2.slotGet());
+              }
+              feedback1 = false;
+            }
+          })
+          .build();
+        let l2 = AnonymousListener_create()
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            if feedback2 { return; }
+            if !foam_cross_platform_Lib.equals(s1.slotGet(), s2.slotGet()) {
+              feedback2 = true;
+              s1.slotSet(s2.slotGet());
+              if !foam_cross_platform_Lib.equals(s1.slotGet(), s2.slotGet()) {
+                s2.slotSet(s1.slotGet());
+              }
+              feedback2 = false;
+            }
+          })
+          .build();
+
+        var sub1 = s1.slotSub(l1);
+        var sub2 = s2.slotSub(l2);
+
+        l2.executeListener(nil, nil);
+
+        return AnonymousDetachable_create()
+          .setFn({() -> Void in
+            sub1?.detach();
+            sub2?.detach();
+            sub1 = nil;
+            sub2 = nil;
+          })
+          .build();
+      `
+    },
+    {
+      name: 'linkTo',
+      swiftCode: `
+        return slot!.linkFrom(self);
+      `
+    },
+    {
+      name: 'follow',
+      swiftCode: `
+        let l = AnonymousListener_create()
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            if !foam_cross_platform_Lib.equals(self.slotGet(), other!.slotGet()) {
+              self.slotSet(other!.slotGet());
+            }
+          })
+          .build()
+        l.executeListener(nil, nil)
+        return other!.slotSub(l);
+      `
+    },
   ],
 });
 
@@ -81,6 +190,11 @@ foam.CLASS({
       name: 'slotGet',
       androidCode: `return getProp().f(getObj());`,
       swiftCode: `return getProp()!.f(getObj());`
+    },
+    {
+      name: 'slotSet',
+      androidCode: `getObj().setProperty(getProp().getName(), value);`,
+      swiftCode: `getObj()!.setProperty(getProp()!.getName(), value);`
     },
     {
       name: 'slotSub',
