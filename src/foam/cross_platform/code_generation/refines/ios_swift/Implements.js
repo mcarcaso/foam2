@@ -5,7 +5,9 @@ foam.CLASS({
   flags: ['swift'],
   methods: [
     function buildSwiftClass(cls, parentCls) {
-      if ( ! parentCls.hasOwnAxiom(this.name) ) return;
+      if ( parentCls.getSuperAxiomByName(this.name) ) return;
+      if ( parentCls != foam.cross_platform.FObject &&
+           foam.cross_platform.FObject.getAxiomByName(this.name) ) return;
       cls.implements = cls.implements
         .concat(foam.lookup(this.path).model_.swiftName);
     }

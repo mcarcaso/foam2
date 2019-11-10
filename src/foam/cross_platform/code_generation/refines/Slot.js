@@ -122,7 +122,7 @@ foam.CLASS({
         l2.executeListener(nil, nil);
 
         return AnonymousDetachable_create()
-          .setFn({() -> Void in
+          .setDetachFn({() -> Void in
             sub1?.detach();
             sub2?.detach();
             sub1 = nil;
@@ -208,7 +208,7 @@ foam.CLASS({
       `,
       swiftCode: `
         return getObj()!.sub(
-          [ 
+          [
             "propertyChange",
             getProp()!.getName()!
           ],
@@ -465,7 +465,7 @@ foam.CLASS({
       swiftCode: `
         let l = cleanup_listener();
         onDetach(AnonymousDetachable_create()
-          .setFn({() -> Void in
+          .setDetachFn({() -> Void in
             l.executeListener(nil, nil);
           })
           .build()
@@ -496,7 +496,7 @@ foam.CLASS({
           subs[i] = args![i].slotSub(invalidate_listener());
         }
         setCleanup_(AnonymousDetachable_create()
-          .setFn({() -> Void in
+          .setDetachFn({() -> Void in
             for sub in subs { sub?.detach(); }
           })
           .build()

@@ -40,7 +40,7 @@ foam.LIB({
             if ( o.id == 'foam.core.AbstractInterface' ) {
               return o.model_.swiftName + 'Class.CLS_()';
             }
-            return (o.id == 'foam.core.FObject' ? 
+            return (o.id == 'foam.core.FObject' ?
               foam.cross_platform.AbstractFObject.model_.swiftName :
               o.model_.swiftName)
               + '.CLS_()';
@@ -62,7 +62,6 @@ ${Object.keys(o).map(k => `
       })
     },
     function isNullable(type) {
-      debugger;
       return !! type.match(/[?!]$/);
     },
     function requiresCast(type) {

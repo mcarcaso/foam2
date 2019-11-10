@@ -43,6 +43,22 @@ foam.CLASS({
         return false;
       }
 
+      var hasSameSignature = parentMethod => {
+        return parentMethod &&
+          parentMethod.swiftType == this.swiftType &&
+          foam.util.compare(parentMethod.args, this.args) == 0 &&
+          parentMethod.crossPlatformIsStatic == this.crossPlatformIsStatic;
+      };
+
+      // If no parentMethod is found, check if one exists on the
+      // foam.cross_platform.AbstractFObject because the parentCls will
+      // ultimately extend that.
+      var parentMethod = foam.cross_platform.AbstractFObject
+        .getOwnAxioms()
+        .find(a => a.name == this.name);
+
+      if ( hasSameSignature(parentMethod) ) return true;
+
       var parentMethod = parentCls.getSuperAxiomByName(this.name);
 
       if ( this.InterfaceMethod.isInstance(parentMethod) ) {
@@ -56,19 +72,7 @@ foam.CLASS({
         parentMethod = null;
       }
 
-      if ( ! parentMethod ) {
-        // If no parentMethod is found, check if one exists on the
-        // foam.cross_platform.AbstractFObject because the parentCls will
-        // ultimately extend that.
-        parentMethod = foam.cross_platform.AbstractFObject
-          .getOwnAxioms()
-          .find(a => a.name == this.name);
-      }
-
-      return parentMethod &&
-        parentMethod.swiftType == this.swiftType &&
-        foam.util.compare(parentMethod.args, this.args) == 0 &&
-        parentMethod.crossPlatformIsStatic == this.crossPlatformIsStatic;
+      return hasSameSignature(parentMethod);
     }
   ],
 });

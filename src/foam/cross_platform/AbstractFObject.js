@@ -18,7 +18,7 @@ foam.CLASS({
       flags: ['swift']
     },
     {
-      path: 'foam.swift.AnonymousDetachable',
+      path: 'foam.core.AnonymousDetachable',
       flags: ['swift']
     }
   ],
@@ -277,7 +277,7 @@ foam.CLASS({
           .setListener(listener)
           .build();
         node.setSubscription(AnonymousDetachable_create()
-          .setFn({() -> Void in
+          .setDetachFn({() -> Void in
             node.getNext()?.setPrev(node.getPrev());
             node.getPrev()?.setNext(node.getNext());
             node.clearProperty("listener");
