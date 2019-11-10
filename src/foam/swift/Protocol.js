@@ -51,6 +51,8 @@ foam.CLASS({
 
   methods: [
     function method(m) {
+      if ( m.class ) return;
+      if ( m.visibility == 'private' ) return;
       if ( ! this.ProtocolMethod.isInstance(m) ) {
         m = this.ProtocolMethod.create().copyFrom(m);
       }
@@ -58,7 +60,8 @@ foam.CLASS({
       return this;
     },
 
-    function field(f) {
+    function field(m) {
+      return;
       if ( ! this.ProtocolField.isInstance(m) ) {
         m = this.ProtocolField.create().copyFrom(m);
       }

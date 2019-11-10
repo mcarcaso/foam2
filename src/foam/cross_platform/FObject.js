@@ -92,6 +92,13 @@ foam.INTERFACE({
     {
       type: 'foam.cross_platform.FoamClass',
       name: 'getCls_'
+    },
+    {
+      type: 'Integer',
+      name: 'compareTo',
+      args: [
+        { type: 'Any', name: 'o' }
+      ]
     }
   ]
 });

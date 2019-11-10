@@ -77,6 +77,9 @@ foam.CLASS({
       ],
       androidCode: `
         return ((foam.cross_platform.FObject) o).getProperty(getName());
+      `,
+      swiftCode: `
+        return (o as! foam_cross_platform_FObject?)?.getProperty(getName());
       `
     }
   ]

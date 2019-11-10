@@ -80,6 +80,7 @@ foam.CLASS({
 
   methods: [
     function outputJava(o) {
+      if ( this.visibility == 'private' ) return;
 
       if ( this.documentation ) {
        str = foam.java.Util.removeSpacing(this.documentation);

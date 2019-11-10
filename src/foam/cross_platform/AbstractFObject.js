@@ -294,5 +294,14 @@ foam.CLASS({
         return node.getSubscription();
       `
     },
+    {
+      name: 'compareTo',
+      androidCode: `
+        throw new RuntimeException("TODO");
+      `,
+      swiftCode: `
+        fatalError("TODO");
+      `
+    }
   ]
 });

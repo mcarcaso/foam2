@@ -698,6 +698,8 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/PromiseProperty" },
   { name: "foam/cross_platform/code_generation/refines/android_java/PromiseProperty" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/PromiseProperty" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/MapProperty" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/StringProperty" },
 
   // Strategy
   { name: "foam/strategy/StrategyReference" },

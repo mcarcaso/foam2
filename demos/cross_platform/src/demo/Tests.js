@@ -43,6 +43,9 @@ foam.CLASS({
           ],
           androidCode: `
             return "Hello " + name + " from " + getFullName();
+          `,
+          swiftCode: `
+            return "Hello " + name! + " from " + getFullName()!;
           `
         }
       ]
@@ -70,6 +73,13 @@ foam.CLASS({
           throw new RuntimeException("FAILED: " + msg);
         } else {
           System.out.println("PASSED: " + msg);
+        }
+      `,
+      swiftCode: `
+        if !foam_cross_platform_Lib.equals(o1, o2) {
+          fatalError("FAILED: " + msg!);
+        } else {
+          print("PASSED: " + msg!);
         }
       `
     },
@@ -109,12 +119,62 @@ foam.CLASS({
 
         test.setFirstName("1");
         test.setLastName("2");
-        assert test.sayHi("3").equals("Hello 3 from 1 2");
 
-        assertEquals(numPubs[0], 1, "Listener detached after first change");
-        assertEquals(numPubs[1], 4, "All events fired: firstName -> fullName + lastName -> fullName");
-        assertEquals(numPubs[2], 1, "firstName listener only fired once");
-        assertEquals(numPubs[3], 2, "fullName listener fired twice");
+        assertEquals(test.sayHi("3"), "Hello 3 from 1 2", "sayHi works");
+
+        assertEquals(numPubs[0], 1, "Listener detached after first change");
+        assertEquals(numPubs[1], 4, "All events fired: firstName -> fullName + lastName -> fullName");
+        assertEquals(numPubs[2], 1, "firstName listener only fired once");
+        assertEquals(numPubs[3], 2, "fullName listener fired twice");
+
+        test.detach();
+      `,
+      swiftCode: `
+        let test = Person_create().build();
+
+        var numPubs = [0, 0, 0, 0];
+        _ = test.sub(nil, AnonymousListener_create()
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            numPubs[0] += 1;
+            sub?.detach();
+          })
+          .build()
+        );
+
+        _ = test.sub(nil, AnonymousListener_create()
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            numPubs[1] += 1;
+          })
+          .build()
+        );
+
+        _ = test.getFirstName$().slotSub(AnonymousListener_create()
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            numPubs[2] += 1;
+          })
+          .build()
+        );
+
+        _ = test.getFullName$().slotSub(AnonymousListener_create()
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            numPubs[3] += 1;
+          })
+          .build()
+        );
+
+        // Must touch the fullName to initialize its value and have it react to
+        // changes in the args it subscribes to.
+        _ = test.getFullName();
+
+        test.setFirstName("1");
+        test.setLastName("2");
+
+        assertEquals(test.sayHi("3"), "Hello 3 from 1 2", "sayHi works");
+
+        assertEquals(numPubs[0], 1, "Listener detached after first change");
+        assertEquals(numPubs[1], 4, "All events fired: firstName -> fullName + lastName -> fullName");
+        assertEquals(numPubs[2], 1, "firstName listener only fired once");
+        assertEquals(numPubs[3], 2, "fullName listener fired twice");
 
         test.detach();
       `

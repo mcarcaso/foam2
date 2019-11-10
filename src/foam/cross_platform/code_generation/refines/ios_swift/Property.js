@@ -19,6 +19,13 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
+      name: 'swiftValue',
+      expression: function(value) {
+        return foam.Undefined.isInstance(value) ? '' : foam.swift.asSwiftValue(value);
+      },
+    },
+    {
+      class: 'StringProperty',
       name: 'swiftValueType',
       expression: function(swiftType) {
         return swiftType + (foam.swift.isNullable(swiftType) ? '' : '!')

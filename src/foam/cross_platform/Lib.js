@@ -1,6 +1,9 @@
 foam.CLASS({
   package: 'foam.cross_platform',
   name: 'Lib',
+  requires: [
+    'foam.cross_platform.type.Util'
+  ],
   axioms: [
     { class: 'foam.pattern.Singleton' }
   ],
@@ -14,6 +17,9 @@ foam.CLASS({
       ],
       androidCode: `
         return compare(o1, o2) == 0;
+      `,
+      swiftCode: `
+        return compare(o1, o2) == 0;
       `
     },
     {
@@ -24,25 +30,16 @@ foam.CLASS({
         { type: 'Any', name: 'o2' }
       ],
       androidCode: `
-        if ( o1 == null && o2 == null ) return 0;
-        if ( o2 == null ) return  1;
-        if ( o1 == null ) return -1;
-
-        if ( o1 instanceof Number && o2 instanceof Number ) {
-          double d1 = ((Number) o1).doubleValue();
-          double d2 = ((Number) o2).doubleValue();
-          if ( d1 == d2 ) return  0;
-          if ( d1  > d2 ) return  1;
-          if ( d1  < d2 ) return -1;
-        }
-
-        if ( ! (o1 instanceof Comparable && o2 instanceof Comparable) ) {
-          compare(o1.hashCode(), o2.hashCode());
-        }
-        if ( ! (o2 instanceof Comparable) ) return 1;
-        if ( ! (o1 instanceof Comparable) ) return -1;
-
-        return ((Comparable) o1).compareTo(o2);
+        return foam.cross_platform.type.Util
+          .UtilBuilder(null)
+          .build()
+          .compare(o1, o2);
+      `,
+      swiftCode: `
+        return foam_cross_platform_type_Util
+          .foam_cross_platform_type_UtilBuilder(nil)
+          .build()
+          .compare(o1, o2)
       `
     }
   ]
