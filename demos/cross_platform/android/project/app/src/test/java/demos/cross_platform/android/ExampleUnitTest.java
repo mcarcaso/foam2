@@ -12,6 +12,8 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void runTests() {
-        demo.Tests.TestsBuilder(null).build().testListen();
+        demo.Tests t = demo.Tests.TestsBuilder(null).build();
+        t.testListen();
+        t.testFollow();
     }
 }

@@ -75,6 +75,12 @@ foam.CLASS({
     },
     {
       name: 'dot',
+      androidCode: `
+        return SubSlot_create()
+          .setParent(this)
+          .setName(name)
+          .build();
+      `,
       swiftCode: `
         return SubSlot_create()
           .setParent(self)
@@ -84,6 +90,59 @@ foam.CLASS({
     },
     {
       name: 'linkFrom',
+      androidCode: `
+        foam.core.SlotInterface s1 = this;
+        foam.core.SlotInterface s2 = slot;
+        foam.cross_platform.Listener l1 = new foam.cross_platform.Listener() {
+          boolean feedback1 = false;
+          public void executeListener(foam.core.Detachable sub, Object[] args) {
+            if ( feedback1 ) return;
+            if ( ! foam.cross_platform.Lib.equals(s1.slotGet(), s2.slotGet()) ) {
+              feedback1 = true;
+              s2.slotSet(s1.slotGet());
+              if ( ! foam.cross_platform.Lib.equals(s1.slotGet(), s2.slotGet()) ) {
+                s1.slotSet(s2.slotGet());
+              }
+              feedback1 = false;
+            }
+          }
+        };
+        foam.cross_platform.Listener l2 = new foam.cross_platform.Listener() {
+          boolean feedback2 = false;
+          public void executeListener(foam.core.Detachable sub, Object[] args) {
+            if ( feedback2 ) return;
+            if ( ! foam.cross_platform.Lib.equals(s1.slotGet(), s2.slotGet()) ) {
+              feedback2 = true;
+              s1.slotSet(s2.slotGet());
+              if ( ! foam.cross_platform.Lib.equals(s1.slotGet(), s2.slotGet()) ) {
+                s2.slotSet(s1.slotGet());
+              }
+              feedback2 = false;
+            }
+          }
+        };
+
+        foam.core.Detachable sub1 = s1.slotSub(l1);
+        foam.core.Detachable sub2 = s2.slotSub(l2);
+
+        l2.executeListener(null, null);
+
+        return new foam.core.Detachable() {
+          foam.core.Detachable sub1 = null;
+          foam.core.Detachable sub2 = null;
+          foam.core.Detachable init(foam.core.Detachable s1, foam.core.Detachable s2) {
+            sub1 = s1;
+            sub2 = s2;
+            return this;
+          }
+          public void detach() {
+            if ( sub1 != null ) sub1.detach();
+            if ( sub2 != null ) sub2.detach();
+            sub1 = null;
+            sub2 = null;
+          }
+        }.init(sub1, sub2);
+      `,
       swiftCode: `
         let s1 = self;
         let s2 = slot!;
@@ -133,12 +192,28 @@ foam.CLASS({
     },
     {
       name: 'linkTo',
+      androidCode: `
+        return slot.linkFrom(this);
+      `,
       swiftCode: `
         return slot!.linkFrom(self);
       `
     },
     {
       name: 'follow',
+      androidCode: `
+        final foam.core.SlotInterface self = this;
+        final foam.core.SlotInterface finalOther = other;
+        foam.cross_platform.Listener l = new foam.cross_platform.Listener() {
+          public void executeListener(foam.core.Detachable sub, Object[] args) {
+            if ( ! foam.cross_platform.Lib.equals(self.slotGet(), finalOther.slotGet()) ) {
+              self.slotSet(finalOther.slotGet());
+            }
+          }
+        };
+        l.executeListener(null, null);
+        return other.slotSub(l);
+      `,
       swiftCode: `
         let l = AnonymousListener_create()
           .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
