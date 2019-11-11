@@ -11,6 +11,7 @@ class FOAM_Demo_AppTests: XCTestCase {
     t.testExpressionSlot();
     t.testHasOwnProperty();
     t.testSubSlot();
+    t.testSubSlot2();
     t.detach();
   }
 }

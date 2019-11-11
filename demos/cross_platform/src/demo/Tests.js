@@ -402,5 +402,83 @@ foam.CLASS({
         assertEquals(i, 1, "Slot listener fired.");
       `
     },
+    {
+      name: 'testSubSlot2',
+      androidCode: `
+        Person t = Person_create()
+          .setFirstName("a")
+          .build();
+
+        final int[] slotCount = new int[2];
+        foam.core.Detachable s1 = t.getFirstName$().slotSub(new foam.cross_platform.Listener() {
+          public void executeListener(foam.core.Detachable sub, Object[] args) {
+            slotCount[0] += 1;
+          }
+        });
+
+        Person t2 = Person_create()
+          .setAnyProp(t)
+          .build();
+        foam.core.Detachable s2 = t2.getAnyProp$().dot("firstName").slotSub(new foam.cross_platform.Listener() {
+          public void executeListener(foam.core.Detachable sub, Object[] args) {
+            slotCount[1] += 1;
+          }
+        });
+
+        assertEquals(t2.getAnyProp$().dot("firstName").slotGet(), "a", "t2's anyProp slot has the correct value.");
+        assertEquals(slotCount[0], 0, "Slot has not fired.");
+        assertEquals(slotCount[1], 0, "SubSlot has not fired.");
+
+        t.setFirstName("B");
+
+        assertEquals(t2.getAnyProp$().dot("firstName").slotGet(), "B", "t2's anyProp slot has the correct value.");
+        assertEquals(slotCount[0], 1, "Slot has fired.");
+        assertEquals(slotCount[1], 1, "SubSlot has fired.");
+
+        s1.detach();
+        s2.detach();
+        t.detach();
+        t2.detach();
+      `,
+      swiftCode: `
+        let t = Person_create()
+          .setFirstName("a")
+          .build();
+
+        var slot = 0;
+        let s1 = t.getFirstName$().slotSub(AnonymousListener_create()
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            slot += 1;
+          })
+          .build()
+        );
+
+        var subSlot = 0;
+        let t2 = Person_create()
+          .setAnyProp(t)
+          .build();
+        let s2 = t2.getAnyProp$().dot("firstName")!.slotSub(AnonymousListener_create()
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            subSlot += 1;
+          })
+          .build()
+        );
+
+        assertEquals(t2.getAnyProp$().dot("firstName")!.slotGet(), "a", "t2's anyProp slot has the correct value.");
+        assertEquals(slot, 0, "Slot has not fired.");
+        assertEquals(subSlot, 0, "SubSlot has not fired.");
+
+        t.setFirstName("B");
+
+        assertEquals(t2.getAnyProp$().dot("firstName")!.slotGet(), "B", "t2's anyProp slot has the correct value.");
+        assertEquals(slot, 1, "Slot has fired.");
+        assertEquals(subSlot, 1, "SubSlot has fired.");
+
+        s1?.detach();
+        s2?.detach();
+        t.detach();
+        t2.detach();
+      `
+    },
   ]
 });
