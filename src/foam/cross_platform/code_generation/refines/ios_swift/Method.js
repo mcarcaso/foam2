@@ -31,7 +31,7 @@ foam.CLASS({
         type: this.swiftType,
         name: this.name,
         args: this.args.map(a => a.toSwiftArg()),
-        body: this.swiftCode
+        body: foam.cpTemplate(this.swiftCode, 'swift')
       });
 
       return cls;

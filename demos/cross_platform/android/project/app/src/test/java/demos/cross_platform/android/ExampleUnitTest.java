@@ -21,6 +21,7 @@ public class ExampleUnitTest {
         t.testHasOwnProperty();
         t.testSubSlot();
         t.testSubSlot2();
+        t.testTypeUtil();
         t.detach();
     }
 }

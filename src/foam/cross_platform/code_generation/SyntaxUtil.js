@@ -2,45 +2,60 @@ foam.LIB({
   name: 'foam',
   flags: ['swift', 'android'],
   methods: [
-    function cpListener(code, language) {
+    function cpTemplate(value, language) {
+      var args;
       switch(language) {
         case 'swift':
-          return `
+          args = {
+            v: foam.swift.asSwiftValue,
+            listener: function(code) {
+              return `
 AnonymousListener_create()
   .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
     ${code}
   })
   .build()
-          `;
-        case 'android':
-          return `
-new foam.cross_platform.Listener() {
-  public void executeListener(foam.core.Detachable sub, Object[] args) {
-    ${code}
-  }
-}
-          `;
-      }
-    },
-    function cpFn(code, language) {
-      switch(language) {
-        case 'swift':
-          return `
+              `;
+            },
+            fn: function(code) {
+              return `
 AnonymousGenericFunction_create()
   .setFn({(args: [Any?]?) -> Any? in
     ${code}
   })
   .build()
-          `;
+              `;
+            }
+          };
+          break;
         case 'android':
-          return `
+          args = {
+            v: foam.android.tools.asAndroidValue,
+            listener: function(code) {
+              return `
+new foam.cross_platform.Listener() {
+  public void executeListener(foam.core.Detachable sub, Object[] args) {
+    ${code}
+  }
+}
+              `;
+            },
+            fn: function(code) {
+              return `
 new foam.cross_platform.GenericFunction() {
   public Object executeFunction(Object[] args) {
     ${code}
   }
 }
-          `;
+              `;
+            }
+          };
+          break;
       }
+
+      var t = foam.templates.TemplateUtil.create().lazyCompile(
+        value, 'cpCode', Object.keys(args));
+      return t.apply(t, Object.values(args));
     }
   ]
 });

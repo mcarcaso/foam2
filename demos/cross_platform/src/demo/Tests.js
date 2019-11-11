@@ -2,7 +2,8 @@ foam.CLASS({
   package: 'demo',
   name: 'Tests',
   requires: [
-    'foam.core.ExpressionSlot'
+    'foam.cross_platform.type.Util',
+    'foam.core.ExpressionSlot',
   ],
   classes: [
     {
@@ -95,22 +96,22 @@ foam.CLASS({
         Person test = Person_create().build();
 
         final int[] numPubs = new int[] { 0, 0, 0, 0 };
-        test.sub(null, ${foam.cpListener(`
+        test.sub(null, <%=listener(\`
             numPubs[0]++;
             sub.detach();
-        `, 'android')});
+        \`)%>);
 
-        test.sub(null, ${foam.cpListener(`
+        test.sub(null, <%=listener(\`
             numPubs[1]++;
-        `, 'android')});
+        \`)%>);
 
-        test.getFirstName$().slotSub(${foam.cpListener(`
+        test.getFirstName$().slotSub(<%=listener(\`
             numPubs[2]++;
-        `, 'android')});
+        \`)%>);
 
-        test.getFullName$().slotSub(${foam.cpListener(`
+        test.getFullName$().slotSub(<%=listener(\`
             numPubs[3]++;
-        `, 'android')});
+        \`)%>);
         // Must touch the fullName to initialize its value and have it react to
         // changes in the args it subscribes to.
         test.getFullName();
@@ -131,22 +132,22 @@ foam.CLASS({
         let test = Person_create().build();
 
         var numPubs = [0, 0, 0, 0];
-        _ = test.sub(nil, ${foam.cpListener(`
+        _ = test.sub(nil, <%=listener(\`
             numPubs[0] += 1;
             sub?.detach();
-        `, 'swift')});
+        \`)%>);
 
-        _ = test.sub(nil, ${foam.cpListener(`
+        _ = test.sub(nil, <%=listener(\`
             numPubs[1] += 1;
-        `, 'swift')});
+        \`)%>);
 
-        _ = test.getFirstName$().slotSub(${foam.cpListener(`
+        _ = test.getFirstName$().slotSub(<%=listener(\`
             numPubs[2] += 1;
-        `, 'swift')});
+        \`)%>);
 
-        _ = test.getFullName$().slotSub(${foam.cpListener(`
+        _ = test.getFullName$().slotSub(<%=listener(\`
             numPubs[3] += 1;
-        `, 'swift')});
+        \`)%>);
 
         // Must touch the fullName to initialize its value and have it react to
         // changes in the args it subscribes to.
@@ -260,9 +261,9 @@ foam.CLASS({
         Person o = Person_create().build();
         foam.core.ExpressionSlot slot = ExpressionSlot_create().build();
         slot.setArgs(new foam.core.SlotInterface[] {o.getFirstName$(), o.getLastName$()});
-        slot.setCode(${foam.cpFn(`
+        slot.setCode(<%=fn(\`
             return args[0] + " " + args[1];
-        `, 'android')});
+        \`)%>);
         
         o.setFirstName("Mike");
         o.setLastName("C");
@@ -278,9 +279,9 @@ foam.CLASS({
         let o = Person_create().build();
         let slot = ExpressionSlot_create().build();
         slot.setArgs([o.getFirstName$(), o.getLastName$()]);
-        slot.setCode(${foam.cpFn(`
+        slot.setCode(<%=fn(\`
             return (args![0] as! String) + " " + (args![1] as! String);
-        `, 'swift')})
+        \`)%>)
 
         o.setFirstName("Mike");
         o.setLastName("C");
@@ -345,10 +346,10 @@ foam.CLASS({
         
         final int[] i = {0};
         final Tests self = this;
-        s.slotSub(${foam.cpListener(`
+        s.slotSub(<%=listener(\`
           i[0] += 1;
           self.assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
-        `, 'android')});
+        \`)%>);
         t2.setFirstName("YO2");
         assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
         assertEquals(i[0], 1, "Slot listener fired.");
@@ -363,10 +364,10 @@ foam.CLASS({
         assertEquals(s.slotGet(), "YO", "Slot value is as expected");
 
         var i = 0;
-        _ = s.slotSub(${foam.cpListener(`
+        _ = s.slotSub(<%=listener(\`
             i += 1;
             self.assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
-        `, 'swift')});
+        \`)%>);
         t2.setFirstName("YO2");
         assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
         assertEquals(i, 1, "Slot listener fired.");
@@ -380,16 +381,16 @@ foam.CLASS({
           .build();
 
         final int[] slotCount = new int[2];
-        foam.core.Detachable s1 = t.getFirstName$().slotSub(${foam.cpListener(`
+        foam.core.Detachable s1 = t.getFirstName$().slotSub(<%=listener(\`
             slotCount[0] += 1;
-        `, 'android')});
+        \`)%>);
 
         Person t2 = Person_create()
           .setAnyProp(t)
           .build();
-        foam.core.Detachable s2 = t2.getAnyProp$().dot("firstName").slotSub(${foam.cpListener(`
+        foam.core.Detachable s2 = t2.getAnyProp$().dot("firstName").slotSub(<%=listener(\`
             slotCount[1] += 1;
-        `, 'android')});
+        \`)%>);
 
         assertEquals(t2.getAnyProp$().dot("firstName").slotGet(), "a", "t2's anyProp slot has the correct value.");
         assertEquals(slotCount[0], 0, "Slot has not fired.");
@@ -412,17 +413,17 @@ foam.CLASS({
           .build();
 
         var slot = 0;
-        let s1 = t.getFirstName$().slotSub(${foam.cpListener(`
+        let s1 = t.getFirstName$().slotSub(<%=listener(\`
             slot += 1;
-        `, 'swift')});
+        \`)%>);
 
         var subSlot = 0;
         let t2 = Person_create()
           .setAnyProp(t)
           .build();
-        let s2 = t2.getAnyProp$().dot("firstName")!.slotSub(${foam.cpListener(`
+        let s2 = t2.getAnyProp$().dot("firstName")!.slotSub(<%=listener(\`
             subSlot += 1;
-        `, 'swift')});
+        \`)%>);
 
         assertEquals(t2.getAnyProp$().dot("firstName")!.slotGet(), "a", "t2's anyProp slot has the correct value.");
         assertEquals(slot, 0, "Slot has not fired.");
@@ -440,5 +441,92 @@ foam.CLASS({
         t2.detach();
       `
     },
+    {
+      name: 'testTypeUtil',
+      androidCode: `
+        foam.cross_platform.type.Util u = Util_create().build();
+        assertEquals(u.typeOf(<%=v(null)%>), u.getNullType(), "Type is null.");
+        assertEquals(u.typeOf(true), u.getBooleanType(), "Type is Boolean.");
+        assertEquals(u.typeOf("true"), u.getStringType(), "Type is String.");
+        assertEquals(u.typeOf(12345), u.getNumberType(), "Type is Number.");
+        assertEquals(u.typeOf(<%=v([1])%>), u.getArrayType(), "Type is Array.");
+        assertEquals(u.typeOf(<%=v(new Date())%>), u.getDateType(), "Type is Date.");
+        assertEquals(u.typeOf(u), u.getFObjectType(), "Type is FObject.");
+        assertEquals(u.typeOf(<%=v({yo:'yo'})%>), u.getMapType(), "Type is Map.");
+        assertEquals(u.typeOf(new java.util.concurrent.Semaphore(1)), u.getUnknownType(), "Type is Unknown.");
+
+        assertEquals(u.compare(<%=v(null)%>, <%=v(null)%>), 0, "Compare is as expected.");
+        assertEquals(u.compare(<%=v(null)%>, 1234), 1, "Compare is as expected.");
+        assertEquals(u.compare(1234, <%=v(null)%>), -1, "Compare is as expected.");
+
+        assertEquals(u.compare(true, true), 0, "Compare is as expected.");
+        assertEquals(u.compare(false, false), 0, "Compare is as expected.");
+        assertEquals(u.compare(false, true), -1, "Compare is as expected.");
+        assertEquals(u.compare(true, false), 1, "Compare is as expected.");
+
+        assertEquals(u.compare("string1", 1), -1, "Compare is as expected.");
+        assertEquals(u.compare(1, "string1"), 1, "Compare is as expected.");
+        assertEquals(u.compare("string2", "string1"), 1, "Compare is as expected.");
+        assertEquals(u.compare("string1", "string2"), -1, "Compare is as expected.");
+        assertEquals(u.compare("string", "string"), 0, "Compare is as expected.");
+
+        assertEquals(u.compare(1, 1), 0, "Compare is as expected.");
+        assertEquals(u.compare(2, 1), 1, "Compare is as expected.");
+        assertEquals(u.compare(1, 2), -1, "Compare is as expected.");
+
+        assertEquals(u.compare(<%=v([1])%>, <%=v([1])%>), 0, "Compare is as expected.");
+        assertEquals(u.compare(<%=v([1, 2])%>, <%=v([1])%>), 1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v([1])%>, <%=v([1, 2])%>), -1, "Compare is as expected.");
+
+        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({yo:1})%>), -1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v({yo:1})%>, <%=v({yo:1, sup:2})%>), 1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({yo:1, sup:3})%>), -1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v({yo:1, sup:3})%>, <%=v({yo:1, sup:2})%>), 1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({hi:3, yo:1})%>), 1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v({hi:3, yo:1})%>, <%=v({yo:1, sup:2})%>), -1, "Compare is as expected.");
+      `,
+      swiftCode: `
+        let u = Util_create().build();
+        assertEquals(u.typeOf(<%=v(null)%>), u.getNullType(), "Type is null.");
+        assertEquals(u.typeOf(true), u.getBooleanType(), "Type is Boolean.");
+        assertEquals(u.typeOf("true"), u.getStringType(), "Type is String.");
+        assertEquals(u.typeOf(12345), u.getNumberType(), "Type is Number.");
+        assertEquals(u.typeOf(<%=v([1])%>), u.getArrayType(), "Type is Array.");
+        assertEquals(u.typeOf(<%=v(new Date())%>), u.getDateType(), "Type is Date.");
+        assertEquals(u.typeOf(u), u.getFObjectType(), "Type is FObject.");
+        assertEquals(u.typeOf(<%=v({yo:'yo'})%>), u.getMapType(), "Type is Map.");
+        assertEquals(u.typeOf(DispatchSemaphore(value: 1)), u.getUnknownType(), "Type is Unknown.");
+
+        assertEquals(u.compare(<%=v(null)%>, <%=v(null)%>), 0, "Compare is as expected.");
+        assertEquals(u.compare(<%=v(null)%>, 1234), 1, "Compare is as expected.");
+        assertEquals(u.compare(1234, <%=v(null)%>), -1, "Compare is as expected.");
+
+        assertEquals(u.compare(true, true), 0, "Compare is as expected.");
+        assertEquals(u.compare(false, false), 0, "Compare is as expected.");
+        assertEquals(u.compare(false, true), -1, "Compare is as expected.");
+        assertEquals(u.compare(true, false), 1, "Compare is as expected.");
+
+        assertEquals(u.compare("string1", 1), -1, "Compare is as expected.");
+        assertEquals(u.compare(1, "string1"), 1, "Compare is as expected.");
+        assertEquals(u.compare("string2", "string1"), 1, "Compare is as expected.");
+        assertEquals(u.compare("string1", "string2"), -1, "Compare is as expected.");
+        assertEquals(u.compare("string", "string"), 0, "Compare is as expected.");
+
+        assertEquals(u.compare(1, 1), 0, "Compare is as expected.");
+        assertEquals(u.compare(2, 1), 1, "Compare is as expected.");
+        assertEquals(u.compare(1, 2), -1, "Compare is as expected.");
+
+        assertEquals(u.compare(<%=v([1])%>, <%=v([1])%>), 0, "Compare is as expected.");
+        assertEquals(u.compare(<%=v([1, 2])%>, <%=v([1])%>), 1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v([1])%>, <%=v([1, 2])%>), -1, "Compare is as expected.");
+
+        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({yo:1})%>), -1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v({yo:1})%>, <%=v({yo:1, sup:2})%>), 1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({yo:1, sup:3})%>), -1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v({yo:1, sup:3})%>, <%=v({yo:1, sup:2})%>), 1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({hi:3, yo:1})%>), 1, "Compare is as expected.");
+        assertEquals(u.compare(<%=v({hi:3, yo:1})%>, <%=v({yo:1, sup:2})%>), -1, "Compare is as expected.");
+      `
+    }
   ]
 });

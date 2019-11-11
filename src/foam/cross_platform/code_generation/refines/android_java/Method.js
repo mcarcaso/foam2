@@ -27,7 +27,7 @@ foam.CLASS({
           name: a.name,
           type: a.androidType
         })),
-        body: this.androidCode
+        body: foam.cpTemplate(this.androidCode, 'android')
       });
 
       return cls;

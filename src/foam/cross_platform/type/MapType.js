@@ -25,44 +25,63 @@ foam.CLASS({
     {
       name: 'compare',
       androidCode: `
-        throw new RuntimeException("TODO");
-      /*
-        let a = o1 as! [String:Any?]
-        guard let b = o2 as? [String:Any?] else { return 1 }
-
-        var aKeys = Array(a.keys)
-        aKeys.sort()
-        var bKeys = Array(b.keys)
-        bKeys.sort()
-        var c = FOAM_utils.compare(aKeys, bKeys)
-        if c != 0 { return c }
-
-        for k in aKeys {
-          c = FOAM_utils.compare(a[k] ?? nil, b[k] ?? nil)
-          if ( c != 0 ) { return c }
+        java.util.Map a = (java.util.Map) o1;
+        if ( o2 == null || o2 instanceof java.util.Map == false ) return 1;
+        java.util.Map b = (java.util.Map) o2;
+        
+        Object[] aKeys = java.util.Arrays
+          .stream(a.keySet().toArray())
+          .sorted(new java.util.Comparator<Object>() {
+            public int compare(Object o1, Object o2) {
+              return foam.cross_platform.Lib.compare(o1, o2);
+            }
+          })
+          .toArray();
+        
+        Object[] bKeys = java.util.Arrays
+          .stream(b.keySet().toArray())
+          .sorted(new java.util.Comparator<Object>() {
+            public int compare(Object o1, Object o2) {
+              return foam.cross_platform.Lib.compare(o1, o2);
+            }
+          })
+          .toArray();
+        
+        int c = foam.cross_platform.Lib.compare(aKeys, bKeys);
+        if ( c != 0 ) return c;
+        
+        for ( Object k : aKeys ) {
+          c = foam.cross_platform.Lib.compare(
+            a.containsKey(k) ? a.get(k) : null,
+            b.containsKey(k) ? b.get(k) : null);
+          if ( c != 0 ) return c;
         }
-        return 0
-        */
+        
+        return 0;
       `,
       swiftCode: `
-        fatalError("TODO")
-      /*
-        let a = o1 as! [String:Any?]
-        guard let b = o2 as? [String:Any?] else { return 1 }
+        let a = o1 as! [AnyHashable:Any?]
+        if !(o2 is [AnyHashable:Any?]) { return 1 }
+        let b = o2 as! [AnyHashable:Any?]
 
-        var aKeys = Array(a.keys)
-        aKeys.sort()
-        var bKeys = Array(b.keys)
-        bKeys.sort()
-        var c = FOAM_utils.compare(aKeys, bKeys)
-        if c != 0 { return c }
+        var aKeys = Array(a.keys);
+        aKeys.sort(by: { (o1, o2) -> Bool in
+          foam_cross_platform_Lib.compare(o1, o2) == -1
+        })
+        var bKeys = Array(b.keys);
+        bKeys.sort(by: { (o1, o2) -> Bool in
+          foam_cross_platform_Lib.compare(o1, o2) == -1
+        })
+
+        var c = foam_cross_platform_Lib.compare(aKeys, bKeys);
+        if c != 0 { return c; }
 
         for k in aKeys {
-          c = FOAM_utils.compare(a[k] ?? nil, b[k] ?? nil)
-          if ( c != 0 ) { return c }
+          c = foam_cross_platform_Lib.compare(a[k] ?? nil, b[k] ?? nil);
+          if ( c != 0 ) { return c; }
         }
-        return 0
-        */
+
+        return 0;
       `,
     },
   ],

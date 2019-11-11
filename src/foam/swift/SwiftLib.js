@@ -53,6 +53,9 @@ ${Object.keys(o).map(k => `
 ] as [AnyHashable:Any?]
           `;
         },
+        Date: function(o) {
+          return `Date(timeIntervalSince1970: ${o.getTime()})`;
+        },
         RegExp: function(o) {
           // TODO
           return 'nil';

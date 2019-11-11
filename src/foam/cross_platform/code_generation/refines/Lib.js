@@ -40,6 +40,9 @@ ${Object.keys(o).map(function(k) {
 }
           `;
         },
+        Date: function(o) {
+          return `new java.util.Date(${o.getTime()}L)`;
+        },
         RegExp: function(o) {
           o = o.toString();
           o = o.slice(o.indexOf('/') + 1, o.lastIndexOf('/'))
