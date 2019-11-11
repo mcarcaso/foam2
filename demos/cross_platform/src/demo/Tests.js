@@ -95,30 +95,22 @@ foam.CLASS({
         Person test = Person_create().build();
 
         final int[] numPubs = new int[] { 0, 0, 0, 0 };
-        test.sub(null, new foam.cross_platform.Listener() {
-          public void executeListener(foam.core.Detachable sub, Object[] args) {
+        test.sub(null, ${foam.cpListener(`
             numPubs[0]++;
             sub.detach();
-          }
-        });
+        `, 'android')});
 
-        test.sub(null, new foam.cross_platform.Listener() {
-          public void executeListener(foam.core.Detachable sub, Object[] args) {
+        test.sub(null, ${foam.cpListener(`
             numPubs[1]++;
-          }
-        });
+        `, 'android')});
 
-        test.getFirstName$().slotSub(new foam.cross_platform.Listener() {
-          public void executeListener(foam.core.Detachable sub, Object[] args) {
+        test.getFirstName$().slotSub(${foam.cpListener(`
             numPubs[2]++;
-          }
-        });
+        `, 'android')});
 
-        test.getFullName$().slotSub(new foam.cross_platform.Listener() {
-          public void executeListener(foam.core.Detachable sub, Object[] args) {
+        test.getFullName$().slotSub(${foam.cpListener(`
             numPubs[3]++;
-          }
-        });
+        `, 'android')});
         // Must touch the fullName to initialize its value and have it react to
         // changes in the args it subscribes to.
         test.getFullName();
@@ -139,34 +131,22 @@ foam.CLASS({
         let test = Person_create().build();
 
         var numPubs = [0, 0, 0, 0];
-        _ = test.sub(nil, AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+        _ = test.sub(nil, ${foam.cpListener(`
             numPubs[0] += 1;
             sub?.detach();
-          })
-          .build()
-        );
+        `, 'swift')});
 
-        _ = test.sub(nil, AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+        _ = test.sub(nil, ${foam.cpListener(`
             numPubs[1] += 1;
-          })
-          .build()
-        );
+        `, 'swift')});
 
-        _ = test.getFirstName$().slotSub(AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+        _ = test.getFirstName$().slotSub(${foam.cpListener(`
             numPubs[2] += 1;
-          })
-          .build()
-        );
+        `, 'swift')});
 
-        _ = test.getFullName$().slotSub(AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+        _ = test.getFullName$().slotSub(${foam.cpListener(`
             numPubs[3] += 1;
-          })
-          .build()
-        );
+        `, 'swift')});
 
         // Must touch the fullName to initialize its value and have it react to
         // changes in the args it subscribes to.
@@ -280,11 +260,9 @@ foam.CLASS({
         Person o = Person_create().build();
         foam.core.ExpressionSlot slot = ExpressionSlot_create().build();
         slot.setArgs(new foam.core.SlotInterface[] {o.getFirstName$(), o.getLastName$()});
-        slot.setCode(new foam.cross_platform.GenericFunction() {
-          public Object executeFunction(Object[] args) {
+        slot.setCode(${foam.cpFn(`
             return args[0] + " " + args[1];
-          }
-        });
+        `, 'android')});
         
         o.setFirstName("Mike");
         o.setLastName("C");
@@ -300,12 +278,9 @@ foam.CLASS({
         let o = Person_create().build();
         let slot = ExpressionSlot_create().build();
         slot.setArgs([o.getFirstName$(), o.getLastName$()]);
-        slot.setCode(AnonymousGenericFunction_create()
-          .setFn({(args: [Any?]?) -> Any? in
+        slot.setCode(${foam.cpFn(`
             return (args![0] as! String) + " " + (args![1] as! String);
-          })
-          .build()
-        )
+        `, 'swift')})
 
         o.setFirstName("Mike");
         o.setLastName("C");
@@ -370,12 +345,10 @@ foam.CLASS({
         
         final int[] i = {0};
         final Tests self = this;
-        s.slotSub(new foam.cross_platform.Listener() {
-          public void executeListener(foam.core.Detachable sub, Object[] args) {
-            i[0] += 1;
-            self.assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
-          }
-        });
+        s.slotSub(${foam.cpListener(`
+          i[0] += 1;
+          self.assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
+        `, 'android')});
         t2.setFirstName("YO2");
         assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
         assertEquals(i[0], 1, "Slot listener fired.");
@@ -390,13 +363,10 @@ foam.CLASS({
         assertEquals(s.slotGet(), "YO", "Slot value is as expected");
 
         var i = 0;
-        _ = s.slotSub(AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+        _ = s.slotSub(${foam.cpListener(`
             i += 1;
             self.assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
-          })
-          .build()
-        );
+        `, 'swift')});
         t2.setFirstName("YO2");
         assertEquals(s.slotGet(), "YO2", "Slot value is as expected.");
         assertEquals(i, 1, "Slot listener fired.");
@@ -410,20 +380,16 @@ foam.CLASS({
           .build();
 
         final int[] slotCount = new int[2];
-        foam.core.Detachable s1 = t.getFirstName$().slotSub(new foam.cross_platform.Listener() {
-          public void executeListener(foam.core.Detachable sub, Object[] args) {
+        foam.core.Detachable s1 = t.getFirstName$().slotSub(${foam.cpListener(`
             slotCount[0] += 1;
-          }
-        });
+        `, 'android')});
 
         Person t2 = Person_create()
           .setAnyProp(t)
           .build();
-        foam.core.Detachable s2 = t2.getAnyProp$().dot("firstName").slotSub(new foam.cross_platform.Listener() {
-          public void executeListener(foam.core.Detachable sub, Object[] args) {
+        foam.core.Detachable s2 = t2.getAnyProp$().dot("firstName").slotSub(${foam.cpListener(`
             slotCount[1] += 1;
-          }
-        });
+        `, 'android')});
 
         assertEquals(t2.getAnyProp$().dot("firstName").slotGet(), "a", "t2's anyProp slot has the correct value.");
         assertEquals(slotCount[0], 0, "Slot has not fired.");
@@ -446,23 +412,17 @@ foam.CLASS({
           .build();
 
         var slot = 0;
-        let s1 = t.getFirstName$().slotSub(AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+        let s1 = t.getFirstName$().slotSub(${foam.cpListener(`
             slot += 1;
-          })
-          .build()
-        );
+        `, 'swift')});
 
         var subSlot = 0;
         let t2 = Person_create()
           .setAnyProp(t)
           .build();
-        let s2 = t2.getAnyProp$().dot("firstName")!.slotSub(AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+        let s2 = t2.getAnyProp$().dot("firstName")!.slotSub(${foam.cpListener(`
             subSlot += 1;
-          })
-          .build()
-        );
+        `, 'swift')});
 
         assertEquals(t2.getAnyProp$().dot("firstName")!.slotGet(), "a", "t2's anyProp slot has the correct value.");
         assertEquals(slot, 0, "Slot has not fired.");

@@ -66,6 +66,7 @@ FOAM_FILES([
   { name: "foam/core/ContextMultipleInheritence" },
   { name: "foam/core/MultiMethod" },
   { name: "foam/core/debug", flags: ['debug'] },
+  { name: "foam/cross_platform/code_generation/SyntaxUtil" },
   { name: "foam/pattern/Singleton" },
   { name: "foam/pattern/Multiton" },
   { name: "foam/core/Enum" },
