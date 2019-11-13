@@ -76,12 +76,21 @@ genProperties
 
       cls.method({
         visibility: 'public',
-        type: 'foam.core.Slot',
+        type: 'foam.core.SlotInterface',
         name: 'getSlot',
         args: [
           { type: 'String', name: 'name' }
         ],
         body: `
+          if ( name.contains("$") ) {
+            String[] names = name.split("\\\\$");
+            foam.core.SlotInterface slot = getSlot(names[0]);
+            for ( int i = 1 ; i < names.length ; i++ ) {
+              slot = slot.dot(names[i]);
+            }
+            return slot;
+          }
+
           switch(name) {
 ${
 genProperties

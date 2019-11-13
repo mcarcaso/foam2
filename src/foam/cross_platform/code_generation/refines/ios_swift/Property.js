@@ -89,7 +89,7 @@ foam.CLASS({
 
       cls.field({
         visibility: 'private',
-        type: 'foam_core_Slot?',
+        type: 'foam_core_SlotInterface?',
         name: this.crossPlatformSlotVarName,
         defaultValue: 'nil'
       });
@@ -97,7 +97,7 @@ foam.CLASS({
       cls.method({
         override: override,
         visibility: 'public',
-        type: 'foam_core_Slot',
+        type: 'foam_core_SlotInterface',
         name: this.crossPlatformSlotGetterName,
         body: `
           if ${this.crossPlatformSlotVarName} == nil {
@@ -132,6 +132,14 @@ foam.CLASS({
           return ${this.crossPlatformPrivateVarName};
         `;
       } else if ( this.swiftExpression ) {
+        var args = this.expressionArgs.map(a => {
+          a = a.split('$').filter(a => a);
+          return {
+            type: a.length == 1 ?
+              parentCls.getAxiomByName(a).swiftType: 'Any?',
+            localName: a.join('$')
+          }
+        });
         var subName = this.name + '_expression_sub_';
         cls.field({
           visibility: 'private',
@@ -142,12 +150,7 @@ foam.CLASS({
         cls.method({
           type: this.swiftType,
           name: expressionName,
-          args: this.expressionArgs.map(a => {
-            return {
-              type: parentCls.getAxiomByName(a).swiftType,
-              localName: a
-            }
-          }),
+          args: args,
           body: `
             ${this.swiftExpression}
           `
@@ -156,13 +159,13 @@ foam.CLASS({
           if !${this.crossPlatformIsSetVarName} && ${subName} == nil {
             let eSlot = foam_core_ExpressionSlot.foam_core_ExpressionSlotBuilder(getSubX())
               .setArgs([
-                ${this.expressionArgs.map(a => `getSlot("${a}")`).join(',')}
+                ${args.map(a => `getSlot("${a.localName}")`).join(',')}
               ])
               .setCode(AnonymousGenericFunction_create()
                 .setFn({(args: [Any?]?) -> Any? in
                   return self.${expressionName}(
-                    ${this.expressionArgs.map((a, i) => `
-                      args![${i}] as! ${parentCls.getAxiomByName(a).swiftType}
+                    ${args.map((a, i) => `
+                      args![${i}] as! ${a.type}
                     `).join(',')})
                 })
                 .build()

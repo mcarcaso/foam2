@@ -83,12 +83,21 @@ genProperties
       cls.method({
         override: !! cls.extends,
         visibility: 'public',
-        type: foam.core.Slot.model_.swiftName + '?',
+        type: foam.core.SlotInterface.model_.swiftName + '?',
         name: 'getSlot',
         args: [
           { type: 'String?', localName: 'name' }
         ],
         body: `
+          if name?.contains("$") ?? false {
+            let names = name!.components(separatedBy: "$");
+            var slot = getSlot(names[0]);
+            for i in 1..<names.count {
+              slot = slot?.dot(names[i]);
+            }
+            return slot;
+          }
+
           switch name {
 ${
 genProperties

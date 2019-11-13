@@ -80,7 +80,7 @@ foam.INTERFACE({
       ]
     },
     {
-      type: 'foam.core.Slot',
+      type: 'foam.core.SlotInterface',
       name: 'getSlot',
       args: [
         {

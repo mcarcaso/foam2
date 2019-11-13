@@ -13,6 +13,7 @@ class FOAM_Demo_AppTests: XCTestCase {
     t.testSubSlot();
     t.testSubSlot2();
     t.testTypeUtil();
+    t.testNestedExpression();
     t.detach();
   }
 }

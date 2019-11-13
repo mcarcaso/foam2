@@ -299,37 +299,48 @@ foam.CLASS({
   refines: 'foam.core.internal.SubSlot',
   methods: [
     {
+      type: 'foam.cross_platform.FObject',
+      name: 'getParentAsFObj',
+      androidCode: `
+        Object o = getParent().slotGet();
+        return o instanceof foam.cross_platform.FObject ?
+          (foam.cross_platform.FObject) o : null;
+      `,
+      swiftCode: `
+        let o = getParent()!.slotGet();
+        return o as? foam_cross_platform_FObject;
+      `,
+    },
+    {
       name: 'init',
       androidCode: `
-        getParent().sub(null, parentChange_listener());
+        getParent().slotSub(parentChange_listener());
         parentChange(null, null);
       `,
       swiftCode: `
-        _ = getParent()!.sub(nil, parentChange_listener());
+        _ = getParent()!.slotSub(parentChange_listener());
         parentChange(nil, nil);
       `
     },
     {
       name: 'slotGet',
       androidCode: `
-        foam.cross_platform.FObject o =
-          (foam.cross_platform.FObject) getParent().slotGet();
+        foam.cross_platform.FObject o = getParentAsFObj();
         return o != null ? o.getProperty(getName()) : null;
       `,
       swiftCode: `
-        let o = getParent()!.slotGet() as! foam_cross_platform_FObject?;
+        let o = getParentAsFObj();
         return o != nil ? o!.getProperty(getName()) : nil;
       `
     },
     {
       name: 'slotSet',
       androidCode: `
-        foam.cross_platform.FObject o =
-          (foam.cross_platform.FObject) getParent().slotGet();
+        foam.cross_platform.FObject o = getParentAsFObj();
         if ( o != null ) o.setProperty(getName(), value);
       `,
       swiftCode: `
-        let o = getParent()!.slotGet() as! foam_cross_platform_FObject?;
+        let o = getParentAsFObj();
         o?.setProperty(getName(), value);
       `
     },
@@ -348,8 +359,7 @@ foam.CLASS({
       name: 'parentChange',
       androidCode: `
         if ( getPrevSub() != null ) getPrevSub().detach();
-        foam.cross_platform.FObject o =
-          (foam.cross_platform.FObject) getParent().slotGet();
+        foam.cross_platform.FObject o = getParentAsFObj();
 
         if ( getOf() == null && o != null ) setOf(o.getCls_());
 
@@ -359,7 +369,7 @@ foam.CLASS({
       `,
       swiftCode: `
         getPrevSub()?.detach();
-        let o = getParent()!.slotGet() as! foam_cross_platform_FObject?;
+        let o = getParentAsFObj();
 
         if getOf() == nil && o != nil { setOf(o!.getCls_()); }
 
@@ -371,12 +381,11 @@ foam.CLASS({
     {
       name: 'valueChange',
       androidCode: `
-        foam.cross_platform.FObject parentValue =
-          (foam.cross_platform.FObject) getParent().slotGet();
+        foam.cross_platform.FObject parentValue = getParentAsFObj();
         setValue(parentValue != null ? parentValue.getProperty(getName()) : null);
       `,
       swiftCode: `
-        let parentValue = getParent()!.slotGet() as! foam_cross_platform_FObject?;
+        let parentValue = getParentAsFObj();
         setValue(parentValue != nil ? parentValue!.getProperty(getName()) : nil);
       `
     }

@@ -22,6 +22,7 @@ public class ExampleUnitTest {
         t.testSubSlot();
         t.testSubSlot2();
         t.testTypeUtil();
+        t.testNestedExpression();
         t.detach();
     }
 }

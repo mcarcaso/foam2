@@ -34,6 +34,17 @@ foam.CLASS({
           name: 'anyProp',
         },
         {
+          class: 'StringProperty',
+          name: 'anyPropProp',
+          expressionArgs: ['anyProp$fullName'],
+          androidExpression: `
+            return anyProp$fullName instanceof String ? (String) anyProp$fullName : "";
+          `,
+          swiftExpression: `
+            return anyProp$fullName as? String ?? "";
+          `
+        },
+        {
           class: 'DateProperty',
           name: 'dateOfBirth'
         },
@@ -55,6 +66,10 @@ foam.CLASS({
             return "Hello " + name! + " from " + getFullName()!;
           `
         }
+      ],
+      reactions: [
+      ],
+      listeners: [
       ]
     }
   ],
@@ -526,6 +541,35 @@ foam.CLASS({
         assertEquals(u.compare(<%=v({yo:1, sup:3})%>, <%=v({yo:1, sup:2})%>), 1, "Compare is as expected.");
         assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({hi:3, yo:1})%>), 1, "Compare is as expected.");
         assertEquals(u.compare(<%=v({hi:3, yo:1})%>, <%=v({yo:1, sup:2})%>), -1, "Compare is as expected.");
+      `
+    },
+    {
+      name: 'testNestedExpression',
+      androidCode: `
+        Person p = Person_create().build();
+        assertEquals(p.getAnyPropProp(), "", "anyPropProp is blank");
+
+        p.setAnyProp(true);
+        assertEquals(p.getAnyPropProp(), "", "anyPropProp is blank");
+
+        p.setAnyProp(Person_create()
+          .setFirstName("Mike")
+          .setLastName("C")
+          .build());
+        assertEquals(p.getAnyPropProp(), "Mike C", "anyPropProp is as expected");
+      `,
+      swiftCode: `
+        let p = Person_create().build();
+        assertEquals(p.getAnyPropProp(), "", "anyPropProp is blank");
+
+        p.setAnyProp(true);
+        assertEquals(p.getAnyPropProp(), "", "anyPropProp is blank");
+
+        p.setAnyProp(Person_create()
+          .setFirstName("Mike")
+          .setLastName("C")
+          .build());
+        assertEquals(p.getAnyPropProp(), "Mike C", "anyPropProp is as expected");
       `
     }
   ]

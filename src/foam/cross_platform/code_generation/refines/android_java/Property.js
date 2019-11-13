@@ -82,12 +82,12 @@ foam.CLASS({
 
       cls.field({
         visibility: 'private',
-        type: 'foam.core.Slot',
+        type: 'foam.core.SlotInterface',
         name: this.crossPlatformSlotVarName
       });
       cls.method({
         visibility: 'public',
-        type: 'foam.core.Slot',
+        type: 'foam.core.SlotInterface',
         name: this.crossPlatformSlotGetterName,
         body: `
           if ( ${this.crossPlatformSlotVarName} == null ) {
@@ -122,6 +122,14 @@ foam.CLASS({
           return ${this.crossPlatformPrivateVarName};
         `;
       } else if ( this.androidExpression ) {
+        var args = this.expressionArgs.map(a => {
+          a = a.split('$').filter(a => a);
+          return {
+            type: a.length == 1 ?
+              parentCls.getAxiomByName(a).androidType : 'Object',
+            name: a.join('$')
+          }
+        });
         var subName = this.name + '_expression_sub_';
         cls.field({
           visibility: 'private',
@@ -133,12 +141,7 @@ foam.CLASS({
           visibility: 'protected',
           type: this.androidType,
           name: expressionName,
-          args: this.expressionArgs.map(a => {
-            return {
-              type: parentCls.getAxiomByName(a).androidType,
-              name: a
-            }
-          }),
+          args: args,
           body: `
             ${this.androidExpression}
           `
@@ -147,15 +150,13 @@ foam.CLASS({
           if ( ! ${this.crossPlatformIsSetVarName} && ${subName} == null ) {
             final ${parentCls.name} obj = this;
             final foam.core.ExpressionSlot eSlot = foam.core.ExpressionSlot.ExpressionSlotBuilder(getSubX())
-              .setArgs(new foam.core.Slot[] {
-                ${this.expressionArgs.map(a => `getSlot("${a}")`).join(',')}
+              .setArgs(new foam.core.SlotInterface[] {
+                ${args.map(a => `getSlot("${a.name}")`).join(',')}
               })
               .setCode(new foam.cross_platform.GenericFunction() {
                 public Object executeFunction(Object[] args) {
                   return obj.${expressionName}(
-                    ${this.expressionArgs.map((a, i) => `
-                      (${parentCls.getAxiomByName(a).androidType}) args[${i}]
-                    `).join(',')}
+                    ${args.map((a, i) => `(${a.type}) args[${i}]`).join(',')}
                   );
                 }
               })
