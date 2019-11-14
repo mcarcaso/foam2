@@ -8,6 +8,15 @@ foam.LIB({
         case 'swift':
           args = {
             v: foam.swift.asSwiftValue,
+            detachable: function(code) {
+              return `
+AnonymousDetachable_create()
+  .setFn({() -> Void in
+    ${code}
+  })
+  .build()
+              `;
+            },
             listener: function(code) {
               return `
 AnonymousListener_create()
@@ -31,6 +40,15 @@ AnonymousGenericFunction_create()
         case 'android':
           args = {
             v: foam.android.tools.asAndroidValue,
+            detachable: function(code) {
+              return `
+new foam.core.Detachable() {
+  public void detach() {
+    ${code}
+  }
+}
+              `;
+            },
             listener: function(code) {
               return `
 new foam.cross_platform.Listener() {

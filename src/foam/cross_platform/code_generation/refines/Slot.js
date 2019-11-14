@@ -394,6 +394,31 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.cross_platform.code_generation.refines',
+  name: 'ConstantSlotRefines',
+  refines: 'foam.core.ConstantSlot',
+  methods: [
+    {
+      name: 'slotGet',
+      code: function() { return this.get(); },
+      androidCode: `return getValue();`,
+      swiftCode: `return getValue();`
+    },
+    {
+      name: 'slotSet',
+      code: function(value) { return this.set(value); },
+      androidCode: `throw new RuntimeException("Cannot set ConstantSlot");`,
+      swiftCode: `fatalError("Cannot set ConstantSlot");`
+    },
+    {
+      name: 'slotSub',
+      androidCode: `return <%=detachable('')%>;`,
+      swiftCode: `return <%=detachable('')%>;`
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.refines',
   name: 'SimpleSlotRefines',
   refines: 'foam.core.SimpleSlot',
   methods: [
