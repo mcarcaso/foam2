@@ -12,7 +12,7 @@ foam.CLASS({
     {
       name: 'name',
       expression: function(target, topic, listener) {
-        return 'reaction_' + target +  '$$' + topic + '$$' + listener;
+        return 'reaction_' + target +  '$$' + topic.join('_') + '$$' + listener;
       }
     },
     {

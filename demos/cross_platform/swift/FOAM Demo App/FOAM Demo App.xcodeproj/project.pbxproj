@@ -118,6 +118,7 @@
 		108A126A2377368B00D687D1 /* foam_cross_platform_type_Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108A12032377368B00D687D1 /* foam_cross_platform_type_Util.swift */; };
 		108A126B2377368B00D687D1 /* foam_cross_platform_type_NumberType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108A12042377368B00D687D1 /* foam_cross_platform_type_NumberType.swift */; };
 		109664C223785CD9003A7E63 /* foam_core_AnonymousDetachable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109664C123785CD9003A7E63 /* foam_core_AnonymousDetachable.swift */; };
+		10EAC314237DDC7700FD7C98 /* foam_core_Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10EAC313237DDC7700FD7C98 /* foam_core_Reaction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -255,6 +256,7 @@
 		108A12032377368B00D687D1 /* foam_cross_platform_type_Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_type_Util.swift; sourceTree = "<group>"; };
 		108A12042377368B00D687D1 /* foam_cross_platform_type_NumberType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_type_NumberType.swift; sourceTree = "<group>"; };
 		109664C123785CD9003A7E63 /* foam_core_AnonymousDetachable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_AnonymousDetachable.swift; sourceTree = "<group>"; };
+		10EAC313237DDC7700FD7C98 /* foam_core_Reaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_Reaction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -412,6 +414,7 @@
 				108A11EF2377368B00D687D1 /* foam_cross_platform_type_DateType.swift */,
 				108A11AB2377368B00D687D1 /* foam_cross_platform_type_FObjectType.swift */,
 				108A11ED2377368B00D687D1 /* foam_cross_platform_type_MapType.swift */,
+				10EAC313237DDC7700FD7C98 /* foam_core_Reaction.swift */,
 				108A119F2377368B00D687D1 /* foam_cross_platform_type_NullType.swift */,
 				108A12042377368B00D687D1 /* foam_cross_platform_type_NumberType.swift */,
 				108A11F82377368B00D687D1 /* foam_cross_platform_type_StringType.swift */,
@@ -615,6 +618,7 @@
 				108A123A2377368B00D687D1 /* foam_core_Method.swift in Sources */,
 				108A12342377368B00D687D1 /* foam_core_ClassProperty.swift in Sources */,
 				108A12542377368B00D687D1 /* foam_cross_platform_type_MapType.swift in Sources */,
+				10EAC314237DDC7700FD7C98 /* foam_core_Reaction.swift in Sources */,
 				108A12182377368B00D687D1 /* foam_core_PromiseProperty.swift in Sources */,
 				108A120F2377368B00D687D1 /* foam_mlang_order_Comparator.swift in Sources */,
 				108A12572377368B00D687D1 /* foam_lib_csv_PrefixedCSVOutputter.swift in Sources */,

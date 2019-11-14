@@ -13,6 +13,14 @@ foam.LIB({
 
       var flagFilter = foam.util.flagFilter(['android']);
 
+      var builder = foam.cross_platform.code_generation.android_java.Builder.create({
+        clsName: cls.name,
+        properties: this.getAxiomsByClass(foam.core.Property)
+          .filter(flagFilter)
+      });
+      cls.classes.push(builder);
+      builder.addBuilderMethod(cls);
+
       this.getAxioms()
         .filter(flagFilter)
         .filter(a => a.buildAndroidClass)
@@ -172,73 +180,6 @@ ${cls.extends ? `
       });
 
       this.addAndroidStaticClassInfo(cls);
-
-      var builder = foam.java.Class.create();
-      var builderProperties = this.getAxiomsByClass(foam.core.Property)
-        .filter(flagFilter);
-      builder.name = cls.name + 'Builder_';
-      builder.innerClass = true;
-      builder.static = true;
-      builderProperties.forEach(p => {
-        builder.field({
-          visibility: 'private',
-          type: 'boolean',
-          name: p.crossPlatformIsSetVarName,
-          initializer: 'false'
-        });
-        builder.field({
-          visibility: 'private',
-          type: 'Object',
-          name: p.crossPlatformPrivateVarName
-        });
-        builder.method({
-          visibility: 'public',
-          type: builder.name,
-          name: p.crossPlatformSetterName,
-          args: [
-            { type: 'Object', name: 'value' }
-          ],
-          body: `
-            ${p.crossPlatformIsSetVarName} = true;
-            ${p.crossPlatformPrivateVarName} = value;
-            return this;
-          `
-        });
-      });
-      builder.method({
-        visibility: 'private',
-        name: builder.name,
-        type: '',
-        body: ``
-      });
-      builder.method({
-        visibility: 'public',
-        name: 'build',
-        type: cls.name,
-        body: `
-          ${cls.name} o = new ${cls.name}();
-${builderProperties.map(p => `
-          if ( ${p.crossPlatformIsSetVarName} ) {
-            o.${p.crossPlatformSetterName}(${p.crossPlatformPrivateVarName});
-          }
-`).join('')}
-          o.init();
-          return o;
-        `
-      });
-      cls.classes.push(builder);
-      cls.method({
-        visibility: 'public',
-        static: true,
-        type: builder.name,
-        name: cls.name + 'Builder',
-        args: [
-          { type: 'foam.cross_platform.Context', name: 'x' }
-        ],
-        body: `
-          return new ${builder.name}();
-        `
-      });
 
       return cls;
     },

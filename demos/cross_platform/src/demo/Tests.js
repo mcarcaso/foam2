@@ -48,6 +48,30 @@ foam.CLASS({
           class: 'DateProperty',
           name: 'dateOfBirth'
         },
+        {
+          class: 'IntProperty',
+          name: 'dateOfBirthChanges'
+        },
+        {
+          class: 'IntProperty',
+          name: 'anyPropFullNameChanges'
+        },
+        {
+          class: 'IntProperty',
+          name: 'somethingChanged',
+          documentation: `
+            Manual setters to ensure changing this property doesn't trigger an
+            infinite loop of property change events.
+          `,
+          androidSetter: `
+            somethingChanged_isSet_ = true;
+            somethingChanged_ = (int) value;
+          `,
+          swiftSetter: `
+            somethingChanged_isSet_ = true;
+            somethingChanged_ = value as? Int;
+          `
+        },
       ],
       methods: [
         {
@@ -68,8 +92,26 @@ foam.CLASS({
         }
       ],
       reactions: [
+        ['', 'propertyChange.dateOfBirth', 'onDateOfBirthChange' ],
+        ['anyProp', 'propertyChange.fullName', 'onAnyPropFullNameChange' ],
+        ['', '', 'onSomethingChanged' ],
       ],
       listeners: [
+        {
+          name: 'onDateOfBirthChange',
+          androidCode: `setDateOfBirthChanges(getDateOfBirthChanges() + 1);`,
+          swiftCode: `setDateOfBirthChanges(getDateOfBirthChanges() + 1);`,
+        },
+        {
+          name: 'onAnyPropFullNameChange',
+          androidCode: `setAnyPropFullNameChanges(getAnyPropFullNameChanges() + 1);`,
+          swiftCode: `setAnyPropFullNameChanges(getAnyPropFullNameChanges() + 1);`,
+        },
+        {
+          name: 'onSomethingChanged',
+          androidCode: `setSomethingChanged(getSomethingChanged() + 1);`,
+          swiftCode: `setSomethingChanged(getSomethingChanged() + 1);`,
+        },
       ]
     }
   ],
@@ -570,6 +612,43 @@ foam.CLASS({
           .setLastName("C")
           .build());
         assertEquals(p.getAnyPropProp(), "Mike C", "anyPropProp is as expected");
+      `
+    },
+    {
+      name: 'testReactions',
+      androidCode: `
+        Person p = Person_create().build();
+        assertEquals(p.getDateOfBirthChanges(), 0, "dateOfBirth hasn't changed.");
+        assertEquals(p.getSomethingChanged(), 0, "Nothing has changed yet.");
+
+        p.setDateOfBirth(new java.util.Date());
+        assertEquals(p.getDateOfBirthChanges(), 1, "dateOfBirth has changed.");
+        assertEquals(p.getSomethingChanged(), 2, "Date has changed and counter.");
+
+        assertEquals(p.getAnyPropFullNameChanges(), 0, "anyPropFullName hasn't changed.");
+        Person p2 = Person_create().build();
+        p.setAnyProp(p2);
+        assertEquals(p.getSomethingChanged(), 3, "anyProp has changed.");
+        p2.setFullName("Mike");
+        assertEquals(p.getAnyPropFullNameChanges(), 1, "anyPropFullName has changed.");
+        assertEquals(p.getSomethingChanged(), 4, "anyPropFullName change incremented counter.");
+      `,
+      swiftCode: `
+        let p = Person_create().build();
+        assertEquals(p.getDateOfBirthChanges(), 0, "dateOfBirth hasn't changed.");
+        assertEquals(p.getSomethingChanged(), 0, "Nothing has changed yet.");
+
+        p.setDateOfBirth(Date());
+        assertEquals(p.getDateOfBirthChanges(), 1, "dateOfBirth has changed.");
+        assertEquals(p.getSomethingChanged(), 2, "Date has changed and counter.");
+
+        assertEquals(p.getAnyPropFullNameChanges(), 0, "anyPropFullName hasn't changed.");
+        let p2 = Person_create().build();
+        p.setAnyProp(p2);
+        assertEquals(p.getSomethingChanged(), 3, "anyProp has changed.");
+        p2.setFullName("Mike");
+        assertEquals(p.getAnyPropFullNameChanges(), 1, "anyPropFullName has changed.");
+        assertEquals(p.getSomethingChanged(), 4, "anyPropFullName change incremented counter.");
       `
     }
   ]

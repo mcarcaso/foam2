@@ -657,6 +657,9 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/android_java/FObject" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/FObject" },
 
+  { name: "foam/cross_platform/code_generation/android_java/Builder" },
+  { name: "foam/cross_platform/code_generation/ios_swift/Builder" },
+
   { name: "foam/android/tools/AndroidType" },
 
   { name: "foam/cross_platform/code_generation/refines/Method" },
@@ -703,6 +706,8 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/ios_swift/StringProperty" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/AnonymousDetachable" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/ArrayProperty" },
+  { name: "foam/cross_platform/code_generation/refines/android_java/Reaction" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/Reaction" },
 
   // Strategy
   { name: "foam/strategy/StrategyReference" },

@@ -13,6 +13,14 @@ foam.LIB({
 
       var flagFilter = foam.util.flagFilter(['swift']);
 
+      var builder = foam.cross_platform.code_generation.ios_swift.Builder.create({
+        clsName: cls.name,
+        properties: this.getAxiomsByClass(foam.core.Property)
+          .filter(flagFilter)
+      });
+      cls.classes.push(builder);
+      builder.addBuilderMethod(cls);
+
       this.getAxioms()
         .filter(flagFilter)
         .filter(a => a.buildSwiftClass)
@@ -181,66 +189,6 @@ ${cls.extends ? `
       });
 
       this.addSwiftStaticClassInfo(cls);
-
-      var builder = foam.swift.SwiftClass.create();
-      var builderProperties = this.getAxiomsByClass(foam.core.Property)
-        .filter(flagFilter);
-      builder.name = cls.name + 'Builder_';
-      builder.visibility = 'public';
-      builderProperties.forEach(p => {
-        builder.field({
-          visibility: 'private',
-          type: 'Bool',
-          name: p.crossPlatformIsSetVarName,
-          defaultValue: 'false'
-        });
-        builder.field({
-          visibility: 'private',
-          type: 'Any?',
-          name: p.crossPlatformPrivateVarName
-        });
-        builder.method({
-          visibility: 'public',
-          type: builder.name,
-          name: p.crossPlatformSetterName,
-          args: [
-            { type: 'Any?', localName: 'value' }
-          ],
-          body: `
-            ${p.crossPlatformIsSetVarName} = true;
-            ${p.crossPlatformPrivateVarName} = value;
-            return self;
-          `
-        });
-      });
-      builder.method({
-        visibility: 'public',
-        name: 'build',
-        type: cls.name,
-        body: `
-          let o = ${cls.name}();
-${builderProperties.map(p => `
-          if ${p.crossPlatformIsSetVarName} {
-            o.${p.crossPlatformSetterName}(${p.crossPlatformPrivateVarName});
-          }
-`).join('')}
-          o.\`init\`();
-          return o;
-        `
-      });
-      cls.classes.push(builder);
-      cls.method({
-        visibility: 'public',
-        static: true,
-        type: builder.name,
-        name: cls.name + 'Builder',
-        args: [
-          { type: foam.cross_platform.Context.model_.swiftName + '?', localName: 'x' }
-        ],
-        body: `
-          return Self.${builder.name}();
-        `
-      });
 
       return cls;
     },
