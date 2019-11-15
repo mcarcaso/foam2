@@ -140,7 +140,7 @@ foam.CLASS({
             localName: a.join('$')
           }
         });
-        var subName = this.name + '_expression_sub_';
+        var subName = this.crossPlatformExpressionSubName;
         cls.field({
           visibility: 'private',
           type: foam.core.Detachable.model_.swiftName + '?',
@@ -234,6 +234,7 @@ ${this.swiftPreSet ? 'var' : 'let'} castedValue = ${adaptName}(oldValue, value, 
         if ( this.swiftExpression ) {
           setter.body += `
 ${subName}?.detach();
+${subName} = nil;
           `;
         }
 

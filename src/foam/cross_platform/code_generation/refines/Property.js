@@ -66,7 +66,14 @@ foam.CLASS({
       expression: function(name) {
         return `set${foam.String.capitalize(name)}`;
       }
-    }
+    },
+    {
+      class: 'StringProperty',
+      name: 'crossPlatformExpressionSubName',
+      expression: function(name) {
+        return name + '_expression_sub_';
+      }
+    },
   ],
   methods: [
     {

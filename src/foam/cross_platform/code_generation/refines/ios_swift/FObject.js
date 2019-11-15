@@ -50,6 +50,10 @@ genProperties
               ${a.name}Args[2] = ${a.crossPlatformSlotGetterName}();
               _ = pub(${a.name}Args);
             }
+            ${a.swiftExpression ? `
+            ${a.crossPlatformExpressionSubName}?.detach();
+            ${a.crossPlatformExpressionSubName} = nil;
+            ` : ``}
             return;
   `)
   .join('\n')

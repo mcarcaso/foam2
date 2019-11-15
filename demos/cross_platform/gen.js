@@ -38,6 +38,7 @@
     modelArgs: {
       platform: platform,
       classIds: [
+        'demo.Compare',
         'demo.Person',
         'demo.Reaction',
         'demo.Tests'

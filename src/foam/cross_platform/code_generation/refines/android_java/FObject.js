@@ -49,6 +49,10 @@ genProperties
               ${a.name}Args[2] = ${a.crossPlatformSlotGetterName}();
               pub(${a.name}Args);
             }
+            ${a.androidExpression ? `
+            if ( ${a.crossPlatformExpressionSubName} != null ) ${a.crossPlatformExpressionSubName}.detach();
+            ${a.crossPlatformExpressionSubName} = null;
+            ` : ``}
             return;
   `)
   .join('\n')

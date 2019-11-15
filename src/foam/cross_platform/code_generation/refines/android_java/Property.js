@@ -130,7 +130,7 @@ foam.CLASS({
             name: a.join('$')
           }
         });
-        var subName = this.name + '_expression_sub_';
+        var subName = this.crossPlatformExpressionSubName;
         cls.field({
           visibility: 'private',
           type: 'foam.core.Detachable',
@@ -221,6 +221,7 @@ ${this.androidType} castedValue = ${adaptName}(oldValue, value, hasOldValue);
         if ( this.androidExpression ) {
           setter.body += `
 if ( ${subName} != null ) ${subName}.detach();
+${subName} = null;
           `;
         }
 

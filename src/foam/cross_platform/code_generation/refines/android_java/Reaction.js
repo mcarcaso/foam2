@@ -5,7 +5,7 @@ foam.CLASS({
   flags: ['android'],
   methods: [
     function buildAndroidClass(cls) {
-      if ( this.target !== '' && this.topic.length ) {
+      if ( this.target !== '' ) {
         cls.field({
           visibility: 'private',
           type: 'foam.core.Detachable',
@@ -23,7 +23,6 @@ foam.CLASS({
           ` : `
           final foam.core.SlotInterface slot = getSlot("${this.target.replace(/\./g, '$')}");
 
-          ${this.topic.length ? `
           final ${cls.name} self = this;
           foam.cross_platform.Listener listener = new foam.cross_platform.Listener() {
             public void executeListener(foam.core.Detachable sub, Object[] args) {
@@ -37,9 +36,6 @@ foam.CLASS({
             }
           };
           listener.executeListener(null, null);
-          ` : `
-          foam.cross_platform.Listener listener = ${this.listener}_listener();
-          `}
           onDetach(slot.slotSub(listener));
           `}
         `

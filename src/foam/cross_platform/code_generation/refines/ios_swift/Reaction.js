@@ -5,7 +5,7 @@ foam.CLASS({
   flags: ['swift'],
   methods: [
     function buildSwiftClass(cls) {
-      if ( this.target !== '' && this.topic.length ) {
+      if ( this.target !== '' ) {
         cls.field({
           visibility: 'private',
           type: foam.core.Detachable.model_.swiftName + '?',
@@ -23,7 +23,6 @@ foam.CLASS({
           ` : `
           let slot = getSlot("${this.target.replace(/\./g, '$')}");
 
-          ${this.topic.length ? `
           let listener = AnonymousListener_create()
             .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
               self.${this.name}_sub?.detach();
@@ -36,9 +35,6 @@ foam.CLASS({
             })
             .build();
           listener.executeListener(nil, nil);
-          ` : `
-          let listener = ${this.listener}_listener();
-          `}
           onDetach(slot!.slotSub(listener));
           `}
         `
