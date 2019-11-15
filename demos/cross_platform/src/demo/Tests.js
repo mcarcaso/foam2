@@ -259,31 +259,6 @@ foam.CLASS({
       `
     },
     {
-      name: 'testCompare',
-      androidCode: `
-        Person t1 = Person_create().build();
-        Person t2 = Person_create().build();
-        assertEquals(t1.compareTo(t2), 0, "t1 is equal to t2");
-        t1.setFirstName("NOT T2");
-        assertEquals(t1.compareTo(t2), 1, "t1 is not equal to t2");
-        t2.setFirstName("NOT T2");
-        assertEquals(t1.compareTo(t2), 0, "t1 is equal to t2");
-        t1.clearProperty("firstName");
-        assertEquals(t1.compareTo(t2), -1, "t1 is not equal to t2");
-      `,
-      swiftCode: `
-        let t1 = Person_create().build();
-        let t2 = Person_create().build();
-        assertEquals(t1.compareTo(t2), 0, "t1 is equal to t2");
-        t1.setFirstName("NOT T2")
-        assertEquals(t1.compareTo(t2), 1, "t1 is not equal to t2");
-        t2.setFirstName("NOT T2")
-        assertEquals(t1.compareTo(t2), 0, "t1 is equal to t2");
-        t1.clearProperty("firstName")
-        assertEquals(t1.compareTo(t2), -1, "t1 is not equal to t2");
-      `
-    },
-    {
       name: 'testExpression',
       androidCode: `
         Person t = Person_create().build();
@@ -496,93 +471,6 @@ foam.CLASS({
         s2?.detach();
         t.detach();
         t2.detach();
-      `
-    },
-    {
-      name: 'testTypeUtil',
-      androidCode: `
-        foam.cross_platform.type.Util u = Util_create().build();
-        assertEquals(u.typeOf(<%=v(null)%>), u.getNullType(), "Type is null.");
-        assertEquals(u.typeOf(true), u.getBooleanType(), "Type is Boolean.");
-        assertEquals(u.typeOf("true"), u.getStringType(), "Type is String.");
-        assertEquals(u.typeOf(12345), u.getNumberType(), "Type is Number.");
-        assertEquals(u.typeOf(<%=v([1])%>), u.getArrayType(), "Type is Array.");
-        assertEquals(u.typeOf(<%=v(new Date())%>), u.getDateType(), "Type is Date.");
-        assertEquals(u.typeOf(u), u.getFObjectType(), "Type is FObject.");
-        assertEquals(u.typeOf(<%=v({yo:'yo'})%>), u.getMapType(), "Type is Map.");
-        assertEquals(u.typeOf(new java.util.concurrent.Semaphore(1)), u.getUnknownType(), "Type is Unknown.");
-
-        assertEquals(u.compare(<%=v(null)%>, <%=v(null)%>), 0, "Compare is as expected.");
-        assertEquals(u.compare(<%=v(null)%>, 1234), 1, "Compare is as expected.");
-        assertEquals(u.compare(1234, <%=v(null)%>), -1, "Compare is as expected.");
-
-        assertEquals(u.compare(true, true), 0, "Compare is as expected.");
-        assertEquals(u.compare(false, false), 0, "Compare is as expected.");
-        assertEquals(u.compare(false, true), -1, "Compare is as expected.");
-        assertEquals(u.compare(true, false), 1, "Compare is as expected.");
-
-        assertEquals(u.compare("string1", 1), -1, "Compare is as expected.");
-        assertEquals(u.compare(1, "string1"), 1, "Compare is as expected.");
-        assertEquals(u.compare("string2", "string1"), 1, "Compare is as expected.");
-        assertEquals(u.compare("string1", "string2"), -1, "Compare is as expected.");
-        assertEquals(u.compare("string", "string"), 0, "Compare is as expected.");
-
-        assertEquals(u.compare(1, 1), 0, "Compare is as expected.");
-        assertEquals(u.compare(2, 1), 1, "Compare is as expected.");
-        assertEquals(u.compare(1, 2), -1, "Compare is as expected.");
-
-        assertEquals(u.compare(<%=v([1])%>, <%=v([1])%>), 0, "Compare is as expected.");
-        assertEquals(u.compare(<%=v([1, 2])%>, <%=v([1])%>), 1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v([1])%>, <%=v([1, 2])%>), -1, "Compare is as expected.");
-
-        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({yo:1})%>), -1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v({yo:1})%>, <%=v({yo:1, sup:2})%>), 1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({yo:1, sup:3})%>), -1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v({yo:1, sup:3})%>, <%=v({yo:1, sup:2})%>), 1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({hi:3, yo:1})%>), 1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v({hi:3, yo:1})%>, <%=v({yo:1, sup:2})%>), -1, "Compare is as expected.");
-      `,
-      swiftCode: `
-        let u = Util_create().build();
-        assertEquals(u.typeOf(<%=v(null)%>), u.getNullType(), "Type is null.");
-        assertEquals(u.typeOf(true), u.getBooleanType(), "Type is Boolean.");
-        assertEquals(u.typeOf("true"), u.getStringType(), "Type is String.");
-        assertEquals(u.typeOf(12345), u.getNumberType(), "Type is Number.");
-        assertEquals(u.typeOf(<%=v([1])%>), u.getArrayType(), "Type is Array.");
-        assertEquals(u.typeOf(<%=v(new Date())%>), u.getDateType(), "Type is Date.");
-        assertEquals(u.typeOf(u), u.getFObjectType(), "Type is FObject.");
-        assertEquals(u.typeOf(<%=v({yo:'yo'})%>), u.getMapType(), "Type is Map.");
-        assertEquals(u.typeOf(DispatchSemaphore(value: 1)), u.getUnknownType(), "Type is Unknown.");
-
-        assertEquals(u.compare(<%=v(null)%>, <%=v(null)%>), 0, "Compare is as expected.");
-        assertEquals(u.compare(<%=v(null)%>, 1234), 1, "Compare is as expected.");
-        assertEquals(u.compare(1234, <%=v(null)%>), -1, "Compare is as expected.");
-
-        assertEquals(u.compare(true, true), 0, "Compare is as expected.");
-        assertEquals(u.compare(false, false), 0, "Compare is as expected.");
-        assertEquals(u.compare(false, true), -1, "Compare is as expected.");
-        assertEquals(u.compare(true, false), 1, "Compare is as expected.");
-
-        assertEquals(u.compare("string1", 1), -1, "Compare is as expected.");
-        assertEquals(u.compare(1, "string1"), 1, "Compare is as expected.");
-        assertEquals(u.compare("string2", "string1"), 1, "Compare is as expected.");
-        assertEquals(u.compare("string1", "string2"), -1, "Compare is as expected.");
-        assertEquals(u.compare("string", "string"), 0, "Compare is as expected.");
-
-        assertEquals(u.compare(1, 1), 0, "Compare is as expected.");
-        assertEquals(u.compare(2, 1), 1, "Compare is as expected.");
-        assertEquals(u.compare(1, 2), -1, "Compare is as expected.");
-
-        assertEquals(u.compare(<%=v([1])%>, <%=v([1])%>), 0, "Compare is as expected.");
-        assertEquals(u.compare(<%=v([1, 2])%>, <%=v([1])%>), 1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v([1])%>, <%=v([1, 2])%>), -1, "Compare is as expected.");
-
-        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({yo:1})%>), -1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v({yo:1})%>, <%=v({yo:1, sup:2})%>), 1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({yo:1, sup:3})%>), -1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v({yo:1, sup:3})%>, <%=v({yo:1, sup:2})%>), 1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v({yo:1, sup:2})%>, <%=v({hi:3, yo:1})%>), 1, "Compare is as expected.");
-        assertEquals(u.compare(<%=v({hi:3, yo:1})%>, <%=v({yo:1, sup:2})%>), -1, "Compare is as expected.");
       `
     },
     {

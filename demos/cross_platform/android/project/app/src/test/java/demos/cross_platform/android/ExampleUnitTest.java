@@ -15,13 +15,11 @@ public class ExampleUnitTest {
         demo.Tests t = demo.Tests.TestsBuilder(null).build();
         t.testListen();
         t.testFollow();
-        t.testCompare();
         t.testExpression();
         t.testExpressionSlot();
         t.testHasOwnProperty();
         t.testSubSlot();
         t.testSubSlot2();
-        t.testTypeUtil();
         t.testNestedExpression();
         t.testReactions();
         t.detach();
