@@ -37,6 +37,10 @@ foam.CLASS({
       of: 'foam.java.Argument',
       name: 'args'
     },
+    {
+      class: 'StringArrayProperty',
+      name: 'annotations'
+    },
     { class: 'StringArrayProperty', name: 'throws' },
     { class: 'foam.java.CodeProperty', name: 'body' }
   ],
@@ -58,6 +62,11 @@ foam.CLASS({
         o.indent();
         o.out('*/\n');
       }
+
+      this.annotations.forEach(s => {
+        o.indent();
+        o.out('@', s, '\n');
+      });
 
       o.indent();
       o.out(this.visibility, this.visibility ? ' ' : '',

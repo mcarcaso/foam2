@@ -190,6 +190,32 @@ ${cls.extends ? `
 
       this.addSwiftStaticClassInfo(cls);
 
+      var tests = this
+        .getOwnAxiomsByClass(foam.cross_platform.code_generation.refines.TestAxiom);
+      if ( tests.length ) {
+        var testCls = foam.swift.SwiftClass.create({
+          name: 'test_' + cls.name + 'Tests',
+          extends: 'XCTestCase',
+          imports: [
+            'XCTest',
+          ]
+        });
+        testCls.method({
+          name: 'getSubX',
+          type: foam.cross_platform.Context.model_.swiftName + '?',
+          body: 'return nil;'
+        });
+        testCls.method({
+          type: cls.name + '.' + cls.name + 'Builder_',
+          name: this.name + '_create',
+          body: `return ${cls.name}.${cls.name}Builder(getSubX());`
+        });
+        tests.forEach(t => t.addToSwiftTestClass(testCls, this));
+        cls = foam.swift.ArraySwiftSource.create({
+          sources: [cls, testCls]
+        });
+      }
+
       return cls;
     },
     function addSwiftStaticClassInfo(cls) {

@@ -13,3 +13,4 @@
 .externalNativeBuild
 .cxx
 /app/src/foam_gen
+/app/src/test/java/tests

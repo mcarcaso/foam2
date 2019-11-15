@@ -662,6 +662,7 @@ FOAM_FILES([
 
   { name: "foam/android/tools/AndroidType" },
 
+  { name: "foam/cross_platform/code_generation/refines/Tests" },
   { name: "foam/cross_platform/code_generation/refines/Method" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Method" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Method" },

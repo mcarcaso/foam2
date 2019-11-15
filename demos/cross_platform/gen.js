@@ -38,6 +38,7 @@
     modelArgs: {
       platform: platform,
       classIds: [
+        'demo.Person',
         'demo.Tests'
       ],
       outputPath: platformArgs.outputPath
