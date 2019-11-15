@@ -13,6 +13,7 @@ foam.CLASS({
       if ( ! foam.util.flagFilter(['swift'])(model) ) return cls;
 
       cls.method({
+        visibility: 'public',
         type: model.swiftName + '.' + model.swiftName + 'Builder_',
         name: this.name + '_create',
         body: `return ${model.swiftName}.${model.swiftName}Builder(getSubX());`

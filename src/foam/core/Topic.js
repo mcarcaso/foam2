@@ -43,7 +43,7 @@ foam.CLASS({
     'description',
     {
       class: 'FObjectArray',
-      of: 'Topic',
+      of: 'foam.core.Topic',
       name: 'topics',
       adaptArrayElement: function(o) {
         return typeof o === 'string' ?

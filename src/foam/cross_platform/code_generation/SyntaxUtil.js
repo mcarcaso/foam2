@@ -19,7 +19,7 @@ AnonymousDetachable_create()
             },
             listener: function(code) {
               return `
-AnonymousListener_create()
+foam_swift_AnonymousListener.foam_swift_AnonymousListenerBuilder(nil)
   .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
     ${code}
   })

@@ -39,6 +39,7 @@
       platform: platform,
       classIds: [
         'demo.Person',
+        'demo.Reaction',
         'demo.Tests'
       ],
       outputPath: platformArgs.outputPath

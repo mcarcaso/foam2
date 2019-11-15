@@ -2,7 +2,8 @@ foam.INTERFACE({
   package: 'foam.cross_platform',
   name: 'FObject',
   implements: [
-    'foam.core.Detachable'
+    'foam.core.Detachable',
+    'foam.cross_platform.Topic',
   ],
   methods: [
     {
@@ -14,35 +15,11 @@ foam.INTERFACE({
       name: 'getSubX'
     },
     {
-      name: 'pub',
-      type: 'Integer',
-      args: [
-        {
-          type: 'Any[]',
-          name: 'args'
-        }
-      ]
-    },
-    {
       name: 'onDetach',
       args: [
         {
           type: 'foam.core.Detachable',
           name: 'detachable'
-        }
-      ]
-    },
-    {
-      name: 'sub',
-      type: 'foam.core.Detachable',
-      args: [
-        {
-          type: 'String[]',
-          name: 'topics'
-        },
-        {
-          type: 'foam.cross_platform.Listener',
-          name: 'listener'
         }
       ]
     },

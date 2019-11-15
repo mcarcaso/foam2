@@ -13,7 +13,7 @@ foam.CLASS({
       if ( ! foam.util.flagFilter(['android'])(model) ) return cls;
 
       cls.method({
-        visibility: 'protected',
+        visibility: 'public',
         type: this.path + '.' + model.name + 'Builder_',
         name: this.name + '_create',
         body: `return ${this.path}.${model.name}Builder(getSubX());`

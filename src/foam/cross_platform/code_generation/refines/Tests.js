@@ -22,13 +22,13 @@ foam.CLASS({
         visibility: 'public',
         type: 'void',
         name: this.name,
-        body: this.androidCode
+        body: foam.cpTemplate(this.androidCode, 'android')
       });
     },
     function addToSwiftTestClass(cls, parentCls) {
       cls.method({
         name: this.name,
-        body: this.swiftCode
+        body: foam.cpTemplate(this.swiftCode, 'swift')
       });
     }
   ]

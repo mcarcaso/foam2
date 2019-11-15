@@ -9,6 +9,7 @@ foam.CLASS({
   requires: [
     'foam.core.internal.PropertySlot',
     'foam.cross_platform.ListenerList',
+    'foam.cross_platform.SubTopic',
     {
       path: 'foam.swift.AnonymousGenericFunction',
       flags: ['swift']

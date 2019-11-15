@@ -709,6 +709,8 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/ios_swift/ArrayProperty" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Reaction" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Reaction" },
+  { name: "foam/cross_platform/code_generation/refines/android_java/Topic" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/Topic" },
 
   // Strategy
   { name: "foam/strategy/StrategyReference" },
