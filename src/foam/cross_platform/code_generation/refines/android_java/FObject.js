@@ -185,12 +185,25 @@ ${cls.extends ? `
     },
     function addAndroidStaticClassInfo(cls) {
       var flagFilter = foam.util.flagFilter(['android']);
+      var cInfo = this.toCrossPlatformClass(flagFilter);
       cls.method({
         visibility: 'public',
         static: true,
         type: 'foam.cross_platform.FoamClass',
         name: 'CLS_',
         body: `
+          if ( initClassInfo_ == null ) {
+            initClassInfo_ = foam.cross_platform.FoamClass
+              .FoamClassBuilder(null)
+              .build();
+            ${cInfo.cls_.getAxiomsByClass(foam.core.Property)
+                .filter(flagFilter)
+                .map(a => `
+            initClassInfo_.${a.crossPlatformSetterName}(${foam.android.tools.asAndroidValue(cInfo[a.name])});
+                `)
+                .join('\n')
+            }
+          }
           return initClassInfo_;
         `
       });
@@ -199,7 +212,6 @@ ${cls.extends ? `
         static: true,
         type: 'foam.cross_platform.FoamClass',
         name: 'initClassInfo_',
-        initializer: this.toCrossPlatformClass(flagFilter).asAndroidValue()
       });
     }
   ]

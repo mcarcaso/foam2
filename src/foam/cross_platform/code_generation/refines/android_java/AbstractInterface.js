@@ -8,20 +8,25 @@ foam.CLASS({
       class: 'foam.core.AnonymousAxiom',
       installInClass: function(cls) {
         cls.buildAndroidClass = function(cls) {
-          cls = cls || foam.java.Interface.create();
+          if ( cls ) debugger; // Does this happen?
 
-          cls.name = this.model_.name;
-          cls.package = this.model_.package;
-          cls.documentation = this.model_.documentation;
-
-          this.addAndroidStaticClassInfo(cls);
-
+          var javaInterface = foam.java.Interface.create();
+          javaInterface.package = this.model_.package;
+          javaInterface.name = this.model_.name;
+          javaInterface.documentation = this.model_.documentation;
           this.getAxioms()
             .filter(foam.util.flagFilter(['android']))
             .filter(a => a.buildAndroidClass)
-            .forEach(a => a.buildAndroidClass(cls, this));
+            .forEach(a => a.buildAndroidClass(javaInterface, this));
 
-          return cls;
+          var staticCls = foam.java.Class.create();
+          staticCls.package = javaInterface.package;
+          staticCls.name = javaInterface.name + 'Class';
+          this.addAndroidStaticClassInfo(staticCls);
+
+          return foam.swift.ArraySwiftSource.create({
+            sources: [javaInterface, staticCls]
+          });
         };
       }
     }

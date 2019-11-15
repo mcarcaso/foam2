@@ -27,8 +27,16 @@ foam.LIB({
         },
         Object: function(o) {
           if (foam.core.FObject.isSubClass(o)) {
-            return (o.id == 'foam.core.FObject' ? 
-              'foam.cross_platform.AbstractFObject' : o.id) + '.CLS_()';
+            if ( foam.core.InterfaceModel.isInstance(o.model_) ) {
+              return o.id + 'Class.CLS_()';
+            }
+            if ( o.id == 'foam.core.AbstractInterface' ) {
+              return o.id + 'Class.CLS_()';
+            }
+            return (o.id == 'foam.core.FObject' ?
+              'foam.cross_platform.AbstractFObject' :
+              o.id)
+              + '.CLS_()';
           }
           return `
 new java.util.HashMap<String, Object>() {

@@ -10,7 +10,7 @@ foam.CLASS({
         cls.buildSwiftClass = function(cls) {
           if ( cls ) debugger; // Does this happen?
 
-          protocol = foam.swift.Protocol.create();
+          var protocol = foam.swift.Protocol.create();
           protocol.name = this.model_.swiftName;
           this.getAxioms()
             .filter(foam.util.flagFilter(['swift']))
