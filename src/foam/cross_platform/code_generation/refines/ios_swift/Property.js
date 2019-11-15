@@ -165,18 +165,18 @@ foam.CLASS({
                 .setFn({(args: [Any?]?) -> Any? in
                   return self.${expressionName}(
                     ${args.map((a, i) => `
-                      args![${i}] as! ${a.type}
+                      args![${i}]${a.type == 'Any?'? '' : `as! ${a.type}`}
                     `).join(',')})
                 })
                 .build()
               )
               .build();
-            ${this.crossPlatformPrivateVarName} = eSlot.slotGet() as! ${this.swiftType};
+            ${this.crossPlatformPrivateVarName} = eSlot.slotGet() as${this.swiftType.endsWith('?') ? '!' : '?'} ${this.swiftType};
             
             ${subName} = eSlot.slotSub(AnonymousListener_create()
               .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
                 if foam_cross_platform_Lib.compare(eSlot.slotGet(), self.${this.crossPlatformPrivateVarName}) != 0 {
-                  self.${this.crossPlatformPrivateVarName} = eSlot.slotGet() as! ${this.swiftType};
+                  self.${this.crossPlatformPrivateVarName} = eSlot.slotGet() as${this.swiftType.endsWith('?') ? '!' : '?'} ${this.swiftType};
                   _ = self.pub(["propertyChange", "${this.name}", self.${this.crossPlatformPrivateVarName}]);
                 }
               })

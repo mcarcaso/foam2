@@ -43,12 +43,12 @@ foam.CLASS({
     {
       name: 'onObjChanged',
       androidCode: 'objChanged().pub(null);',
-      swiftCode: 'objChanged().pub(nil);'
+      swiftCode: '_ = objChanged().pub(nil);'
     },
     {
       name: 'onObjFirstNameChange',
       androidCode: 'objFirstNameChanged().pub(null);',
-      swiftCode: 'objFirstNameChanged().pub(nil);'
+      swiftCode: '_ = objFirstNameChanged().pub(nil);'
     },
   ],
   tests: [
