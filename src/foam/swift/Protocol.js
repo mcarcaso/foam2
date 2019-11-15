@@ -70,7 +70,10 @@ foam.CLASS({
     },
 
     function toSource() {
-      return this.toSwiftSource();
+      return [{
+        body: this.toSwiftSource(),
+        path: `${this.name}.swift`
+      }];
     },
 
     function toSwiftSource() {

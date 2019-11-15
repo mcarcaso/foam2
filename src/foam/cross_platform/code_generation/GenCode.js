@@ -66,17 +66,14 @@ foam.CLASS({
         console.log('Generating classes for:');
         console.log(Object.keys(classes).join('\n'));
 
-        var paths = Object.values(classes).map(cls => {
-          var model = cls.model_;
-          var path = this.outputPath + this.path.sep + this.platform.modelToPath(model);
-          this.ensurePath(path);
-          this.fs.writeFileSync(path, cls[this.platform.buildClassMethod]().toSource());
-          return path;
-        });
-
-        console.log('\nClass generation complete. To compile, run the following:\n');
-        console.log(`javac ${paths.join(' ')}`);
-        console.log();
+        Object.values(classes)
+          .map(cls => cls[this.platform.buildClassMethod]().toSource())
+          .flat()
+          .forEach(source => {
+            var path = this.outputPath + this.path.sep + source.path;
+            this.ensurePath(path);
+            this.fs.writeFileSync(path, source.body);
+          });
       }
     },
     function ensurePath(path) {

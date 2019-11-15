@@ -10,28 +10,17 @@ foam.ENUM({
       class: 'StringProperty',
       name: 'buildClassMethod'
     },
-    {
-      class: 'FunctionProperty',
-      name: 'modelToPath'
-    }
   ],
   values: [
     {
       name: 'ANDROID',
       flag: 'android',
       buildClassMethod: 'buildAndroidClass',
-      modelToPath: function(model) {
-        var sep = require('path').sep;
-        return model.package.replace(/\./g, sep) + sep + model.name + '.java';
-      }
     },
     {
       name: 'SWIFT',
       flag: 'swift',
       buildClassMethod: 'buildSwiftClass',
-      modelToPath: function (model) {
-        return model.swiftName + '.swift';
-      }
     },
   ]
 })

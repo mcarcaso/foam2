@@ -10,7 +10,7 @@ foam.CLASS({
   ],
   methods: [
     function toSource() {
-      return this.sources.map(s => s.toSwiftSource()).join('\n');
+      return this.sources.map(s => s.toSource()).flat();
     },
   ]
 });
