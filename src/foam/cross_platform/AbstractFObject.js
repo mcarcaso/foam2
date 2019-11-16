@@ -54,6 +54,21 @@ foam.CLASS({
       name: 'subX'
     },
   ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      swiftCode: `
+        deinit {
+          detach();
+        }
+      `,
+      androidCode: `
+        public void finalize() {
+          detach();
+        }
+      `
+    }
+  ],
   methods: [
     {
       name: 'init',
@@ -68,32 +83,31 @@ foam.CLASS({
       name: 'onDetach',
       androidCode: `
         final foam.core.Detachable d = detachable;
-        sub(new String[] {"detach"}, new foam.cross_platform.Listener() {
-          public void executeListener(foam.core.Detachable sub, Object[] args) {
-            sub.detach();
-            d.detach();
-          }
-        });
+        sub(new String[] {"detach"}, <%=listener(\`
+          sub.detach();
+          d.detach();
+        \`)%>);
       `,
       swiftCode: `
-        _ = sub(["detach"], AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
-            sub?.detach();
-            detachable?.detach();
-          })
-          .build()
-        );
+        _ = sub(["detach"], <%=listener(\`
+          sub?.detach();
+          detachable?.detach();
+        \`)%>);
       `
     },
     {
       name: 'detach',
       androidCode: `
         pub(new Object[] {"detach"});
-        detachListeners_(getListeners__());
+        if ( hasPropertySet("listeners__") ) {
+          detachListeners_(getListeners__());
+        }
       `,
       swiftCode: `
         _ = pub(["detach"]);
-        detachListeners_(getListeners__());
+        if hasPropertySet("listeners__") {
+          detachListeners_(getListeners__());
+        }
       `
     },
     {
@@ -172,6 +186,7 @@ foam.CLASS({
         { type: 'Any[]', name: 'args' }
       ],
       androidCode: `
+        if ( ! hasPropertySet("listeners__") ) return false;
         foam.cross_platform.ListenerList listeners = getListeners__();
         int i = 0;
         while ( listeners != null ) {
@@ -184,6 +199,7 @@ foam.CLASS({
         return false;
       `,
       swiftCode: `
+        if !hasPropertySet("listeners__") { return false; }
         var listeners = getListeners__();
         var i = 0;
         while listeners != nil {
@@ -200,6 +216,7 @@ foam.CLASS({
     {
       name: 'pub',
       androidCode: `
+        if ( ! hasPropertySet("listeners__") ) return 0;
         foam.cross_platform.ListenerList listeners = getListeners__();
         int count = notify(listeners.getNext(), args);
         for ( Object arg : args ) {
@@ -211,6 +228,7 @@ foam.CLASS({
         return count;
       `,
       swiftCode: `
+        if !hasPropertySet("listeners__") { return 0; }
         var listeners = getListeners__();
         var count = notify(listeners!.getNext(), args);
         for arg in args! {

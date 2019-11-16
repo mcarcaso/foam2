@@ -21,8 +21,8 @@ foam.CLASS({
         body: `
           if ${fieldName} == nil {
             ${fieldName} = AnonymousListener_create()
-              .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
-                self.${this.name}(sub, args);
+              .setFn({ [weak self] (sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+                self?.${this.name}(sub, args);
               })
               .build();
           }

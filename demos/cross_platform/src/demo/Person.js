@@ -47,20 +47,22 @@ foam.CLASS({
         Person p = Person_create().build();
 
         final int[] numPubs = new int[] { 0, 0, 0, 0 };
-        p.sub(null, <%=listener(\`
+        foam.core.Detachable[] subs =
+          new foam.core.Detachable[] { null, null, null, null };
+        subs[0] = p.sub(null, <%=listener(\`
             numPubs[0]++;
             sub.detach();
         \`)%>);
 
-        p.sub(null, <%=listener(\`
+        subs[1] = p.sub(null, <%=listener(\`
             numPubs[1]++;
         \`)%>);
 
-        p.getFirstName$().slotSub(<%=listener(\`
+        subs[2] = p.getFirstName$().slotSub(<%=listener(\`
             numPubs[2]++;
         \`)%>);
 
-        p.getFullName$().slotSub(<%=listener(\`
+        subs[3] = p.getFullName$().slotSub(<%=listener(\`
             numPubs[3]++;
         \`)%>);
         // Must touch the fullName to initialize its value and have it react to
@@ -76,26 +78,29 @@ foam.CLASS({
         assertEquals("firstName listener only fired once", numPubs[2], 1);
         assertEquals("fullName listener fired twice", numPubs[3], 2);
 
-        p.detach();
+        for ( foam.core.Detachable sub : subs ) {
+          sub.detach();
+        }
       `,
       swiftCode: `
         let p = Person_create().build();
 
         var numPubs = [0, 0, 0, 0];
-       _ = p.sub(nil, <%=listener(\`
+        var subs: [foam_core_Detachable?] = [nil, nil, nil, nil];
+        subs[0] = p.sub(nil, <%=listener(\`
             numPubs[0]+=1;
             sub?.detach();
         \`)%>);
 
-        _ = p.sub(nil, <%=listener(\`
+        subs[1] = p.sub(nil, <%=listener(\`
             numPubs[1]+=1;
         \`)%>);
 
-        _ = p.getFirstName$().slotSub(<%=listener(\`
+        subs[2] = p.getFirstName$().slotSub(<%=listener(\`
             numPubs[2]+=1;
         \`)%>);
 
-        _ = p.getFullName$().slotSub(<%=listener(\`
+        subs[3] = p.getFullName$().slotSub(<%=listener(\`
             numPubs[3]+=1;
         \`)%>);
         // Must touch the fullName to initialize its value and have it react to
@@ -110,7 +115,9 @@ foam.CLASS({
         XCTAssertEqual(numPubs[2], 1, "firstName listener only fired once");
         XCTAssertEqual(numPubs[3], 2, "fullName listener fired twice");
 
-        p.detach();
+        for sub in subs {
+          sub?.detach();
+        }
       `
     },
     {
@@ -229,6 +236,19 @@ foam.CLASS({
         XCTAssertEqual(o.getFullName(), "C");
 
         o.detach();
+      `
+    },
+    {
+      name: 'testMemLeaks',
+      androidCode: `
+        for ( int i = 0 ; i < 30000 ; i++ ) {
+          testListen();
+        }
+      `,
+      swiftCode: `
+        for _ in 0..<30000 {
+          testListen();
+        }
       `
     },
   ]

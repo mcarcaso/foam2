@@ -133,7 +133,7 @@ foam.CLASS({
         var subName = this.crossPlatformExpressionSubName;
         cls.field({
           visibility: 'private',
-          type: 'foam.core.Detachable',
+          type: 'foam.core.ExpressionSlot',
           name: subName
         });
         var expressionName = this.name + '_expression_';
@@ -149,7 +149,7 @@ foam.CLASS({
         getter.body = `
           if ( ! ${this.crossPlatformIsSetVarName} && ${subName} == null ) {
             final ${parentCls.name} obj = this;
-            final foam.core.ExpressionSlot eSlot = foam.core.ExpressionSlot.ExpressionSlotBuilder(getSubX())
+            ${subName} = foam.core.ExpressionSlot.ExpressionSlotBuilder(getSubX())
               .setArgs(new foam.core.SlotInterface[] {
                 ${args.map(a => `getSlot("${a.name}")`).join(',')}
               })
@@ -161,15 +161,16 @@ foam.CLASS({
                 }
               })
               .build();
-            ${this.crossPlatformPrivateVarName} = (${this.androidType}) eSlot.slotGet();
-            ${subName} = eSlot.slotSub(new foam.cross_platform.Listener() {
+            ${this.crossPlatformPrivateVarName} = (${this.androidType}) ${subName}.slotGet();
+
+            onDetach(${subName}.slotSub(new foam.cross_platform.Listener() {
               public void executeListener(foam.core.Detachable sub, Object[] args) {
-                if ( foam.cross_platform.Lib.compare(eSlot.slotGet(), obj.${this.crossPlatformPrivateVarName}) != 0 ) {
-                  obj.${this.crossPlatformPrivateVarName} = (${this.androidType}) eSlot.slotGet();
+                if ( foam.cross_platform.Lib.compare(${subName}.slotGet(), obj.${this.crossPlatformPrivateVarName}) != 0 ) {
+                  obj.${this.crossPlatformPrivateVarName} = (${this.androidType}) ${subName}.slotGet();
                   obj.pub(new Object[] { "propertyChange", "${this.name}", obj.${this.crossPlatformPrivateVarName} });
                 }
               }
-            });
+            }));
           }
           return ${this.crossPlatformPrivateVarName};
         `;

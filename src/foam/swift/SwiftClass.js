@@ -53,8 +53,8 @@ foam.CLASS({
       factory: function() { return []; }
     },
     {
-      class: 'StringProperty',
-      name: 'code',
+      class: 'StringArrayProperty',
+      name: 'extras',
     },
     {
       class: 'StringProperty',
@@ -117,7 +117,8 @@ foam.CLASS({
         f.imports = [];
         o.out('\n', f, '\n');
       });
-      o.out(this.code, '\n');
+
+      o.out(this.extras.join('\n'), '\n');
 
       o.decreaseIndent();
       o.indent();

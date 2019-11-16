@@ -12,6 +12,10 @@ foam.CLASS({
       name: 'expressionArgs'
     },
     {
+      class: 'BooleanProperty',
+      name: 'weak'
+    },
+    {
       class: 'StringProperty',
       name: 'crossPlatformAxiomName',
       expression: function(name) {

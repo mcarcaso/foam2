@@ -45,6 +45,7 @@ genProperties
   .map(a => `
           case "${a.name}":
             ${a.crossPlatformIsSetVarName} = false;
+            ${a.crossPlatformPrivateVarName} = nil;
             var ${a.name}Args: [Any?] = ["propertyChange", "${a.name}", nil];
             if hasListeners(${a.name}Args) {
               ${a.name}Args[2] = ${a.crossPlatformSlotGetterName}();

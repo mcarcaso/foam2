@@ -1,6 +1,6 @@
 foam.CLASS({
   package: 'foam.cross_platform.code_generation.refines.ios_swift',
-  name: 'PropertyJavaRefinement',
+  name: 'PropertyRefinement',
   refines: 'foam.core.Property',
   flags: ['swift'],
   properties: [
@@ -75,6 +75,7 @@ foam.CLASS({
 
       cls.field({
         visibility: 'private',
+        weak: this.weak,
         type: this.swiftValueType,
         name: this.crossPlatformPrivateVarName,
         defaultValue: 'nil'
@@ -143,7 +144,7 @@ foam.CLASS({
         var subName = this.crossPlatformExpressionSubName;
         cls.field({
           visibility: 'private',
-          type: foam.core.Detachable.model_.swiftName + '?',
+          type: foam.core.ExpressionSlot.model_.swiftName + '?',
           name: subName
         });
         var expressionName = this.name + '_expression_';
@@ -157,13 +158,14 @@ foam.CLASS({
         });
         getter.body = `
           if !${this.crossPlatformIsSetVarName} && ${subName} == nil {
-            let eSlot = foam_core_ExpressionSlot.foam_core_ExpressionSlotBuilder(getSubX())
+            ${subName} = foam_core_ExpressionSlot.foam_core_ExpressionSlotBuilder(getSubX())
               .setArgs([
                 ${args.map(a => `getSlot("${a.localName}")`).join(',')}
               ])
               .setCode(AnonymousGenericFunction_create()
-                .setFn({(args: [Any?]?) -> Any? in
-                  return self.${expressionName}(
+                .setFn({[weak self] (args: [Any?]?) -> Any? in
+                  if self == nil { return nil; }
+                  return self!.${expressionName}(
                     ${args.map((a, i) => `
                       args![${i}]${a.type == 'Any?'? '' : `as! ${a.type}`}
                     `).join(',')})
@@ -171,17 +173,18 @@ foam.CLASS({
                 .build()
               )
               .build();
-            ${this.crossPlatformPrivateVarName} = eSlot.slotGet() as${this.swiftType.endsWith('?') ? '!' : '?'} ${this.swiftType};
-            
-            ${subName} = eSlot.slotSub(AnonymousListener_create()
-              .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
-                if foam_cross_platform_Lib.compare(eSlot.slotGet(), self.${this.crossPlatformPrivateVarName}) != 0 {
-                  self.${this.crossPlatformPrivateVarName} = eSlot.slotGet() as${this.swiftType.endsWith('?') ? '!' : '?'} ${this.swiftType};
-                  _ = self.pub(["propertyChange", "${this.name}", self.${this.crossPlatformPrivateVarName}]);
+            ${this.crossPlatformPrivateVarName} = ${subName}!.slotGet() as${this.swiftType.endsWith('?') ? '!' : '?'} ${this.swiftType};
+
+            onDetach(${subName}!.slotSub(AnonymousListener_create()
+              .setFn({[weak self] (sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+                if self == nil { return }
+                if foam_cross_platform_Lib.compare(self!.${subName}!.slotGet(), self!.${this.crossPlatformPrivateVarName}) != 0 {
+                  self!.${this.crossPlatformPrivateVarName} = self!.${subName}!.slotGet() as${this.swiftType.endsWith('?') ? '!' : '?'} ${this.swiftType};
+                  _ = self!.pub(["propertyChange", "${this.name}", self!.${this.crossPlatformPrivateVarName}]);
                 }
               })
               .build()
-            );
+            ));
           }
           return ${this.crossPlatformPrivateVarName};
         `;

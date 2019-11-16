@@ -11,8 +11,10 @@ foam.LIB({
             detachable: function(code) {
               return `
 AnonymousDetachable_create()
-  .setFn({() -> Void in
+  .setDetachFn({[weak self] () -> Void in
+    if self == nil { return }
     ${code}
+    self.setDetachFn(nil);
   })
   .build()
               `;
@@ -20,7 +22,8 @@ AnonymousDetachable_create()
             listener: function(code) {
               return `
 foam_swift_AnonymousListener.foam_swift_AnonymousListenerBuilder(nil)
-  .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+  .setFn({[weak self] (sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+    if self == nil { return }
     ${code}
   })
   .build()
@@ -29,7 +32,8 @@ foam_swift_AnonymousListener.foam_swift_AnonymousListenerBuilder(nil)
             fn: function(code) {
               return `
 foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
-  .setFn({(args: [Any?]?) -> Any? in
+  .setFn({[weak self] (args: [Any?]?) -> Any? in
+    if self == nil { return nil }
     ${code}
   })
   .build()

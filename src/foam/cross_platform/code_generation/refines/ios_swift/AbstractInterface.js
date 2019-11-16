@@ -21,6 +21,8 @@ foam.CLASS({
           staticCls.name = protocol.name + 'Class';
           this.addSwiftStaticClassInfo(staticCls);
 
+          if ( ! protocol.implements.length ) protocol.implements = ['class'];
+
           return foam.swift.ArraySwiftSource.create({
             sources: [protocol, staticCls]
           });
