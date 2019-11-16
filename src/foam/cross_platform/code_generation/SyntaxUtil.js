@@ -28,7 +28,7 @@ foam_swift_AnonymousListener.foam_swift_AnonymousListenerBuilder(nil)
             },
             fn: function(code) {
               return `
-AnonymousGenericFunction_create()
+foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
   .setFn({(args: [Any?]?) -> Any? in
     ${code}
   })

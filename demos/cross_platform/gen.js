@@ -41,7 +41,7 @@
         'demo.Compare',
         'demo.Person',
         'demo.Reaction',
-        'demo.Tests'
+        'demo.Slot',
       ],
       outputPath: platformArgs.outputPath
     }
