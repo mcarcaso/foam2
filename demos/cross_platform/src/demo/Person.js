@@ -135,7 +135,6 @@ foam.CLASS({
         assertEquals(t.getFullName(), "OVERRIDE");
         t.clearProperty("fullName");
         assertEquals(t.getFullName(), "Nope D");
-        t.detach();
       `,
       swiftCode: `
         let t = Person_create().build();
@@ -150,7 +149,6 @@ foam.CLASS({
         XCTAssertEqual(t.getFullName(), "OVERRIDE");
         t.clearProperty("fullName");
         XCTAssertEqual(t.getFullName(), "Nope D");
-        t.detach();
       `
     },
     {
@@ -243,11 +241,13 @@ foam.CLASS({
       androidCode: `
         for ( int i = 0 ; i < 30000 ; i++ ) {
           testListen();
+          testExpression();
         }
       `,
       swiftCode: `
         for _ in 0..<30000 {
           testListen();
+          testExpression();
         }
       `
     },

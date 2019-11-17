@@ -5,6 +5,7 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ListenerList',
+      weak: true,
       name: 'prev'
     },
     {

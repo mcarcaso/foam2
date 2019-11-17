@@ -296,13 +296,13 @@ foam.CLASS({
           .setListener(listener)
           .build();
         node.setSubscription(AnonymousDetachable_create()
-          .setDetachFn({() -> Void in
-            node.getNext()?.setPrev(node.getPrev());
-            node.getPrev()?.setNext(node.getNext());
-            node.clearProperty("listener");
-            node.clearProperty("next");
-            node.clearProperty("prev");
-            node.clearProperty("subscription");
+          .setDetachFn({ [weak node] () -> Void in
+            node?.getNext()?.setPrev(node?.getPrev());
+            node?.getPrev()?.setNext(node?.getNext());
+            node?.clearProperty("listener");
+            node?.clearProperty("next");
+            node?.clearProperty("prev");
+            node?.clearProperty("subscription");
           })
           .build()
         );
