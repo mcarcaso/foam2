@@ -3,6 +3,21 @@ foam.LIB({
   flags: ['android'],
   methods: [
     {
+      name: 'isJavaPrimitive',
+      code: function(str) {
+        return [
+          'byte',
+          'short',
+          'int',
+          'long',
+          'float',
+          'double',
+          'char',
+          'boolean',
+        ].indexOf(str) != -1;
+      }
+    },
+    {
       name: 'asAndroidValue',
       code: foam.mmethod({
         String: function(s) {

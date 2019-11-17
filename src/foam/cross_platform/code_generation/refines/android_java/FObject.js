@@ -44,7 +44,8 @@ genProperties
   .map(a => `
           case "${a.name}":
             ${a.crossPlatformIsSetVarName} = false;
-            //${a.crossPlatformPrivateVarName} = null;
+            ${foam.android.tools.isJavaPrimitive(a.androidType) ? '' :
+            `${a.crossPlatformPrivateVarName} = null;`}
             Object[] ${a.name}Args = new Object[] { "propertyChange", "${a.name}", null };
             if ( hasListeners(${a.name}Args) ) {
               ${a.name}Args[2] = ${a.crossPlatformSlotGetterName}();
