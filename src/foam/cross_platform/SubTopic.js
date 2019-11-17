@@ -8,6 +8,7 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.Topic',
+      weak: true,
       name: 'parent'
     },
     {
@@ -19,6 +20,7 @@ foam.CLASS({
     {
       name: 'pub',
       androidCode: `
+        if ( getParent() == null ) return 0;
         if ( args == null ) {
           Object[] args2 = new Object[getTopics().length];
           for ( int i = 0 ; i < getTopics().length ; i++ ) {
@@ -36,6 +38,7 @@ foam.CLASS({
         return getParent().pub(args2);
       `,
       swiftCode: `
+        if getParent() == nil { return 0; }
         if args == nil {
           return getParent()!.pub(getTopics());
         }

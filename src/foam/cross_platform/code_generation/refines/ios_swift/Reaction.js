@@ -24,13 +24,14 @@ foam.CLASS({
           let slot = getSlot("${this.target.replace(/\./g, '$')}");
 
           let listener = AnonymousListener_create()
-            .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
-              self.${this.name}_sub?.detach();
+            .setFn({[weak self] (sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+              if self == nil { return }
+              self!.${this.name}_sub?.detach();
               let target = slot!.slotGet() as? foam_cross_platform_FObject;
               if target != nil {
-                self.${this.name}_sub = target!
-                  .sub([${this.topic.map(foam.swift.asSwiftValue).join(', ')}], self.${this.listener}_listener());
-                self.onDetach(self.${this.name}_sub);
+                self!.${this.name}_sub = target!
+                  .sub([${this.topic.map(foam.swift.asSwiftValue).join(', ')}], self!.${this.listener}_listener());
+                self!.onDetach(self!.${this.name}_sub);
               }
             })
             .build();

@@ -116,6 +116,19 @@ foam.CLASS({
           sub?.detach();
         }
       `,
-    }
+    },
+    {
+      name: 'testMemLeaks',
+      androidCode: `
+        for ( int i = 0 ; i < 30000 ; i++ ) {
+          testAnythingChanged();
+        }
+      `,
+      swiftCode: `
+        for _ in 0..<30000 {
+          testAnythingChanged();
+        }
+      `
+    },
   ]
 });

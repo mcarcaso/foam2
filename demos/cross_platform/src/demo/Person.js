@@ -171,8 +171,6 @@ foam.CLASS({
 
         o.setLastName("D");
         assertEquals(slot.slotGet(), "D, Mike");
-        
-        o.detach();
       `,
       swiftCode: `
         let o = Person_create().build();
@@ -193,8 +191,6 @@ foam.CLASS({
 
         o.setLastName("D");
         XCTAssertEqual(slot.slotGet() as? String, "D, Mike");
-
-        o.detach();
       `
     },
     {
@@ -214,8 +210,6 @@ foam.CLASS({
         o.clearProperty("firstName");
         assertEquals(o.hasPropertySet("firstName"), false);
         assertEquals(o.getFullName(), "C");
-
-        o.detach();
       `,
       swiftCode: `
         let o = Person_create().build();
@@ -232,22 +226,26 @@ foam.CLASS({
         o.clearProperty("firstName");
         XCTAssertEqual(o.hasPropertySet("firstName"), false);
         XCTAssertEqual(o.getFullName(), "C");
-
-        o.detach();
       `
     },
     {
       name: 'testMemLeaks',
       androidCode: `
         for ( int i = 0 ; i < 30000 ; i++ ) {
+          testFullName();
           testListen();
           testExpression();
+          testExpressionSlot();
+          testHasOwnProperty();
         }
       `,
       swiftCode: `
         for _ in 0..<30000 {
+          testFullName();
           testListen();
           testExpression();
+          testExpressionSlot();
+          testHasOwnProperty();
         }
       `
     },
