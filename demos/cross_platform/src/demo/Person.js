@@ -227,27 +227,6 @@ foam.CLASS({
         XCTAssertEqual(o.hasPropertySet("firstName"), false);
         XCTAssertEqual(o.getFullName(), "C");
       `
-    },
-    {
-      name: 'testMemLeaks',
-      androidCode: `
-        for ( int i = 0 ; i < 30000 ; i++ ) {
-          testFullName();
-          testListen();
-          testExpression();
-          testExpressionSlot();
-          testHasOwnProperty();
-        }
-      `,
-      swiftCode: `
-        for _ in 0..<30000 {
-          testFullName();
-          testListen();
-          testExpression();
-          testExpressionSlot();
-          testHasOwnProperty();
-        }
-      `
-    },
+    }
   ]
 });

@@ -31,9 +31,6 @@ foam.CLASS({
 
         o2.setA("B");
         assertEquals(o1.getA(), "B");
-
-        o1.detach();
-        o2.detach();
       `,
       swiftCode: `
         let o1 = Slot_create()
@@ -47,9 +44,6 @@ foam.CLASS({
 
         o2.setA("B");
         XCTAssertEqual(o1.getA() as? String, "B");
-
-        o1.detach();
-        o2.detach();
       `
     },
     {
@@ -70,9 +64,6 @@ foam.CLASS({
         \`)%>);
         t2.setA("A2");
         assertEquals(i[0], 1);
-
-        t.detach();
-        t2.detach();
       `,
       swiftCode: `
         let t = Slot_create().build();
@@ -84,15 +75,13 @@ foam.CLASS({
         XCTAssertEqual(s.slotGet() as? String, "A");
         
         var i = 0;
+        weak var weakS = s;
         _ = s.slotSub(<%=listener(\`
           i += 1;
-          XCTAssertEqual(s.slotGet() as? String, "A2");
+          XCTAssertEqual(weakS!.slotGet() as? String, "A2");
         \`)%>);
         t2.setA("A2");
         XCTAssertEqual(i, 1);
-
-        t.detach();
-        t2.detach();
       `
     },
     {
@@ -127,9 +116,6 @@ foam.CLASS({
         assertEquals(s2.slotGet(), "B");
         assertEquals("s1 pubs", slotCount[0], 1);
         assertEquals("s2 pubs", slotCount[1], 1);
-
-        t.detach();
-        t2.detach();
       `,
       swiftCode: `
         let t = Slot_create()
@@ -161,9 +147,6 @@ foam.CLASS({
         XCTAssertEqual(s2.slotGet() as? String, "B");
         XCTAssertEqual(slotCount[0], 1, "s1 pubs");
         XCTAssertEqual(slotCount[1], 1, "s2 pubs");
-
-        t.detach();
-        t2.detach();
       `
     },
     {
@@ -179,8 +162,6 @@ foam.CLASS({
           .setA("A")
           .build());
         assertEquals(p.getB(), "A");
-
-        p.detach();
       `,
       swiftCode: `
         let p = Slot_create().build();
@@ -193,9 +174,7 @@ foam.CLASS({
           .setA("A")
           .build());
         XCTAssertEqual(p.getB(), "A");
-
-        p.detach();
       `
-    },
+    }
   ]
 });

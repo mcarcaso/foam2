@@ -205,6 +205,16 @@ ${cls.extends ? `
             'XCTest',
           ]
         });
+        /*
+        testCls.method({
+          name: 'testMemLeaks',
+          body: tests.map(t => `
+            for _ in 0..<1000 {
+              ${t.name}();
+            }
+          `).join('\n')
+        });
+        */
         testCls.method({
           name: 'getSubX',
           type: foam.cross_platform.Context.model_.swiftName + '?',
