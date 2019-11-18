@@ -72,6 +72,15 @@ foam.CLASS({
           .forEach(source => {
             var path = this.outputPath + this.path.sep + source.path;
             this.ensurePath(path);
+
+            if ( this.fs.existsSync(path) ) {
+              var body = this.fs.readFileSync(path, 'utf8');
+              if ( body == source.body ) return;
+              console.log('Changed file:', path);
+            } else {
+              console.log('New file:', path);
+            }
+
             this.fs.writeFileSync(path, source.body);
           });
       }
