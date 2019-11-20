@@ -7,6 +7,18 @@ foam.CLASS({
     {
       class: 'foam.core.AnonymousAxiom',
       installInClass: function(cls) {
+        var superBuildSwiftResources = cls.buildSwiftResources;
+        cls.buildSwiftResources = function(resources, parentCls) {
+          resources = superBuildSwiftResources.call(this, resources, parentCls);
+
+          var name = this.model_.swiftName;
+          var staticCls = foam.swift.SwiftClass.create();
+          staticCls.name = name + 'Class';
+          this.addSwiftStaticClassInfo(staticCls);
+          resources.sources.push(staticCls);
+
+          return resources;
+        };
         cls.buildSwiftClass = function(cls) {
           if ( cls ) debugger; // Does this happen?
 
@@ -16,16 +28,9 @@ foam.CLASS({
             .filter(foam.util.flagFilter(['swift']))
             .filter(a => a.buildSwiftClass)
             .forEach(a => a.buildSwiftClass(protocol, this));
-
-          var staticCls = foam.swift.SwiftClass.create();
-          staticCls.name = protocol.name + 'Class';
-          this.addSwiftStaticClassInfo(staticCls);
-
           if ( ! protocol.implements.length ) protocol.implements = ['class'];
 
-          return foam.swift.ArraySwiftSource.create({
-            sources: [protocol, staticCls]
-          });
+          return protocol;
         };
       }
     }

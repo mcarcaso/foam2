@@ -15,10 +15,13 @@
 
   var platforms = {
     swift: {
-      outputPath: dir + '/swift/foam_gen'
+      sourcePath: dir + '/swift/foam_gen',
+      testPath: dir + '/swift/foam_gen_test',
+      swiftAppName: 'FOAM_Demo_App',
     },
     android: {
-      outputPath: dir + '/android/project/app/src/foam_gen'
+      sourcePath: dir + '/android/project/app/src/foam_gen',
+      testPath: dir + '/android/project/app/src/test/java',
     }
   };
 
@@ -43,7 +46,9 @@
         'demo.Reaction',
         'demo.Slot',
       ],
-      outputPath: platformArgs.outputPath
+      sourcePath: platformArgs.sourcePath,
+      testPath: platformArgs.testPath,
+      swiftAppName: platformArgs.swiftAppName,
     }
   };
 

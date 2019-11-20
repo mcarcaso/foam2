@@ -8,19 +8,19 @@ foam.ENUM({
     },
     {
       class: 'StringProperty',
-      name: 'buildClassMethod'
+      name: 'buildResourcesMethod'
     },
   ],
   values: [
     {
       name: 'ANDROID',
       flag: 'android',
-      buildClassMethod: 'buildAndroidClass',
+      buildResourcesMethod: 'buildAndroidResources',
     },
     {
       name: 'SWIFT',
       flag: 'swift',
-      buildClassMethod: 'buildSwiftClass',
+      buildResourcesMethod: 'buildSwiftResources',
     },
   ]
 })

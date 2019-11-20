@@ -251,11 +251,11 @@ foam.CLASS({
     },
 
     function toSource() {
-      return [{
+      return {
         body: this.toJavaSource(),
         path: `${this.package}.${this.name}`
           .replace(/\./g, require('path').sep) + '.java'
-      }];
+      };
     },
 
     function toJavaSource() {

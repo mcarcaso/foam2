@@ -125,10 +125,10 @@ foam.CLASS({
       o.out('}');
     },
     function toSource() {
-      return [{
+      return {
         body: this.toSwiftSource(),
         path: `${this.name}.swift`
-      }];
+      };
     },
     function toSwiftSource() {
       var output = this.Outputter.create({outputMethod: 'outputSwift'});

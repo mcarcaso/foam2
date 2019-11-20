@@ -2,6 +2,19 @@ foam.LIB({
   name: 'foam.core.FObject',
   flags: ['swift'],
   methods: [
+    function buildSwiftResources() {
+      var resources = {
+        tests: [],
+        sources: []
+      };
+      var flagFilter = foam.util.flagFilter(['swift']);
+      this.getAxioms()
+        .filter(flagFilter)
+        .filter(a => a.buildSwiftResources)
+        .forEach(a => a.buildSwiftResources(resources, this));
+      resources.sources.push(this.buildSwiftClass());
+      return resources;
+    },
     function buildSwiftClass(cls) {
       cls = cls || foam.swift.SwiftClass.create();
 
@@ -194,42 +207,6 @@ ${cls.extends ? `
       });
 
       this.addSwiftStaticClassInfo(cls);
-
-      var tests = this
-        .getOwnAxiomsByClass(foam.cross_platform.code_generation.refines.TestAxiom);
-      if ( tests.length ) {
-        var testCls = foam.swift.SwiftClass.create({
-          name: 'test_' + cls.name + 'Tests',
-          extends: 'XCTestCase',
-          imports: [
-            'XCTest',
-          ]
-        });
-        /*
-        testCls.method({
-          name: 'testMemLeaks',
-          body: tests.map(t => `
-            for _ in 0..<1000 {
-              ${t.name}();
-            }
-          `).join('\n')
-        });
-        */
-        testCls.method({
-          name: 'getSubX',
-          type: foam.cross_platform.Context.model_.swiftName + '?',
-          body: 'return nil;'
-        });
-        testCls.method({
-          type: cls.name + '.' + cls.name + 'Builder_',
-          name: this.name + '_create',
-          body: `return ${cls.name}.${cls.name}Builder(getSubX());`
-        });
-        tests.forEach(t => t.addToSwiftTestClass(testCls, this));
-        cls = foam.swift.ArraySwiftSource.create({
-          sources: [cls, testCls]
-        });
-      }
 
       return cls;
     },

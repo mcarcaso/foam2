@@ -104,7 +104,6 @@ FOAM_FILES([
   { name: "foam/i18n/TranslationFormatStringParser", flags: ['swift'] },
   { name: "foam/swift/SwiftLib", flags: ['swift'] },
   { name: "foam/swift/SwiftClass", flags: ['swift'] },
-  { name: "foam/swift/ArraySwiftSource", flags: ['swift'] },
   { name: "foam/swift/Outputter", flags: ['swift'] },
   { name: "foam/swift/Protocol", flags: ['swift'] },
   { name: "foam/swift/Argument", flags: ['swift'] },

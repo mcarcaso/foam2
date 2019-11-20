@@ -4,6 +4,9 @@ foam.CLASS({
   imports: [
     'classloader'
   ],
+  requires: [
+    'foam.cross_platform.code_generation.Platform'
+  ],
   properties: [
     {
       class: 'Enum',
@@ -27,7 +30,15 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'outputPath'
+      name: 'sourcePath'
+    },
+    {
+      class: 'StringProperty',
+      name: 'testPath'
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftAppName'
     },
     {
       name: 'fs',
@@ -66,22 +77,40 @@ foam.CLASS({
         console.log('Generating classes for:');
         console.log(Object.keys(classes).join('\n'));
 
+        var writeResource = function(body, path, outputPath) {
+          var path = outputPath + this.path.sep + path;
+          this.ensurePath(path);
+
+          if ( this.fs.existsSync(path) ) {
+            var curFileBody = this.fs.readFileSync(path, 'utf8');
+            if ( curFileBody == body ) return;
+            console.log('Changed file:', path);
+          } else {
+            console.log('New file:', path);
+          }
+
+          this.fs.writeFileSync(path, body);
+        }.bind(this);
+
         Object.values(classes)
-          .map(cls => cls[this.platform.buildClassMethod]().toSource())
+          .map(cls => cls[this.platform.buildResourcesMethod]({
+            sources: [],
+            tests: []
+          }, cls))
           .flat()
-          .forEach(source => {
-            var path = this.outputPath + this.path.sep + source.path;
-            this.ensurePath(path);
-
-            if ( this.fs.existsSync(path) ) {
-              var body = this.fs.readFileSync(path, 'utf8');
-              if ( body == source.body ) return;
-              console.log('Changed file:', path);
-            } else {
-              console.log('New file:', path);
-            }
-
-            this.fs.writeFileSync(path, source.body);
+          .forEach(resources => {
+            resources.sources
+              .map(s => s.toSource())
+              .forEach(s => writeResource(s.body, s.path, this.sourcePath));
+            resources.tests
+              .map(s => s.toSource())
+              .forEach(s => {
+                var body = s.body;
+                if ( this.platform === this.Platform.SWIFT ) {
+                  body = '@testable import '+this.swiftAppName+'\n' + body;
+                }
+                writeResource(body, s.path, this.testPath);
+              });
           });
       }
     },

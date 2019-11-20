@@ -2,6 +2,16 @@ foam.LIB({
   name: 'foam.core.FObject',
   flags: ['android'],
   methods: [
+    function buildAndroidResources(resources, parentCls) {
+      if ( this.model_.name == 'Person' ) debugger;
+      var flagFilter = foam.util.flagFilter(['android']);
+      this.getAxioms()
+        .filter(flagFilter)
+        .filter(a => a.buildAndroidResources)
+        .forEach(a => a.buildAndroidResources(resources, this));
+      resources.sources.push(this.buildAndroidClass());
+      return resources;
+    },
     function buildAndroidClass(cls) {
       cls = cls || foam.java.Class.create();
 
@@ -186,34 +196,6 @@ ${cls.extends ? `
       });
 
       this.addAndroidStaticClassInfo(cls);
-
-      var tests = this
-        .getOwnAxiomsByClass(foam.cross_platform.code_generation.refines.TestAxiom);
-      if ( tests.length ) {
-        var testCls = foam.java.Class.create({
-          package: 'tests.' + cls.package,
-          name: cls.name + 'Tests',
-          imports: [
-            this.id,
-            'static org.junit.Assert.*',
-            'org.junit.Test',
-          ]
-        });
-        testCls.method({
-          name: 'getSubX',
-          type: 'foam.cross_platform.Context',
-          body: 'return null;'
-        });
-        testCls.method({
-          type: this.name + '.' + this.name + 'Builder_',
-          name: this.name + '_create',
-          body: `return ${this.name}.${this.name}Builder(getSubX());`
-        });
-        tests.forEach(t => t.addToAndroidTestClass(testCls, this));
-        cls = foam.swift.ArraySwiftSource.create({
-          sources: [cls, testCls]
-        });
-      }
 
       return cls;
     },
