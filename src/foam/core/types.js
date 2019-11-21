@@ -789,6 +789,11 @@ foam.CLASS({
   refines: 'foam.core.AbstractMethod',
   properties: [
     {
+      class: 'StringProperty',
+      name: 'name',
+      required: true
+    },
+    {
       class: 'BooleanProperty',
       name: 'async',
       value: false
