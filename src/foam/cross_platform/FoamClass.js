@@ -84,6 +84,31 @@ foam.CLASS({
         }
         return axioms;
       `
+    },
+    {
+      type: 'foam.cross_platform.FObject',
+      name: 'getAxiomByName',
+      args: [
+        { type: 'String', name: 'name' }
+      ],
+      androidCode: `
+        for ( Object a : getAxioms() ) {
+          foam.cross_platform.FObject fobj = (foam.cross_platform.FObject) a;
+          if ( foam.cross_platform.Lib.equals(fobj.getProperty("name"), name) ) {
+            return fobj;
+          }
+        }
+        return null;
+      `,
+      swiftCode: `
+        for a in getAxioms()! {
+          let fobj = a as! foam_cross_platform_FObject;
+          if foam_cross_platform_Lib.equals(fobj.getProperty("name"), name) {
+            return fobj;
+          }
+        }
+        return nil;
+      `,
     }
   ]
 });

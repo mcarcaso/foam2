@@ -30,6 +30,42 @@ foam.CLASS({
         body: foam.cpTemplate(this.androidCode, 'android')
       });
 
+      if ( ! superAxiom &&
+           ! this.crossPlatformIsStatic &&
+           ! foam.core.internal.InterfaceMethod.isInstance(this) ) {
+        cls.field({
+          visibility: 'private',
+          type: 'foam.cross_platform.GenericFunction',
+          name: this.crossPlatformFnVarName,
+        });
+        var methodCall =
+          `self.${this.name}(${this.args.map(a => a.name).join(', ')})`;
+        cls.method({
+          visibility: 'public',
+          type: 'foam.cross_platform.GenericFunction',
+          name: this.crossPlatformFnGetterName,
+          body: `
+            if ( ${this.crossPlatformFnVarName} == null ) {
+              final ${parentCls.id} self = this;
+              ${this.crossPlatformFnVarName} = new foam.cross_platform.GenericFunction() {
+                public Object executeFunction(Object[] _fnArgs_) {
+                  ${this.args.map((a, i) => `
+                  ${a.androidType} ${a.name} = (${a.androidType}) _fnArgs_[${i}];
+                  `).join('\n')}
+                  ${this.androidType == 'void' ? `
+                  ${methodCall};
+                  return null;
+                  ` : `
+                  return ${methodCall};
+                  `}
+                }
+              };
+            }
+            return ${this.crossPlatformFnVarName};
+          `
+        });
+      }
+
       return cls;
     }
   ]

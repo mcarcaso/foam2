@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		100220492386EF0500384ADF /* demo_Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100220482386EF0500384ADF /* demo_Method.swift */; };
+		1002204B2386EF2A00384ADF /* test_demo_MethodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1002204A2386EF2A00384ADF /* test_demo_MethodTests.swift */; };
 		1035CF032385AE2E0075EBAF /* foam_core_FunctionProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1035CE8C2385AE250075EBAF /* foam_core_FunctionProperty.swift */; };
 		1035CF042385AE2E0075EBAF /* foam_core_ProxiedMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1035CE8D2385AE250075EBAF /* foam_core_ProxiedMethod.swift */; };
 		1035CF052385AE2E0075EBAF /* foam_core_SlotInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1035CE8E2385AE250075EBAF /* foam_core_SlotInterface.swift */; };
@@ -157,6 +159,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		100220482386EF0500384ADF /* demo_Method.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = demo_Method.swift; sourceTree = "<group>"; };
+		1002204A2386EF2A00384ADF /* test_demo_MethodTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test_demo_MethodTests.swift; sourceTree = "<group>"; };
 		1035CE8C2385AE250075EBAF /* foam_core_FunctionProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_FunctionProperty.swift; sourceTree = "<group>"; };
 		1035CE8D2385AE250075EBAF /* foam_core_ProxiedMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_ProxiedMethod.swift; sourceTree = "<group>"; };
 		1035CE8E2385AE250075EBAF /* foam_core_SlotInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_SlotInterface.swift; sourceTree = "<group>"; };
@@ -385,6 +389,7 @@
 			isa = PBXGroup;
 			children = (
 				10EAC524237F3B0300FD7C98 /* test_demo_CompareTests.swift */,
+				1002204A2386EF2A00384ADF /* test_demo_MethodTests.swift */,
 				10EAC421237E708000FD7C98 /* test_demo_PersonTests.swift */,
 				10EAC42B237F24A600FD7C98 /* test_demo_ReactionTests.swift */,
 				10EAC52B237FB47D00FD7C98 /* test_demo_SlotTests.swift */,
@@ -397,6 +402,7 @@
 			isa = PBXGroup;
 			children = (
 				1035CEA52385AE260075EBAF /* demo_Compare.swift */,
+				100220482386EF0500384ADF /* demo_Method.swift */,
 				1035CE8F2385AE250075EBAF /* demo_Person.swift */,
 				1035CEF22385AE2C0075EBAF /* demo_Reaction.swift */,
 				1035CEB82385AE270075EBAF /* demo_Slot.swift */,
@@ -668,6 +674,7 @@
 				1035CF1D2385AE2F0075EBAF /* foam_cross_platform_AsyncFunction.swift in Sources */,
 				1035CF272385AE2F0075EBAF /* foam_core_ArrayProperty.swift in Sources */,
 				1035CF5F2385AE2F0075EBAF /* foam_core_Enum.swift in Sources */,
+				100220492386EF0500384ADF /* demo_Method.swift in Sources */,
 				1035CF132385AE2E0075EBAF /* foam_core_Constant.swift in Sources */,
 				1035CF432385AE2F0075EBAF /* foam_cross_platform_type_MapType.swift in Sources */,
 				1035CF292385AE2F0075EBAF /* foam_templates_TemplateUtil.swift in Sources */,
@@ -781,6 +788,7 @@
 			files = (
 				10EAC526237F3B0700FD7C98 /* test_demo_CompareTests.swift in Sources */,
 				10EAC52C237FB47D00FD7C98 /* test_demo_SlotTests.swift in Sources */,
+				1002204B2386EF2A00384ADF /* test_demo_MethodTests.swift in Sources */,
 				10EAC422237E708000FD7C98 /* test_demo_PersonTests.swift in Sources */,
 				10EAC42C237F24A600FD7C98 /* test_demo_ReactionTests.swift in Sources */,
 			);

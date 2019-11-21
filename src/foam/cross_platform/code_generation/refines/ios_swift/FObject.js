@@ -46,6 +46,10 @@ foam.LIB({
         .filter(flagFilter)
         .filter(p => this.hasOwnAxiom(p.name));
 
+      var genMethods = this.getAxiomsByClass(foam.core.Method)
+        .filter(flagFilter)
+        .filter(p => ! this.getSuperAxiomByName(p.name));
+
       cls.method({
         override: !! cls.extends,
         visibility: 'public',
@@ -99,6 +103,14 @@ genProperties
   .map(a => `
             case "${a.name}":
               return ${a.crossPlatformGetterName}();
+  `)
+  .join('\n')
+}
+${
+genMethods
+  .map(a => `
+            case "${a.name}":
+              return ${a.crossPlatformFnGetterName}();
   `)
   .join('\n')
 }

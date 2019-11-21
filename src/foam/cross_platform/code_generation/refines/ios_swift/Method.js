@@ -39,6 +39,43 @@ foam.CLASS({
         body: foam.cpTemplate(this.swiftCode, 'swift')
       });
 
+      if ( ! superAxiom &&
+           ! this.crossPlatformIsStatic &&
+           ! foam.core.internal.InterfaceMethod.isInstance(this) ) {
+        cls.field({
+          visibility: 'private',
+          type: foam.cross_platform.GenericFunction.model_.swiftName + '?',
+          name: this.crossPlatformFnVarName,
+        });
+        var methodCall =
+          `self!.\`${this.name}\`(${this.args.map(a => a.name).join(', ')})`;
+        cls.method({
+          override: this.swiftIsOverride(parentCls),
+          visibility: 'public',
+          type: foam.cross_platform.GenericFunction.model_.swiftName + '?',
+          name: this.crossPlatformFnGetterName,
+          body: `
+            if ${this.crossPlatformFnVarName} == nil {
+              ${this.crossPlatformFnVarName} = AnonymousGenericFunction_create()
+                .setFn({[weak self] (_fnArgs_: [Any?]?) -> Any? in
+                  if self == nil { return nil }
+                  ${this.args.map((a, i) => `
+                  let ${a.name} = _fnArgs_![${i}]${a.swiftType != 'Any?' ? ` as! ${a.swiftType}` : ''};
+                  `).join('\n')}
+                  ${this.swiftType == 'Void' ? `
+                  ${methodCall};
+                  return nil;
+                  ` : `
+                  return ${methodCall};
+                  `}
+                })
+                .build();
+            }
+            return ${this.crossPlatformFnVarName};
+          `
+        });
+      }
+
       return cls;
     },
     function swiftIsOverride(parentCls) {
