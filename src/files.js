@@ -668,6 +668,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/Property" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Property" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Property" },
+  { name: "foam/cross_platform/code_generation/refines/Property2" },
   { name: "foam/cross_platform/code_generation/refines/android_java/IntProperty" },
   { name: "foam/cross_platform/code_generation/refines/android_java/LongProperty" },
   { name: "foam/cross_platform/code_generation/refines/android_java/AbstractEnum" },

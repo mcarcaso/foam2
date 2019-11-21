@@ -14,6 +14,10 @@ foam.CLASS({
       },
     },
     {
+      class: 'StringArrayProperty',
+      name: 'swiftAnnotations'
+    },
+    {
       class: 'StringProperty',
       name: 'swiftCode',
       value: 'fatalError()'
@@ -31,6 +35,7 @@ foam.CLASS({
         type: this.swiftType,
         name: this.name,
         args: this.args.map(a => a.toSwiftArg()),
+        annotations: this.swiftAnnotations,
         body: foam.cpTemplate(this.swiftCode, 'swift')
       });
 
@@ -109,8 +114,6 @@ foam.CLASS({
         localName: this.swiftLocalName,
         externalName: this.swiftExternalName,
         type: this.swiftType,
-        annotations: this.swiftAnnotations,
-        mutable: this.swiftMutable,
       });
       if (this.swiftDefaultValue) arg.defaultValue = this.swiftDefaultValue;
       return arg;

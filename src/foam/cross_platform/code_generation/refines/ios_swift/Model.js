@@ -19,6 +19,10 @@ foam.CLASS({
           foam.swift.toSwiftType(crossPlatformExtends) :
           '';
       }
-    }
+    },
+    {
+      class: 'StringArrayProperty',
+      name: 'swiftImports'
+    },
   ],
 });
