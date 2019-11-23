@@ -4,7 +4,8 @@ foam.CLASS({
   properties: [
     {
       class: 'StringProperty',
-      name: 'firstName'
+      name: 'firstName',
+      help: 'The Person\'s first name'
     },
     {
       class: 'StringProperty',

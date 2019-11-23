@@ -778,7 +778,8 @@ foam.CLASS({
     </pre>
     */
     { class: 'StringProperty', name: 'name' },
-    { class: 'StringProperty', name: 'shortName' }
+    { class: 'StringProperty', name: 'shortName' },
+    { class: 'StringProperty', name: 'help' }
   ]
 });
 

@@ -46,7 +46,7 @@
         'demo.Person',
         'demo.Reaction',
         'demo.Slot',
-        'foam.cross_platform.ui.DefaultDetailPropertyView',
+        'foam.cross_platform.ui.DetailPropertyViewModel',
       ],
       sourcePath: platformArgs.sourcePath,
       testPath: platformArgs.testPath,

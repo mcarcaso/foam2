@@ -47,6 +47,7 @@ foam.LIB({
         .filter(p => this.hasOwnAxiom(p.name));
 
       var genMethods = this.getAxiomsByClass(foam.core.Method)
+        .concat(this.getAxiomsByClass(foam.core.Action))
         .filter(flagFilter)
         .filter(p => ! this.getSuperAxiomByName(p.name));
 

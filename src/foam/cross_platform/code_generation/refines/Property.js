@@ -79,7 +79,7 @@ foam.CLASS({
       }
     },
     {
-      class: 'StringProperty',
+      class: 'ClassProperty',
       name: 'crossPlatformView',
       value: 'foam.cross_platform.ui.widget.Label',
     },

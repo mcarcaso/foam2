@@ -190,9 +190,11 @@ foam.CLASS({
         `;
       } else if ( this.swiftValue ) {
         getter.body = `
+          ${this.required ? '' : `
           if !${this.crossPlatformIsSetVarName} {
             return ${this.swiftValue};
           }
+          `}
           return ${this.crossPlatformPrivateVarName};
         `;
       } else {

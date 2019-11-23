@@ -5,7 +5,7 @@ foam.CLASS({
     function getDeps(flagFilter, map) {
       if ( flagFilter({flags: ['swift']}) ) {
         map['foam.cross_platform.ui.widget.Label'] = true;
-        map['foam.cross_platform.ui.widget.Button'] = true;
+        map['foam.cross_platform.ui.widget.ActionButton'] = true;
       }
     },
     function buildSwiftResources(resources, parentCls) {
@@ -23,15 +23,15 @@ foam.CLASS({
         ]
       });
 
-      var props = parentCls.getAxiomsByClass(foam.core.Property);
-
-      props.forEach(p => {
+      var axioms = parentCls.getAxioms()
+        .filter(a => a.crossPlatformView);
+      axioms.forEach(p => {
         var sub = p.name + '_sub_';
         detailViewCls.field({
           type: foam.core.Detachable.model_.swiftName + '?',
           name: sub,
         });
-        var swiftType = foam.lookup(p.crossPlatformView).model_.swiftName;
+        var swiftType = p.crossPlatformView.model_.swiftName;
         detailViewCls.field({
           type: swiftType,
           name: p.name + 'FoamView',
@@ -69,7 +69,7 @@ foam.CLASS({
         ],
         body: `
           _model_data_ = data;
-          ${props.map(p => `
+          ${axioms.map(p => `
           ${p.name}_sub_?.detach();
           ${p.name}_sub_ = nil;
           `).join('\n')}
@@ -80,9 +80,10 @@ foam.CLASS({
         name: 'initSubs',
         body: `
           if _model_data_ == nil { return }
-          ${props.map(p => `
+          ${axioms.map(p => `
           if ${p.name} != nil && ${p.name}_sub_ == nil {
-            ${p.name}_sub_ = ${p.name}FoamView.getSlot("data")?.linkFrom(_model_data_!.getSlot("${p.name}"));
+            ${p.name}_sub_ = ${p.name}FoamView.bindData(
+              _model_data_, _model_data_!.getCls_()!.getAxiomByName("${p.name}"));
           }
           `).join('\n')}
         `

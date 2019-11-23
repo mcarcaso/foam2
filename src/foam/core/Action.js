@@ -107,7 +107,6 @@ foam.CLASS({
     {
       class: 'FunctionProperty',
       name: 'code',
-      required: true,
       value: null
     },
     {

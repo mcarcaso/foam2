@@ -14,7 +14,7 @@ AnonymousDetachable_create()
   .setDetachFn({[weak self] () -> Void in
     if self == nil { return }
     ${code}
-    self.setDetachFn(nil);
+    self = nil;
   })
   .build()
               `;

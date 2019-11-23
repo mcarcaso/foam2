@@ -666,6 +666,8 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/android_java/Method" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Method" },
   { name: "foam/cross_platform/code_generation/refines/Method2" },
+  { name: "foam/cross_platform/code_generation/refines/Action" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/Action" },
   { name: "foam/cross_platform/code_generation/refines/Property" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Property" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Property" },
