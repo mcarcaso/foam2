@@ -36,9 +36,8 @@ foam.LIB({
         .filter(a => a.buildAndroidClass)
         .forEach(a => a.buildAndroidClass(cls, this));
 
-      var genAxioms = this.getAxioms()
-        .filter(flagFilter)
-        .filter(p => this.hasOwnAxiom(p.name));
+      var genAxioms = this.getOwnAxioms()
+        .filter(flagFilter);
 
       cls.method({
         visibility: 'public',

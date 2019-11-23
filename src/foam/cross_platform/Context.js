@@ -34,6 +34,11 @@ foam.CLASS({
       ],
       androidCode: `
         getClassMap_().put(id, cls);
+      `,
+      swiftCode: `
+        var map = getClassMap_()!;
+        map[id!] = cls;
+        setClassMap_(map);
       `
     },
     {
@@ -46,6 +51,13 @@ foam.CLASS({
         foam.cross_platform.FoamClass cls = (foam.cross_platform.FoamClass) getClassMap_().get(id);
         if ( cls == null && getParent_() != null ) {
           cls = getParent_().lookup(id);
+        }
+        return cls;
+      `,
+      swiftCode: `
+        var cls = getClassMap_()![id!] as? foam_cross_platform_FoamClass;
+        if cls == nil && getParent_() != nil {
+          cls = getParent_()!.lookup(id!);
         }
         return cls;
       `
@@ -71,6 +83,22 @@ foam.CLASS({
           .setParent_(this)
           .setSlotMap_(slotMap)
           .build();
+      `,
+      swiftCode: `
+        var slotMap: [AnyHashable:Any?] = [:];
+        for k in map!.keys {
+          var value = map![k]!;
+          if !foam_core_SlotInterfaceClass.CLS_().isInstance(value) {
+            value = ConstantSlot_create()
+              .setValue(value)
+              .build();
+          }
+          slotMap[k] = value;
+        }
+        return Self.foam_cross_platform_ContextBuilder(nil)
+          .setParent_(self)
+          .setSlotMap_(slotMap)
+          .build();
       `
     },
     {
@@ -85,6 +113,13 @@ foam.CLASS({
           o = getParent_().hasXProp(name);
         }
         return o;
+      `,
+      swiftCode: `
+        var o = getSlotMap_()![name!] != nil;
+        if !o && getParent_() != nil {
+          o = getParent_()!.hasXProp(name);
+        }
+        return o;
       `
     },
     {
@@ -96,6 +131,10 @@ foam.CLASS({
       androidCode: `
         foam.core.SlotInterface slot = getXSlot(name);
         return slot == null ? null : slot.slotGet();
+      `,
+      swiftCode: `
+        let slot = getXSlot(name);
+        return slot?.slotGet();
       `
     },
     {
@@ -109,6 +148,12 @@ foam.CLASS({
           return (foam.core.SlotInterface) getSlotMap_().get(name);
         }
         return getParent_() == null ? null : getParent_().getXSlot(name);
+      `,
+      swiftCode: `
+        if getSlotMap_()![name!] != nil {
+          return getSlotMap_()![name!] as? foam_core_SlotInterface;
+        }
+        return getParent_()?.getXSlot(name);
       `
     },
   ]

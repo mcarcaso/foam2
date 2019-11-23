@@ -103,6 +103,9 @@ foam.CLASS({
       androidCode: `
         return (int) getComparePropertyValues().executeFunction(new Object[] {a, b});
       `,
+      swiftCode: `
+        return getComparePropertyValues()!.executeFunction([a, b]) as! Int;
+      `,
     }
   ]
 });

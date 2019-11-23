@@ -10,7 +10,8 @@ foam.CLASS({
   methods: [
     {
       name: 'executeFunction',
-      androidCode: 'return 0;'
+      androidCode: 'return 0;',
+      swiftCode: 'return 0;'
     }
   ]
 });

@@ -34,6 +34,12 @@ foam.CLASS({
   ],
   methods: [
     function outputSwift(o) {
+      this.field({
+        visibility: 'private',
+        type: foam.cross_platform.Context.model_.swiftName + '?',
+        name: '_x_',
+        defaultValue: 'nil'
+      });
       this.properties.forEach(p => {
         this.field({
           visibility: 'private',
@@ -60,12 +66,19 @@ foam.CLASS({
           `
         });
       });
+      this.method(foam.swift.Initializer.create({
+        args: [
+          { type: foam.cross_platform.Context.model_.swiftName + '?', localName: 'x' }
+        ],
+        body: `_x_ = x;`
+      }));
       this.method({
         visibility: 'public',
         name: 'build',
         type: this.clsName,
         body: `
           let o = ${this.clsName}();
+          o.setX(_x_);
 ${this.properties.map(p => `
           if ${p.crossPlatformIsSetVarName} {
             o.${p.crossPlatformSetterName}(${p.crossPlatformPrivateVarName});
@@ -89,7 +102,7 @@ ${this.postBuild.map(c => `
           { type: foam.cross_platform.Context.model_.swiftName + '?', localName: 'x' }
         ],
         body: `
-          return Self.${this.name}();
+          return Self.${this.name}(x);
         `
       });
     }

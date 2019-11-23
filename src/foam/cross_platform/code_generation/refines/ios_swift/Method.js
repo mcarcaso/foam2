@@ -18,6 +18,15 @@ foam.CLASS({
       name: 'swiftCode',
       value: 'fatalError()'
     },
+    {
+      class: 'StringProperty',
+      name: 'swiftGetProperty',
+      expression: function(forClass_, name, crossPlatformFnGetterName, crossPlatformIsStatic) {
+        return foam.lookup(forClass_).getSuperAxiomByName(name) ||
+               crossPlatformIsStatic ? '' :
+          `return ${crossPlatformFnGetterName}();`
+      }
+    },
   ],
   methods: [
     function buildSwiftClass(cls, parentCls) {

@@ -104,6 +104,7 @@ FOAM_FILES([
   { name: "foam/i18n/TranslationFormatStringParser", flags: ['swift'] },
   { name: "foam/swift/SwiftLib", flags: ['swift'] },
   { name: "foam/swift/SwiftClass", flags: ['swift'] },
+  { name: "foam/swift/Initializer", flags: ['swift'] },
   { name: "foam/swift/Outputter", flags: ['swift'] },
   { name: "foam/swift/Protocol", flags: ['swift'] },
   { name: "foam/swift/Argument", flags: ['swift'] },
@@ -694,6 +695,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/StringArrayProperty" },
   { name: "foam/cross_platform/code_generation/refines/Constant" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Constant" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/Constant" },
   { name: "foam/cross_platform/code_generation/refines/android_java/InnerClass" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/InnerClass" },
   { name: "foam/cross_platform/code_generation/refines/Slot" },
@@ -714,6 +716,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Topic" },
   { name: "foam/cross_platform/code_generation/refines/Export" },
   { name: "foam/cross_platform/code_generation/refines/Import" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/Import" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Import" },
 
   // Strategy

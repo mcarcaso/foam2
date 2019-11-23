@@ -32,6 +32,9 @@ foam.CLASS({
       androidComparePropertyValues: `
         foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
       `,
+      swiftComparePropertyValues: `
+        foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
+      `,
       androidFactory: `
         return ListenerList_create().build();
       `,
@@ -54,13 +57,23 @@ foam.CLASS({
       androidComparePropertyValues: `
         foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
       `,
+      swiftComparePropertyValues: `
+        foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
+      `,
       androidGetter: `
         if ( x_ == null ) {
           return foam.cross_platform.Context.GLOBAL();
         }
         return x_;
       `,
-      androidPostSet: 'clearProperty("subX");'
+      swiftGetter: `
+        if x_ == nil {
+          return foam_cross_platform_Context.GLOBAL();
+        }
+        return x_;
+      `,
+      androidPostSet: 'clearProperty("subX");',
+      swiftPostSet: 'clearProperty("subX");'
     },
     {
       class: 'FObjectProperty',
@@ -68,6 +81,9 @@ foam.CLASS({
       name: 'subX',
       androidComparePropertyValues: `
         foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
+      `,
+      swiftComparePropertyValues: `
+        foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
       `,
       androidFactory: `
         Object[] exports = getCls_().getAxiomsByClass(foam.core.Export.CLS_());
@@ -80,6 +96,18 @@ foam.CLASS({
         }
 
         return getX().createSubContext(exportMap);
+      `,
+      swiftFactory: `
+        let exports = getCls_()!.getAxiomsByClass(foam_core_Export.CLS_())!;
+        if exports.count == 0 { return getX(); }
+
+        var exportMap: [AnyHashable:Any?] = [:];
+        for eO in exports {
+          let e = eO as! foam_core_Export;
+          exportMap[e.getExportName()!] = getSlot(e.getKey());
+        }
+
+        return getX()!.createSubContext(exportMap);
       `
     },
   ],
@@ -367,7 +395,7 @@ foam.CLASS({
         }
         for a in data.getCls_()!.getAxiomsByClass(foam_core_Property.CLS_())! {
           let p = a as! foam_core_Property
-          let diff = foam_cross_platform_Lib.compare(p.f(self), p.f(data))
+          let diff = p.compareValues(p.f(self), p.f(data))
           if diff != 0 { return diff }
         }
         return 0

@@ -165,6 +165,7 @@ foam.CLASS({
       name: 'name'
     },
     {
+      class: 'StringProperty',
       name: 'exportName',
       postSet: function(_, name) {
         this.name = 'export_' + name;

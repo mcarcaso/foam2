@@ -78,7 +78,7 @@ foam.CLASS({
         testCls.method({
           name: 'getSubX',
           type: foam.cross_platform.Context.model_.swiftName + '?',
-          body: 'return nil;'
+          body: 'return foam_cross_platform_Context.GLOBAL();'
         });
         testCls.method({
           type: name + '.' + name + 'Builder_',

@@ -20,6 +20,11 @@ foam.CLASS({
         clearProperty("axioms");
         clearProperty("ownAxiomMap_");
         clearProperty("axiomMap_");
+      `,
+      swiftPostSet: `
+        clearProperty("axioms");
+        clearProperty("ownAxiomMap_");
+        clearProperty("axiomMap_");
       `
     },
     {
@@ -30,6 +35,14 @@ foam.CLASS({
         for ( Object aO : getOwnAxioms() ) {
           foam.cross_platform.FObject a = (foam.cross_platform.FObject) aO;
           m.put(a.getProperty("name"), a);
+        }
+        return m;
+      `,
+      swiftFactory: `
+        var m: [AnyHashable:Any?] = [:];
+        for aO in getOwnAxioms()! {
+          let a = aO as! foam_cross_platform_FObject;
+          m[a.getProperty("name") as! String] = a;
         }
         return m;
       `
@@ -44,6 +57,14 @@ foam.CLASS({
           if ( ! m.containsKey(k) ) m.put(k, getParent().getAxiomMap_().get(k));
         }
         return m;
+      `,
+      swiftFactory: `
+        if getParent() == nil { return getOwnAxiomMap_(); }
+        var m: [AnyHashable:Any?] = getOwnAxiomMap_()!;
+        for k in getParent()!.getAxiomMap_()!.keys {
+          if m[k] == nil { m[k] = getParent()!.getAxiomMap_()![k]; }
+        }
+        return m;
       `
     },
     {
@@ -51,6 +72,9 @@ foam.CLASS({
       name: 'axioms',
       androidFactory: `
         return getAxiomMap_().values().toArray();
+      `,
+      swiftFactory: `
+        return Array(getAxiomMap_()!.values);
       `
     },
   ],
@@ -69,13 +93,11 @@ foam.CLASS({
         return isSubClass(cls.getParent());
       `,
       swiftCode: `
-        if !(o is foam_cross_platform_FoamClass) { return false }
-        var cls = o as! foam_cross_platform_FoamClass?
-        while cls != nil {
-          if cls === self { return true; }
-          cls = cls!.getParent()
-        }
-        return false;
+        if !(o is foam_cross_platform_FoamClass) { return false; }
+        let cls = o as! foam_cross_platform_FoamClass;
+        if cls === self { return true; }
+        if cls.getAxiomByName("implements_" + getId()!) != nil { return true; }
+        return isSubClass(cls.getParent());
       `
     },
     {
@@ -132,13 +154,7 @@ foam.CLASS({
         return (foam.cross_platform.FObject) getAxiomMap_().get(name);
       `,
       swiftCode: `
-        for a in getAxioms()! {
-          let fobj = a as! foam_cross_platform_FObject;
-          if foam_cross_platform_Lib.equals(fobj.getProperty("name"), name) {
-            return fobj;
-          }
-        }
-        return nil;
+        return getAxiomMap_()![name!] as? foam_cross_platform_FObject;
       `,
     }
   ]

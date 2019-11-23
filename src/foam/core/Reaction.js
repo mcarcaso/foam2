@@ -10,9 +10,10 @@ foam.CLASS({
 
   properties: [
     {
+      class: 'StringProperty',
       name: 'name',
-      expression: function(target, topic, listener) {
-        return 'reaction_' + target +  '$$' + topic.join('_') + '$$' + listener;
+      factory: function() {
+        return 'reaction_' + this.target +  '$$' + this.topic.join('_') + '$$' + this.listener;
       }
     },
     {

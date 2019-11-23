@@ -38,6 +38,25 @@ foam.CLASS({
         assertEquals("Mike", i.getA());
         assertEquals("Mike", e.getA());
       `,
+      swiftCode: `
+        let e = demo_ImportExport.Export.ExportBuilder(getSubX()).build();
+        e.setA("Mike");
+        XCTAssertTrue(foam_cross_platform_Lib.equals(
+          "Mike", e.getSubX()!.getXProp("a")));
+        XCTAssertTrue(foam_cross_platform_Lib.equals(
+          "Mike", e.getSubX()!.getXSlot("a")!.slotGet()));
+        e.setA("Adam");
+        XCTAssertTrue(foam_cross_platform_Lib.equals(
+          "Adam", e.getSubX()!.getXProp("a")));
+        
+        let i = demo_ImportExport.Import.ImportBuilder(e.getSubX()).build();
+        XCTAssertTrue(foam_cross_platform_Lib.equals(
+          "Adam", i.getA()));
+        
+        i.setA("Mike");
+        XCTAssertTrue(foam_cross_platform_Lib.equals("Mike", i.getA()));
+        XCTAssertTrue(foam_cross_platform_Lib.equals("Mike", e.getA()));
+      `,
     },
   ]
 });
