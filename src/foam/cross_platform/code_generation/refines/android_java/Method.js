@@ -12,6 +12,15 @@ foam.CLASS({
       }
     },
     { class: 'foam.android.tools.AndroidType' },
+    {
+      class: 'StringProperty',
+      name: 'androidGetProperty',
+      expression: function(forClass_, name, crossPlatformFnGetterName, crossPlatformIsStatic) {
+        return foam.lookup(forClass_).getSuperAxiomByName(name) ||
+               crossPlatformIsStatic ? '' :
+          `return ${crossPlatformFnGetterName}();`
+      }
+    },
   ],
   methods: [
     function buildAndroidClass(cls, parentCls) {

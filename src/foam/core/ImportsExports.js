@@ -170,7 +170,10 @@ foam.CLASS({
         this.name = 'export_' + name;
       }
     },
-    'key'
+    {
+      class: 'StringProperty',
+      name: 'key'
+    }
   ],
 
   methods: [
@@ -182,6 +185,10 @@ foam.CLASS({
 
         if ( b.key ) {
           var path = b.key.split('.');
+          if ( path.length > 1 ) {
+            console.log('Export key has dots in it! Why do this instead of $ separation?');
+            debugger;
+          }
 
           var a = this.cls_.getAxiomByName(path[0]);
 

@@ -3,6 +3,12 @@ foam.CLASS({
   name: 'ImplementsRefinement',
   refines: 'foam.core.Implements',
   flags: ['android'],
+  properties: [
+    {
+      name: 'name',
+      androidGetter: 'return "implements_" + getPath();'
+    }
+  ],
   methods: [
     function buildAndroidClass(cls) {
       cls.implements = cls.implements.concat(this.path);

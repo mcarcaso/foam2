@@ -1,6 +1,9 @@
 foam.CLASS({
   package: 'foam.cross_platform',
   name: 'FoamClass',
+  requires: [
+    'foam.cross_platform.type.ArrayType'
+  ],
   properties: [
     {
       class: 'StringProperty',
@@ -12,8 +15,44 @@ foam.CLASS({
     },
     {
       class: 'ArrayProperty',
-      name: 'axioms'
-    }
+      name: 'ownAxioms',
+      androidPostSet: `
+        clearProperty("axioms");
+        clearProperty("ownAxiomMap_");
+        clearProperty("axiomMap_");
+      `
+    },
+    {
+      class: 'MapProperty',
+      name: 'ownAxiomMap_',
+      androidFactory: `
+        java.util.Map m = new java.util.HashMap();
+        for ( Object aO : getOwnAxioms() ) {
+          foam.cross_platform.FObject a = (foam.cross_platform.FObject) aO;
+          m.put(a.getProperty("name"), a);
+        }
+        return m;
+      `
+    },
+    {
+      class: 'MapProperty',
+      name: 'axiomMap_',
+      androidFactory: `
+        if ( getParent() == null ) return getOwnAxiomMap_();
+        java.util.Map m = new java.util.HashMap(getOwnAxiomMap_());
+        for ( Object k : getParent().getAxiomMap_().keySet() ) {
+          if ( ! m.containsKey(k) ) m.put(k, getParent().getAxiomMap_().get(k));
+        }
+        return m;
+      `
+    },
+    {
+      class: 'ArrayProperty',
+      name: 'axioms',
+      androidFactory: `
+        return getAxiomMap_().values().toArray();
+      `
+    },
   ],
   methods: [
     {
@@ -25,11 +64,9 @@ foam.CLASS({
       androidCode: `
         if ( o instanceof foam.cross_platform.FoamClass == false ) return false;
         foam.cross_platform.FoamClass cls = (foam.cross_platform.FoamClass) o;
-        while ( cls != null ) {
-          if ( cls == this ) return true;
-          cls = cls.getParent();
-        }
-        return false;
+        if ( cls == this ) return true;
+        if ( cls.getAxiomByName("implements_" + getId()) != null ) return true;
+        return isSubClass(cls.getParent());
       `,
       swiftCode: `
         if !(o is foam_cross_platform_FoamClass) { return false }
@@ -92,13 +129,7 @@ foam.CLASS({
         { type: 'String', name: 'name' }
       ],
       androidCode: `
-        for ( Object a : getAxioms() ) {
-          foam.cross_platform.FObject fobj = (foam.cross_platform.FObject) a;
-          if ( foam.cross_platform.Lib.equals(fobj.getProperty("name"), name) ) {
-            return fobj;
-          }
-        }
-        return null;
+        return (foam.cross_platform.FObject) getAxiomMap_().get(name);
       `,
       swiftCode: `
         for a in getAxioms()! {

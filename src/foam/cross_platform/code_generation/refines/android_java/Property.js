@@ -61,7 +61,73 @@ foam.CLASS({
       expression: function() {
         return o => foam.android.tools.asAndroidValue(this.f(o));
       }
-    }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidComparePropertyValues',
+      value: `
+        new foam.cross_platform.GenericFunction() {
+          public Object executeFunction(Object[] args) {
+            return foam.cross_platform.Lib.compare(args[0], args[1]);
+          }
+        }
+      `
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidClearProperty',
+      expression: function(
+          androidExpression,
+          androidType,
+          crossPlatformExpressionSubName,
+          crossPlatformIsSetVarName,
+          crossPlatformPrivateVarName,
+          crossPlatformSlotGetterName,
+          name) {
+        return `
+          ${crossPlatformIsSetVarName} = false;
+          ${foam.android.tools.isJavaPrimitive(androidType) ? '' :
+          `${crossPlatformPrivateVarName} = null;`}
+          Object[] ${name}Args = new Object[] { "propertyChange", "${name}", null };
+          if ( hasListeners(${name}Args) ) {
+            ${name}Args[2] = ${crossPlatformSlotGetterName}();
+            pub(${name}Args);
+          }
+          ${androidExpression ? `
+          if ( ${crossPlatformExpressionSubName} != null ) ${crossPlatformExpressionSubName}.detach();
+          ${crossPlatformExpressionSubName} = null;
+          ` : ``}
+        `
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidSetProperty',
+      expression: function(crossPlatformSetterName) {
+        return `${crossPlatformSetterName}(value);`
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidGetSlot',
+      expression: function(crossPlatformSlotGetterName) {
+        return `return ${crossPlatformSlotGetterName}();`
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidHasPropertySet',
+      expression: function(crossPlatformIsSetVarName) {
+        return `return ${crossPlatformIsSetVarName};`
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidGetProperty',
+      expression: function(crossPlatformGetterName) {
+        return `return ${crossPlatformGetterName}();`
+      }
+    },
   ],
   methods: [
     function buildAndroidClass(cls, parentCls) {
@@ -149,7 +215,7 @@ foam.CLASS({
         getter.body = `
           if ( ! ${this.crossPlatformIsSetVarName} && ${subName} == null ) {
             final ${parentCls.name} obj = this;
-            ${subName} = foam.core.ExpressionSlot.ExpressionSlotBuilder(getSubX())
+            ${subName} = foam.core.ExpressionSlot.ExpressionSlotBuilder(null)
               .setArgs(new foam.core.SlotInterface[] {
                 ${args.map(a => `getSlot("${a.name}")`).join(',')}
               })
@@ -288,6 +354,7 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
         body: `
           if ( ${this.crossPlatformPrivateAxiom} == null ) {
             ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};
+            ${this.crossPlatformPrivateAxiom}.setComparePropertyValues(${this.androidComparePropertyValues});
           }
           return ${this.crossPlatformPrivateAxiom};
         `

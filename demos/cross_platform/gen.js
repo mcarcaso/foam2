@@ -42,6 +42,7 @@
       platform: platform,
       classIds: [
         'demo.Compare',
+        'demo.ImportExport',
         'demo.Method',
         'demo.Person',
         'demo.Reaction',

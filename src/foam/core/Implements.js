@@ -45,11 +45,15 @@ foam.CLASS({
 
   properties: [
     {
+      class: 'StringProperty',
       name: 'name',
       getter: function() { return 'implements_' + this.path; }
     },
     'flags',
-    'path',
+    {
+      class: 'StringProperty',
+      name: 'path'
+    },
     ['priority', 200]
   ],
 

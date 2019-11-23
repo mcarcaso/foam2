@@ -33,7 +33,7 @@ foam.CLASS({
         testCls.method({
           name: 'getSubX',
           type: 'foam.cross_platform.Context',
-          body: 'return null;'
+          body: 'return foam.cross_platform.Context.GLOBAL();'
         });
         testCls.method({
           type: name + '.' + name + 'Builder_',

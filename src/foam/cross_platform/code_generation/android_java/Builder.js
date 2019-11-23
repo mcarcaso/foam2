@@ -38,6 +38,12 @@ foam.CLASS({
   ],
   methods: [
     function outputJava(o) {
+      this.field({
+        visibility: 'private',
+        type: 'foam.cross_platform.Context',
+        name: '_x_',
+        initializer: 'null'
+      });
       this.properties.forEach(p => {
         this.field({
           visibility: 'private',
@@ -68,7 +74,10 @@ foam.CLASS({
         visibility: 'private',
         name: this.name,
         type: '',
-        body: ``
+        args: [
+          { type: 'foam.cross_platform.Context', name: 'x' }
+        ],
+        body: `_x_ = x;`
       });
       this.method({
         visibility: 'public',
@@ -76,6 +85,7 @@ foam.CLASS({
         type: this.clsName,
         body: `
           ${this.clsName} o = new ${this.clsName}();
+          o.setX(_x_);
 ${this.properties.map(p => `
           if ( ${p.crossPlatformIsSetVarName} ) {
             o.${p.crossPlatformSetterName}(${p.crossPlatformPrivateVarName});
@@ -99,7 +109,7 @@ ${this.postBuild.map(c => `
           { type: 'foam.cross_platform.Context', name: 'x' }
         ],
         body: `
-          return new ${this.name}();
+          return new ${this.name}(x);
         `
       });
     }

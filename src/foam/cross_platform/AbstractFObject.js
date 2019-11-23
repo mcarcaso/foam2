@@ -28,6 +28,9 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ListenerList',
       name: 'listeners__',
+      androidComparePropertyValues: `
+        foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
+      `,
       androidFactory: `
         return ListenerList_create().build();
       `,
@@ -46,12 +49,37 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.Context',
-      name: 'x'
+      name: 'x',
+      androidComparePropertyValues: `
+        foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
+      `,
+      androidGetter: `
+        if ( x_ == null ) {
+          return foam.cross_platform.Context.GLOBAL();
+        }
+        return x_;
+      `,
+      androidPostSet: 'clearProperty("subX");'
     },
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.Context',
-      name: 'subX'
+      name: 'subX',
+      androidComparePropertyValues: `
+        foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
+      `,
+      androidFactory: `
+        Object[] exports = getCls_().getAxiomsByClass(foam.core.Export.CLS_());
+        if ( exports.length == 0 ) return getX();
+
+        java.util.Map exportMap = new java.util.HashMap();
+        for ( Object eO : exports ) {
+          foam.core.Export e = (foam.core.Export) eO;
+          exportMap.put(e.getExportName(), getSlot(e.getKey()));
+        }
+
+        return getX().createSubContext(exportMap);
+      `
     },
   ],
   axioms: [
@@ -324,7 +352,7 @@ foam.CLASS({
         }
         for ( Object a : data.getCls_().getAxiomsByClass(foam.core.Property.CLS_()) ) {
           foam.core.Property p = (foam.core.Property) a;
-          int diff = foam.cross_platform.Lib.compare(p.f(this), p.f(data));
+          int diff = p.compareValues(p.f(this), p.f(data));
           if ( diff != 0 ) return diff;
         }
         return 0;

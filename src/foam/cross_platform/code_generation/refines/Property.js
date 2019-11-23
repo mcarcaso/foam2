@@ -92,6 +92,17 @@ foam.CLASS({
       swiftCode: `
         return (o as! foam_cross_platform_FObject?)?.getProperty(getName());
       `
+    },
+    {
+      name: 'compareValues',
+      type: 'Integer',
+      args: [
+        { type: 'Any', name: 'a' },
+        { type: 'Any', name: 'b' },
+      ],
+      androidCode: `
+        return (int) getComparePropertyValues().executeFunction(new Object[] {a, b});
+      `,
     }
   ]
 });
