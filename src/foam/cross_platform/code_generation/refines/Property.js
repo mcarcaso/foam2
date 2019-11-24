@@ -45,6 +45,10 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
+      name: 'crossPlatformFactory'
+    },
+    {
+      class: 'StringProperty',
       name: 'crossPlatformPrivateVarName',
       expression: function(name) {
         return `${name}_`;

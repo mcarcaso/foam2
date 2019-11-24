@@ -93,25 +93,25 @@ foam.CLASS({
     {
       name: 'put',
       code: function() {},
-      swiftCode_DELETE: '// NOOP',
+      crossPlatformCode: '// NOOP',
       javaCode: '// NOOP'
     },
     {
       name: 'remove',
       code: function() {},
-      swiftCode_DELETE: '// NOOP',
+      crossPlatformCode: '// NOOP',
       javaCode: '// NOOP'
     },
     {
       name: 'eof',
       code: function() {},
-      swiftCode_DELETE: '// NOOP',
+      crossPlatformCode: '// NOOP',
       javaCode: '// NOOP'
     },
     {
       name: 'reset',
       code: function() {},
-      swiftCode_DELETE: '// NOOP',
+      crossPlatformCode: '// NOOP',
       javaCode: '// NOOP'
     }
   ]

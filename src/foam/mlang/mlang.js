@@ -30,20 +30,24 @@ foam.CLASS({
     {
       name: 'put',
       code: function() { this.value++ },
-      swiftCode_DELETE: 'value+=1',
+      crossPlatformCode: 'setValue(getValue() + 1);',
       javaCode: 'setValue(this.getValue() + 1);'
     },
     {
       name: 'remove',
       code: function() { this.value-- },
-      swiftCode_DELETE: 'value-=1',
+      crossPlatformCode: 'setValue(getValue() - 1);',
     },
     {
       name: 'reset',
       code: function() { this.value = 0 },
-      swiftCode_DELETE: 'value = 0',
+      crossPlatformCode: 'setValue(0);',
     },
-    function toString() { return 'COUNT()'; }
+    {
+      name: 'toString',
+      code: function toString() { return 'COUNT()'; },
+      crossPlatformCode: `return "COUNT()";`
+    }
   ]
 });
 

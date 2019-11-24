@@ -51,8 +51,8 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'androidFactory',
-      expression: function(javaFactory) {
-        return javaFactory;
+      expression: function(crossPlatformFactory, javaFactory) {
+        return crossPlatformFactory || javaFactory;
       }
     },
     {
@@ -179,7 +179,7 @@ foam.CLASS({
           visibility: 'protected',
           type: this.androidType,
           name: factoryName,
-          body: this.androidFactory
+          body: foam.cpTemplate(this.androidFactory, 'android')
         });
         getter.body = `
           if ( ! ${this.crossPlatformIsSetVarName} ) {

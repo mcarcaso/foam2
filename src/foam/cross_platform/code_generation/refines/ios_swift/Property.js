@@ -45,7 +45,10 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftFactory'
+      name: 'swiftFactory',
+      expression: function(crossPlatformFactory) {
+        return crossPlatformFactory;
+      }
     },
     {
       class: 'StringProperty',
@@ -193,7 +196,7 @@ foam.CLASS({
         cls.method({
           type: this.swiftType,
           name: factoryName,
-          body: this.swiftFactory
+          body: foam.cpTemplate(this.swiftFactory, 'swift')
         });
         getter.body = `
           if !${this.crossPlatformIsSetVarName} {

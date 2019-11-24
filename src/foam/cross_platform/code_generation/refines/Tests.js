@@ -8,11 +8,17 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'androidCode'
+      name: 'crossPlatformCode'
     },
     {
       class: 'StringProperty',
-      name: 'swiftCode'
+      name: 'androidCode',
+      expression: function(crossPlatformCode) { return crossPlatformCode; }
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftCode',
+      expression: function(crossPlatformCode) { return crossPlatformCode; }
     }
   ],
   methods: [

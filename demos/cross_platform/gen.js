@@ -47,6 +47,7 @@
         'demo.Person',
         'demo.Reaction',
         'demo.Slot',
+        'demo.MLang',
       ],
       sourcePath: platformArgs.sourcePath,
       testPath: platformArgs.testPath,

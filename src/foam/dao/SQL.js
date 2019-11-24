@@ -18,7 +18,7 @@
 foam.CLASS({
   package: 'foam.dao',
   name: 'SQLException',
-  extends: 'foam.core.Exception'
+  implements: ['foam.core.Exception']
 });
 
 

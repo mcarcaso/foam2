@@ -7,8 +7,8 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'androidCode',
-      expression: function(name) {
-        return `throw new RuntimeException("${name} is not implemented");`
+      expression: function(crossPlatformCode, name) {
+        return crossPlatformCode || `throw new RuntimeException("${name} is not implemented");`;
       }
     },
     { class: 'foam.android.tools.AndroidType' },

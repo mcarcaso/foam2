@@ -16,7 +16,9 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'swiftCode',
-      value: 'fatalError()'
+      expression: function(crossPlatformCode) {
+        return crossPlatformCode || 'fatalError()';
+      }
     },
     {
       class: 'StringProperty',
