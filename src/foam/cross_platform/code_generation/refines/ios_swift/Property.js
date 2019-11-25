@@ -263,7 +263,9 @@ foam.CLASS({
       } else if ( this.swiftValue ) {
         getter.body = `
           if !${this.crossPlatformIsSetVarName} {
+            ${this.required && this.swiftValue == 'nil' ? 'fatalError()' : `
             return ${this.swiftValue};
+            `}
           }
           return ${this.crossPlatformPrivateVarName};
         `;
