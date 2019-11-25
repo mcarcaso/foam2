@@ -135,6 +135,9 @@
 		1035CF772385AE2F0075EBAF /* foam_cross_platform_Listener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1035CF002385AE2E0075EBAF /* foam_cross_platform_Listener.swift */; };
 		1035CF782385AE2F0075EBAF /* foam_core_StringArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1035CF012385AE2E0075EBAF /* foam_core_StringArrayProperty.swift */; };
 		1035CF792385AE2F0075EBAF /* foam_templates_TemplateAxiom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1035CF022385AE2E0075EBAF /* foam_templates_TemplateAxiom.swift */; };
+		10583303238C57DC0088DA87 /* foam_core_ObjectProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10583300238C57DC0088DA87 /* foam_core_ObjectProperty.swift */; };
+		10583304238C57DC0088DA87 /* foam_dao_ArraySink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10583301238C57DC0088DA87 /* foam_dao_ArraySink.swift */; };
+		10583305238C57DC0088DA87 /* foam_core_ListProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10583302238C57DC0088DA87 /* foam_core_ListProperty.swift */; };
 		108A0D6C236FB42100D687D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108A0D6B236FB42100D687D1 /* AppDelegate.swift */; };
 		108A0D6E236FB42100D687D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108A0D6D236FB42100D687D1 /* SceneDelegate.swift */; };
 		108A0D70236FB42100D687D1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108A0D6F236FB42100D687D1 /* ContentView.swift */; };
@@ -305,6 +308,9 @@
 		1035CF002385AE2E0075EBAF /* foam_cross_platform_Listener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_Listener.swift; sourceTree = "<group>"; };
 		1035CF012385AE2E0075EBAF /* foam_core_StringArrayProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_StringArrayProperty.swift; sourceTree = "<group>"; };
 		1035CF022385AE2E0075EBAF /* foam_templates_TemplateAxiom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_templates_TemplateAxiom.swift; sourceTree = "<group>"; };
+		10583300238C57DC0088DA87 /* foam_core_ObjectProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_ObjectProperty.swift; sourceTree = "<group>"; };
+		10583301238C57DC0088DA87 /* foam_dao_ArraySink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_dao_ArraySink.swift; sourceTree = "<group>"; };
+		10583302238C57DC0088DA87 /* foam_core_ListProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_ListProperty.swift; sourceTree = "<group>"; };
 		108A0D68236FB42100D687D1 /* FOAM Demo App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FOAM Demo App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		108A0D6B236FB42100D687D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		108A0D6D236FB42100D687D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -478,10 +484,12 @@
 				1035CEE12385AE2B0075EBAF /* foam_core_internal_SubSlot.swift */,
 				1035CEED2385AE2C0075EBAF /* foam_core_IntProperty.swift */,
 				1035CEF82385AE2D0075EBAF /* foam_core_Listener.swift */,
+				10583302238C57DC0088DA87 /* foam_core_ListProperty.swift */,
 				1035CEEC2385AE2C0075EBAF /* foam_core_LongProperty.swift */,
 				1035CE912385AE250075EBAF /* foam_core_MapProperty.swift */,
 				1035CEF32385AE2C0075EBAF /* foam_core_Method.swift */,
 				10B7599F2389CD2D000E4F21 /* foam_core_Model.swift */,
+				10583300238C57DC0088DA87 /* foam_core_ObjectProperty.swift */,
 				1035CEE72385AE2B0075EBAF /* foam_core_PromiseProperty.swift */,
 				1035CEDE2385AE2B0075EBAF /* foam_core_PromiseSlot.swift */,
 				1035CEE92385AE2C0075EBAF /* foam_core_Property.swift */,
@@ -536,6 +544,7 @@
 				1035CE982385AE250075EBAF /* foam_cross_platform_type_Util.swift */,
 				10B759992389CD2D000E4F21 /* foam_cross_platform_ZeroFunction.swift */,
 				101E0C3E238ACA1C00BC780D /* foam_dao_AbstractSink.swift */,
+				10583301238C57DC0088DA87 /* foam_dao_ArraySink.swift */,
 				101E0C3D238ACA1C00BC780D /* foam_dao_Sink.swift */,
 				101E0C3A238ACA1B00BC780D /* foam_dao_SinkClass.swift */,
 				1035CED62385AE2A0075EBAF /* foam_dao_SQLStatement.swift */,
@@ -731,6 +740,7 @@
 				1035CF5F2385AE2F0075EBAF /* foam_core_Enum.swift in Sources */,
 				100220492386EF0500384ADF /* demo_Method.swift in Sources */,
 				1035CF132385AE2E0075EBAF /* foam_core_Constant.swift in Sources */,
+				10583304238C57DC0088DA87 /* foam_dao_ArraySink.swift in Sources */,
 				1035CF432385AE2F0075EBAF /* foam_cross_platform_type_MapType.swift in Sources */,
 				1035CF292385AE2F0075EBAF /* foam_templates_TemplateUtil.swift in Sources */,
 				10B759AA2389CD2E000E4F21 /* foam_core_Import.swift in Sources */,
@@ -777,6 +787,7 @@
 				1035CF222385AE2F0075EBAF /* foam_parse_Grammar.swift in Sources */,
 				1035CF342385AE2F0075EBAF /* foam_swift_AnonymousGenericFunction.swift in Sources */,
 				1035CF742385AE2F0075EBAF /* foam_core_Slot.swift in Sources */,
+				10583305238C57DC0088DA87 /* foam_core_ListProperty.swift in Sources */,
 				108A0D6C236FB42100D687D1 /* AppDelegate.swift in Sources */,
 				1035CF6D2385AE2F0075EBAF /* foam_core_EventProxy.swift in Sources */,
 				1035CF3C2385AE2F0075EBAF /* foam_core_ExpressionSlot.swift in Sources */,
@@ -817,6 +828,7 @@
 				1035CF602385AE2F0075EBAF /* foam_core_Property.swift in Sources */,
 				1035CF732385AE2F0075EBAF /* foam_core_StringProperty.swift in Sources */,
 				1035CF3B2385AE2F0075EBAF /* foam_core_internal_InterfaceMethod.swift in Sources */,
+				10583303238C57DC0088DA87 /* foam_core_ObjectProperty.swift in Sources */,
 				1035CF1A2385AE2F0075EBAF /* foam_parse_PSymbol.swift in Sources */,
 				1035CF082385AE2E0075EBAF /* foam_core_MapProperty.swift in Sources */,
 				10B759A92389CD2E000E4F21 /* foam_core_Model.swift in Sources */,
