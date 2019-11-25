@@ -23,13 +23,15 @@ foam.LIB({
 
       var flagFilter = foam.util.flagFilter(['android']);
 
-      var builder = foam.cross_platform.code_generation.android_java.Builder.create({
-        clsName: cls.name,
-        properties: this.getAxiomsByClass(foam.core.Property)
-          .filter(flagFilter)
-      });
-      cls.classes.push(builder);
-      builder.addBuilderMethod(cls);
+      if ( ! this.model_.abstract ) {
+        var builder = foam.cross_platform.code_generation.android_java.Builder.create({
+          clsName: cls.name,
+          properties: this.getAxiomsByClass(foam.core.Property)
+            .filter(flagFilter)
+        });
+        cls.classes.push(builder);
+        builder.addBuilderMethod(cls);
+      }
 
       this.getAxioms()
         .filter(flagFilter)
