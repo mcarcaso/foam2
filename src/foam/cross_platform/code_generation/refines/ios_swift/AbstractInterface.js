@@ -17,6 +17,26 @@ foam.CLASS({
           this.addSwiftStaticClassInfo(staticCls);
           resources.sources.push(staticCls);
 
+          // This allows "abstract" classes because that's not a thing in swift.
+          var extension = foam.swift.SwiftClass.create({
+            type: 'extension',
+            name: name,
+            path: name + 'Extension.swift'
+          });
+          parentCls
+            .getAxiomsByClass(foam.core.internal.InterfaceMethod)
+            .filter(foam.util.flagFilter(['swift']))
+            .forEach(m => {
+              extension.method({
+                visibility: 'public',
+                type: m.swiftType,
+                name: m.name,
+                args: m.args.map(a => a.toSwiftArg()),
+                body: `fatalError()`
+              });
+            });
+          resources.sources.push(extension);
+
           return resources;
         };
         cls.buildSwiftClass = function(cls) {
