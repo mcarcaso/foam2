@@ -14,7 +14,10 @@ foam.CLASS({
     },
   ],
   methods: [
-    function buildAndroidClass(cls) {
+    function buildAndroidClass(cls, parentCls) {
+      var superAxiom = parentCls.getSuperAxiomByName(this.name);
+      if ( superAxiom === this ) return;
+
       cls.field({
         visibility: 'private',
         static: true,
