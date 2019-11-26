@@ -15,8 +15,17 @@ foam.CLASS({
       cls.method({
         visibility: 'public',
         type: model.swiftName + '.' + model.swiftName + 'Builder_',
+        args: [
+          { type: 'foam_cross_platform_Context', localName: 'x' }
+        ],
         name: this.name + '_create',
-        body: `return ${model.swiftName}.${model.swiftName}Builder(getSubX());`
+        body: `return ${model.swiftName}.${model.swiftName}Builder(x);`
+      });
+      cls.method({
+        visibility: 'public',
+        type: model.swiftName + '.' + model.swiftName + 'Builder_',
+        name: this.name + '_create',
+        body: `return ${this.name}_create(getSubX());`
       });
 
       return cls;

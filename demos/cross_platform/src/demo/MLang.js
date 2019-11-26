@@ -10,14 +10,14 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.mlang.sink.Count',
-      required: true,
+      swiftOptional: false,
       name: 'countSink',
       crossPlatformFactory: `return Count_create().build();`,
     },
     {
       class: 'FObjectProperty',
       of: 'foam.dao.ArraySink',
-      required: true,
+      swiftOptional: false,
       name: 'arraySink',
       crossPlatformFactory: `return ArraySink_create().build();`,
     },

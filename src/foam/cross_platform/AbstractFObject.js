@@ -53,7 +53,17 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.Context',
+      swiftOptional: false,
       name: 'x',
+      androidSetter: `
+        x_ = value instanceof foam.cross_platform.Context ?
+          (foam.cross_platform.Context) value : null;
+        clearProperty("subX");
+      `,
+      swiftSetter: `
+        x_ = value as? foam_cross_platform_Context;
+        clearProperty("subX");
+      `,
       androidComparePropertyValues: `
         foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
       `,
@@ -72,13 +82,12 @@ foam.CLASS({
         }
         return x_;
       `,
-      androidPostSet: 'clearProperty("subX");',
-      swiftPostSet: 'clearProperty("subX");'
     },
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.Context',
       name: 'subX',
+      swiftOptional: false,
       androidComparePropertyValues: `
         foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
       `,
@@ -107,7 +116,7 @@ foam.CLASS({
           exportMap[e.getExportName()!] = getSlot(e.getKey());
         }
 
-        return getX()!.createSubContext(exportMap);
+        return getX().createSubContext(exportMap)!;
       `
     },
   ],

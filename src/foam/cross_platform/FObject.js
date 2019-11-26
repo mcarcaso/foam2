@@ -8,10 +8,12 @@ foam.INTERFACE({
   methods: [
     {
       type: 'foam.cross_platform.Context',
+      swiftOptional: false,
       name: 'getX'
     },
     {
       type: 'foam.cross_platform.Context',
+      swiftOptional: false,
       name: 'getSubX'
     },
     {

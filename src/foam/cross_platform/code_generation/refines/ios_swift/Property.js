@@ -7,9 +7,7 @@ foam.CLASS({
     {
       class: 'BooleanProperty',
       name: 'swiftOptional',
-      expression: function(required) {
-        return !required;
-      },
+      value: true
     },
     {
       class: 'foam.swift.SwiftTypeProperty',

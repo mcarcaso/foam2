@@ -12,7 +12,7 @@ foam.CLASS({
     {
       class: 'ListProperty',
       name: 'array',
-      required: true,
+      swiftOptional: false,
       factory: function() { return []; },
       javaFactory: `return new java.util.ArrayList();`,
       swiftFactory: `return [];`

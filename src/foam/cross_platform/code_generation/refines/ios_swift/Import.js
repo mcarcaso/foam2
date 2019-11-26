@@ -43,7 +43,7 @@ foam.CLASS({
         name: this.crossPlatformSlotGetterName,
         type: foam.core.SlotInterface.model_.swiftName + '?',
         visibility: 'public',
-        body: `return getSubX()?.getXSlot("${this.name}");`
+        body: `return getSubX().getXSlot("${this.name}");`
       });
       cls.method({
         override: override,

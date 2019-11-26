@@ -42,12 +42,12 @@ foam.CLASS({
         let e = demo_ImportExport.Export.ExportBuilder(getSubX()).build();
         e.setA("Mike");
         XCTAssertTrue(foam_cross_platform_Lib.equals(
-          "Mike", e.getSubX()!.getXProp("a")));
+          "Mike", e.getSubX().getXProp("a")));
         XCTAssertTrue(foam_cross_platform_Lib.equals(
-          "Mike", e.getSubX()!.getXSlot("a")!.slotGet()));
+          "Mike", e.getSubX().getXSlot("a")!.slotGet()));
         e.setA("Adam");
         XCTAssertTrue(foam_cross_platform_Lib.equals(
-          "Adam", e.getSubX()!.getXProp("a")));
+          "Adam", e.getSubX().getXProp("a")));
         
         let i = demo_ImportExport.Import.ImportBuilder(e.getSubX()).build();
         XCTAssertTrue(foam_cross_platform_Lib.equals(
