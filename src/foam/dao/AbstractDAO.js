@@ -63,15 +63,23 @@ foam.CLASS({
       class: 'ClassProperty',
       javaInfoType: 'foam.core.AbstractObjectPropertyInfo',
       javaType: 'foam.core.ClassInfo',
+      required: true,
       name: 'of',
     },
     {
+      class: 'FObjectProperty',
+      of: 'foam.core.Property',
       javaType: 'foam.core.PropertyInfo',
       javaInfoType: 'foam.core.AbstractObjectPropertyInfo',
-      swiftType: 'PropertyInfo',
       name: 'primaryKey',
-      swiftExpressionArgs: ['of'],
-      swiftExpression_DELETE: 'return of.axiom(byName: "id") as! PropertyInfo',
+      expressionArgs: ['of'],
+      androidFactory: null,
+      androidExpression: `
+        return (foam.core.Property) of.getAxiomByName("id");
+      `,
+      swiftExpression: `
+        return of.getAxiomByName("id") as? foam_core_Property;
+      `,
       javaFactory: `
 return getOf() == null ? null : (foam.core.PropertyInfo) getOf().getAxiomByName("id");
       `,
@@ -88,7 +96,8 @@ return getOf() == null ? null : (foam.core.PropertyInfo) getOf().getAxiomByName(
       code: function(x) {
         return this.ProxyDAO.create({delegate: this}, x);
       },
-      swiftCode_DELETE: `return ProxyDAO_create(["delegate": self], x)`,
+      androidCode: `return ProxyDAO_create(x).setDelegate(this).build();`,
+      swiftCode: `return ProxyDAO_create(x!).setDelegate(self).build();`,
       javaCode: `return new ProxyDAO.Builder(x).setDelegate(this).build();`,
     },
 
@@ -104,12 +113,18 @@ return getOf() == null ? null : (foam.core.PropertyInfo) getOf().getAxiomByName(
           predicate: p
         });
       },
-      swiftCode_DELETE: function() {/*
-        return FilteredDAO_create([
-          "delegate": self,
-          "predicate": predicate,
-        ]);
-      */},
+      androidCode: `
+        return FilteredDAO_create()
+          .setDelegate(this)
+          .setPredicate(predicate)
+          .build();
+      `,
+      swiftCode: `
+        return FilteredDAO_create()
+          .setDelegate(self)
+          .setPredicate(predicate)
+          .build();
+      `,
       javaCode: 'return new FilteredDAO.Builder(getX()).setPredicate(predicate).setDelegate(this).build();'
     },
 
@@ -125,11 +140,17 @@ return getOf() == null ? null : (foam.core.PropertyInfo) getOf().getAxiomByName(
           comparator: foam.compare.toCompare(Array.from(arguments))
         });
       },
-      swiftCode_DELETE: `
-return OrderedDAO_create([
-  "delegate": self,
-  "comparator": comparator
-])
+      androidCode: `
+        return OrderedDAO_create()
+          .setDelegate(this)
+          .setComparator(comparator)
+          .build();
+      `,
+      swiftCode: `
+        return OrderedDAO_create()
+          .setDelegate(self)
+          .setComparator(comparator)
+          .build();
       `,
       javaCode: `
 return new OrderedDAO(this.getX(), comparator, this);
@@ -148,12 +169,18 @@ return new OrderedDAO(this.getX(), comparator, this);
           skip_: s
         });
       },
-      swiftCode_DELETE: function() {/*
-return SkipDAO_create([
-  "delegate": self,
-  "skip_": count,
-])
-      */},
+      androidCode: `
+        return SkipDAO_create()
+          .setDelegate(this)
+          .setSkip_(count)
+          .build();
+      `,
+      swiftCode: `
+        return SkipDAO_create()
+          .setDelegate(self)
+          .setSkip_(count)
+          .build();
+      `,
       javaCode: `
 return new SkipDAO(this.getX(), count, this);
       `,
@@ -171,12 +198,18 @@ return new SkipDAO(this.getX(), count, this);
           limit_: l
         });
       },
-      swiftCode_DELETE: function() {/*
-return LimitedDAO_create([
-  "delegate": self,
-  "limit_": count,
-])
-      */},
+      androidCode: `
+        return LimitedDAO_create()
+          .setDelegate(this)
+          .setLimit_(count)
+          .build();
+      `,
+      swiftCode: `
+        return LimitedDAO_create()
+          .setDelegate(self)
+          .setLimit_(count)
+          .build();
+      `,
       javaCode: `
 return new LimitedDAO(this.getX(), count, this);
       `,
@@ -187,7 +220,8 @@ return new LimitedDAO(this.getX(), count, this);
       code: function(obj) {
         return this.put_(this.__context__, obj);
       },
-      swiftCode_DELETE: 'return try put_(__context__, obj)',
+      androidCode: 'return put_(getX(), obj);',
+      swiftCode: 'return put_(getX(), obj);',
       javaCode: `return this.put_(this.getX(), obj);`,
     },
 
@@ -200,27 +234,37 @@ return new LimitedDAO(this.getX(), count, this);
     {
       name: 'pipe',
       code: function(sink) {//, skip, limit, order, predicate) {
-        this.pipe_(this.__context__, sink, undefined);
+        return this.pipe_(this.__context__, sink, undefined);
       },
-      swiftCode_DELETE: 'return try pipe_(__context__, sink)',
-      javaCode: `this.pipe_(this.getX(), sink, null);`,
+      androidCode: 'return pipe_(getX(), sink, null);',
+      swiftCode: 'return pipe_(getX(), sink, nil);',
+      javaCode: `return this.pipe_(this.getX(), sink, null);`,
     },
 
     {
       name: 'pipe_',
       code: function(x, sink, predicate) {
-        var dao = this;
-
-        var sink = this.PipeSink.create({
+        var sink2 = this.PipeSink.create({
           delegate: sink,
           dao: this
         });
 
-        var sub = this.listen(sink); //, skip, limit, order, predicate);
-        sink.reset();
+        var sub = this.listen(sink2); //, skip, limit, order, predicate);
+        sink2.reset();
 
         return sub;
       },
+      androidCode: `
+        foam.dao.PipeSink sink2 = PipeSink_create()
+          .setDelegate(sink)
+          .setDao(this)
+          .build();
+
+        foam.core.Detachable sub = listen(sink2, null);
+        sink2.reset(sub);
+
+        return sub;
+      `,
       javaCode: `
 throw new UnsupportedOperationException();
       `,
@@ -264,25 +308,46 @@ throw new UnsupportedOperationException();
 
         return sub;
       },
-      swiftCode_DELETE: function() {/*
-let mySink = decorateListener_(sink, predicate)
-return on.sub(listener: { (sub: Subscription, args: [Any?]) -> Void in
-  guard let topic = args[1] as? String else { return }
-  switch topic {
+      androidCode: `
+foam.dao.Sink mySink = decorateListener_(sink, predicate);
+return on().sub(null, <%=listener(\`
+  if ( args.length <= 1 || args[1] instanceof String == false ) return;
+  String topic = (String)args[1];
+  switch(topic) {
     case "put":
-      mySink?.put(args.last as! foam_core_FObject, sub)
-      break
+      mySink.put(args[args.length - 1], sub);
+      break;
     case "remove":
-      mySink?.remove(args.last as! foam_core_FObject, sub)
-      break
+      mySink.remove(args[args.length - 1], sub);
+      break;
     case "reset":
-      mySink?.reset(sub)
-      break
+      mySink.reset(sub);
+      break;
     default:
-      break
+      break;
   }
-})
-      */},
+\`)%>);
+      `,
+      swiftCode: `
+let mySink = decorateListener_(sink, predicate);
+return on().sub(nil, <%=listener(\`
+  if args!.count <= 1 || !(args![1] is String) { return; }
+  let topic = args![1] as! String;
+  switch(topic) {
+    case "put":
+      mySink?.put(args![args!.count - 1], sub);
+      break;
+    case "remove":
+      mySink?.remove(args![args!.count - 1], sub);
+      break;
+    case "reset":
+      mySink?.reset(sub);
+      break;
+    default:
+      break;
+  }
+\`)%>);
+      `,
       javaCode: `
 sink = decorateListener_(sink, predicate);
 listeners_.add(new DAOListener(sink, listeners_));
@@ -309,16 +374,18 @@ listeners_.add(new DAOListener(sink, listeners_));
 
         return sink;
       },
-      swiftCode_DELETE: function() {/*
+      crossPlatformCode: `
 // TODO: There are probably optimizations we can make here
 // but every time I try it comes out broken.  So for the time being,
 // if you have any sort of skip/limit/order/predicate we will just
 // issue reset events for everything.
-if predicate != nil {
-  return self.ResetListener_create(["delegate": sink])
+if ( predicate != <%=nul()%> ) {
+  return ResetListener_create()
+    .setDelegate(sink)
+    .build();
 }
-return sink
-      */},
+return sink;
+      `,
       javaCode: `
 if ( predicate != null ) {
   sink = new PredicatedSink(predicate, sink);
@@ -391,34 +458,62 @@ return sink;
 
         return sink;
       },
-      swiftCode_DELETE: function() {/*
-var sink = sink
+      androidCode: `
+foam.dao.Sink s = sink;
+if ( limit > 0 ) {
+  s = LimitedSink_create()
+    .setLimit(limit)
+    .setDelegate(s)
+    .build();
+}
+if ( skip > 0 ) {
+  s = SkipSink_create()
+    .setSkip(skip)
+    .setDelegate(s)
+    .build();
+}
+if ( order != null ) {
+  s = OrderedSink_create()
+    .setComparator(order)
+    .setDelegate(s)
+    .build();
+}
+if ( predicate != null ) {
+  s = PredicatedSink_create()
+    .setPredicate(predicate)
+    .setDelegate(s)
+    .build();
+}
+return s;
+      `,
+      swiftCode: `
+var s = sink;
 if limit > 0 {
-  sink = LimitedSink_create([
-    "limit": limit,
-    "delegate": sink
-  ])
+  s = LimitedSink_create()
+    .setLimit(limit)
+    .setDelegate(s)
+    .build();
 }
 if skip > 0 {
-  sink = SkipSink_create([
-    "skip": skip,
-    "delegate": sink
-  ])
+  s = SkipSink_create()
+    .setSkip(skip)
+    .setDelegate(s)
+    .build();
 }
 if order != nil {
-  sink = OrderedSink_create([
-    "comparator": order,
-    "delegate": sink,
-  ])
+  s = OrderedSink_create()
+    .setComparator(order)
+    .setDelegate(s)
+    .build();
 }
 if predicate != nil {
-  sink = PredicatedSink_create([
-    "predicate": predicate,
-    "delegate": sink,
-  ])
+  s = PredicatedSink_create()
+    .setPredicate(predicate)
+    .setDelegate(s)
+    .build();
 }
-return sink
-      */},
+return s;
+      `,
       javaCode: `
 return decorateSink(getX(), sink, skip, limit, order, predicate);
       `,
@@ -429,7 +524,7 @@ return decorateSink(getX(), sink, skip, limit, order, predicate);
       code: function remove(obj) {
         return this.remove_(this.__context__, obj);
       },
-      swiftCode_DELETE: 'return try remove_(__context__, obj)',
+      crossPlatformCode: 'return remove_(getX(), obj);',
       javaCode: `return this.remove_(this.getX(), obj);`,
     },
 
@@ -438,7 +533,7 @@ return decorateSink(getX(), sink, skip, limit, order, predicate);
       code: function removeAll() {
         return this.removeAll_(this.__context__, undefined, undefined, undefined, undefined);
       },
-      swiftCode_DELETE: 'return try removeAll_(__context__)',
+      crossPlatformCode: 'removeAll_(getX(), 0, 0, <%=nul()%>, <%=nul()%>);',
       javaCode: `
 this.removeAll_(this.getX(), 0, this.MAX_SAFE_INTEGER, null, null);
       `,
@@ -480,7 +575,8 @@ this.removeAll_(this.getX(), 0, this.MAX_SAFE_INTEGER, null, null);
       code: function select(sink) {
         return this.select_(this.__context__, this.prepareSink_(sink), undefined, undefined, undefined, undefined);
       },
-      swiftCode_DELETE: 'return try select_(__context__, sink)',
+      androidCode: 'return select_(getX(), sink, 0, 0, null, null);',
+      swiftCode: 'return select_(getX(), sink, 0, 0, nil, nil);',
       javaCode: `
 sink = prepareSink(sink);
 return this.select_(this.getX(), sink, 0, this.MAX_SAFE_INTEGER, null, null);
@@ -502,7 +598,7 @@ return this.select_(this.getX(), sink, 0, this.MAX_SAFE_INTEGER, null, null);
 
         return this.find_(this.__context__, id);
       },
-      swiftCode_DELETE: 'return try find_(__context__, id)',
+      crossPlatformCode: 'return find_(getX(), id);',
       javaCode: `
 // Temporary until DAO supports find_(Predicate) directly
 if ( id instanceof foam.mlang.predicate.Predicate ) {

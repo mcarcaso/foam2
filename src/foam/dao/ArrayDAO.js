@@ -37,60 +37,117 @@ foam.CLASS({
       }
     },
     {
+      class: 'ListProperty',
       name: 'array',
       factory: function() { return []; }
     }
   ],
 
   methods: [
-    function put_(x, obj) {
-      for ( var i = 0 ; i < this.array.length ; i++ ) {
-        if ( obj.ID.compare(obj, this.array[i]) === 0 ) {
-          this.array[i] = obj;
-          break;
+    {
+      name: 'put_',
+      code: function put_(x, obj) {
+        for ( var i = 0 ; i < this.array.length ; i++ ) {
+          if ( obj.ID.compare(obj, this.array[i]) === 0 ) {
+            this.array[i] = obj;
+            break;
+          }
         }
-      }
 
-      if ( i == this.array.length ) this.array.push(obj);
-      this.on.put.pub(obj);
+        if ( i == this.array.length ) this.array.push(obj);
+        this.on.put.pub(obj);
 
-      return Promise.resolve(obj);
+        return Promise.resolve(obj);
+      },
+      androidCode: `
+        foam.core.Property p = (foam.core.Property) obj.getCls_().getAxiomByName("id");
+        int i;
+        for ( i = 0 ; i < getArray().size() ; i++ ) {
+          if ( p.compare(obj, getArray().get(i)) == 0 ) {
+            getArray().set(i, obj);
+            break;
+          }
+        }
+
+        if ( i == this.getArray().size()) {
+          getArray().add(obj);
+        }
+        
+        this.on().getSubTopic("put").pub(new Object[] { obj });
+
+        return obj;
+      `
     },
 
-    function remove_(x, obj) {
-      for ( var i = 0 ; i < this.array.length ; i++ ) {
-        if ( foam.util.equals(obj.id, this.array[i].id) ) {
-          var o2 = this.array.splice(i, 1)[0];
-          this.on.remove.pub(o2);
-          break;
+    {
+      name: 'remove_',
+      code: function remove_(x, obj) {
+        for ( var i = 0 ; i < this.array.length ; i++ ) {
+          if ( foam.util.equals(obj.id, this.array[i].id) ) {
+            var o2 = this.array.splice(i, 1)[0];
+            this.on.remove.pub(o2);
+            break;
+          }
         }
-      }
 
-      return Promise.resolve();
+        return Promise.resolve();
+      },
+      androidCode: `
+        foam.cross_platform.FObject ret = null;
+        foam.core.Property p = (foam.core.Property) obj.getCls_().getAxiomByName("id");
+        for ( int i = 0 ; i < getArray().size() ; i++ ) {
+          if ( p.compare(obj, getArray().get(i)) == 0 ) {
+            ret = (foam.cross_platform.FObject) getArray().get(i);
+            getArray().remove(i);
+            on().getSubTopic("remove").pub(new Object[] {ret});
+            break;
+          }
+        }
+        return ret;
+      `
     },
 
-    function select_(x, sink, skip, limit, order, predicate) {
-      var resultSink = sink || this.ArraySink.create({ of: this.of });
+    {
+      name: 'select_',
+      code: function select_(x, sink, skip, limit, order, predicate) {
+        var resultSink = sink || this.ArraySink.create({ of: this.of });
 
-      sink = this.decorateSink_(resultSink, skip, limit, order, predicate);
+        sink = this.decorateSink_(resultSink, skip, limit, order, predicate);
 
-      var detached = false;
-      var sub = foam.core.FObject.create();
-      sub.onDetach(function() { detached = true; });
+        var detached = false;
+        var sub = foam.core.FObject.create();
+        sub.onDetach(function() { detached = true; });
 
-      var self = this;
+        var self = this;
 
-      return new Promise(function(resolve, reject) {
-        for ( var i = 0 ; i < self.array.length ; i++ ) {
-          if ( detached ) break;
+        return new Promise(function(resolve, reject) {
+          for ( var i = 0 ; i < self.array.length ; i++ ) {
+            if ( detached ) break;
 
-          sink.put(self.array[i], sub);
+            sink.put(self.array[i], sub);
+          }
+
+          sink.eof();
+
+          resolve(resultSink);
+        });
+      },
+      androidCode: `
+        foam.dao.Sink resultSink = sink == null ? ArraySink_create().build() : sink;
+        foam.dao.Sink decoratedSink = decorateSink_(resultSink, skip, limit, order, predicate);
+
+        final boolean[] detached = { false };
+        foam.core.Detachable sub = <%=detachable(\`
+          detached[0] = true;
+        \`)%>;
+
+        for ( int i = 0 ; i < getArray().size() ; i++ ) {
+          if ( detached[0] ) break;
+          decoratedSink.put(getArray().get(i), sub);
         }
-
-        sink.eof();
-
-        resolve(resultSink);
-      });
+        decoratedSink.eof();
+        return resultSink;
+      `
     },
 
     function removeAll_(x, skip, limit, order, predicate) {
@@ -114,15 +171,27 @@ foam.CLASS({
       return Promise.resolve();
     },
 
-    function find_(x, key) {
-      var id = this.of.isInstance(key) ? key.id : key;
-      for ( var i = 0 ; i < this.array.length ; i++ ) {
-        if ( foam.util.equals(id, this.array[i].id) ) {
-          return Promise.resolve(this.array[i]);
+    {
+      name: 'find_',
+      code: function find_(x, key) {
+        var id = this.of.isInstance(key) ? key.id : key;
+        for ( var i = 0 ; i < this.array.length ; i++ ) {
+          if ( foam.util.equals(id, this.array[i].id) ) {
+            return Promise.resolve(this.array[i]);
+          }
         }
-      }
 
-      return Promise.resolve(null);
-    }
+        return Promise.resolve(null);
+      },
+      androidCode: `
+        foam.core.Property p = (foam.core.Property) getOf().getAxiomByName("id");
+        for ( Object o : getArray() ) {
+          if ( p.compareValues(p.f(o), id) == 0 ) {
+            return (foam.cross_platform.FObject) o;
+          }
+        }
+        return null;
+      `
+    },
   ]
 });
