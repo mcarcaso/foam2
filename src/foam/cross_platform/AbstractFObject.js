@@ -9,7 +9,6 @@ foam.CLASS({
   requires: [
     'foam.core.internal.PropertySlot',
     'foam.cross_platform.ListenerList',
-    'foam.cross_platform.SubTopic',
     'foam.cross_platform.ZeroFunction',
     {
       path: 'foam.swift.AnonymousGenericFunction',
@@ -285,6 +284,7 @@ foam.CLASS({
         if ( ! hasPropertySet("listeners__") ) return 0;
         foam.cross_platform.ListenerList listeners = getListeners__();
         int count = notify(listeners.getNext(), args);
+        if ( args == null ) return count;
         for ( Object arg : args ) {
           if ( arg instanceof String == false ) break;
           if ( ! listeners.getChildren().containsKey(arg) ) break;
@@ -297,6 +297,7 @@ foam.CLASS({
         if !hasPropertySet("listeners__") { return 0; }
         var listeners = getListeners__();
         var count = notify(listeners!.getNext(), args);
+        if args == nil { return count; }
         for arg in args! {
           if !(arg is String) { break; }
           if !listeners!.getChildren()!.keys.contains(arg as! AnyHashable) { break; }

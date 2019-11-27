@@ -39,7 +39,10 @@ foam.CLASS({
   `,
 
   properties: [
-    'name',
+    {
+      class: 'StringProperty',
+      name: 'name',
+    },
     'description',
     {
       class: 'FObjectArray',
