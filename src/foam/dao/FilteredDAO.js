@@ -15,7 +15,6 @@ foam.CLASS({
 
   properties: [
     {
-      // TODO: FObjectProperty of Predicate. Doing this currently breaks java.
       class: 'FObjectProperty',
       of: 'foam.mlang.predicate.Predicate',
       name: 'predicate'
@@ -31,6 +30,10 @@ foam.CLASS({
           return predicate.f(o) ? o : null;
         });
       },
+      androidCode: `
+        foam.cross_platform.FObject fo = super.find_(x, id);
+        return getPredicate().f(fo) ? fo : null;
+      `,
       javaCode: `foam.core.FObject ret = super.find_(x, id);
 if ( ret != null && getPredicate().f(ret) ) return ret;
 return null;`
@@ -46,6 +49,13 @@ return null;`
             this.And.create({ args: [this.predicate, predicate] }) :
             this.predicate);
       },
+      androidCode: `
+        foam.mlang.predicate.Predicate p = predicate == null ? getPredicate() :
+          And_create()
+            .setArgs(new Object[] { predicate, getPredicate() })
+            .build();
+        return super.select_(x, sink, skip, limit, order, p);
+      `,
       swiftCode_DELETE: function() {/*
 return try delegate.select_(
   x, sink, skip, limit, order,

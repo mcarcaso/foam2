@@ -199,6 +199,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/Import" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Import" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Import" },
+  { name: "foam/cross_platform/code_generation/refines/android_java/Proxy" },
 
   { name: "foam/json2/Json2PropertyRefine" },
   { name: "foam/json2/OutputterOutput" },

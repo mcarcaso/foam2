@@ -181,7 +181,7 @@ foam.CLASS({
       value: function(_, o, p) { return p.adaptValue(o); }
     },
     {
-      name: 'type',
+      name: 'of',
       value: 'foam.mlang.Expr'
     },
     ['javaJSONParser', 'new foam.lib.json.ExprParser()'],
@@ -1660,7 +1660,7 @@ foam.CLASS({
     {
       name: 'f',
       code: function() { return this.value; },
-      swiftCode_DELETE: `return value`,
+      crossPlatformCode: `return getValue();`,
       javaCode: 'return getValue();'
     },
     {
@@ -1847,6 +1847,11 @@ foam.CLASS({
         // First check is so that EQ(Class.PROPERTY, null | undefined) works.
         return ( v1 === undefined && v2 === null ) || foam.util.equals(v1, v2);
       },
+      androidCode: `
+        return foam.cross_platform.Lib.equals(
+          getArg1().f(obj),
+          getArg2().f(obj));
+      `,
       swiftCode_DELETE: `
 let v1 = arg1!.f(obj)
 let v2 = arg2!.f(obj)
@@ -2728,9 +2733,17 @@ foam.CLASS({
   name: 'PropertyComparatorRefinement',
   refines: 'foam.core.Property',
 
-  implements: [ 'foam.mlang.order.Comparator' ],
+  implements: [
+    'foam.mlang.Expr',
+    'foam.mlang.order.Comparator',
+  ],
 
   methods: [
+    {
+      name: 'partialEval',
+      code: function() { return this },
+      androidCode: 'return this;',
+    },
     {
       name: 'createStatement',
       code: function () { return ''; },

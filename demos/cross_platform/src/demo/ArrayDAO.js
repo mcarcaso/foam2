@@ -5,6 +5,8 @@ foam.CLASS({
     'demo.Person',
     'foam.dao.ArrayDAO',
     'foam.mlang.sink.Count',
+    'foam.mlang.predicate.Eq',
+    'foam.mlang.Constant',
   ],
   properties: [
     {
@@ -86,6 +88,35 @@ foam.CLASS({
         assertEquals("All", 4, pubs[0]);
         assertEquals("Puts", 3, pubs[1]);
         assertEquals("Removes", 1, pubs[2]);
+      `,
+    },
+    {
+      name: 'testWhere',
+      androidCode: `
+        ArrayDAO o = ArrayDAO_create().build();
+        foam.dao.AbstractDAO d = (foam.dao.AbstractDAO) o.getDao();
+        foam.mlang.sink.Count c = o.Count_create().build();
+
+        // Same ID. Only one entry should be in DAO.
+        d.put(o.Person_create()
+          .setFirstName("A")
+          .build());
+        d.put(o.Person_create()
+          .setFirstName("B")
+          .build());
+
+        foam.dao.DAO fd = d.where(o.Eq_create()
+          .setArg1(demo.Person.FIRST_NAME())
+          .setArg2(o.Constant_create().setValue("B").build())
+          .build());
+
+        d.select(c);
+        assertEquals(2, c.getValue());
+        c.reset(null);
+
+        fd.select(c);
+        assertEquals(1, c.getValue());
+        c.reset(null);
       `,
     },
   ]

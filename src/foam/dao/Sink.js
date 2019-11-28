@@ -347,7 +347,9 @@ foam.CLASS({
       code: function put(obj, sub) {
         if ( this.predicate.f(obj) ) this.delegate.put(obj, sub);
       },
-      swiftCode_DELETE: 'if predicate.f(obj) { delegate.put(obj, sub) }',
+      androidCode: `
+        if ( getPredicate().f(obj) ) getDelegate().put(obj, sub);
+      `,
       javaCode: `
         try {
           if ( getPredicate().f(obj) ) getDelegate().put(obj, sub);
