@@ -4,9 +4,11 @@ foam.CLASS({
   requires: [
     'demo.Person',
     'foam.dao.ArrayDAO',
-    'foam.mlang.sink.Count',
-    'foam.mlang.predicate.Eq',
+    'foam.dao.ArraySink',
     'foam.mlang.Constant',
+    'foam.mlang.order.Desc',
+    'foam.mlang.predicate.Eq',
+    'foam.mlang.sink.Count',
   ],
   properties: [
     {
@@ -97,7 +99,6 @@ foam.CLASS({
         foam.dao.AbstractDAO d = (foam.dao.AbstractDAO) o.getDao();
         foam.mlang.sink.Count c = o.Count_create().build();
 
-        // Same ID. Only one entry should be in DAO.
         d.put(o.Person_create()
           .setFirstName("A")
           .build());
@@ -117,6 +118,48 @@ foam.CLASS({
         fd.select(c);
         assertEquals(1, c.getValue());
         c.reset(null);
+      `,
+    },
+    {
+      name: 'testOrderBy',
+      androidCode: `
+        ArrayDAO o = ArrayDAO_create().build();
+        foam.dao.ArraySink a = o.ArraySink_create().build();
+        foam.dao.AbstractDAO d = (foam.dao.AbstractDAO) o.getDao();
+        foam.mlang.order.Comparator asc = demo.Person.FIRST_NAME();
+        foam.mlang.order.Comparator desc = o.Desc_create()
+          .setArg1(asc)
+          .build();
+
+        d.put(o.Person_create()
+          .setFirstName("C")
+          .build());
+        d.put(o.Person_create()
+          .setFirstName("A")
+          .build());
+        d.put(o.Person_create()
+          .setFirstName("B")
+          .build());
+
+        a.reset(null);
+        d.orderBy(asc).select(a);
+
+        assertEquals("A",
+          ((demo.Person) a.getArray().get(0)).getFirstName());
+        assertEquals("B",
+          ((demo.Person) a.getArray().get(1)).getFirstName());
+        assertEquals("C",
+          ((demo.Person) a.getArray().get(2)).getFirstName());
+
+        a.reset(null);
+        d.orderBy(desc).select(a);
+
+        assertEquals("C",
+          ((demo.Person) a.getArray().get(0)).getFirstName());
+        assertEquals("B",
+          ((demo.Person) a.getArray().get(1)).getFirstName());
+        assertEquals("A",
+          ((demo.Person) a.getArray().get(2)).getFirstName());
       `,
     },
   ]

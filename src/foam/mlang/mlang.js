@@ -2797,8 +2797,8 @@ foam.CLASS({
   properties: [
     {
       class: 'FObjectProperty',
+      of: 'foam.mlang.order.Comparator',
       name: 'arg1',
-      type: 'foam.mlang.order.Comparator',
       adapt: function(_, c) { return foam.compare.toCompare(c); },
       javaJSONParser: 'new foam.lib.json.ExprParser()'
     }
@@ -2811,7 +2811,7 @@ foam.CLASS({
         return -1 * this.arg1.compare(o1, o2);
       },
       javaCode: 'return -1 * getArg1().compare(o1, o2);',
-      swiftCode_DELETE: 'return -1 * self.arg1!.compare(o1, o2);'
+      androidCode: 'return -1 * getArg1().compare(o1, o2);'
     },
     {
       name: 'createStatement',

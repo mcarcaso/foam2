@@ -503,8 +503,10 @@ delegate.reset(sub);`,
 foam.CLASS({
   package: 'foam.dao',
   name: 'OrderedSink',
-  extends: 'foam.dao.ProxySink',
-
+  extends: 'foam.dao.ArraySink',
+  requires: [
+    'foam.util.SimpleDetachable'
+  ],
   properties: [
     {
       class: 'FObjectProperty',
@@ -513,22 +515,13 @@ foam.CLASS({
       name: 'comparator'
     },
     {
-      class: 'ListProperty',
-      name: 'array',
-      factory: function() { return []; }
+      class: 'FObjectProperty',
+      of: 'foam.dao.Sink',
+      name: 'delegate'
     }
   ],
 
   methods: [
-    {
-      name: 'put',
-      code: function put(obj, sub) {
-        this.array.push(obj);
-      },
-      swiftCode_DELETE: 'array.append(obj)',
-      javaCode: 'if ( getArray() == null ) setArray(new java.util.ArrayList());\n'
-        + 'getArray().add(obj);'
-    },
     {
       name: 'eof',
       code: function eof() {
@@ -545,16 +538,14 @@ foam.CLASS({
           if ( detached ) break;
         }
       },
-      swiftCode_DELETE: `array.sort(by: {
-  return comparator.compare($0, $1) < 0
-});
-
-var detached = false
-let sub = Subscription { detached = true }
-for obj in array {
-  delegate.put(obj as! foam_core_FObject, sub)
-  if detached { break }
-}`,
+      androidCode: `
+        java.util.Collections.sort(getArray(), getComparator());
+        foam.util.SimpleDetachable sub = SimpleDetachable_create().build();
+        for ( Object o : getArray() ) {
+          if ( sub.getIsDetached() ) break;
+          getDelegate().put(o, sub);
+        }
+      `,
       javaCode: 'if ( getArray() == null ) setArray(new java.util.ArrayList());\n'
         + 'java.util.Collections.sort(getArray(), getComparator());\n'
         + 'foam.dao.Subscription sub = new foam.dao.Subscription();\n'
@@ -564,14 +555,6 @@ for obj in array {
         + '  }\n'
         + '  getDelegate().put(o, sub);\n'
         + '}'
-    },
-    {
-      name: 'remove',
-      code: function remove(obj, sub) {
-        // TODO
-      },
-      swiftCode_DELETE: '// TODO',
-      javaCode: '// TODO'
     },
   ]
 });

@@ -830,8 +830,8 @@ foam.CLASS({
       code: function (x, sink, skip, limit, order, predicate) {
         return this.delegate.select_(x, sink, skip, limit, order || this.comparator, predicate);
       },
-      swiftCode_DELETE: `
-        return try self.delegate.select_(x, sink, skip, limit, order ?? self.comparator ?? nil, predicate);
+      androidCode: `
+        return super.select_(x, sink, skip, limit, order == null ? getComparator() : order, predicate);
       `
     },
     {
@@ -839,8 +839,8 @@ foam.CLASS({
       code: function (x, skip, limit, order, predicate) {
         return this.delegate.removeAll_(x, skip, limit, order || this.comparator, predicate);
       },
-      swiftCode_DELETE: `
-        return try self.delegate.removeAll_(x, skip, limit, order ?? self.comparator ?? nil, predicate);
+      androidCode: `
+        super.removeAll_(x, skip, limit, order == null ? getComparator() : order, predicate);
       `
     },
   ]

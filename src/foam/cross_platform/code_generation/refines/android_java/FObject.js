@@ -20,6 +20,7 @@ foam.LIB({
       cls.abstract = this.model_.abstract;
       cls.documentation = this.model_.documentation;
       cls.extends = this.model_.crossPlatformExtends;
+      cls.implements = this.model_.androidImplements;
 
       var flagFilter = foam.util.flagFilter(['android']);
 

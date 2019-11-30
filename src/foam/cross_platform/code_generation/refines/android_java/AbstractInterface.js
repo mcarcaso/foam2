@@ -26,6 +26,7 @@ foam.CLASS({
           javaInterface.package = this.model_.package;
           javaInterface.name = this.model_.name;
           javaInterface.documentation = this.model_.documentation;
+          javaInterface.implements = this.model_.androidImplements;
           this.getAxioms()
             .filter(foam.util.flagFilter(['android']))
             .filter(a => a.buildAndroidClass)
