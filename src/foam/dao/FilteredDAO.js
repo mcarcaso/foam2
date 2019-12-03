@@ -34,6 +34,10 @@ foam.CLASS({
         foam.cross_platform.FObject fo = super.find_(x, id);
         return getPredicate().f(fo) ? fo : null;
       `,
+      swiftCode: `
+        let fo = super.find_(x, id);
+        return getPredicate()!.f(fo) ? fo : nil;
+      `,
       javaCode: `foam.core.FObject ret = super.find_(x, id);
 if ( ret != null && getPredicate().f(ret) ) return ret;
 return null;`
@@ -56,13 +60,13 @@ return null;`
             .build();
         return super.select_(x, sink, skip, limit, order, p);
       `,
-      swiftCode_DELETE: function() {/*
-return try delegate.select_(
-  x, sink, skip, limit, order,
-  predicate != nil ?
-    And_create(["args": [self.predicate, predicate!] ]) :
-    self.predicate)
-                             */},
+      swiftCode: `
+        let p = predicate == nil ? getPredicate() :
+          And_create()
+            .setArgs([predicate, getPredicate()])
+            .build();
+        return super.select_(x, sink, skip, limit, order, p);
+      `,
       javaCode: 'return super.select_(x, sink, skip, limit, order, predicate == null ? getPredicate() : foam.mlang.MLang.AND(getPredicate(), predicate));'
     },
 

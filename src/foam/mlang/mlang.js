@@ -1852,10 +1852,10 @@ foam.CLASS({
           getArg1().f(obj),
           getArg2().f(obj));
       `,
-      swiftCode_DELETE: `
-let v1 = arg1!.f(obj)
-let v2 = arg2!.f(obj)
-return FOAM_utils.equals(v1, v2)
+      swiftCode: `
+        return foam_cross_platform_Lib.equals(
+          getArg1()!.f(obj),
+          getArg2()!.f(obj));
       `,
       javaCode: 'return foam.util.SafetyUtil.compare(getArg1().f(obj),getArg2().f(obj))==0;'
     },
@@ -2743,6 +2743,7 @@ foam.CLASS({
       name: 'partialEval',
       code: function() { return this },
       androidCode: 'return this;',
+      swiftCode: 'return self;',
     },
     {
       name: 'createStatement',
@@ -2811,7 +2812,8 @@ foam.CLASS({
         return -1 * this.arg1.compare(o1, o2);
       },
       javaCode: 'return -1 * getArg1().compare(o1, o2);',
-      androidCode: 'return -1 * getArg1().compare(o1, o2);'
+      androidCode: 'return -1 * getArg1().compare(o1, o2);',
+      swiftCode: 'return -1 * getArg1()!.compare(o1, o2);',
     },
     {
       name: 'createStatement',

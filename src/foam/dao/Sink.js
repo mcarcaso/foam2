@@ -350,6 +350,9 @@ foam.CLASS({
       androidCode: `
         if ( getPredicate().f(obj) ) getDelegate().put(obj, sub);
       `,
+      swiftCode: `
+        if getPredicate()!.f(obj) { getDelegate()!.put(obj, sub); }
+      `,
       javaCode: `
         try {
           if ( getPredicate().f(obj) ) getDelegate().put(obj, sub);
@@ -544,6 +547,16 @@ foam.CLASS({
         for ( Object o : getArray() ) {
           if ( sub.getIsDetached() ) break;
           getDelegate().put(o, sub);
+        }
+      `,
+      swiftCode: `
+        setArray(getArray().sorted(by: {(o1, o2) -> Bool in
+          return getComparator()!.compare(o1, o2) > 0;
+        }));
+        let sub = SimpleDetachable_create().build();
+        for o in getArray() {
+          if sub.getIsDetached() { break; }
+          getDelegate()!.put(o, sub);
         }
       `,
       javaCode: 'if ( getArray() == null ) setArray(new java.util.ArrayList());\n'

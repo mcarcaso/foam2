@@ -192,6 +192,7 @@ foam.CLASS({
       } else if ( this.swiftFactory ) {
         var factoryName = this.name + '_factory_';
         cls.method({
+          visibility: 'private',
           type: this.swiftType,
           name: factoryName,
           body: foam.cpTemplate(this.swiftFactory, 'swift')

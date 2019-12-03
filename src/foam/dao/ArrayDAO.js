@@ -24,7 +24,8 @@ foam.CLASS({
 
   requires: [
     'foam.dao.ArraySink',
-    'foam.mlang.predicate.True'
+    'foam.mlang.predicate.True',
+    'foam.util.SimpleDetachable',
   ],
 
   properties: [
@@ -73,7 +74,30 @@ foam.CLASS({
           getArray().add(obj);
         }
         
-        this.on().getSubTopic("put").pub(new Object[] { obj });
+        on().getSubTopic("put").pub(new Object[] { obj });
+
+        return obj;
+      `,
+      swiftCode: `
+        let p = obj!.getCls_()!.getAxiomByName("id") as! foam_core_Property;
+        var i = 0;
+        while i < getArray()!.count {
+          if p.compare(obj, getArray()![i]) == 0 {
+            var a = getArray();
+            a![i] = obj;
+            setArray(a);
+            break;
+          }
+          i+=1;
+        }
+
+        if i == getArray()!.count {
+          var a = getArray();
+          a!.append(obj);
+          setArray(a);
+        }
+
+        _ = on().getSubTopic("put")!.pub([obj]);
 
         return obj;
       `
@@ -104,6 +128,21 @@ foam.CLASS({
           }
         }
         return ret;
+      `,
+      swiftCode: `
+        var ret: foam_cross_platform_FObject? = nil;
+        let p = obj!.getCls_()!.getAxiomByName("id") as! foam_core_Property;
+        for i in 0..<getArray()!.count {
+          if p.compare(obj, getArray()![i]) == 0 {
+            ret = getArray()![i] as? foam_cross_platform_FObject;
+            var a = getArray()!;
+            a.remove(at: i);
+            setArray(a)
+            _ = on().getSubTopic("remove")!.pub([ret]);
+            break;
+          }
+        }
+        return ret;
       `
     },
 
@@ -111,41 +150,38 @@ foam.CLASS({
       name: 'select_',
       code: function select_(x, sink, skip, limit, order, predicate) {
         var resultSink = sink || this.ArraySink.create({ of: this.of });
-
         sink = this.decorateSink_(resultSink, skip, limit, order, predicate);
-
-        var detached = false;
-        var sub = foam.core.FObject.create();
-        sub.onDetach(function() { detached = true; });
-
+        var sub = this.SimpleDetachable.create();
         var self = this;
-
-        return new Promise(function(resolve, reject) {
-          for ( var i = 0 ; i < self.array.length ; i++ ) {
-            if ( detached ) break;
-
-            sink.put(self.array[i], sub);
+        return new Promise(resolve => {
+          for ( var i = 0 ; i < this.array.length ; i++ ) {
+            if ( sub.isDetached ) break;
+            sink.put(this.array[i], sub);
           }
-
           sink.eof();
-
           resolve(resultSink);
         });
       },
       androidCode: `
         foam.dao.Sink resultSink = sink == null ? ArraySink_create().build() : sink;
         foam.dao.Sink decoratedSink = decorateSink_(resultSink, skip, limit, order, predicate);
-
-        final boolean[] detached = { false };
-        foam.core.Detachable sub = <%=detachable(\`
-          detached[0] = true;
-        \`)%>;
-
+        foam.util.SimpleDetachable sub = SimpleDetachable_create().build();
         for ( int i = 0 ; i < getArray().size() ; i++ ) {
-          if ( detached[0] ) break;
+          if ( sub.getIsDetached() ) break;
           decoratedSink.put(getArray().get(i), sub);
         }
         decoratedSink.eof();
+        return resultSink;
+      `,
+      swiftCode: `
+        let resultSink = sink == nil ? ArraySink_create().build() : sink!;
+        let decoratedSink = decorateSink_(resultSink, skip, limit, order, predicate);
+        let sub = SimpleDetachable_create().build();
+        for i in 0..<getArray()!.count {
+          if sub.getIsDetached() { break; }
+          decoratedSink!.put(getArray()![i], sub);
+        }
+        decoratedSink!.eof();
         return resultSink;
       `
     },
@@ -191,6 +227,15 @@ foam.CLASS({
           }
         }
         return null;
+      `,
+      swiftCode: `
+        let p = getOf().getAxiomByName("id") as! foam_core_Property;
+        for o in getArray()! {
+          if p.compareValues(p.f(o), id) == 0 {
+            return o as? foam_cross_platform_FObject;
+          }
+        }
+        return nil;
       `
     },
   ]

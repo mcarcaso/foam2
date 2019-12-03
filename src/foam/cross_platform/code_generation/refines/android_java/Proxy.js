@@ -14,7 +14,7 @@ foam.CLASS({
           ${p.crossPlatformGetterName}().${name}(${args.map(a => a.name).join(', ')})
         `;
         return `
-          ${androidType != 'void' ? 'return ' : ''}${call};
+          ${androidType != 'void' ? 'return ' : ''}${call.trim()};
         `;
       }
     },

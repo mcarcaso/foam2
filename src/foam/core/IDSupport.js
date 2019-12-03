@@ -26,7 +26,11 @@ foam.CLASS({
   extends: 'foam.core.ObjectProperty',
 
   properties: [
-    ['name', 'id'],
+    {
+      class: 'StringProperty',
+      name: 'name',
+      value: 'id'
+    },
     {
       class: 'StringProperty',
       name: 'propName'

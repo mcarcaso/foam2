@@ -18,6 +18,11 @@ foam.CLASS({
         return ArrayDAO_create()
           .setOf(demo.Person.CLS_())
           .build();
+      `,
+      swiftFactory: `
+        return ArrayDAO_create()
+          .setOf(demo_Person.CLS_())
+          .build();
       `
     },
   ],
@@ -90,6 +95,73 @@ foam.CLASS({
         assertEquals("All", 4, pubs[0]);
         assertEquals("Puts", 3, pubs[1]);
         assertEquals("Removes", 1, pubs[2]);
+      `,
+      swiftCode: `
+        let o = ArrayDAO_create().build();
+        let d = o.getDao() as! foam_dao_AbstractDAO;
+        let c = o.Count_create().build();
+
+        var pubs = [0, 0, 0];
+        _ = d.on().sub(nil, <%=listener(\`
+          pubs[0]+=1; 
+        \`)%>);
+        _ = d.on().getSubTopic("put")!.sub(nil, <%=listener(\`
+          pubs[1]+=1; 
+        \`)%>);
+        _ = d.on().getSubTopic("remove")!.sub(nil, <%=listener(\`
+          pubs[2]+=1; 
+        \`)%>);
+
+        // Same ID. Only one entry should be in DAO.
+        _ = d.put(o.Person_create()
+          .setFullName("Mike C")
+          .build());
+        _ = d.put(o.Person_create()
+          .setFirstName("Mike")
+          .setLastName("C")
+          .build());
+
+        c.reset(nil);
+        _ = d.select(c);
+        XCTAssertEqual(1, c.getValue());
+        XCTAssertEqual(2, pubs[0], "All");
+        XCTAssertEqual(2, pubs[1], "Puts");
+        XCTAssertEqual(0, pubs[2], "Removes");
+
+        _ = d.put(o.Person_create()
+          .setFirstName("Mike")
+          .setLastName("D")
+          .build());
+
+        c.reset(nil);
+        _ = d.select(c);
+        XCTAssertEqual(2, c.getValue());
+        XCTAssertEqual(3, pubs[0], "All");
+        XCTAssertEqual(3, pubs[1], "Puts");
+        XCTAssertEqual(0, pubs[2], "Removes");
+
+        _ = d.remove(o.Person_create()
+          .setFirstName("Mike")
+          .setLastName("E")
+          .build());
+
+        c.reset(nil);
+        _ = d.select(c);
+        XCTAssertEqual(2, c.getValue());
+        XCTAssertEqual(3, pubs[0], "All");
+        XCTAssertEqual(3, pubs[1], "Puts");
+        XCTAssertEqual(0, pubs[2], "Removes");
+
+        _ = d.remove(o.Person_create()
+          .setFullName("Mike C")
+          .build());
+
+        c.reset(nil);
+        _ = d.select(c);
+        XCTAssertEqual(1, c.getValue());
+        XCTAssertEqual(4, pubs[0], "All");
+        XCTAssertEqual(3, pubs[1], "Puts");
+        XCTAssertEqual(1, pubs[2], "Removes");
       `,
     },
     {

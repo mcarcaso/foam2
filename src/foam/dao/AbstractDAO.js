@@ -77,6 +77,7 @@ foam.CLASS({
       androidExpression: `
         return (foam.core.Property) of.getAxiomByName("id");
       `,
+      swiftFactory: null,
       swiftExpression: `
         return of.getAxiomByName("id") as? foam_core_Property;
       `,
@@ -261,6 +262,17 @@ return new LimitedDAO(this.getX(), count, this);
           .build();
 
         foam.core.Detachable sub = listen(sink2, null);
+        sink2.reset(sub);
+
+        return sub;
+      `,
+      swiftCode: `
+        let sink2 = PipeSink_create()
+          .setDelegate(sink)
+          .setDao(self)
+          .build();
+
+        let sub = listen(sink2, nil);
         sink2.reset(sub);
 
         return sub;
@@ -832,6 +844,9 @@ foam.CLASS({
       },
       androidCode: `
         return super.select_(x, sink, skip, limit, order == null ? getComparator() : order, predicate);
+      `,
+      swiftCode: `
+        return super.select_(x, sink, skip, limit, order == nil ? getComparator() : order, predicate);
       `
     },
     {
@@ -841,6 +856,9 @@ foam.CLASS({
       },
       androidCode: `
         super.removeAll_(x, skip, limit, order == null ? getComparator() : order, predicate);
+      `,
+      swiftCode: `
+        super.removeAll_(x, skip, limit, order == nil ? getComparator() : order, predicate);
       `
     },
   ]
