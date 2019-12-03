@@ -551,7 +551,7 @@ foam.CLASS({
       `,
       swiftCode: `
         setArray(getArray().sorted(by: {(o1, o2) -> Bool in
-          return getComparator()!.compare(o1, o2) > 0;
+          return getComparator()!.compare(o1, o2) < 0;
         }));
         let sub = SimpleDetachable_create().build();
         for o in getArray() {

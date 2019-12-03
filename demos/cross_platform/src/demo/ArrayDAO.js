@@ -168,7 +168,7 @@ foam.CLASS({
       name: 'testWhere',
       androidCode: `
         ArrayDAO o = ArrayDAO_create().build();
-        foam.dao.AbstractDAO d = (foam.dao.AbstractDAO) o.getDao();
+        foam.dao.DAO d = o.getDao();
         foam.mlang.sink.Count c = o.Count_create().build();
 
         d.put(o.Person_create()
@@ -190,6 +190,31 @@ foam.CLASS({
         fd.select(c);
         assertEquals(1, c.getValue());
         c.reset(null);
+      `,
+      swiftCode: `
+        let o = ArrayDAO_create().build();
+        let d = o.getDao()!;
+        let c = o.Count_create().build();
+
+        _ = d.put(o.Person_create()
+          .setFirstName("A")
+          .build());
+        _ = d.put(o.Person_create()
+          .setFirstName("B")
+          .build());
+
+        let fd = d.where(o.Eq_create()
+          .setArg1(demo_Person.FIRST_NAME())
+          .setArg2(o.Constant_create().setValue("B").build())
+          .build())!;
+
+        _ = d.select(c);
+        XCTAssertEqual(2, c.getValue());
+        c.reset(nil);
+
+        _ = fd.select(c);
+        XCTAssertEqual(1, c.getValue());
+        c.reset(nil);
       `,
     },
     {
@@ -232,6 +257,45 @@ foam.CLASS({
           ((demo.Person) a.getArray().get(1)).getFirstName());
         assertEquals("A",
           ((demo.Person) a.getArray().get(2)).getFirstName());
+      `,
+      swiftCode: `
+        let o = ArrayDAO_create().build();
+        let a = o.ArraySink_create().build();
+        let d = o.getDao()!;
+        let asc = demo_Person.FIRST_NAME();
+        let desc = o.Desc_create()
+          .setArg1(asc)
+          .build();
+
+        _ = d.put(o.Person_create()
+          .setFirstName("C")
+          .build());
+        _ = d.put(o.Person_create()
+          .setFirstName("A")
+          .build());
+        _ = d.put(o.Person_create()
+          .setFirstName("B")
+          .build());
+
+        a.reset(nil);
+        _ = d.orderBy(asc)!.select(a);
+
+        XCTAssertEqual("A",
+          (a.getArray()[0] as! demo_Person).getFirstName());
+        XCTAssertEqual("B",
+          (a.getArray()[1] as! demo_Person).getFirstName());
+        XCTAssertEqual("C",
+          (a.getArray()[2] as! demo_Person).getFirstName());
+
+        a.reset(nil);
+        _ = d.orderBy(desc)!.select(a);
+
+        XCTAssertEqual("C",
+          (a.getArray()[0] as! demo_Person).getFirstName());
+        XCTAssertEqual("B",
+          (a.getArray()[1] as! demo_Person).getFirstName());
+        XCTAssertEqual("A",
+          (a.getArray()[2] as! demo_Person).getFirstName());
       `,
     },
   ]
