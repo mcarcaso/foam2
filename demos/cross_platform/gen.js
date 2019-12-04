@@ -55,13 +55,14 @@
     modelArgs: {
       platform: platform,
       classIds: [
+        'demo.ArrayDAO',
         'demo.Compare',
         'demo.ImportExport',
+        'demo.MLang',
         'demo.Method',
         'demo.Person',
         'demo.Reaction',
         'demo.Slot',
-        'demo.MLang',
       ],
       sourcePath: platformArgs.sourcePath,
       testPath: platformArgs.testPath,

@@ -13,6 +13,7 @@ foam.INTERFACE({
   implements: [ 'foam.dao.SQLStatement' ],
 
   javaImplements: [ 'java.util.Comparator' ],
+  androidImplements: [ 'java.util.Comparator' ],
   
   methods: [
     {

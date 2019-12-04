@@ -3,7 +3,6 @@ foam.INTERFACE({
   name: 'FObject',
   implements: [
     'foam.core.Detachable',
-    'foam.cross_platform.Topic',
   ],
   methods: [
     {
@@ -78,6 +77,30 @@ foam.INTERFACE({
       args: [
         { type: 'Any', name: 'o' }
       ]
-    }
+    },
+    {
+      name: 'pub',
+      type: 'Integer',
+      args: [
+        {
+          type: 'Any[]',
+          name: 'args'
+        }
+      ]
+    },
+    {
+      name: 'sub',
+      type: 'foam.core.Detachable',
+      args: [
+        {
+          type: 'String[]',
+          name: 'topics'
+        },
+        {
+          type: 'foam.cross_platform.Listener',
+          name: 'listener'
+        }
+      ]
+    },
   ]
 });
