@@ -1,8 +1,30 @@
 foam.CLASS({
   package: 'foam.cross_platform.code_generation.android_java',
-  name: 'Builder',
+  name: 'BuilderInterface',
+  methods: [
+    {
+      name: 'buildBuilderClass',
+      args: [
+        { type: 'foam.java.Class', name: 'cls' }
+      ]
+    },
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.android_java',
+  name: 'BuilderClass',
   extends: 'foam.java.Class',
+  requires: [
+    'foam.cross_platform.code_generation.android_java.DefaultBuilder'
+  ],
   properties: [
+    {
+      class: 'FObjectProperty',
+      of: 'foam.cross_platform.code_generation.android_java.BuilderInterface',
+      name: 'builder',
+      factory: function() { return this.DefaultBuilder.create() }
+    },
     {
       name: 'name',
       expression: function(clsName) {
@@ -38,27 +60,53 @@ foam.CLASS({
   ],
   methods: [
     function outputJava(o) {
-      this.field({
+      this.builder.buildBuilderClass(this);
+      this.SUPER(o);
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.android_java',
+  name: 'DefaultBuilder',
+  implements: [
+    'foam.cross_platform.code_generation.android_java.BuilderInterface'
+  ],
+  methods: [
+    function buildBuilderClass(cls) {
+      cls.method({
+        static: true,
+        visibility: 'public',
+        type: cls.name,
+        name: 'getInstance',
+        args: [
+          { type: 'foam.cross_platform.Context', name: 'x' }
+        ],
+        body: `
+          return new ${cls.name}(x);
+        `
+      });
+      cls.field({
         visibility: 'private',
         type: 'foam.cross_platform.Context',
         name: '_x_',
         initializer: 'null'
       });
-      this.properties.forEach(p => {
-        this.field({
+      cls.properties.forEach(p => {
+        cls.field({
           visibility: 'private',
           type: 'boolean',
           name: p.crossPlatformIsSetVarName,
           initializer: 'false'
         });
-        this.field({
+        cls.field({
           visibility: 'private',
           type: 'Object',
           name: p.crossPlatformPrivateVarName
         });
-        this.method({
+        cls.method({
           visibility: 'public',
-          type: this.name,
+          type: cls.name,
           name: p.crossPlatformSetterName,
           args: [
             { type: 'Object', name: 'value' }
@@ -70,47 +118,104 @@ foam.CLASS({
           `
         });
       });
-      this.method({
+      cls.method({
         visibility: 'private',
-        name: this.name,
+        name: cls.name,
         type: '',
         args: [
           { type: 'foam.cross_platform.Context', name: 'x' }
         ],
         body: `_x_ = x;`
       });
-      this.method({
+      cls.method({
         visibility: 'public',
         name: 'build',
-        type: this.clsName,
+        type: cls.clsName,
         body: `
-          ${this.clsName} o = new ${this.clsName}();
+          ${cls.clsName} o = new ${cls.clsName}();
           o.setX(_x_);
-${this.properties.map(p => `
+${cls.properties.map(p => `
           if ( ${p.crossPlatformIsSetVarName} ) {
             o.${p.crossPlatformSetterName}(${p.crossPlatformPrivateVarName});
           }
 `).join('')}
-${this.postBuild.map(c => `
-          ${c}
-`).join('\n')}
+          initObj(o);
           return o;
         `
       });
-      this.SUPER(o);
-    },
-    function addBuilderMethod(cls) {
       cls.method({
-        visibility: 'public',
-        static: true,
-        type: this.name,
-        name: cls.name + 'Builder',
+        visibility: 'private',
+        name: 'initObj',
         args: [
-          { type: 'foam.cross_platform.Context', name: 'x' }
+          { type: cls.clsName, name: 'o' }
         ],
         body: `
-          return new ${this.name}(x);
+          o.init();
         `
+      });
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.android_java',
+  name: 'ProxyBuilder',
+  implements: [
+    'foam.cross_platform.code_generation.android_java.BuilderInterface'
+  ],
+  properties: [
+    {
+      class: 'Proxy',
+      of: 'foam.cross_platform.code_generation.android_java.BuilderInterface',
+      name: 'delegate'
+    }
+  ],
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.android_java',
+  name: 'PostObjInitBuilder',
+  extends: 'foam.cross_platform.code_generation.android_java.ProxyBuilder',
+  properties: [
+    {
+      class: 'StringProperty',
+      name: 'body'
+    }
+  ],
+  methods: [
+    function buildBuilderClass(cls) {
+      this.SUPER(cls);
+      var m = cls.getMethod('initObj');
+      m.body.data += '\n' + this.body;
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.android_java',
+  name: 'SingletonBuilder',
+  extends: 'foam.cross_platform.code_generation.android_java.ProxyBuilder',
+  methods: [
+    function buildBuilderClass(cls) {
+      this.SUPER(cls);
+
+      var buildMethod = cls.getMethod('build');
+
+      var buildSingletonMethod = buildMethod.clone();
+      buildSingletonMethod.name = 'buildSingleton';
+      cls.method(buildSingletonMethod);
+
+      buildMethod.body.data = `
+        if ( singleton == null ) {
+          singleton = buildSingleton();
+        }
+        return singleton;
+      `;
+
+      cls.field({
+        static: true,
+        type: buildMethod.type,
+        name: 'singleton'
       });
     }
   ]
