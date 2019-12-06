@@ -27,13 +27,24 @@ foam.LIB({
       var flagFilter = foam.util.flagFilter(['swift']);
 
       if ( ! this.model_.abstract ) {
-        var builder = foam.cross_platform.code_generation.ios_swift.Builder.create({
+        var builder = foam.cross_platform.code_generation.ios_swift.BuilderClass.create({
           clsName: cls.name,
           properties: this.getAxiomsByClass(foam.core.Property)
             .filter(flagFilter)
         });
         cls.classes.push(builder);
-        builder.addBuilderMethod(cls);
+        cls.method({
+          visibility: 'public',
+          static: true,
+          type: builder.name,
+          name: cls.name + 'Builder',
+          args: [
+            { type: foam.cross_platform.Context.model_.swiftName + '?', localName: 'x' }
+          ],
+          body: `
+            return ${builder.name}.getInstance(x);
+          `
+        });
       }
 
       this.getAxioms()

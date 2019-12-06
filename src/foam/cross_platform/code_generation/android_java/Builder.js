@@ -40,15 +40,6 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'StringArrayProperty',
-      name: 'postBuild',
-      factory: function() {
-        return [
-          'o.init();'
-        ]
-      }
-    },
-    {
       class: 'StringProperty',
       name: 'clsName'
     },
