@@ -1,6 +1,13 @@
 foam.CLASS({
   package: 'foam.cross_platform.code_generation',
   name: 'CustomDetailView',
+  properties: [
+    {
+      class: 'StringProperty',
+      name: 'name',
+      value: 'customDetailViewAxiom'
+    }
+  ],
   methods: [
     function getDeps(flagFilter, map) {
       if ( flagFilter({flags: ['swift']}) ) {

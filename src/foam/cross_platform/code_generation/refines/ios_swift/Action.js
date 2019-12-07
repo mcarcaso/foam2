@@ -6,6 +6,14 @@ foam.CLASS({
   properties: [
     {
       class: 'StringProperty',
+      name: 'swiftGetProperty',
+      expression: function(forClass_, name, crossPlatformFnGetterName) {
+        return foam.lookup(forClass_).getSuperAxiomByName(name) ? '' :
+          `return ${crossPlatformFnGetterName}();`
+      }
+    },
+    {
+      class: 'StringProperty',
       name: 'swiftCode',
       value: 'fatalError()'
     },

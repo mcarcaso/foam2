@@ -36,6 +36,10 @@ foam.CLASS({
       required: true
     },
     {
+      name: 'forClass_',
+      transient: true
+    },
+    {
       class: 'StringProperty',
       name: 'documentation'
     },
