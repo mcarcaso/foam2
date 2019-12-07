@@ -3,7 +3,6 @@ foam.LIB({
   flags: ['android'],
   methods: [
     function buildAndroidResources(resources, parentCls) {
-      if ( this.model_.name == 'Person' ) debugger;
       var flagFilter = foam.util.flagFilter(['android']);
       this.getAxioms()
         .filter(flagFilter)
@@ -25,13 +24,24 @@ foam.LIB({
       var flagFilter = foam.util.flagFilter(['android']);
 
       if ( ! this.model_.abstract ) {
-        var builder = foam.cross_platform.code_generation.android_java.Builder.create({
+        var builder = foam.cross_platform.code_generation.android_java.BuilderClass.create({
           clsName: cls.name,
           properties: this.getAxiomsByClass(foam.core.Property)
             .filter(flagFilter)
         });
         cls.classes.push(builder);
-        builder.addBuilderMethod(cls);
+        cls.method({
+          visibility: 'public',
+          static: true,
+          type: builder.name,
+          name: cls.name + 'Builder',
+          args: [
+            { type: 'foam.cross_platform.Context', name: 'x' }
+          ],
+          body: `
+            return ${builder.name}.getInstance(x);
+          `
+        });
       }
 
       this.getAxioms()

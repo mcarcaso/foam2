@@ -1,8 +1,30 @@
 foam.CLASS({
   package: 'foam.cross_platform.code_generation.ios_swift',
-  name: 'Builder',
+  name: 'BuilderInterface',
+  methods: [
+    {
+      name: 'buildBuilderClass',
+      args: [
+        { type: 'foam.swift.SwiftClass', name: 'cls' }
+      ]
+    },
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.ios_swift',
+  name: 'BuilderClass',
   extends: 'foam.swift.SwiftClass',
+  requires: [
+    'foam.cross_platform.code_generation.ios_swift.DefaultBuilder'
+  ],
   properties: [
+    {
+      class: 'FObjectProperty',
+      of: 'foam.cross_platform.code_generation.ios_swift.BuilderInterface',
+      name: 'builder',
+      factory: function() { return this.DefaultBuilder.create() }
+    },
     {
       name: 'name',
       expression: function(clsName) {
@@ -12,15 +34,6 @@ foam.CLASS({
     {
       name: 'visibility',
       value: 'public'
-    },
-    {
-      class: 'StringArrayProperty',
-      name: 'postBuild',
-      factory: function() {
-        return [
-          'o.`init`();'
-        ]
-      }
     },
     {
       class: 'StringProperty',
@@ -34,27 +47,53 @@ foam.CLASS({
   ],
   methods: [
     function outputSwift(o) {
-      this.field({
+      this.builder.buildBuilderClass(this);
+      this.SUPER(o);
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.ios_swift',
+  name: 'DefaultBuilder',
+  implements: [
+    'foam.cross_platform.code_generation.ios_swift.BuilderInterface'
+  ],
+  methods: [
+    function buildBuilderClass(cls) {
+      cls.method({
+        static: true,
+        visibility: 'public',
+        type: cls.name,
+        name: 'getInstance',
+        args: [
+          { type: foam.cross_platform.Context.model_.swiftName + '?', localName: 'x' }
+        ],
+        body: `
+          return ${cls.name}(x);
+        `
+      });
+      cls.field({
         visibility: 'private',
         type: foam.cross_platform.Context.model_.swiftName + '?',
         name: '_x_',
         defaultValue: 'nil'
       });
-      this.properties.forEach(p => {
-        this.field({
+      cls.properties.forEach(p => {
+        cls.field({
           visibility: 'private',
           type: 'Bool',
           name: p.crossPlatformIsSetVarName,
           defaultValue: 'false'
         });
-        this.field({
+        cls.field({
           visibility: 'private',
           type: 'Any?',
           name: p.crossPlatformPrivateVarName
         });
-        this.method({
+        cls.method({
           visibility: 'public',
-          type: this.name,
+          type: cls.name,
           name: p.crossPlatformSetterName,
           args: [
             { type: 'Any?', localName: 'value' }
@@ -66,46 +105,102 @@ foam.CLASS({
           `
         });
       });
-      this.method(foam.swift.Initializer.create({
+      cls.method(foam.swift.Initializer.create({
         args: [
           { type: foam.cross_platform.Context.model_.swiftName + '?', localName: 'x' }
         ],
         body: `_x_ = x;`
       }));
-      this.method({
+      cls.method({
         visibility: 'public',
         name: 'build',
-        type: this.clsName,
+        type: cls.clsName,
         body: `
-          let o = ${this.clsName}();
+          let o = ${cls.clsName}();
           o.setX(_x_);
-${this.properties.map(p => `
+${cls.properties.map(p => `
           if ${p.crossPlatformIsSetVarName} {
             o.${p.crossPlatformSetterName}(${p.crossPlatformPrivateVarName});
           }
 `).join('')}
-${this.postBuild.map(c => `
-          ${c}
-`).join('\n')}
+          initObj(o);
           return o;
         `
       });
-      this.SUPER(o);
-    },
-    function addBuilderMethod(cls) {
       cls.method({
-        visibility: 'public',
-        static: true,
-        type: this.name,
-        name: cls.name + 'Builder',
+        visibility: 'private',
+        name: 'initObj',
         args: [
-          { type: foam.cross_platform.Context.model_.swiftName + '?', localName: 'x' }
+          { type: cls.clsName, localName: 'o' }
         ],
         body: `
-          return Self.${this.name}(x);
+          o.\`init\`();
         `
       });
     }
   ]
 });
 
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.ios_swift',
+  name: 'ProxyBuilder',
+  implements: [
+    'foam.cross_platform.code_generation.ios_swift.BuilderInterface'
+  ],
+  properties: [
+    {
+      class: 'Proxy',
+      of: 'foam.cross_platform.code_generation.ios_swift.BuilderInterface',
+      name: 'delegate'
+    }
+  ],
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.ios_swift',
+  name: 'PostObjInitBuilder',
+  extends: 'foam.cross_platform.code_generation.ios_swift.ProxyBuilder',
+  properties: [
+    {
+      class: 'StringProperty',
+      name: 'body'
+    }
+  ],
+  methods: [
+    function buildBuilderClass(cls) {
+      this.SUPER(cls);
+      var m = cls.getMethod('initObj');
+      m.body += '\n' + this.body;
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.ios_swift',
+  name: 'SingletonBuilder',
+  extends: 'foam.cross_platform.code_generation.ios_swift.ProxyBuilder',
+  methods: [
+    function buildBuilderClass(cls) {
+      this.SUPER(cls);
+
+      var buildMethod = cls.getMethod('build');
+
+      var buildSingletonMethod = buildMethod.clone();
+      buildSingletonMethod.name = 'buildSingleton';
+      cls.method(buildSingletonMethod);
+
+      buildMethod.body = `
+        if Self.singleton == nil {
+          Self.singleton = buildSingleton();
+        }
+        return Self.singleton!;
+      `;
+
+      cls.field({
+        static: true,
+        type: buildMethod.type + '?',
+        name: 'singleton'
+      });
+    }
+  ]
+});

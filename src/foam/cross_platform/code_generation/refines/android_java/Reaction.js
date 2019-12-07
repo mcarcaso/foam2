@@ -41,8 +41,11 @@ foam.CLASS({
         `
       });
 
-      var b = cls.classes.find(c => foam.cross_platform.code_generation.android_java.Builder.isInstance(c));
-      b.postBuild.push(`o.init_${this.name}();`);
+      var b = cls.classes.find(c => foam.cross_platform.code_generation.android_java.BuilderClass.isInstance(c));
+      b.builder = foam.cross_platform.code_generation.android_java.PostObjInitBuilder.create({
+        delegate: b.builder,
+        body: `o.init_${this.name}();`
+      });
     }
   ]
 });

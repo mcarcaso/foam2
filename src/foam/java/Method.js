@@ -26,7 +26,11 @@ foam.CLASS({
     'static',
     'abstract',
     'final',
-    'type',
+    {
+      class: 'StringProperty',
+      name: 'type',
+      value: 'void'
+    },
     'synchronized',
     {
       class: 'BooleanProperty',
