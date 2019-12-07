@@ -7,9 +7,7 @@ foam.CLASS({
     {
       class: 'BooleanProperty',
       name: 'swiftOptional',
-      expression: function(required) {
-        return !required;
-      },
+      value: true
     },
     {
       class: 'foam.swift.SwiftTypeProperty',
@@ -45,7 +43,10 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftFactory'
+      name: 'swiftFactory',
+      expression: function(crossPlatformFactory) {
+        return crossPlatformFactory;
+      }
     },
     {
       class: 'StringProperty',
@@ -60,12 +61,81 @@ foam.CLASS({
       name: 'swiftSetter',
     },
     {
+      class: 'StringProperty',
+      name: 'swiftGetter',
+    },
+    {
       class: 'FunctionProperty',
       name: 'swiftFAsSwiftValue',
       expression: function() {
         return o => foam.swift.asSwiftValue(this.f(o));
       }
-    }
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftComparePropertyValues',
+      value: `
+        foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
+          .setFn({(args: [Any?]?) -> Any? in
+            return foam_cross_platform_Lib.compare(args![0], args![1]);
+          })
+          .build()
+      `
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftClearProperty',
+      expression: function(
+          swiftExpression,
+          swiftType,
+          crossPlatformExpressionSubName,
+          crossPlatformIsSetVarName,
+          crossPlatformPrivateVarName,
+          crossPlatformSlotGetterName,
+          name) {
+        return `
+          ${crossPlatformIsSetVarName} = false;
+          ${crossPlatformPrivateVarName} = nil;
+          var ${name}Args: [Any?] = ["propertyChange", "${name}", nil];
+          if hasListeners(${name}Args) {
+            ${name}Args[2] = ${crossPlatformSlotGetterName}();
+            _ = pub(${name}Args);
+          }
+          ${swiftExpression ? `
+          ${crossPlatformExpressionSubName}?.detach();
+          ${crossPlatformExpressionSubName} = nil;
+          ` : ``}
+        `
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftSetProperty',
+      expression: function(crossPlatformSetterName) {
+        return `${crossPlatformSetterName}(value);`
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftGetSlot',
+      expression: function(crossPlatformSlotGetterName) {
+        return `return ${crossPlatformSlotGetterName}();`
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftHasPropertySet',
+      expression: function(crossPlatformIsSetVarName) {
+        return `return ${crossPlatformIsSetVarName};`
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftGetProperty',
+      expression: function(crossPlatformGetterName) {
+        return `return ${crossPlatformGetterName}();`
+      }
+    },
   ],
   methods: [
     function buildSwiftClass(cls, parentCls) {
@@ -102,7 +172,7 @@ foam.CLASS({
         name: this.crossPlatformSlotGetterName,
         body: `
           if ${this.crossPlatformSlotVarName} == nil {
-            ${this.crossPlatformSlotVarName} = PropertySlot_create()
+            ${this.crossPlatformSlotVarName} = foam_core_internal_PropertySlot.foam_core_internal_PropertySlotBuilder(getX())
               .setObj(self)
               .setProp(Self.${this.crossPlatformAxiomName}())
               .build();
@@ -118,13 +188,14 @@ foam.CLASS({
         name: this.crossPlatformGetterName
       };
       if ( this.swiftGetter ) {
-        getter.body = this.androidGetter;
+        getter.body = this.swiftGetter;
       } else if ( this.swiftFactory ) {
         var factoryName = this.name + '_factory_';
         cls.method({
+          visibility: 'private',
           type: this.swiftType,
           name: factoryName,
-          body: this.swiftFactory
+          body: foam.cpTemplate(this.swiftFactory, 'swift')
         });
         getter.body = `
           if !${this.crossPlatformIsSetVarName} {
@@ -192,7 +263,9 @@ foam.CLASS({
         getter.body = `
           ${this.required ? '' : `
           if !${this.crossPlatformIsSetVarName} {
+            ${this.required && this.swiftValue == 'nil' ? 'fatalError()' : `
             return ${this.swiftValue};
+            `}
           }
           `}
           return ${this.crossPlatformPrivateVarName};
@@ -308,6 +381,7 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
             ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject
               .getAxiomByName('asSwiftValue')
               .code.call(this)};
+            ${this.crossPlatformPrivateAxiom}!.setComparePropertyValues(${this.swiftComparePropertyValues});
           }
           return ${this.crossPlatformPrivateAxiom}!;
         `

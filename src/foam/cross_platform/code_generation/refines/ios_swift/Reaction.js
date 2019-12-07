@@ -41,8 +41,11 @@ foam.CLASS({
         `
       });
 
-      var b = cls.classes.find(c => foam.cross_platform.code_generation.ios_swift.Builder.isInstance(c));
-      b.postBuild.push(`o.init_${this.name}();`);
+      var b = cls.classes.find(c => foam.cross_platform.code_generation.ios_swift.BuilderClass.isInstance(c));
+      b.builder = foam.cross_platform.code_generation.ios_swift.PostObjInitBuilder.create({
+        delegate: b.builder,
+        body: `o.init_${this.name}();`
+      });
     }
   ]
 });

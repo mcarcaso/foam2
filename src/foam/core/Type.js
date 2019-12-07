@@ -360,6 +360,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   properties: [
     ['java', 'foam.core.ClassInfo'],
+    ['android', 'foam.cross_platform.FoamClass'],
     ['swift', 'foam_cross_platform_FoamClass'],
   ],
 });

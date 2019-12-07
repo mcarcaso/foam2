@@ -23,6 +23,10 @@ foam.CLASS({
       expression: function(name) {
         return `${name}_fn`;
       }
+    },
+    {
+      class: 'StringProperty',
+      name: 'crossPlatformCode'
     }
   ]
 });

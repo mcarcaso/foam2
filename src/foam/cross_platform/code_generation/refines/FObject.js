@@ -6,7 +6,7 @@ foam.LIB({
       return foam.cross_platform.FoamClass.create({
         id: this.id,
         parent: this.model_.crossPlatformParentClass,
-        axioms: this.getOwnAxioms()
+        ownAxioms: this.getOwnAxioms()
           .filter(a => a.forClass_ == this.id)
           .filter(flagFilter)
       });

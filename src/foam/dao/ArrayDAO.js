@@ -24,7 +24,8 @@ foam.CLASS({
 
   requires: [
     'foam.dao.ArraySink',
-    'foam.mlang.predicate.True'
+    'foam.mlang.predicate.True',
+    'foam.util.SimpleDetachable',
   ],
 
   properties: [
@@ -37,60 +38,152 @@ foam.CLASS({
       }
     },
     {
+      class: 'ListProperty',
       name: 'array',
       factory: function() { return []; }
     }
   ],
 
   methods: [
-    function put_(x, obj) {
-      for ( var i = 0 ; i < this.array.length ; i++ ) {
-        if ( obj.ID.compare(obj, this.array[i]) === 0 ) {
-          this.array[i] = obj;
-          break;
+    {
+      name: 'put_',
+      code: function put_(x, obj) {
+        for ( var i = 0 ; i < this.array.length ; i++ ) {
+          if ( obj.ID.compare(obj, this.array[i]) === 0 ) {
+            this.array[i] = obj;
+            break;
+          }
         }
-      }
 
-      if ( i == this.array.length ) this.array.push(obj);
-      this.on.put.pub(obj);
+        if ( i == this.array.length ) this.array.push(obj);
+        this.on.put.pub(obj);
 
-      return Promise.resolve(obj);
+        return Promise.resolve(obj);
+      },
+      androidCode: `
+        foam.core.Property p = (foam.core.Property) obj.getCls_().getAxiomByName("id");
+        int i;
+        for ( i = 0 ; i < getArray().size() ; i++ ) {
+          if ( p.compare(obj, getArray().get(i)) == 0 ) {
+            getArray().set(i, obj);
+            break;
+          }
+        }
+
+        if ( i == this.getArray().size()) {
+          getArray().add(obj);
+        }
+        
+        on().getSubTopic("put").pub(new Object[] { obj });
+
+        return obj;
+      `,
+      swiftCode: `
+        let p = obj!.getCls_()!.getAxiomByName("id") as! foam_core_Property;
+        var i = 0;
+        while i < getArray()!.count {
+          if p.compare(obj, getArray()![i]) == 0 {
+            var a = getArray();
+            a![i] = obj;
+            setArray(a);
+            break;
+          }
+          i+=1;
+        }
+
+        if i == getArray()!.count {
+          var a = getArray();
+          a!.append(obj);
+          setArray(a);
+        }
+
+        _ = on().getSubTopic("put")!.pub([obj]);
+
+        return obj;
+      `
     },
 
-    function remove_(x, obj) {
-      for ( var i = 0 ; i < this.array.length ; i++ ) {
-        if ( foam.util.equals(obj.id, this.array[i].id) ) {
-          var o2 = this.array.splice(i, 1)[0];
-          this.on.remove.pub(o2);
-          break;
+    {
+      name: 'remove_',
+      code: function remove_(x, obj) {
+        for ( var i = 0 ; i < this.array.length ; i++ ) {
+          if ( foam.util.equals(obj.id, this.array[i].id) ) {
+            var o2 = this.array.splice(i, 1)[0];
+            this.on.remove.pub(o2);
+            break;
+          }
         }
-      }
 
-      return Promise.resolve();
+        return Promise.resolve();
+      },
+      androidCode: `
+        foam.cross_platform.FObject ret = null;
+        foam.core.Property p = (foam.core.Property) obj.getCls_().getAxiomByName("id");
+        for ( int i = 0 ; i < getArray().size() ; i++ ) {
+          if ( p.compare(obj, getArray().get(i)) == 0 ) {
+            ret = (foam.cross_platform.FObject) getArray().get(i);
+            getArray().remove(i);
+            on().getSubTopic("remove").pub(new Object[] {ret});
+            break;
+          }
+        }
+        return ret;
+      `,
+      swiftCode: `
+        var ret: foam_cross_platform_FObject? = nil;
+        let p = obj!.getCls_()!.getAxiomByName("id") as! foam_core_Property;
+        for i in 0..<getArray()!.count {
+          if p.compare(obj, getArray()![i]) == 0 {
+            ret = getArray()![i] as? foam_cross_platform_FObject;
+            var a = getArray()!;
+            a.remove(at: i);
+            setArray(a)
+            _ = on().getSubTopic("remove")!.pub([ret]);
+            break;
+          }
+        }
+        return ret;
+      `
     },
 
-    function select_(x, sink, skip, limit, order, predicate) {
-      var resultSink = sink || this.ArraySink.create({ of: this.of });
-
-      sink = this.decorateSink_(resultSink, skip, limit, order, predicate);
-
-      var detached = false;
-      var sub = foam.core.FObject.create();
-      sub.onDetach(function() { detached = true; });
-
-      var self = this;
-
-      return new Promise(function(resolve, reject) {
-        for ( var i = 0 ; i < self.array.length ; i++ ) {
-          if ( detached ) break;
-
-          sink.put(self.array[i], sub);
+    {
+      name: 'select_',
+      code: function select_(x, sink, skip, limit, order, predicate) {
+        var resultSink = sink || this.ArraySink.create({ of: this.of });
+        sink = this.decorateSink_(resultSink, skip, limit, order, predicate);
+        var sub = this.SimpleDetachable.create();
+        var self = this;
+        return new Promise(resolve => {
+          for ( var i = 0 ; i < this.array.length ; i++ ) {
+            if ( sub.isDetached ) break;
+            sink.put(this.array[i], sub);
+          }
+          sink.eof();
+          resolve(resultSink);
+        });
+      },
+      androidCode: `
+        foam.dao.Sink resultSink = sink == null ? ArraySink_create().build() : sink;
+        foam.dao.Sink decoratedSink = decorateSink_(resultSink, skip, limit, order, predicate);
+        foam.util.SimpleDetachable sub = SimpleDetachable_create().build();
+        for ( int i = 0 ; i < getArray().size() ; i++ ) {
+          if ( sub.getIsDetached() ) break;
+          decoratedSink.put(getArray().get(i), sub);
         }
-
-        sink.eof();
-
-        resolve(resultSink);
-      });
+        decoratedSink.eof();
+        return resultSink;
+      `,
+      swiftCode: `
+        let resultSink = sink == nil ? ArraySink_create().build() : sink!;
+        let decoratedSink = decorateSink_(resultSink, skip, limit, order, predicate);
+        let sub = SimpleDetachable_create().build();
+        for i in 0..<getArray()!.count {
+          if sub.getIsDetached() { break; }
+          decoratedSink!.put(getArray()![i], sub);
+        }
+        decoratedSink!.eof();
+        return resultSink;
+      `
     },
 
     function removeAll_(x, skip, limit, order, predicate) {
@@ -114,15 +207,36 @@ foam.CLASS({
       return Promise.resolve();
     },
 
-    function find_(x, key) {
-      var id = this.of.isInstance(key) ? key.id : key;
-      for ( var i = 0 ; i < this.array.length ; i++ ) {
-        if ( foam.util.equals(id, this.array[i].id) ) {
-          return Promise.resolve(this.array[i]);
+    {
+      name: 'find_',
+      code: function find_(x, key) {
+        var id = this.of.isInstance(key) ? key.id : key;
+        for ( var i = 0 ; i < this.array.length ; i++ ) {
+          if ( foam.util.equals(id, this.array[i].id) ) {
+            return Promise.resolve(this.array[i]);
+          }
         }
-      }
 
-      return Promise.resolve(null);
-    }
+        return Promise.resolve(null);
+      },
+      androidCode: `
+        foam.core.Property p = (foam.core.Property) getOf().getAxiomByName("id");
+        for ( Object o : getArray() ) {
+          if ( p.compareValues(p.f(o), id) == 0 ) {
+            return (foam.cross_platform.FObject) o;
+          }
+        }
+        return null;
+      `,
+      swiftCode: `
+        let p = getOf().getAxiomByName("id") as! foam_core_Property;
+        for o in getArray()! {
+          if p.compareValues(p.f(o), id) == 0 {
+            return o as? foam_cross_platform_FObject;
+          }
+        }
+        return nil;
+      `
+    },
   ]
 });

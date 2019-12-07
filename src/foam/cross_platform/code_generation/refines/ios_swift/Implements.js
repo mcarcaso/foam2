@@ -3,6 +3,12 @@ foam.CLASS({
   name: 'ImplementsRefinement',
   refines: 'foam.core.Implements',
   flags: ['swift'],
+  properties: [
+    {
+      name: 'name',
+      swiftGetter: 'return "implements_" + getPath()!;'
+    }
+  ],
   methods: [
     function buildSwiftClass(cls, parentCls) {
       if ( parentCls.getSuperAxiomByName(this.name) ) return;

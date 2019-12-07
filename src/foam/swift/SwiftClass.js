@@ -23,6 +23,13 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
+      name: 'path',
+      expression: function(name) {
+        return `${name}.swift`
+      }
+    },
+    {
+      class: 'StringProperty',
       name: 'name'
     },
     {
@@ -127,7 +134,7 @@ foam.CLASS({
     function toSource() {
       return {
         body: this.toSwiftSource(),
-        path: `${this.name}.swift`
+        path: this.path
       };
     },
     function toSwiftSource() {

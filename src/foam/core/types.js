@@ -779,7 +779,12 @@ foam.CLASS({
     */
     { class: 'StringProperty', name: 'name' },
     { class: 'StringProperty', name: 'shortName' },
-    { class: 'StringProperty', name: 'help' }
+    { class: 'StringProperty', name: 'help' },
+    {
+      class: 'FunctionProperty',
+      name: 'comparePropertyValues',
+      value: function(o1, o2) { return foam.util.compare(o1, o2); }
+    },
   ]
 });
 

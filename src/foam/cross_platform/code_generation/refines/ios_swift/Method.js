@@ -9,8 +9,8 @@ foam.CLASS({
   properties: [
     {
       class: 'foam.swift.SwiftTypeProperty',
-      expression: function(type) {
-        return foam.swift.toSwiftType(type, true);
+      expression: function(type, swiftOptional) {
+        return foam.swift.toSwiftType(type, swiftOptional);
       },
     },
     {
@@ -18,9 +18,25 @@ foam.CLASS({
       name: 'swiftAnnotations'
     },
     {
+      class: 'BooleanProperty',
+      name: 'swiftOptional',
+      value: true
+    },
+    {
       class: 'StringProperty',
       name: 'swiftCode',
-      value: 'fatalError()'
+      expression: function(crossPlatformCode) {
+        return crossPlatformCode || 'fatalError()';
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftGetProperty',
+      expression: function(forClass_, name, crossPlatformFnGetterName, crossPlatformIsStatic) {
+        return foam.lookup(forClass_).getSuperAxiomByName(name) ||
+               crossPlatformIsStatic ? '' :
+          `return ${crossPlatformFnGetterName}();`
+      }
     },
   ],
   methods: [
@@ -101,11 +117,7 @@ foam.CLASS({
 
       if ( hasSameSignature(parentMethod) ) return true;
 
-      var parentMethod = parentCls.getSuperAxiomByName(this.name);
-
-      if ( this.InterfaceMethod.isInstance(parentMethod) ) {
-        return false;
-      }
+      var parentMethod = parentCls.getSuperClass().getAxiomByName(this.name);
 
       if ( parentMethod && parentMethod.forClass_ == 'foam.core.FObject' ) {
         // If the parentMethod comes from foam.core.FObject we ignore it because
@@ -156,4 +168,32 @@ foam.CLASS({
       return arg;
     },
   ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.refines.ios_swift',
+  name: 'InterfaceMethodRefine',
+  refines: 'foam.core.internal.InterfaceMethod',
+  flags: ['swift'],
+  methods: [
+    function buildSwiftClass(cls, parentCls) {
+      this.SUPER(cls, parentCls);
+      // If the model doesn't implement this method, fill it in with a
+      // fatalError as the implementation. This is needed as a means to provide
+      // abstract classes to swift.
+      if ( parentCls.model_.abstract &&
+           parentCls.getSuperClass().getAxiomByName(this.name) !== this &&
+           parentCls.getAxiomByName(this.name) === this ) {
+        cls.method({
+          override: this.swiftIsOverride(parentCls),
+          visibility: 'public',
+          static: this.crossPlatformIsStatic,
+          type: this.swiftType,
+          name: this.name,
+          args: this.args.map(a => a.toSwiftArg()),
+          body: 'fatalError()'
+        });
+      }
+    }
+  ],
 });

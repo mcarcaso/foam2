@@ -29,27 +29,34 @@ foam.LIB({
 
       var flagFilter = foam.util.flagFilter(['swift']);
 
-      var builder = foam.cross_platform.code_generation.ios_swift.Builder.create({
-        clsName: cls.name,
-        properties: this.getAxiomsByClass(foam.core.Property)
-          .filter(flagFilter)
-      });
-      cls.classes.push(builder);
-      builder.addBuilderMethod(cls);
+      if ( ! this.model_.abstract ) {
+        var builder = foam.cross_platform.code_generation.ios_swift.BuilderClass.create({
+          clsName: cls.name,
+          properties: this.getAxiomsByClass(foam.core.Property)
+            .filter(flagFilter)
+        });
+        cls.classes.push(builder);
+        cls.method({
+          visibility: 'public',
+          static: true,
+          type: builder.name,
+          name: cls.name + 'Builder',
+          args: [
+            { type: foam.cross_platform.Context.model_.swiftName + '?', localName: 'x' }
+          ],
+          body: `
+            return ${builder.name}.getInstance(x);
+          `
+        });
+      }
 
       this.getAxioms()
         .filter(flagFilter)
         .filter(a => a.buildSwiftClass)
         .forEach(a => a.buildSwiftClass(cls, this));
 
-      var genProperties = this.getAxiomsByClass(foam.core.Property)
-        .filter(flagFilter)
-        .filter(p => this.hasOwnAxiom(p.name));
-
-      var genMethods = this.getAxiomsByClass(foam.core.Method)
-        .concat(this.getAxiomsByClass(foam.core.Action))
-        .filter(flagFilter)
-        .filter(p => ! this.getSuperAxiomByName(p.name));
+      var genAxioms = this.getOwnAxioms()
+        .filter(flagFilter);
 
       cls.method({
         override: !! cls.extends,
@@ -62,20 +69,11 @@ foam.LIB({
         body: `
         switch name {
 ${
-genProperties
+genAxioms
+  .filter(a => a.swiftClearProperty)
   .map(a => `
           case "${a.name}":
-            ${a.crossPlatformIsSetVarName} = false;
-            ${a.crossPlatformPrivateVarName} = nil;
-            var ${a.name}Args: [Any?] = ["propertyChange", "${a.name}", nil];
-            if hasListeners(${a.name}Args) {
-              ${a.name}Args[2] = ${a.crossPlatformSlotGetterName}();
-              _ = pub(${a.name}Args);
-            }
-            ${a.swiftExpression ? `
-            ${a.crossPlatformExpressionSubName}?.detach();
-            ${a.crossPlatformExpressionSubName} = nil;
-            ` : ``}
+            ${a.swiftClearProperty}
             return;
   `)
   .join('\n')
@@ -100,18 +98,11 @@ ${cls.extends ? `
         body: `
           switch name {
 ${
-genProperties
+genAxioms
+  .filter(a => a.swiftGetProperty)
   .map(a => `
-            case "${a.name}":
-              return ${a.crossPlatformGetterName}();
-  `)
-  .join('\n')
-}
-${
-genMethods
-  .map(a => `
-            case "${a.name}":
-              return ${a.crossPlatformFnGetterName}();
+          case "${a.name}":
+            ${a.swiftGetProperty}
   `)
   .join('\n')
 }
@@ -142,10 +133,11 @@ genMethods
 
           switch name {
 ${
-genProperties
+genAxioms
+  .filter(a => a.swiftGetSlot)
   .map(a => `
-            case "${a.name}":
-              return ${a.crossPlatformSlotGetterName}();
+          case "${a.name}":
+            ${a.swiftGetSlot}
   `)
   .join('\n')
 }
@@ -167,10 +159,11 @@ genProperties
         body: `
           switch name {
 ${
-genProperties
+genAxioms
+  .filter(a => a.swiftHasPropertySet)
   .map(a => `
-            case "${a.name}":
-              return ${a.crossPlatformIsSetVarName};
+          case "${a.name}":
+            ${a.swiftHasPropertySet}
   `)
   .join('\n')
 }
@@ -197,11 +190,12 @@ ${cls.extends ? `
         body: `
           switch name {
 ${
-genProperties
+genAxioms
+  .filter(a => a.swiftSetProperty)
   .map(a => `
-            case "${a.name}":
-              ${a.crossPlatformSetterName}(value);
-              return;
+          case "${a.name}":
+            ${a.swiftSetProperty}
+            return;
   `)
   .join('\n')
 }
@@ -242,6 +236,7 @@ ${cls.extends ? `
               .build();
             ${cInfo.cls_.getAxiomsByClass(foam.core.Property)
                 .filter(flagFilter)
+                .filter(p => cInfo.hasOwnProperty(p.name))
                 .map(a => `
             initClassInfo_!.${a.crossPlatformSetterName}(${foam.swift.asSwiftValue(cInfo[a.name])});
                 `)
@@ -270,7 +265,7 @@ foam.CLASS({
     {
       name: 'asSwiftValue',
       code: function () {
-        var body = `${this.model_.swiftName}.${this.model_.swiftName}Builder(nil) // TODO give context\n`;
+        var body = `${this.model_.swiftName}.${this.model_.swiftName}Builder(nil)\n`;
         this.cls_.getAxiomsByClass(foam.core.Property)
           .filter(foam.util.flagFilter(['swift']))
           .filter(p => this.hasOwnProperty(p.name))

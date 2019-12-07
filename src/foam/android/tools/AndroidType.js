@@ -5,7 +5,6 @@ foam.CLASS({
   flags: ['android'],
   properties: [
     {
-      class: 'StringArrayProperty',
       name: 'flags',
       value: ['android']
     },

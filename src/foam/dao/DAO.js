@@ -249,7 +249,7 @@ foam.INTERFACE({
     },
     {
       name: 'pipe', // TODO: return a promise? don't put pipe and listen here?
-      type: 'Void',
+      type: 'foam.core.Detachable',
       swiftThrows: true,
       args: [
         {
@@ -260,7 +260,7 @@ foam.INTERFACE({
     },
     {
       name: 'pipe_', // TODO: return a promise? don't put pipe and listen here?
-      type: 'Void',
+      type: 'foam.core.Detachable',
       swiftThrows: true,
       args: [
         {
@@ -362,9 +362,9 @@ foam.INTERFACE({
     },
     {
       name: 'getOf',
-      flags: ['java'],
+      flags: ['java', 'android', 'swift'],
       type: 'Class',
-      javaType: 'foam.core.ClassInfo'
+      javaType: 'foam.core.ClassInfo',
     }
   ]
 });

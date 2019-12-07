@@ -17,6 +17,7 @@ foam.CLASS({
       class: 'StringArrayProperty',
       name: 'required_',
       value: [
+        'foam.core.Export',
         'foam.cross_platform.FoamClass',
         'foam.cross_platform.AbstractFObject',
       ]
@@ -91,6 +92,10 @@ foam.CLASS({
 
           this.fs.writeFileSync(path, body);
         }.bind(this);
+
+        foam.cross_platform.Context.getAxiomByName('GLOBAL').value = foam.cross_platform.Context.create({
+          classMap_: classes
+        });
 
         Object.values(classes)
           .map(cls => cls[this.platform.buildResourcesMethod]({

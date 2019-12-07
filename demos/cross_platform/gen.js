@@ -1,17 +1,9 @@
 #!/usr/bin/env node
 
 (async function() {
-  global.FOAM_FLAGS = {
-    android: true,
-    debug: true,
-    java: true,
-    js: true,
-    node: true,
-    swift: true,
-  };
+
   var dir = __dirname;
   var root = dir + '/../..';
-  require(root + '/src/foam.js');
 
   var platforms = {
     swift: {
@@ -24,6 +16,28 @@
       testPath: dir + '/android/project/app/src/test/java',
     }
   };
+
+  if ( process.argv[2] == 'clean' ) {
+    var child_process = require('child_process');
+    var cmd = `rm -rf \\
+      "${platforms.swift.sourcePath}" \\
+      "${platforms.android.sourcePath}" \\
+      "${platforms.swift.testPath}" \\
+      "${platforms.android.testPath}"`;
+    console.log(cmd);
+    console.log(child_process.execSync(cmd).toString());
+    return;
+  }
+
+  global.FOAM_FLAGS = {
+    android: true,
+    debug: true,
+    java: true,
+    js: true,
+    node: true,
+    swift: true,
+  };
+  require(root + '/src/foam.js');
 
   if (process.argv.length != 3 || ! platforms[process.argv[2]] ) {
     console.log(`USAGE: gen.js PLATFORM`);
@@ -41,7 +55,10 @@
     modelArgs: {
       platform: platform,
       classIds: [
+        'demo.ArrayDAO',
         'demo.Compare',
+        'demo.ImportExport',
+        'demo.MLang',
         'demo.Method',
         'demo.Person',
         'demo.Reaction',

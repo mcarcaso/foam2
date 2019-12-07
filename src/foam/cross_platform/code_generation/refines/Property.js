@@ -45,6 +45,10 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
+      name: 'crossPlatformFactory'
+    },
+    {
+      class: 'StringProperty',
       name: 'crossPlatformPrivateVarName',
       expression: function(name) {
         return `${name}_`;
@@ -97,6 +101,20 @@ foam.CLASS({
       swiftCode: `
         return (o as! foam_cross_platform_FObject?)?.getProperty(getName());
       `
+    },
+    {
+      name: 'compareValues',
+      type: 'Integer',
+      args: [
+        { type: 'Any', name: 'a' },
+        { type: 'Any', name: 'b' },
+      ],
+      androidCode: `
+        return (int) getComparePropertyValues().executeFunction(new Object[] {a, b});
+      `,
+      swiftCode: `
+        return getComparePropertyValues()!.executeFunction([a, b]) as! Int;
+      `,
     }
   ]
 });

@@ -7,6 +7,18 @@ foam.LIB({
       switch(language) {
         case 'swift':
           args = {
+            "nul": function() { return 'nil' },
+            assertEqual: function(expected, actual, msg) {
+              return `
+XCTAssertEqual(${expected}, ${actual}${msg ? `, ${msg}` : ''});
+              `
+            },
+            "vr": function(type, name, value, args) {
+              args = args || {};
+              return `
+${args.mutable ? 'var' : 'let'} ${name}: ${foam.core.type.toType(type).toSwiftType(args.required)} = ${value};
+              `
+            },
             v: foam.swift.asSwiftValue,
             detachable: function(code) {
               return `
@@ -43,6 +55,18 @@ foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(n
           break;
         case 'android':
           args = {
+            "nul": function() { return 'null' },
+            assertEqual: function(expected, actual, msg) {
+              return `
+assertEquals(${expected}, ${actual}${msg ? `, ${msg}` : ''});
+              `
+            },
+            "vr": function(type, name, value, args) {
+              args = args || {};
+              return `
+${type} ${name} = ${value};
+              `
+            },
             v: foam.android.tools.asAndroidValue,
             detachable: function(code) {
               return `

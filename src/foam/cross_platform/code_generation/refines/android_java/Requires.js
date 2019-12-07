@@ -15,8 +15,17 @@ foam.CLASS({
       cls.method({
         visibility: 'public',
         type: this.path + '.' + model.name + 'Builder_',
+        args: [
+          { type: 'foam.cross_platform.Context', name: 'x' }
+        ],
         name: this.name + '_create',
-        body: `return ${this.path}.${model.name}Builder(getSubX());`
+        body: `return ${this.path}.${model.name}Builder(x);`
+      });
+      cls.method({
+        visibility: 'public',
+        type: this.path + '.' + model.name + 'Builder_',
+        name: this.name + '_create',
+        body: `return ${this.name}_create(getSubX());`
       });
 
       return cls;

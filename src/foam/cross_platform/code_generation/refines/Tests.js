@@ -8,11 +8,17 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'androidCode'
+      name: 'crossPlatformCode'
     },
     {
       class: 'StringProperty',
-      name: 'swiftCode'
+      name: 'androidCode',
+      expression: function(crossPlatformCode) { return crossPlatformCode; }
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftCode',
+      expression: function(crossPlatformCode) { return crossPlatformCode; }
     }
   ],
   methods: [
@@ -33,7 +39,7 @@ foam.CLASS({
         testCls.method({
           name: 'getSubX',
           type: 'foam.cross_platform.Context',
-          body: 'return null;'
+          body: 'return foam.cross_platform.Context.GLOBAL();'
         });
         testCls.method({
           type: name + '.' + name + 'Builder_',
@@ -78,7 +84,7 @@ foam.CLASS({
         testCls.method({
           name: 'getSubX',
           type: foam.cross_platform.Context.model_.swiftName + '?',
-          body: 'return nil;'
+          body: 'return foam_cross_platform_Context.GLOBAL();'
         });
         testCls.method({
           type: name + '.' + name + 'Builder_',

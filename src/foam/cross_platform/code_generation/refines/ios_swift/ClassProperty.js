@@ -6,8 +6,8 @@ foam.CLASS({
   properties: [
     {
       name: 'swiftType',
-      expression: function() {
-        return foam.cross_platform.FoamClass.model_.swiftName + '?';
+      expression: function(required) {
+        return foam.core.type.toType('foam.cross_platform.FoamClass').toSwiftType(!required);
       }
     },
     {

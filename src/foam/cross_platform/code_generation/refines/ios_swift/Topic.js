@@ -9,19 +9,17 @@ foam.CLASS({
       var fieldName = this.name + '_var';
       cls.field({
         visibility: 'private',
-        type: foam.cross_platform.Topic.model_.swiftName + '?',
+        type: foam.core.Topic.model_.swiftName + '?',
         name: fieldName
       });
       cls.method({
         visibility: 'public',
-        type: foam.cross_platform.Topic.model_.swiftName,
+        type: foam.core.Topic.model_.swiftName,
         name: this.name,
         body: `
           if ${fieldName} == nil {
-            ${fieldName} = SubTopic_create()
-              .setParent(self)
-              .setTopics([${[this.name].concat(this.topics).map(t => `"${t}"`).join(', ')}])
-              .build();
+            ${fieldName} = ${foam.swift.asSwiftValue(this)};
+            foam_core_Topic.initSubTopic(${fieldName}, self);
           }
           return ${fieldName}!;
         `

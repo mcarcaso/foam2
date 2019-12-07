@@ -3,4 +3,10 @@ foam.CLASS({
   name: 'ModelJavaRefinement',
   refines: 'foam.core.Model',
   flags: ['android'],
+  properties: [
+    {
+      class: 'StringArrayProperty',
+      name: 'androidImplements'
+    }
+  ],
 });

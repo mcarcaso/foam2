@@ -3,7 +3,6 @@ foam.LIB({
   flags: ['android'],
   methods: [
     function buildAndroidResources(resources, parentCls) {
-      if ( this.model_.name == 'Person' ) debugger;
       var flagFilter = foam.util.flagFilter(['android']);
       this.getAxioms()
         .filter(flagFilter)
@@ -20,29 +19,38 @@ foam.LIB({
       cls.abstract = this.model_.abstract;
       cls.documentation = this.model_.documentation;
       cls.extends = this.model_.crossPlatformExtends;
+      cls.implements = this.model_.androidImplements;
 
       var flagFilter = foam.util.flagFilter(['android']);
 
-      var builder = foam.cross_platform.code_generation.android_java.Builder.create({
-        clsName: cls.name,
-        properties: this.getAxiomsByClass(foam.core.Property)
-          .filter(flagFilter)
-      });
-      cls.classes.push(builder);
-      builder.addBuilderMethod(cls);
+      if ( ! this.model_.abstract ) {
+        var builder = foam.cross_platform.code_generation.android_java.BuilderClass.create({
+          clsName: cls.name,
+          properties: this.getAxiomsByClass(foam.core.Property)
+            .filter(flagFilter)
+        });
+        cls.classes.push(builder);
+        cls.method({
+          visibility: 'public',
+          static: true,
+          type: builder.name,
+          name: cls.name + 'Builder',
+          args: [
+            { type: 'foam.cross_platform.Context', name: 'x' }
+          ],
+          body: `
+            return ${builder.name}.getInstance(x);
+          `
+        });
+      }
 
       this.getAxioms()
         .filter(flagFilter)
         .filter(a => a.buildAndroidClass)
         .forEach(a => a.buildAndroidClass(cls, this));
 
-      var genProperties = this.getAxiomsByClass(foam.core.Property)
-        .filter(flagFilter)
-        .filter(p => this.hasOwnAxiom(p.name));
-
-      var genMethods = this.getAxiomsByClass(foam.core.Method)
-        .filter(flagFilter)
-        .filter(p => ! this.getSuperAxiomByName(p.name));
+      var genAxioms = this.getOwnAxioms()
+        .filter(flagFilter);
 
       cls.method({
         visibility: 'public',
@@ -54,21 +62,11 @@ foam.LIB({
         body: `
         switch(name) {
 ${
-genProperties
+genAxioms
+  .filter(a => a.androidClearProperty)
   .map(a => `
           case "${a.name}":
-            ${a.crossPlatformIsSetVarName} = false;
-            ${foam.android.tools.isJavaPrimitive(a.androidType) ? '' :
-            `${a.crossPlatformPrivateVarName} = null;`}
-            Object[] ${a.name}Args = new Object[] { "propertyChange", "${a.name}", null };
-            if ( hasListeners(${a.name}Args) ) {
-              ${a.name}Args[2] = ${a.crossPlatformSlotGetterName}();
-              pub(${a.name}Args);
-            }
-            ${a.androidExpression ? `
-            if ( ${a.crossPlatformExpressionSubName} != null ) ${a.crossPlatformExpressionSubName}.detach();
-            ${a.crossPlatformExpressionSubName} = null;
-            ` : ``}
+            ${a.androidClearProperty}
             return;
   `)
   .join('\n')
@@ -90,18 +88,11 @@ ${cls.extends ? `
         body: `
           switch(name) {
 ${
-genProperties
+genAxioms
+  .filter(a => a.androidGetProperty)
   .map(a => `
-            case "${a.name}":
-              return ${a.crossPlatformGetterName}();
-  `)
-  .join('\n')
-}
-${
-genMethods
-  .map(a => `
-            case "${a.name}":
-              return ${a.crossPlatformFnGetterName}();
+          case "${a.name}":
+            ${a.androidGetProperty}
   `)
   .join('\n')
 }
@@ -129,10 +120,11 @@ genMethods
 
           switch(name) {
 ${
-genProperties
+genAxioms
+  .filter(a => a.androidGetSlot)
   .map(a => `
-            case "${a.name}":
-              return ${a.crossPlatformSlotGetterName}();
+          case "${a.name}":
+            ${a.androidGetSlot}
   `)
   .join('\n')
 }
@@ -151,10 +143,11 @@ genProperties
         body: `
           switch(name) {
 ${
-genProperties
+genAxioms
+  .filter(a => a.androidHasPropertySet)
   .map(a => `
-            case "${a.name}":
-              return ${a.crossPlatformIsSetVarName};
+          case "${a.name}":
+            ${a.androidHasPropertySet}
   `)
   .join('\n')
 }
@@ -178,11 +171,12 @@ ${cls.extends ? `
         body: `
           switch(name) {
 ${
-genProperties
+genAxioms
+  .filter(a => a.androidSetProperty)
   .map(a => `
-            case "${a.name}":
-              ${a.crossPlatformSetterName}(value);
-              return;
+          case "${a.name}":
+            ${a.androidSetProperty}
+            return;
   `)
   .join('\n')
 }
@@ -226,6 +220,7 @@ ${cls.extends ? `
               .build();
             ${cInfo.cls_.getAxiomsByClass(foam.core.Property)
                 .filter(flagFilter)
+                .filter(p => cInfo.hasOwnProperty(p.name))
                 .map(a => `
             initClassInfo_.${a.crossPlatformSetterName}(${foam.android.tools.asAndroidValue(cInfo[a.name])});
                 `)
@@ -254,7 +249,7 @@ foam.CLASS({
     {
       name: 'asAndroidValue',
       code: function() {
-        var body = `${this.cls_.id}.${this.model_.name}Builder(null) // TODO give context\n`;
+        var body = `${this.cls_.id}.${this.model_.name}Builder(null)\n`;
         this.cls_.getAxiomsByClass(foam.core.Property)
           .filter(foam.util.flagFilter(['android']))
           .filter(p => this.hasOwnProperty(p.name))

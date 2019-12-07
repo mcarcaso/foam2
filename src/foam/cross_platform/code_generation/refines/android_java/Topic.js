@@ -9,23 +9,21 @@ foam.CLASS({
       var fieldName = this.name + '_var';
       cls.field({
         visibility: 'private',
-        type: 'foam.cross_platform.Topic',
+        type: 'foam.core.Topic',
         name: fieldName
       });
       cls.method({
         visibility: 'public',
-        type: 'foam.cross_platform.Topic',
+        type: 'foam.core.Topic',
         name: this.name,
         body: `
           if ( ${fieldName} == null ) {
-            ${fieldName} = SubTopic_create()
-              .setParent(this)
-              .setTopics(new String[] { ${[this.name].concat(this.topics).map(t => `"${t}"`).join(', ')} })
-              .build();
+            ${fieldName} = ${foam.android.tools.asAndroidValue(this)};
+            foam.core.Topic.initSubTopic(${fieldName}, this);
           }
           return ${fieldName};
         `
       });
-    }
+    },
   ]
 });
