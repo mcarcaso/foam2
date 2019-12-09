@@ -58,7 +58,7 @@ foam.CLASS({
       }
     },
     {
-      type: 'Int',
+      class: 'IntProperty',
       name: 'tableWidth'
     }
   ]
