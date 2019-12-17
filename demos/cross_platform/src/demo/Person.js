@@ -9,17 +9,8 @@ foam.CLASS({
       help: 'The Person\'s first name'
     },
     {
-      class: 'BooleanProperty',
-      name: 'lastNameHidden',
-      hidden: true
-    },
-    {
       class: 'StringProperty',
       name: 'lastName',
-      visibilityExpressionArgs: ['lastNameHidden'],
-      androidVisibilityExpression: `
-        return lastNameHidden ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW;
-      `,
       validationExpressionArgs: ['lastName'],
       androidValidationExpression: `
         return foam.cross_platform.type.StringType.INSTANCE().isEmpty(lastName) ?
@@ -30,6 +21,11 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'fullName',
       expressionArgs: ['lastName', 'firstName'],
+      visibilityExpressionArgs: ['lastName'],
+      androidVisibilityExpression: `
+        return foam.cross_platform.type.StringType.INSTANCE().isEmpty(lastName)
+          ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW;
+      `,
       androidExpression: `
         return (firstName + " " + lastName).trim();
       `,
@@ -37,6 +33,34 @@ foam.CLASS({
         return (firstName! + " " + lastName!)
           .trimmingCharacters(in: .whitespacesAndNewlines);
       `
+    },
+  ],
+  actions: [
+    {
+      name: 'appendToFirstName',
+      androidCode: `
+        setFirstName(getFirstName() + "0");
+      `
+    },
+    {
+      name: 'clear',
+      isEnabledExpressionArgs: ['firstName', 'lastName'],
+      androidIsEnabled: `
+        return !foam.cross_platform.type.StringType.INSTANCE().isEmpty(lastName) ||
+          !foam.cross_platform.type.StringType.INSTANCE().isEmpty(firstName);
+      `,
+      androidCode: `
+        clearProperty("firstName");
+        clearProperty("lastName");
+      `
+    },
+    {
+      name: 'giveLastName',
+      isAvailableExpressionArgs: ['lastName'],
+      androidIsAvailable: `
+        return foam.cross_platform.type.StringType.INSTANCE().isEmpty(lastName);
+      `,
+      androidCode: `setLastName("Smith");`
     },
   ],
   tests: [
@@ -259,28 +283,4 @@ foam.CLASS({
       `
     }
   ],
-  actions: [
-    {
-      name: 'hideLastName',
-      isEnabledExpressionArgs: ['lastNameHidden'],
-      androidIsEnabled: `return !lastNameHidden;`,
-      androidCode: `
-        setLastNameHidden(true);
-      `
-    },
-    {
-      name: 'showLastName',
-      isAvailableExpressionArgs: ['lastNameHidden'],
-      androidIsAvailable: `return lastNameHidden;`,
-      androidCode: `
-        setLastNameHidden(false);
-      `
-    },
-    {
-      name: 'setTheLastName',
-      androidCode: `
-        setLastName("YOOO");
-      `
-    },
-  ]
 });
