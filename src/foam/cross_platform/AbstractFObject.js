@@ -33,17 +33,17 @@ foam.CLASS({
       androidComparePropertyValues: `null`,
       androidFactory: `
         foam.core.SlotInterface slot = ArraySlot_create()
-        .setSlots(java.util.Arrays.stream(getCls_().getAxiomsByClass(foam.core.Property.CLS_()))
-          .map(p -> ((foam.core.Property) p).createValidationSlot(this))
-          .filter(p -> p != null)
-          .toArray(foam.core.SlotInterface[]::new))
-        .build()
-        .map((args -> {
-          return java.util.Arrays.stream((Object[])args[0])
-            .filter(s -> s != null)
-            .map(s -> s.toString())
-            .toArray(String[]::new);
-        }));
+          .setSlots(java.util.Arrays.stream(getCls_().getAxiomsByClass(foam.core.Property.CLS_()))
+            .map(p -> ((foam.core.Property) p).createValidationSlot(this))
+            .filter(p -> p != null)
+            .toArray(foam.core.SlotInterface[]::new))
+          .build()
+          .map((args -> {
+            return java.util.Arrays.stream((Object[])args[0])
+              .filter(s -> s != null)
+              .map(s -> s.toString())
+              .toArray(String[]::new);
+          }));
         errors__isSet_ = true;
         errors__ = (String[]) slot.slotGet();
         onDetach(getErrors_$().follow(slot));
