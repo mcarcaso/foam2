@@ -14,8 +14,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'androidCode',
-      value: 'throw new RuntimeException("Not impl");'
+      name: 'androidCode'
     },
     {
       class: 'StringProperty',
@@ -58,58 +57,56 @@ foam.CLASS({
         });
       }
 
-      var addExpressionBits = name => {
-        var Name = foam.String.capitalize(name);
-        if ( ! this['android' + Name] ) return;
-        var args = this[name + 'ExpressionArgs'].map(a => {
-          a = a.split('$').filter(a => a);
-          return {
-            type: a.length == 1 ?
-              parentCls.getAxiomByName(a).androidType : 'Object',
-            name: a.join('$')
-          }
-        });
-        cls.method({
-          visibility: 'public',
-          type: 'boolean',
-          name: this.name + '_' + name,
-          args: args,
-          body: foam.cpTemplate(`
-            ${this['android' + Name]}
-          `, 'android')
-        });
-        return {
-          axiomSetter: `
-          ${this.crossPlatformPrivateAxiom}.set${Name}SlotInitializer((foam.cross_platform.GenericFunction) args -> {
-            ${parentCls.id} o = (${parentCls.id}) args[0];
-            return foam.core.ExpressionSlot.ExpressionSlotBuilder(null)
-              .setObj(o)
-              .setCode((foam.cross_platform.GenericFunction) args2 -> {
-                return o.${this.name}_${name}(
-                  ${args.map((a, i) => `(${a.type}) args2[${i}]`).join(',')}
-                );
-              })
-              .setArgs(new foam.core.SlotInterface[] {
-                ${args.map(a => `o.getSlot("${a.name}")`).join(',')}
-              })
-              .build();
-          });
-          `,
-          actionPreBody: `
-            if ( ! ${this.name}_${name}(${args.map(a => `
-              (${a.type})getSlot("${a.name}").slotGet()
-            `).join(',')}) ) {
-              return;
-            }
-          `
-        }
-      };
-
       var expressionData = [
-        'isEnabled',
-        'isAvailable'
-      ]
-        .map(p => addExpressionBits(p))
+          'isEnabled',
+          'isAvailable'
+        ]
+        .map(name => {
+          var Name = foam.String.capitalize(name);
+          if ( ! this['android' + Name] ) return;
+          var args = this[name + 'ExpressionArgs'].map(a => {
+            a = a.split('$').filter(a => a);
+            return {
+              type: a.length == 1 ?
+                parentCls.getAxiomByName(a).androidType : 'Object',
+              name: a.join('$')
+            }
+          });
+          cls.method({
+            visibility: 'public',
+            type: 'boolean',
+            name: this.name + '_' + name,
+            args: args,
+            body: foam.cpTemplate(`
+              ${this['android' + Name]}
+            `, 'android')
+          });
+          return {
+            axiomSetter: `
+            ${this.crossPlatformPrivateAxiom}.set${Name}SlotInitializer((foam.cross_platform.GenericFunction) args -> {
+              ${parentCls.id} o = (${parentCls.id}) args[0];
+              return foam.core.ExpressionSlot.ExpressionSlotBuilder(null)
+                .setObj(o)
+                .setCode((foam.cross_platform.GenericFunction) args2 -> {
+                  return o.${this.name}_${name}(
+                    ${args.map((a, i) => `(${a.type}) args2[${i}]`).join(',')}
+                  );
+                })
+                .setArgs(new foam.core.SlotInterface[] {
+                  ${args.map(a => `o.getSlot("${a.name}")`).join(',')}
+                })
+                .build();
+            });
+            `,
+            actionPreBody: `
+              if ( ! ${this.name}_${name}(${args.map(a => `
+                (${a.type})getSlot("${a.name}").slotGet()
+              `).join(',')}) ) {
+                return;
+              }
+            `
+          }
+        })
         .filter(o => o);
 
       cls.method({
