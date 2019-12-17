@@ -24,10 +24,6 @@ foam.CLASS({
       name: 'visibilitySlotInitializer'
     },
     {
-      class: 'FunctionProperty',
-      name: 'viewInitializer'
-    },
-    {
       class: 'StringArrayProperty',
       name: 'expressionArgs'
     },

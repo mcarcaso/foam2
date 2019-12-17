@@ -139,10 +139,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'androidViewFactory',
-      value: `
-        return foam.cross_platform.ui.widget.Label.LabelBuilder(x).build();
-      `,
+      name: 'androidViewFactory'
     },
   ],
   methods: [
@@ -430,10 +427,12 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
             ${expressionData
               .filter(d => d && d.axiomSetter)
               .map(d => d.axiomSetter).join('\n')}
+            ${this.androidViewFactory ? `
             ${this.crossPlatformPrivateAxiom}.setViewInitializer((foam.cross_platform.GenericFunction) args -> {
               foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
               ${this.androidViewFactory}
             });
+            ` : ''}
           }
           return ${this.crossPlatformPrivateAxiom};
         `
