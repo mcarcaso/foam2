@@ -780,6 +780,7 @@ foam.CLASS({
     { class: 'StringProperty', name: 'name' },
     { class: 'StringProperty', name: 'shortName' },
     { class: 'StringProperty', name: 'help' },
+    { class: 'BooleanProperty', name: 'hidden' },
     {
       class: 'FunctionProperty',
       name: 'comparePropertyValues',

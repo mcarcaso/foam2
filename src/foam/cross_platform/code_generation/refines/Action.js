@@ -17,7 +17,23 @@ foam.CLASS({
     },
     {
       class: 'StringArrayProperty',
-      name: 'expressionArgs',
+      name: 'isEnabledExpressionArgs',
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'isEnabledSlotInitializer'
+    },
+    {
+      class: 'StringArrayProperty',
+      name: 'isAvailableExpressionArgs',
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'isAvailableSlotInitializer'
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'viewInitializer'
     },
     {
       class: 'StringProperty',
@@ -25,9 +41,56 @@ foam.CLASS({
       expression: function(name) {
         return `${name}_fn`;
       }
-    }
+    },
+    {
+      class: 'StringProperty',
+      name: 'crossPlatformAxiomName',
+      expression: function(name) {
+        return foam.String.constantize(name);
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'crossPlatformPrivateAxiom',
+      expression: function(crossPlatformAxiomName) {
+        return crossPlatformAxiomName + '_var_';
+      }
+    },
   ],
   methods: [
+    {
+      name: 'createView',
+      type: 'foam.cross_platform.ui.AxiomView',
+      args: [
+        { type: 'Context', name: 'x' },
+      ],
+      androidCode: `
+        return (foam.cross_platform.ui.AxiomView) getViewInitializer()
+          .executeFunction(new Object[] {x});
+      `,
+    },
+    {
+      name: 'createIsEnabledSlot',
+      type: 'foam.core.Slot',
+      args: [
+        { type: 'FObject', name: 'o' },
+      ],
+      androidCode: `
+        return (foam.core.Slot) getIsEnabledSlotInitializer()
+          .executeFunction(new Object[] {o});
+      `,
+    },
+    {
+      name: 'createIsAvailableSlot',
+      type: 'foam.core.Slot',
+      args: [
+        { type: 'FObject', name: 'o' },
+      ],
+      androidCode: `
+        return (foam.core.Slot) getIsAvailableSlotInitializer()
+          .executeFunction(new Object[] {o});
+      `,
+    },
     {
       name: 'call',
       type: 'Any',

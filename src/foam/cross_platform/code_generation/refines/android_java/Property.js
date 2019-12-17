@@ -13,6 +13,16 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
+      name: 'androidValidationExpression',
+      value: 'return null;',
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidVisibilityExpression',
+      value: 'return foam.u2.Visibility.RW;',
+    },
+    {
+      class: 'StringProperty',
       name: 'androidExpression'
     },
     { class: 'foam.android.tools.AndroidType' },
@@ -127,6 +137,13 @@ foam.CLASS({
       expression: function(crossPlatformGetterName) {
         return `return ${crossPlatformGetterName}();`
       }
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidViewFactory',
+      value: `
+        return foam.cross_platform.ui.widget.Label.LabelBuilder(x).build();
+      `,
     },
   ],
   methods: [
@@ -286,6 +303,7 @@ ${this.androidType} castedValue = ${adaptName}(oldValue, value, hasOldValue);
         `;
 
         if ( this.androidExpression ) {
+          var subName = this.crossPlatformExpressionSubName;
           setter.body += `
 if ( ${subName} != null ) ${subName}.detach();
 ${subName} = null;
@@ -340,6 +358,64 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
       }
       cls.method(setter);
 
+
+
+
+
+      var addExpressionBits = (name, type) => {
+        var Name = foam.String.capitalize(name);
+        var args = this[name + 'ExpressionArgs'].map(a => {
+          a = a.split('$').filter(a => a);
+          return {
+            type: a.length == 1 ?
+              parentCls.getAxiomByName(a).androidType : 'Object',
+            name: a.join('$')
+          }
+        });
+        cls.method({
+          visibility: 'public',
+          type: type,
+          name: this.name + '_' + name,
+          args: args,
+          body: foam.cpTemplate(`
+            ${this['android' + Name + 'Expression']}
+          `, 'android')
+        });
+        return {
+          axiomSetter: `
+          ${this.crossPlatformPrivateAxiom}.set${Name}SlotInitializer((foam.cross_platform.GenericFunction) args -> {
+            ${parentCls.id} o = (${parentCls.id}) args[0];
+            return foam.core.ExpressionSlot.ExpressionSlotBuilder(null)
+              .setObj(o)
+              .setCode((foam.cross_platform.GenericFunction) args2 -> {
+                return o.${this.name}_${name}(
+                  ${args.map((a, i) => `(${a.type}) args2[${i}]`).join(',')}
+                );
+              })
+              .setArgs(new foam.core.SlotInterface[] {
+                ${args.map(a => `o.getSlot("${a.name}")`).join(',')}
+              })
+              .build();
+          });
+          `,
+          actionPreBody: `
+            if ( ! ${this.name}_${name}(${args.map(a => `
+              (${a.type})getSlot("${a.name}").slotGet()
+            `).join(',')}) ) {
+              return;
+            }
+          `
+        }
+      };
+
+      var expressionData = [
+        ['visibility', 'foam.u2.Visibility'],
+        ['validation', 'String'],
+      ].map(p => addExpressionBits(p[0], p[1]));
+
+
+
+
       cls.field({
         visibility: 'private',
         static: true,
@@ -355,6 +431,11 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
           if ( ${this.crossPlatformPrivateAxiom} == null ) {
             ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};
             ${this.crossPlatformPrivateAxiom}.setComparePropertyValues(${this.androidComparePropertyValues});
+            ${expressionData.map(d => d.axiomSetter).join('\n')}
+            ${this.crossPlatformPrivateAxiom}.setViewInitializer((foam.cross_platform.GenericFunction) args -> {
+              foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
+              ${this.androidViewFactory}
+            });
           }
           return ${this.crossPlatformPrivateAxiom};
         `

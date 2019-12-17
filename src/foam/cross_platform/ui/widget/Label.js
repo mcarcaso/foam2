@@ -7,14 +7,25 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
+  imports: [
+    {
+      name: 'androidContext',
+      key: 'androidContext',
+      androidType: 'android.content.Context',
+      flags: ['android']
+    }
+  ],
   properties: [
     {
       name: 'data'
     },
     {
-      androidType: 'android.ui.View',
+      androidType: 'android.widget.TextView',
       swiftType: 'UILabel?',
-      name: 'view'
+      name: 'view',
+      androidFactory: `
+        return new android.widget.TextView(getAndroidContext());
+      `
     },
   ],
   reactions: [
@@ -23,6 +34,10 @@ foam.CLASS({
   methods: [
     {
       name: 'bindData',
+      androidCode: `
+        foam.core.Property prop = (foam.core.Property) axiom;
+        return getData$().linkFrom(data.getSlot(prop.getName()));
+      `,
       swiftCode: `
         let prop = axiom as! foam_core_Property;
         return getData$().linkFrom(data!.getSlot(prop.getName()));
@@ -32,6 +47,10 @@ foam.CLASS({
   listeners: [
     {
       name: 'updateView',
+      androidCode: `
+        if ( getView() == null ) return;
+        getView().setText(getData() == null ? "" : getData().toString());
+      `,
       swiftCode: `
         if getView() == nil { return }
         getView()!.text = getData() as? String ?? String(describing: getData());

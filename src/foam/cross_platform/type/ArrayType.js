@@ -14,6 +14,22 @@ foam.CLASS({
   ],
   methods: [
     {
+      name: 'concat',
+      type: 'Any[]',
+      args: [
+        { type: 'Any', name: 'a' },
+        { type: 'Any', name: 'b' },
+      ],
+      androidCode: `
+        Object[] a1 = isInstance(a) ? toObjectArray(a) : new Object[] {a};
+        Object[] a2 = isInstance(b) ? toObjectArray(b) : new Object[] {b};
+        Object[] ret = new Object[a1.length + a2.length];
+        for ( int i = 0 ; i < a1.length ; i++ ) { ret[i] = a1[i]; }
+        for ( int i = 0 ; i < a2.length ; i++ ) { ret[a1.length + i] = a2[i]; }
+        return ret;
+      `,
+    },
+    {
       name: 'isInstance',
       androidCode: `
         return toObjectArray(o) != null;

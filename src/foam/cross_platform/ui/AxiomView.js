@@ -9,6 +9,16 @@ foam.INTERFACE({
         { name: 'data', type: 'FObject' },
         { name: 'axiom', type: 'FObject' }
       ]
+    },
+    {
+      name: 'getView',
+      androidType: 'android.view.View'
+    },
+    {
+      name: 'setView',
+      args: [
+        { name: 'value', type: 'Object' },
+      ]
     }
   ]
 });

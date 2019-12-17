@@ -7,6 +7,7 @@ foam.CLASS({
     'foam.cross_platform.FObject'
   ],
   requires: [
+    'foam.core.ArraySlot',
     'foam.core.internal.PropertySlot',
     'foam.cross_platform.ListenerList',
     'foam.cross_platform.ZeroFunction',
@@ -26,8 +27,33 @@ foam.CLASS({
   properties: [
     {
       class: 'FObjectProperty',
+      of: 'foam.core.SlotInterface',
+      name: 'validationSlot',
+      hidden: true,
+      transient: true,
+      androidSetter: `
+        validationSlot_isSet_ = true;
+        validationSlot_ = (foam.core.SlotInterface) value;
+      `,
+      androidComparePropertyValues: `
+        foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
+      `,
+      androidFactory: `
+        return ArraySlot_create()
+          .setSlots(java.util.Arrays.stream(getCls_().getAxiomsByClass(foam.core.Property.CLS_()))
+            .map(p -> ((foam.core.Property) p).createValidationSlot(this))
+            .toArray(foam.core.SlotInterface[]::new))
+          .build()
+          .map((args -> {
+            return java.util.Arrays.stream((Object[])args[0]).filter(s -> s != null).toArray();
+          }));
+      `
+    },
+    {
+      class: 'FObjectProperty',
       of: 'foam.cross_platform.ListenerList',
       name: 'listeners__',
+      hidden: true,
       androidComparePropertyValues: `
         foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
       `,
@@ -54,6 +80,7 @@ foam.CLASS({
       of: 'foam.cross_platform.Context',
       swiftOptional: false,
       name: 'x',
+      hidden: true,
       androidSetter: `
         x_ = value instanceof foam.cross_platform.Context ?
           (foam.cross_platform.Context) value : null;
@@ -86,6 +113,7 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.cross_platform.Context',
       name: 'subX',
+      hidden: true,
       swiftOptional: false,
       androidComparePropertyValues: `
         foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()

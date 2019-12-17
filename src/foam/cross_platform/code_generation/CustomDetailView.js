@@ -4,16 +4,206 @@ foam.CLASS({
   properties: [
     {
       class: 'StringProperty',
-      name: 'name',
-      value: 'customDetailViewAxiom'
-    }
+      name: 'forClass_'
+    },
+    {
+      class: 'StringProperty',
+      name: 'package',
+      expression: function(forClass_) {
+        return foam.lookup(forClass_).model_.package;
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'name'
+    },
+    {
+      class: 'StringProperty',
+      name: 'androidClass',
+      value: 'android.widget.LinearLayout'
+    },
   ],
   methods: [
     function getDeps(flagFilter, map) {
-      if ( flagFilter({flags: ['swift']}) ) {
+      if ( flagFilter({flags: ['swift', 'android']}) ) {
         map['foam.cross_platform.ui.widget.Label'] = true;
         map['foam.cross_platform.ui.widget.ActionButton'] = true;
       }
+    },
+    function buildAndroidResources(resources, parentCls) {
+      var name = parentCls.model_.name;
+      var detailViewCls = foam.java.Class.create({
+        name: this.name,
+        extends: this.androidClass,
+        package: this.package,
+      });
+      detailViewCls.method({
+        visibility: 'public',
+        name: detailViewCls.name,
+        type: '', // Constructor
+        args: [
+          { type: 'android.content.Context', name: 'context' }
+        ],
+        body: `
+          super(context);
+          init(null, 0);
+        `
+      });
+      detailViewCls.method({
+        visibility: 'public',
+        name: detailViewCls.name,
+        type: '', // Constructor
+        args: [
+          { type: 'android.content.Context', name: 'context' },
+          { type: 'android.util.AttributeSet', name: 'attrs' }
+        ],
+        body: `
+          super(context, attrs);
+          init(attrs, 0);
+        `
+      });
+      detailViewCls.method({
+        visibility: 'public',
+        name: detailViewCls.name,
+        type: '', // Constructor
+        args: [
+          { type: 'android.content.Context', name: 'context' },
+          { type: 'android.util.AttributeSet', name: 'attrs' },
+          { type: 'int', name: 'defStyle' }
+        ],
+        body: `
+          super(context, attrs, defStyle);
+          init(attrs, defStyle);
+        `
+      });
+      detailViewCls.method({
+        visibility: 'private',
+        name: 'init',
+        args: [
+          { type: 'android.util.AttributeSet', name: 'attrs' },
+          { type: 'int', name: 'defStyle' }
+        ],
+        body: `
+          // TODO?
+        `
+      });
+
+
+      var axioms = parentCls.getAxioms()
+        .filter(a => !a.hidden)
+        .filter(a => a.androidViewFactory);
+      axioms.forEach(p => {
+        var sub = p.name + '_sub_';
+        detailViewCls.field({
+          type: foam.core.Detachable.id,
+          name: sub,
+        });
+        var androidType = 'foam.cross_platform.ui.AxiomView';
+        detailViewCls.field({
+          type: androidType,
+          name: p.name + 'FoamView',
+          initializer: 'null',
+        });
+        detailViewCls.method({
+          type: androidType,
+          name: `get_${p.name}`,
+          body: `
+            if ( ${p.name}FoamView == null ) {
+              ${p.name}FoamView = ${parentCls.id}.${p.crossPlatformAxiomName}()
+                .createView(x_);
+            }
+            return ${p.name}FoamView;
+          `
+        });
+        detailViewCls.field({
+          type: 'android.view.View',
+          name: p.name,
+        });
+        detailViewCls.method({
+          name: `set_${p.name}`,
+          args: [
+            { type: 'android.view.View', name: 'v' }
+          ],
+          body: `
+            ${p.name} = v;
+            if ( ${sub} != null ) ${sub}.detach();
+            ${sub} = null;
+            initSubs();
+          `
+        });
+      });
+      detailViewCls.method({
+        visibility: 'protected',
+        name: 'onFinishInflate',
+        body: `
+          super.onFinishInflate();
+
+          android.content.res.Resources res = getResources();
+
+          ${axioms.map(a => `
+          int ${a.name}_id = res.getIdentifier(
+            "${a.name}", "id", getContext().getPackageName());
+          if ( ${a.name}_id != 0 ) {
+            android.view.View v = findViewById(${a.name}_id);
+            if ( v != null ) {
+              set_${a.name}(v);
+            }
+          }
+          `).join('\n')}
+        `
+      });
+
+      detailViewCls.field({
+        type: 'foam.cross_platform.Context',
+        name: 'x_',
+        initializer: 'null'
+      });
+      detailViewCls.field({
+        type: name,
+        name: '_model_data_',
+        initializer: 'null'
+      });
+      detailViewCls.method({
+        visibility: 'public',
+        name: 'setData',
+        args: [
+          {
+            type: name,
+            name: 'data',
+          }
+        ],
+        body: `
+          _model_data_ = data;
+          ${axioms.map(p => `
+          if ( ${p.name}_sub_ != null ) ${p.name}_sub_.detach();
+          ${p.name}_sub_ = null;
+          if ( ${p.name}FoamView != null )
+            ((foam.cross_platform.FObject) ${p.name}FoamView).detach();
+          ${p.name}FoamView = null;
+          `).join('\n')}
+          x_ = data.getSubX().createSubContext(new java.util.HashMap() {
+            {
+              put("androidContext", getContext());
+            }
+          });
+          initSubs();
+        `
+      });
+      detailViewCls.method({
+        name: 'initSubs',
+        body: `
+          if ( _model_data_ == null ) return;
+          ${axioms.map(p => `
+          if ( ${p.name} != null && ${p.name}_sub_ == null ) {
+            get_${p.name}().setView(${p.name});
+            ${p.name}_sub_ = get_${p.name}().bindData(
+              _model_data_, _model_data_.getCls_().getAxiomByName("${p.name}"));
+          }
+          `).join('\n')}
+        `
+      });
+
+      resources.sources.push(detailViewCls);
     },
     function buildSwiftResources(resources, parentCls) {
       var name = parentCls.model_.swiftName;

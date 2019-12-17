@@ -28,7 +28,11 @@ foam.CLASS({
       required: true
     },
     [ 'type', 'Any[]' ],
-    [ 'hidden', true ],
+    {
+      class: 'BooleanProperty',
+      name: 'hidden',
+      value: true
+    },
     {
       name: 'adapt',
       value: function(_, a, prop) {

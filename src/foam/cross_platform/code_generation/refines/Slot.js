@@ -47,6 +47,13 @@ foam.INTERFACE({
         { type: 'foam.core.SlotInterface', name: 'slot' }
       ]
     },
+    {
+      type: 'foam.core.Slot',
+      name: 'map',
+      args: [
+        { type: 'foam.cross_platform.GenericFunction', name: 'fn' }
+      ]
+    },
   ]
 });
 
@@ -197,6 +204,15 @@ foam.CLASS({
       `,
       swiftCode: `
         return slot!.linkFrom(self);
+      `
+    },
+    {
+      name: 'map',
+      androidCode: `
+        return foam.core.ExpressionSlot.ExpressionSlotBuilder(null)
+          .setCode(fn)
+          .setArgs(new foam.core.SlotInterface[] {this})
+          .build();
       `
     },
     {
@@ -634,5 +650,33 @@ foam.CLASS({
         clearProperty("value");
       `
     }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.refines',
+  name: 'ArraySlotRefine',
+  refines: 'foam.core.ArraySlot',
+  requires: [
+    'foam.util.ArrayDetachable'
+  ],
+  methods: [
+    {
+      name: 'slotGet',
+      androidCode: `
+        return java.util.Arrays.stream(getSlots())
+          .map(s -> s.slotGet())
+          .toArray();
+      `,
+    },
+    {
+      name: 'slotSub',
+      androidCode: `
+        foam.core.Detachable[] subs = java.util.Arrays.stream(getSlots())
+          .map(s -> s.slotSub(listener))
+          .toArray(foam.core.Detachable[]::new);
+        return ArrayDetachable_create().setArray(subs).build();
+      `,
+    },
   ]
 });

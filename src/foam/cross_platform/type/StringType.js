@@ -9,10 +9,32 @@ foam.CLASS({
   name: 'StringType',
   implements: ['foam.cross_platform.type.Type'],
   axioms: [ { class: 'foam.pattern.Singleton' } ],
+  constants: [
+    {
+      type: 'foam.cross_platform.type.StringType',
+      name: 'INSTANCE',
+      factory: function() {
+        return foam.cross_platform.type.StringType.create();
+      }
+    }
+  ],
   properties: [
     { class: 'IntProperty', name: 'ordinal', value: 5 },
   ],
   methods: [
+    {
+      type: 'Boolean',
+      name: 'isEmpty',
+      args: [
+        { type: 'String', name: 's' }
+      ],
+      androidCode: `
+        return s == null || s.trim().isEmpty();
+      `,
+      swiftCode: `
+        return s?.isEmpty ?? false;
+      `
+    },
     {
       name: 'isInstance',
       androidCode: `

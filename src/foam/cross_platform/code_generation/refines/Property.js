@@ -3,10 +3,30 @@ foam.CLASS({
   name: 'PropertyRefinement',
   refines: 'foam.core.Property',
   requires: [
+    'foam.core.ExpressionSlot',
     'foam.cross_platform.Lib',
-    'foam.core.ExpressionSlot'
   ],
   properties: [
+    {
+      class: 'StringArrayProperty',
+      name: 'validationExpressionArgs'
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'validationSlotInitializer'
+    },
+    {
+      class: 'StringArrayProperty',
+      name: 'visibilityExpressionArgs'
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'visibilitySlotInitializer'
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'viewInitializer'
+    },
     {
       class: 'StringArrayProperty',
       name: 'expressionArgs'
@@ -82,13 +102,41 @@ foam.CLASS({
         return name + '_expression_sub_';
       }
     },
-    {
-      class: 'ClassProperty',
-      name: 'crossPlatformView',
-      value: 'foam.cross_platform.ui.widget.Label',
-    },
   ],
   methods: [
+    {
+      name: 'createView',
+      type: 'foam.cross_platform.ui.AxiomView',
+      args: [
+        { type: 'Context', name: 'x' },
+      ],
+      androidCode: `
+        return (foam.cross_platform.ui.AxiomView) getViewInitializer()
+          .executeFunction(new Object[] {x});
+      `,
+    },
+    {
+      name: 'createVisibilitySlot',
+      type: 'foam.core.Slot',
+      args: [
+        { type: 'FObject', name: 'o' },
+      ],
+      androidCode: `
+        return (foam.core.Slot) getVisibilitySlotInitializer()
+          .executeFunction(new Object[] {o});
+      `,
+    },
+    {
+      name: 'createValidationSlot',
+      type: 'foam.core.Slot',
+      args: [
+        { type: 'FObject', name: 'o' },
+      ],
+      androidCode: `
+        return (foam.core.Slot) getValidationSlotInitializer()
+          .executeFunction(new Object[] {o});
+      `,
+    },
     {
       name: 'f',
       type: 'Any',

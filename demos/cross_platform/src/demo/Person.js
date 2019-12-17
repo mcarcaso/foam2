@@ -9,8 +9,22 @@ foam.CLASS({
       help: 'The Person\'s first name'
     },
     {
+      class: 'BooleanProperty',
+      name: 'lastNameHidden',
+      hidden: true
+    },
+    {
       class: 'StringProperty',
-      name: 'lastName'
+      name: 'lastName',
+      visibilityExpressionArgs: ['lastNameHidden'],
+      androidVisibilityExpression: `
+        return lastNameHidden ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW;
+      `,
+      validationExpressionArgs: ['lastName'],
+      androidValidationExpression: `
+        return foam.cross_platform.type.StringType.INSTANCE().isEmpty(lastName) ?
+          "Last name cannot be empty" : null;
+      `
     },
     {
       class: 'StringProperty',
@@ -26,6 +40,20 @@ foam.CLASS({
     },
   ],
   tests: [
+    {
+      name: 'testValidation',
+      androidCode: `
+        Person p = Person_create()
+          .setFirstName("Mike")
+          .setLastName("Car")
+          .build();
+        foam.core.SlotInterface validationSlot = p.getValidationSlot();
+        assertEquals(0, ((Object[]) validationSlot.slotGet()).length);
+
+        p.setLastName("");
+        assertEquals(1, ((Object[]) validationSlot.slotGet()).length);
+      `,
+    },
     {
       name: 'testFullName',
       androidCode: `
@@ -230,5 +258,29 @@ foam.CLASS({
         XCTAssertEqual(o.getFullName(), "C");
       `
     }
+  ],
+  actions: [
+    {
+      name: 'hideLastName',
+      isEnabledExpressionArgs: ['lastNameHidden'],
+      androidIsEnabled: `return !lastNameHidden;`,
+      androidCode: `
+        setLastNameHidden(true);
+      `
+    },
+    {
+      name: 'showLastName',
+      isAvailableExpressionArgs: ['lastNameHidden'],
+      androidIsAvailable: `return lastNameHidden;`,
+      androidCode: `
+        setLastNameHidden(false);
+      `
+    },
+    {
+      name: 'setTheLastName',
+      androidCode: `
+        setLastName("YOOO");
+      `
+    },
   ]
 });
