@@ -30,20 +30,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <demos.cross_platform.android.PersonDetailView
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/detail_view"
+                android:divider="@color/colorPrimaryDark"
+                android:showDividers="middle"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent" />
 
         </LinearLayout>
 
     </ScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

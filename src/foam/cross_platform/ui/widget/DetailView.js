@@ -45,6 +45,11 @@ foam.CLASS({
       androidType: 'android.widget.LinearLayout',
       name: 'view'
     },
+    {
+      class: 'StringProperty',
+      name: 'resourceFile',
+      androidValue: '"detail_property_view"'
+    },
   ],
   reactions: [
     ['', 'propertyChange', 'updateView']
@@ -69,14 +74,9 @@ foam.CLASS({
       name: 'updateView',
       androidCode: `
         if ( getView() == null ) return;
-
-        getView().setDividerDrawable(new android.graphics.drawable.ColorDrawable(
-          android.graphics.Color.BLACK));
-        getView().setShowDividers(android.widget.LinearLayout.SHOW_DIVIDER_MIDDLE);
-
         getView().removeAllViews();
         int dpvid = getView().getResources().getIdentifier(
-          "detail_property_view",
+          getResourceFile(),
           "layout",
           getView().getContext().getPackageName());
         for ( int i = 0 ; i < getProps().length ; i++ ) {
