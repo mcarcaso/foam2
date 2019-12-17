@@ -26,27 +26,28 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'FObjectProperty',
-      of: 'foam.core.SlotInterface',
-      name: 'validationSlot',
+      class: 'StringArrayProperty',
+      name: 'errors_',
       hidden: true,
       transient: true,
-      androidSetter: `
-        validationSlot_isSet_ = true;
-        validationSlot_ = (foam.core.SlotInterface) value;
-      `,
-      androidComparePropertyValues: `
-        foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
-      `,
+      androidComparePropertyValues: `null`,
       androidFactory: `
-        return ArraySlot_create()
-          .setSlots(java.util.Arrays.stream(getCls_().getAxiomsByClass(foam.core.Property.CLS_()))
-            .map(p -> ((foam.core.Property) p).createValidationSlot(this))
-            .toArray(foam.core.SlotInterface[]::new))
-          .build()
-          .map((args -> {
-            return java.util.Arrays.stream((Object[])args[0]).filter(s -> s != null).toArray();
-          }));
+        foam.core.SlotInterface slot = ArraySlot_create()
+        .setSlots(java.util.Arrays.stream(getCls_().getAxiomsByClass(foam.core.Property.CLS_()))
+          .map(p -> ((foam.core.Property) p).createValidationSlot(this))
+          .filter(p -> p != null)
+          .toArray(foam.core.SlotInterface[]::new))
+        .build()
+        .map((args -> {
+          return java.util.Arrays.stream((Object[])args[0])
+            .filter(s -> s != null)
+            .map(s -> s.toString())
+            .toArray(String[]::new);
+        }));
+        errors__isSet_ = true;
+        errors__ = (String[]) slot.slotGet();
+        onDetach(getErrors_$().follow(slot));
+        return errors__;
       `
     },
     {
@@ -54,9 +55,7 @@ foam.CLASS({
       of: 'foam.cross_platform.ListenerList',
       name: 'listeners__',
       hidden: true,
-      androidComparePropertyValues: `
-        foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
-      `,
+      androidComparePropertyValues: `null`,
       swiftComparePropertyValues: `
         foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
       `,
@@ -90,9 +89,7 @@ foam.CLASS({
         x_ = value as? foam_cross_platform_Context;
         clearProperty("subX");
       `,
-      androidComparePropertyValues: `
-        foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
-      `,
+      androidComparePropertyValues: `null`,
       swiftComparePropertyValues: `
         foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
       `,
@@ -115,9 +112,7 @@ foam.CLASS({
       name: 'subX',
       hidden: true,
       swiftOptional: false,
-      androidComparePropertyValues: `
-        foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
-      `,
+      androidComparePropertyValues: `null`,
       swiftComparePropertyValues: `
         foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
       `,
@@ -419,7 +414,8 @@ foam.CLASS({
         }
         for ( Object a : data.getCls_().getAxiomsByClass(foam.core.Property.CLS_()) ) {
           foam.core.Property p = (foam.core.Property) a;
-          int diff = p.compareValues(p.f(this), p.f(data));
+          if ( p.getComparePropertyValues() == null ) continue;
+          int diff = (int) p.getComparePropertyValues().executeFunction(new Object[] {p.f(this), p.f(data)});
           if ( diff != 0 ) return diff;
         }
         return 0;

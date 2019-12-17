@@ -133,8 +133,9 @@ foam.CLASS({
         { type: 'FObject', name: 'o' },
       ],
       androidCode: `
-        return (foam.core.Slot) getValidationSlotInitializer()
-          .executeFunction(new Object[] {o});
+        foam.cross_platform.GenericFunction f = getValidationSlotInitializer();
+        return f == null ? null :
+          (foam.core.Slot) f.executeFunction(new Object[] {o});
       `,
     },
     {
@@ -149,20 +150,6 @@ foam.CLASS({
       swiftCode: `
         return (o as! foam_cross_platform_FObject?)?.getProperty(getName());
       `
-    },
-    {
-      name: 'compareValues',
-      type: 'Integer',
-      args: [
-        { type: 'Any', name: 'a' },
-        { type: 'Any', name: 'b' },
-      ],
-      androidCode: `
-        return (int) getComparePropertyValues().executeFunction(new Object[] {a, b});
-      `,
-      swiftCode: `
-        return getComparePropertyValues()!.executeFunction([a, b]) as! Int;
-      `,
     }
   ]
 });

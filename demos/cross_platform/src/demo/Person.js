@@ -21,10 +21,9 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'fullName',
       expressionArgs: ['lastName', 'firstName'],
-      visibilityExpressionArgs: ['lastName'],
+      visibilityExpressionArgs: ['errors_'],
       androidVisibilityExpression: `
-        return foam.cross_platform.type.StringType.INSTANCE().isEmpty(lastName)
-          ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW;
+        return errors_.length > 0 ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW;
       `,
       androidExpression: `
         return (firstName + " " + lastName).trim();
@@ -71,11 +70,10 @@ foam.CLASS({
           .setFirstName("Mike")
           .setLastName("Car")
           .build();
-        foam.core.SlotInterface validationSlot = p.getValidationSlot();
-        assertEquals(0, ((Object[]) validationSlot.slotGet()).length);
+        assertEquals(0, p.getErrors_().length);
 
         p.setLastName("");
-        assertEquals(1, ((Object[]) validationSlot.slotGet()).length);
+        assertEquals(1, p.getErrors_().length);
       `,
     },
     {

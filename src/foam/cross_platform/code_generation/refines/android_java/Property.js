@@ -14,7 +14,6 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'androidValidationExpression',
-      value: 'return null;',
     },
     {
       class: 'StringProperty',
@@ -364,11 +363,15 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
 
       var addExpressionBits = (name, type) => {
         var Name = foam.String.capitalize(name);
+        var value = this['android' + Name + 'Expression'];
+        if ( ! value ) return;
         var args = this[name + 'ExpressionArgs'].map(a => {
           a = a.split('$').filter(a => a);
           return {
-            type: a.length == 1 ?
-              parentCls.getAxiomByName(a).androidType : 'Object',
+            type: a.length != 1 ? 'Object' : (
+                parentCls.getAxiomByName(a[0]) ||
+                foam.cross_platform.AbstractFObject.getAxiomByName(a[0])
+              ).androidType,
             name: a.join('$')
           }
         });
@@ -378,7 +381,7 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
           name: this.name + '_' + name,
           args: args,
           body: foam.cpTemplate(`
-            ${this['android' + Name + 'Expression']}
+            ${value}
           `, 'android')
         });
         return {
@@ -398,13 +401,6 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
               .build();
           });
           `,
-          actionPreBody: `
-            if ( ! ${this.name}_${name}(${args.map(a => `
-              (${a.type})getSlot("${a.name}").slotGet()
-            `).join(',')}) ) {
-              return;
-            }
-          `
         }
       };
 
@@ -431,7 +427,9 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
           if ( ${this.crossPlatformPrivateAxiom} == null ) {
             ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};
             ${this.crossPlatformPrivateAxiom}.setComparePropertyValues(${this.androidComparePropertyValues});
-            ${expressionData.map(d => d.axiomSetter).join('\n')}
+            ${expressionData
+              .filter(d => d && d.axiomSetter)
+              .map(d => d.axiomSetter).join('\n')}
             ${this.crossPlatformPrivateAxiom}.setViewInitializer((foam.cross_platform.GenericFunction) args -> {
               foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
               ${this.androidViewFactory}

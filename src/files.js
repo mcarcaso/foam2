@@ -210,6 +210,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/IDAlias" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Singleton" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Singleton" },
+  { name: "foam/cross_platform/code_generation/refines/android_java/Validation" },
 
   { name: "foam/json2/Json2PropertyRefine" },
   { name: "foam/json2/OutputterOutput" },

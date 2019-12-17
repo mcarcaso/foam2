@@ -2775,8 +2775,10 @@ foam.CLASS({
       code: function(o1, o2) {
         return this.comparePropertyValues(this.f(o1), this.f(o2));
       },
-      crossPlatformCode: `
-        return compareValues(f(o1), f(o2));
+      androidCode: `
+        return getComparePropertyValues() == null ? 0 :
+          (int) getComparePropertyValues()
+            .executeFunction(new Object[] {f(o1), f(o2)});
       `
     },
   ]

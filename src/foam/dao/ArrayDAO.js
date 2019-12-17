@@ -222,7 +222,7 @@ foam.CLASS({
       androidCode: `
         foam.core.Property p = (foam.core.Property) getOf().getAxiomByName("id");
         for ( Object o : getArray() ) {
-          if ( p.compareValues(p.f(o), id) == 0 ) {
+          if ( foam.cross_platform.Lib.equals(p.f(o), id) ) {
             return (foam.cross_platform.FObject) o;
           }
         }

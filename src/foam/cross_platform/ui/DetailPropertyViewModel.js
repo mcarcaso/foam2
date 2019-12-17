@@ -65,15 +65,19 @@ foam.CLASS({
       androidCode: `
         if ( getDataSub_() != null ) getDataSub_().detach();
         if ( getData() == null || getProp() == null ) return;
+
+        foam.core.SlotInterface validationSlot =
+          getProp().createValidationSlot(getData());
         setDataSub_(ArrayDetachable_create()
-          .setArray(new foam.core.Detachable[] {
-            getPropData$()
-              .follow(getData$().dot(getProp().getName())),
-            getVisibility$()
-              .follow(getProp().createVisibilitySlot(getData())),
-            getValidation$()
-              .follow(getProp().createValidationSlot(getData()))
-          })
+          .setArray(java.util.Arrays.stream(new foam.core.Detachable[] {
+              getPropData$()
+                .follow(getData$().dot(getProp().getName())),
+              getVisibility$()
+                .follow(getProp().createVisibilitySlot(getData())),
+              validationSlot == null ? null : getValidation$().follow(validationSlot)
+            })
+            .filter(d -> d != null)
+            .toArray(foam.core.Detachable[]::new))
           .build());
       `
     }
