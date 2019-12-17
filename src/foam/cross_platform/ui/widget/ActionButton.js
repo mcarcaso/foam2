@@ -2,6 +2,7 @@ foam.CLASS({
   package: 'foam.cross_platform.ui.widget',
   name: 'ActionButton',
   requires: [
+    'foam.util.ArrayDetachable',
     'foam.core.ExpressionSlot',
   ],
   implements: [
@@ -22,11 +23,13 @@ foam.CLASS({
     },
     {
       class: 'BooleanProperty',
-      name: 'isAvailable'
+      name: 'isAvailable',
+      value: true
     },
     {
       class: 'BooleanProperty',
-      name: 'isEnabled'
+      name: 'isEnabled',
+      value: true
     },
     {
       class: 'StringProperty',
@@ -100,27 +103,29 @@ foam.CLASS({
       name: 'bindData',
       androidCode: `
         foam.core.Action action = (foam.core.Action) axiom;
-
         setAction(action);
         setData(data);
 
         foam.core.Slot isAvailable = action.createIsAvailableSlot(data);
-        final foam.core.Detachable isAvailableSub = getIsAvailable$().follow(isAvailable);
-
         foam.core.Slot isEnabled = action.createIsEnabledSlot(data);
-        final foam.core.Detachable isEnabledSub = getIsEnabled$().follow(isEnabled);
 
         final ActionButton self = this;
-        return <%=detachable(\`
-          isAvailableSub.detach();
-          isEnabledSub.detach();
-          if ( foam.cross_platform.Lib.equals(self.getAction(), axiom) ) {
-            self.clearProperty("action");
-          }
-          if ( foam.cross_platform.Lib.equals(self.getData(), data) ) {
-            self.clearProperty("data");
-          }
-        \`)%>;
+        return ArrayDetachable_create()
+          .setArray(new foam.core.Detachable[] {
+            isEnabled == null ? null : getIsEnabled$().follow(isEnabled),
+            isAvailable == null ? null : getIsAvailable$().follow(isAvailable),
+            <%=detachable(\`
+              self.clearProperty("isEnabled");
+              self.clearProperty("isAvailable");
+              if ( foam.cross_platform.Lib.equals(self.getAction(), axiom) ) {
+                self.clearProperty("action");
+              }
+              if ( foam.cross_platform.Lib.equals(self.getData(), data) ) {
+                self.clearProperty("data");
+              }
+            \`)%>
+          })
+          .build();
       `,
       swiftCode: `
         setAction(axiom);

@@ -33,7 +33,13 @@ foam.CLASS({
     },
     {
       class: 'FunctionProperty',
-      name: 'viewInitializer'
+      name: 'viewInitializer',
+      androidValue: `
+        (foam.cross_platform.GenericFunction) args -> {
+          foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
+          return foam.cross_platform.ui.widget.ActionButton.ActionButtonBuilder(x).build();
+        }
+      `
     },
     {
       class: 'StringProperty',

@@ -44,10 +44,7 @@ foam.CLASS({
         args: [
           { type: 'android.content.Context', name: 'context' }
         ],
-        body: `
-          super(context);
-          init(null, 0);
-        `
+        body: `super(context);`
       });
       detailViewCls.method({
         visibility: 'public',
@@ -57,10 +54,7 @@ foam.CLASS({
           { type: 'android.content.Context', name: 'context' },
           { type: 'android.util.AttributeSet', name: 'attrs' }
         ],
-        body: `
-          super(context, attrs);
-          init(attrs, 0);
-        `
+        body: `super(context, attrs);`
       });
       detailViewCls.method({
         visibility: 'public',
@@ -71,27 +65,12 @@ foam.CLASS({
           { type: 'android.util.AttributeSet', name: 'attrs' },
           { type: 'int', name: 'defStyle' }
         ],
-        body: `
-          super(context, attrs, defStyle);
-          init(attrs, defStyle);
-        `
+        body: `super(context, attrs, defStyle);`
       });
-      detailViewCls.method({
-        visibility: 'private',
-        name: 'init',
-        args: [
-          { type: 'android.util.AttributeSet', name: 'attrs' },
-          { type: 'int', name: 'defStyle' }
-        ],
-        body: `
-          // TODO?
-        `
-      });
-
 
       var axioms = parentCls.getAxioms()
-        .filter(a => !a.hidden)
-        .filter(a => a.androidViewFactory);
+        .filter(a => a.cls_ && a.cls_.getAxiomByName('createView'))
+        .filter(a => !a.hidden);
       axioms.forEach(p => {
         var sub = p.name + '_sub_';
         detailViewCls.field({

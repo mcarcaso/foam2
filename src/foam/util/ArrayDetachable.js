@@ -16,7 +16,7 @@ foam.CLASS({
       name: 'detach',
       androidCode: `
         for ( foam.core.Detachable d : getArray() ) {
-          d.detach();
+          if ( d != null ) d.detach();
         }
       `
     }

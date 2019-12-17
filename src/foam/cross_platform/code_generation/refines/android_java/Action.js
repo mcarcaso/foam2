@@ -19,20 +19,15 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'androidIsEnabled',
-      value: 'return true;'
+      name: 'androidIsEnabled'
     },
     {
       class: 'StringProperty',
-      name: 'androidIsAvailable',
-      value: 'return true;'
+      name: 'androidIsAvailable'
     },
     {
       class: 'StringProperty',
-      name: 'androidViewFactory',
-      value: `
-        return foam.cross_platform.ui.widget.ActionButton.ActionButtonBuilder(x).build();
-      `,
+      name: 'androidViewFactory'
     },
   ],
   methods: [
@@ -65,6 +60,7 @@ foam.CLASS({
 
       var addExpressionBits = name => {
         var Name = foam.String.capitalize(name);
+        if ( ! this['android' + Name] ) return;
         var args = this[name + 'ExpressionArgs'].map(a => {
           a = a.split('$').filter(a => a);
           return {
@@ -112,7 +108,9 @@ foam.CLASS({
       var expressionData = [
         'isEnabled',
         'isAvailable'
-      ].map(p => addExpressionBits(p));
+      ]
+        .map(p => addExpressionBits(p))
+        .filter(o => o);
 
       cls.method({
         visibility: 'public',
@@ -141,10 +139,12 @@ foam.CLASS({
           if ( ${this.crossPlatformPrivateAxiom} == null ) {
             ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};
             ${expressionData.map(d => d.axiomSetter).join('\n')}
+            ${this.androidViewFactory ? `
             ${this.crossPlatformPrivateAxiom}.setViewInitializer((foam.cross_platform.GenericFunction) args -> {
               foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
               ${this.androidViewFactory}
             });
+            ` : ''}
           }
           return ${this.crossPlatformPrivateAxiom};
         `

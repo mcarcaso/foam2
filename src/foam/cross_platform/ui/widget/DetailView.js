@@ -4,6 +4,9 @@ foam.CLASS({
   implements: [
     'foam.cross_platform.ui.AxiomView'
   ],
+  requires: [
+    'foam.util.ArrayDetachable'
+  ],
   swiftImports: [
     'UIKit'
   ],
@@ -50,9 +53,17 @@ foam.CLASS({
       name: 'resourceFile',
       androidValue: '"detail_property_view"'
     },
+    {
+      class: 'FObjectProperty',
+      of: 'foam.core.Detachable',
+      name: 'sub_'
+    },
   ],
   reactions: [
-    ['', 'propertyChange', 'updateView']
+    ['', 'propertyChange.data', 'updateView'],
+    ['', 'propertyChange.props', 'updateView'],
+    ['', 'propertyChange.actions', 'updateView'],
+    ['', 'propertyChange.view', 'updateView'],
   ],
   methods: [
     {
@@ -64,21 +75,25 @@ foam.CLASS({
     },
     {
       name: 'init',
-      androidCode: `
-        updateView(null, null);
-      `
+      androidCode: `updateView(null, null);`
     }
   ],
   listeners: [
     {
       name: 'updateView',
       androidCode: `
+        if ( getSub_() != null ) {
+          getSub_().detach();
+          setSub_(null);
+        }
         if ( getView() == null ) return;
         getView().removeAllViews();
+        if ( getData() == null ) return;
         int dpvid = getView().getResources().getIdentifier(
           getResourceFile(),
           "layout",
           getView().getContext().getPackageName());
+        foam.core.Detachable[] subs = new foam.core.Detachable[getProps().length + getActions().length];
         for ( int i = 0 ; i < getProps().length ; i++ ) {
           foam.core.Property p = (foam.core.Property) getProps()[i];
           getView().inflate(
@@ -96,7 +111,7 @@ foam.CLASS({
             dpv.setVisibility(dpvm.getVisibility() == foam.u2.Visibility.HIDDEN ? 
               android.view.View.GONE : android.view.View.VISIBLE);
           };
-          dpvm.getVisibility$().slotSub(l);
+          subs[i] = dpvm.getVisibility$().slotSub(l);
           l.executeListener(null, new Object[] { dpvm.getVisibility() });
           dpv.setData(dpvm);
         }
@@ -105,9 +120,10 @@ foam.CLASS({
           foam.cross_platform.ui.widget.ActionButton ab = foam.cross_platform.ui.widget.ActionButton.ActionButtonBuilder(null)
             .setView(new android.widget.Button(getView().getContext()))
             .build();
-          ab.bindData(getData(), getActions()[i]);
+          subs[getProps().length + i] = ab.bindData(getData(), getActions()[i]);
           getView().addView(ab.getView());
         }
+        setSub_(ArrayDetachable_create().setArray(subs).build());
       `,
     }
   ]
