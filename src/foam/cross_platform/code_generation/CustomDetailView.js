@@ -24,12 +24,6 @@ foam.CLASS({
     },
   ],
   methods: [
-    function getDeps(flagFilter, map) {
-      if ( flagFilter({flags: ['swift', 'android']}) ) {
-        map['foam.cross_platform.ui.widget.Label'] = true;
-        map['foam.cross_platform.ui.widget.ActionButton'] = true;
-      }
-    },
     function buildAndroidResources(resources, parentCls) {
       var name = parentCls.model_.name;
       var detailViewCls = foam.java.Class.create({
