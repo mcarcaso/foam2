@@ -2,6 +2,9 @@ foam.CLASS({
   package: 'foam.cross_platform.code_generation.refines',
   name: 'ActionRefine',
   refines: 'foam.core.Action',
+  requires: [
+    'foam.cross_platform.ui.widget.ActionButton'
+  ],
   properties: [
     {
       class: 'ClassProperty',

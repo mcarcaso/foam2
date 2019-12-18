@@ -2,8 +2,8 @@ foam.CLASS({
   package: 'foam.cross_platform.ui',
   name: 'DetailPropertyViewModel',
   requires: [
-    'foam.util.ArrayDetachable',
     'foam.cross_platform.ui.widget.AxiomViewContainer',
+    'foam.util.ArrayDetachable',
   ],
   properties: [
     {
@@ -34,19 +34,25 @@ foam.CLASS({
       `,
       swiftExpression: `
         return prop$label as? String ?? "";
+      `,
+      androidViewFactory: `
+        return foam.cross_platform.ui.widget.Label.LabelBuilder(x).build();
       `
     },
     {
       name: 'propData',
       androidViewFactory: `
         return foam.cross_platform.ui.widget.AxiomViewContainer.AxiomViewContainerBuilder(x)
-          .setDelegateAxiom(PROP())
+          .setDelegateProperty(PROP())
           .build();
       `
     },
     {
       class: 'StringProperty',
-      name: 'validation'
+      name: 'validation',
+      androidViewFactory: `
+        return foam.cross_platform.ui.widget.Label.LabelBuilder(x).build();
+      `
     },
   ],
   reactions: [
@@ -71,7 +77,7 @@ foam.CLASS({
         setDataSub_(ArrayDetachable_create()
           .setArray(java.util.Arrays.stream(new foam.core.Detachable[] {
               getPropData$()
-                .follow(getData$().dot(getProp().getName())),
+                .linkFrom(getData$().dot(getProp().getName())),
               getVisibility$()
                 .follow(getProp().createVisibilitySlot(getData())),
               validationSlot == null ? null : getValidation$().follow(validationSlot)

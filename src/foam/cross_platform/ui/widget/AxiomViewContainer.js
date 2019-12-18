@@ -10,7 +10,8 @@ foam.CLASS({
   properties: [
     {
       class: 'FObjectProperty',
-      name: 'delegateAxiom',
+      of: 'foam.core.Property',
+      name: 'delegateProperty',
     },
     {
       androidType: 'android.view.ViewGroup',
@@ -20,16 +21,18 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ui.AxiomView',
       name: 'child',
-      expressionArgs: ['delegateAxiom', 'view'],
+      expressionArgs: ['data', 'delegateProperty', 'view'],
       androidExpression: `
+        if ( data == null ) return null;
         if ( view == null ) return null;
+        if ( delegateProperty == null ) return null;
         foam.cross_platform.Context x = getSubX().createSubContext(new java.util.HashMap() {
           {
             put("androidContext", view.getContext());
           }
         });
-        return getDelegateAxiom() instanceof foam.core.Property ?
-          ((foam.core.Property) getDelegateAxiom()).createView(x) : null;
+        foam.core.Property p = (foam.core.Property) delegateProperty.f(data);
+        return p.createView(x);
       `
     },
     {
@@ -72,9 +75,7 @@ foam.CLASS({
         if ( getData() == null ) return;
         if ( getAxiom() == null ) return;
         if ( getChild() == null ) return;
-        if ( getSub_().getDelegate() != null ) {
-          getSub_().getDelegate().detach();
-        }
+        if ( getSub_().getDelegate() != null ) getSub_().getDelegate().detach();
         getSub_().setDelegate(getChild().bindData(getData(), getAxiom()));
       `
     },

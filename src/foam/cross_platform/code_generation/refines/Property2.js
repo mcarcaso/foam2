@@ -2,6 +2,9 @@ foam.CLASS({
   package: 'foam.cross_platform.code_generation.refines.android_java',
   name: 'PropertyJavaRefinement2',
   refines: 'foam.core.Property',
+  requires: [
+    'foam.cross_platform.ui.widget.Label'
+  ],
   properties: [
     {
       class: 'StringProperty',

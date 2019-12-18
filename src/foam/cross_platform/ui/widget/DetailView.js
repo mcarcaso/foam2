@@ -45,6 +45,10 @@ foam.CLASS({
       `
     },
     {
+      class: 'ArrayProperty',
+      name: 'views_'
+    },
+    {
       androidType: 'android.widget.LinearLayout',
       name: 'view'
     },
@@ -94,6 +98,7 @@ foam.CLASS({
           "layout",
           getView().getContext().getPackageName());
         foam.core.Detachable[] subs = new foam.core.Detachable[getProps().length + getActions().length];
+        Object[] views = new Object[getProps().length + getActions().length];
         for ( int i = 0 ; i < getProps().length ; i++ ) {
           foam.core.Property p = (foam.core.Property) getProps()[i];
           getView().inflate(
@@ -114,6 +119,7 @@ foam.CLASS({
           subs[i] = dpvm.getVisibility$().slotSub(l);
           l.executeListener(null, new Object[] { dpvm.getVisibility() });
           dpv.setData(dpvm);
+          views[i] = dpv;
         }
 
         for ( int i = 0 ; i < getActions().length ; i++ ) {
@@ -122,10 +128,11 @@ foam.CLASS({
             .build();
           subs[getProps().length + i] = ab.bindData(getData(), getActions()[i]);
           getView().addView(ab.getView());
+          views[getProps().length + i] = ab;
         }
+        setViews_(views);
         setSub_(ArrayDetachable_create().setArray(subs).build());
       `,
     }
   ]
 });
-
