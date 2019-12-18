@@ -17,6 +17,8 @@ import foam.cross_platform.ui.widget.DetailView;
 
 public class MainActivity extends AppCompatActivity {
 
+    DetailView dv = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DetailView dv = DetailView.DetailViewBuilder(null)
+        dv = DetailView.DetailViewBuilder(null)
                 .build();
         dv.setData(Person.PersonBuilder(dv.getSubX()).build());
         dv.setView(findViewById(R.id.detail_view));
