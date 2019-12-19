@@ -2,7 +2,7 @@ foam.CLASS({
   package: 'foam.cross_platform.ui',
   name: 'DetailPropertyViewModel',
   requires: [
-    'foam.cross_platform.ui.widget.AxiomViewContainer',
+    'foam.cross_platform.ui.widget.PropertyViewContainer',
     'foam.util.ArrayDetachable',
   ],
   properties: [
@@ -42,7 +42,7 @@ foam.CLASS({
     {
       name: 'propData',
       androidViewFactory: `
-        return foam.cross_platform.ui.widget.AxiomViewContainer.AxiomViewContainerBuilder(x)
+        return foam.cross_platform.ui.widget.PropertyViewContainer.PropertyViewContainerBuilder(x)
           .setDataExpr(DATA())
           .setPropExpr(PROP())
           .build();

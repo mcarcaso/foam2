@@ -1,6 +1,6 @@
 foam.CLASS({
   package: 'foam.cross_platform.ui.widget',
-  name: 'AxiomViewContainer',
+  name: 'PropertyViewContainer',
   requires: [
     'foam.util.ProxyDetachable',
   ],
@@ -19,15 +19,15 @@ foam.CLASS({
       prop: demo.Person.FULL_NAME
     };
     To properly render this FULL_NAME (or any data being stored in the
-    DetailPropertyViewModel), you can use an AxiomViewContainer like so:
+    DetailPropertyViewModel), you can use an PropertyViewContainer like so:
     view = {
-      class: 'AxiomViewContainer',
+      class: 'PropertyViewContainer',
       dataExpr: DetailPropertyViewModel.DATA,
       propExpr: DetailPropertyViewModel.PROP
     };
     And the binding would happen with:
     doBinding((DetailPropertyViewModel) o, null); // Second param is ignored.
-    With the dataExpr and propExpr set, the AxiomViewContainer can figure out
+    With the dataExpr and propExpr set, the PropertyViewContainer can figure out
     that a FULL_NAME is trying to be rendered and can bind the child view with
     the Person as the data.
   `,
