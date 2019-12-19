@@ -15,6 +15,9 @@ foam.CLASS({
       flags: ['android']
     }
   ],
+  requires: [
+    'foam.util.ArrayDetachable'
+  ],
   properties: [
     {
       androidType: 'android.text.TextWatcher',
@@ -55,25 +58,41 @@ foam.CLASS({
         newValue.addTextChangedListener(getTextWatcher());
       `
     },
+    {
+      class: 'Enum',
+      of: 'foam.u2.Visibility',
+      name: 'visibility'
+    },
   ],
   reactions: [
     ['', 'propertyChange.view', 'dataToView'],
     ['', 'propertyChange.data', 'dataToView'],
+    ['', 'propertyChange.visibility', 'updateVisibility'],
   ],
   methods: [
     {
       name: 'bindData',
       androidCode: `
         foam.core.Property prop = (foam.core.Property) axiom;
-        return getData$().linkFrom(data.getSlot(prop.getName()));
+        return ArrayDetachable_create()
+          .setArray(new foam.core.Detachable[] {
+            getData$().linkFrom(data.getSlot(prop.getName())),
+            getVisibility$().follow(prop.createVisibilitySlot(data))
+          })
+          .build();
       `,
       swiftCode: `
-        let prop = axiom as! foam_core_Property;
-        return getData$().linkFrom(data!.getSlot(prop.getName()));
       `
     }
   ],
   listeners: [
+    {
+      name: 'updateVisibility',
+      androidCode: `
+        getView().setFocusable(getVisibility() == foam.u2.Visibility.RW);
+        getView().setEnabled(getVisibility() != foam.u2.Visibility.DISABLED);
+      `
+    },
     {
       name: 'viewToData',
       androidCode: `
@@ -90,7 +109,7 @@ foam.CLASS({
         if ( getView() == null ) return;
         if ( getFeedback() ) return;
         setFeedback(true);
-        getView().setText(getData().toString());
+        getView().setText(getData() == null ? "" : getData().toString());
         setFeedback(false);
       `
     },

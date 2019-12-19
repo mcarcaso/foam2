@@ -43,7 +43,8 @@ foam.CLASS({
       name: 'propData',
       androidViewFactory: `
         return foam.cross_platform.ui.widget.AxiomViewContainer.AxiomViewContainerBuilder(x)
-          .setDelegateProperty(PROP())
+          .setDataExpr(DATA())
+          .setPropExpr(PROP())
           .build();
       `
     },

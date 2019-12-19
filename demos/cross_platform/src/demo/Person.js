@@ -23,7 +23,7 @@ foam.CLASS({
       expressionArgs: ['lastName', 'firstName'],
       visibilityExpressionArgs: ['errors_'],
       androidVisibilityExpression: `
-        return errors_.length > 0 ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RW;
+        return errors_.length > 0 ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RO;
       `,
       androidExpression: `
         return (firstName + " " + lastName).trim();

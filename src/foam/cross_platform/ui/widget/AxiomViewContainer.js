@@ -7,11 +7,49 @@ foam.CLASS({
   implements: [
     'foam.cross_platform.ui.AxiomView',
   ],
+  documentation: `
+    A view that's a container around another property view. It handles creating
+    the child view and handling the correct property and data properties.
+
+    Example:
+    Consider a DetailPropertyViewModel with the following data in it:
+    data = { 
+      class: 'DetailPropertyViewModel',
+      data: { class: 'demo.Person' },
+      prop: demo.Person.FULL_NAME
+    };
+    To properly render this FULL_NAME (or any data being stored in the
+    DetailPropertyViewModel), you can use an AxiomViewContainer like so:
+    view = {
+      class: 'AxiomViewContainer',
+      dataExpr: DetailPropertyViewModel.DATA,
+      propExpr: DetailPropertyViewModel.PROP
+    };
+    And the binding would happen with:
+    doBinding((DetailPropertyViewModel) o, null); // Second param is ignored.
+    With the dataExpr and propExpr set, the AxiomViewContainer can figure out
+    that a FULL_NAME is trying to be rendered and can bind the child view with
+    the Person as the data.
+  `,
   properties: [
     {
       class: 'FObjectProperty',
+      of: 'foam.mlang.Expr',
+      name: 'propExpr',
+    },
+    {
+      class: 'FObjectProperty',
+      of: 'foam.mlang.Expr',
+      name: 'dataExpr',
+    },
+    {
+      class: 'FObjectProperty',
+      name: 'data'
+    },
+    {
+      class: 'FObjectProperty',
       of: 'foam.core.Property',
-      name: 'delegateProperty',
+      name: 'prop'
     },
     {
       androidType: 'android.view.ViewGroup',
@@ -21,18 +59,16 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ui.AxiomView',
       name: 'child',
-      expressionArgs: ['data', 'delegateProperty', 'view'],
+      expressionArgs: ['prop', 'view'],
       androidExpression: `
-        if ( data == null ) return null;
+        if ( prop == null ) return null;
         if ( view == null ) return null;
-        if ( delegateProperty == null ) return null;
         foam.cross_platform.Context x = getSubX().createSubContext(new java.util.HashMap() {
           {
             put("androidContext", view.getContext());
           }
         });
-        foam.core.Property p = (foam.core.Property) delegateProperty.f(data);
-        return p.createView(x);
+        return prop.createView(x);
       `
     },
     {
@@ -41,18 +77,10 @@ foam.CLASS({
       name: 'sub_',
       crossPlatformFactory: `return ProxyDetachable_create().build();`
     },
-    {
-      class: 'FObjectProperty',
-      name: 'data'
-    },
-    {
-      class: 'FObjectProperty',
-      name: 'axiom'
-    },
   ],
   reactions: [
+    ['', 'propertyChange.prop', 'doBinding'],
     ['', 'propertyChange.data', 'doBinding'],
-    ['', 'propertyChange.axiom', 'doBinding'],
     ['', 'propertyChange.child', 'doBinding'],
 
     ['', 'propertyChange.view', 'updateView'],
@@ -62,8 +90,8 @@ foam.CLASS({
     {
       name: 'bindData',
       androidCode: `
-        setData(data);
-        setAxiom(axiom);
+        setData(getDataExpr().f(data));
+        setProp(getPropExpr().f(data));
         return getSub_();
       `,
     }
@@ -73,10 +101,12 @@ foam.CLASS({
       name: 'doBinding',
       androidCode: `
         if ( getData() == null ) return;
-        if ( getAxiom() == null ) return;
+        if ( getProp() == null ) return;
         if ( getChild() == null ) return;
         if ( getSub_().getDelegate() != null ) getSub_().getDelegate().detach();
-        getSub_().setDelegate(getChild().bindData(getData(), getAxiom()));
+        getSub_().setDelegate(getChild().bindData(
+          getData(),
+          getProp()));
       `
     },
     {
