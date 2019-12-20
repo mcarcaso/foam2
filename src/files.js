@@ -169,6 +169,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/android_java/ClassProperty" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/ClassProperty" },
   { name: "foam/cross_platform/code_generation/refines/android_java/StringProperty" },
+  { name: "foam/cross_platform/code_generation/refines/android_java/BooleanProperty" },
   { name: "foam/cross_platform/code_generation/refines/Requires" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Requires" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Requires" },
