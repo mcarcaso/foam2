@@ -31,7 +31,7 @@ foam.CLASS({
       class: 'MapProperty',
       name: 'ownAxiomMap_',
       androidFactory: `
-        java.util.Map m = new java.util.HashMap();
+        java.util.Map m = new java.util.LinkedHashMap();
         for ( Object aO : getOwnAxioms() ) {
           foam.cross_platform.FObject a = (foam.cross_platform.FObject) aO;
           m.put(a.getProperty("name"), a);
@@ -52,7 +52,7 @@ foam.CLASS({
       name: 'axiomMap_',
       androidFactory: `
         if ( getParent() == null ) return getOwnAxiomMap_();
-        java.util.Map m = new java.util.HashMap(getOwnAxiomMap_());
+        java.util.Map m = new java.util.LinkedHashMap(getOwnAxiomMap_());
         for ( Object k : getParent().getAxiomMap_().keySet() ) {
           if ( ! m.containsKey(k) ) m.put(k, getParent().getAxiomMap_().get(k));
         }
