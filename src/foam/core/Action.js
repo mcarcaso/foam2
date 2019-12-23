@@ -36,6 +36,11 @@ foam.CLASS({
       required: true
     },
     {
+      class: 'LongProperty',
+      name: 'order',
+      value: Number.MAX_SAFE_INTEGER
+    },
+    {
       name: 'forClass_',
       transient: true
     },

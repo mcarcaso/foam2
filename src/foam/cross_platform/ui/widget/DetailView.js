@@ -24,24 +24,35 @@ foam.CLASS({
     },
     {
       class: 'FObjectArray',
-      of: 'foam.cross_platform.FObject',
+      of: 'foam.core.Property',
       name: 'props',
       expressionArgs: ['of'],
       androidFactory: null,
       androidExpression: `
         return java.util.Arrays.stream(of.getAxiomsByClass(foam.core.Property.CLS_()))
           .filter(p -> ! ((foam.core.Property) p).getHidden())
-          .toArray(foam.cross_platform.FObject[]::new);
+          .sorted((a, b) -> {
+            foam.core.Property pa = (foam.core.Property) a;
+            foam.core.Property pb = (foam.core.Property) b;
+            return Math.toIntExact(pa.getOrder() - pb.getOrder());
+          })
+          .toArray(foam.core.Property[]::new);
       `
     },
     {
       class: 'FObjectArray',
-      of: 'foam.cross_platform.FObject',
+      of: 'foam.core.Action',
       name: 'actions',
       expressionArgs: ['of'],
       androidFactory: null,
       androidExpression: `
-        return of.getAxiomsByClass(foam.core.Action.CLS_());
+        return java.util.Arrays.stream(of.getAxiomsByClass(foam.core.Action.CLS_()))
+          .sorted((a, b) -> {
+            foam.core.Action pa = (foam.core.Action) a;
+            foam.core.Action pb = (foam.core.Action) b;
+            return Math.toIntExact(pa.getOrder() - pb.getOrder());
+          })
+          .toArray(foam.core.Action[]::new);
       `
     },
     {
