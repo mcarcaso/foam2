@@ -11,7 +11,7 @@ import SwiftUI
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   var window: UIWindow?
-
+  var dv: foam_cross_platform_ui_widget_DetailView? = nil;
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -19,31 +19,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
     // Create the SwiftUI view that provides the window contents.
-
-    let v = Bundle.main.loadNibNamed("BasicDetailPropertyView", owner: self, options: nil)?.first as? foam_cross_platform_ui_DetailPropertyViewModelDetailView
-    let vc = UIViewController();
-    vc.view.addSubview(v!);
+    let vc = UIViewController()
+    let navVc = UINavigationController(rootViewController: vc);
+    navVc.navigationBar.isTranslucent = false;
+    vc.view = VerticalLayout(frame: vc.view.frame);
+    vc.view.backgroundColor = UIColor.red
 
     let p = demo_Person.demo_PersonBuilder(nil)
       .setFirstName("Mike")
       .setLastName("Car")
       .build();
-
-    v?.setData(foam_cross_platform_ui_DetailPropertyViewModel.foam_cross_platform_ui_DetailPropertyViewModelBuilder(nil)
+    let x = p.getSubX();
+    dv = foam_cross_platform_ui_widget_DetailView.foam_cross_platform_ui_widget_DetailViewBuilder(x)
       .setData(p)
-      .setProp(demo_Person.FIRST_NAME())
-      .build());
-
-    let views = ["v" : v!]
-    let formatString = "|-[v]-|"
-    let constraints = NSLayoutConstraint.constraints(
-      withVisualFormat:formatString, options: .alignAllTop, metrics: nil, views: views)
-    NSLayoutConstraint.activate(constraints)
+      .setView(vc.view)
+      .build();
 
     // Use a UIHostingController as window root view controller.
     if let windowScene = scene as? UIWindowScene {
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = vc
+        window.rootViewController = navVc;
         self.window = window
         window.makeKeyAndVisible()
     }

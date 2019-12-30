@@ -18,6 +18,11 @@ foam.CLASS({
         for ( foam.core.Detachable d : getArray() ) {
           if ( d != null ) d.detach();
         }
+      `,
+      swiftCode: `
+        for d in getArray()! {
+          d.detach();
+        }
       `
     }
   ]

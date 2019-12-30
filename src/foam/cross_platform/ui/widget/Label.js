@@ -21,11 +21,14 @@ foam.CLASS({
     },
     {
       androidType: 'android.widget.TextView',
-      swiftType: 'UILabel?',
+      swiftType: 'UIView?',
       name: 'view',
       androidFactory: `
         return new android.widget.TextView(getAndroidContext());
-      `
+      `,
+      swiftFactory: `
+        return UILabel();
+      `,
     },
   ],
   reactions: [
@@ -53,7 +56,8 @@ foam.CLASS({
       `,
       swiftCode: `
         if getView() == nil { return }
-        getView()!.text = getData() as? String ?? String(describing: getData());
+        (getView() as! UILabel).text = getData() == nil ? "" :
+          getData() as? String ?? String(describing: getData())
       `
     }
   ]

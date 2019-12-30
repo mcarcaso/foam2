@@ -22,6 +22,11 @@ foam.CLASS({
       name: 'androidClass',
       value: 'android.widget.LinearLayout'
     },
+    {
+      class: 'StringProperty',
+      name: 'swiftClass',
+      value: 'UIView'
+    },
   ],
   methods: [
     function buildAndroidResources(resources, parentCls) {
@@ -181,11 +186,14 @@ foam.CLASS({
     function buildSwiftResources(resources, parentCls) {
       var name = parentCls.model_.swiftName;
       var detailViewCls = foam.swift.SwiftClass.create({
-        name: name + 'DetailView',
-        extends: 'UIView',
+        name: this.package.replace(/\./g, '_') + '_' + this.name + 'DetailView',
+        extends: this.swiftClass,
         extras: [`
           required init?(coder: NSCoder) {
             super.init(coder: coder);
+          }
+          override init(frame: CGRect) {
+            super.init(frame: frame);
           }
         `],
         imports: [
@@ -194,19 +202,29 @@ foam.CLASS({
       });
 
       var axioms = parentCls.getAxioms()
-        .filter(a => a.crossPlatformView);
+        .filter(a => a.cls_ && a.cls_.getAxiomByName('createView'))
+        .filter(a => !a.hidden);
       axioms.forEach(p => {
         var sub = p.name + '_sub_';
         detailViewCls.field({
           type: foam.core.Detachable.model_.swiftName + '?',
           name: sub,
         });
-        var swiftType = p.crossPlatformView.model_.swiftName;
+        var swiftType = foam.cross_platform.ui.AxiomView.model_.swiftName;
         detailViewCls.field({
-          type: swiftType,
+          type: swiftType + '?',
           name: p.name + 'FoamView',
-          initializer: `
-            return ${swiftType}.${swiftType}Builder(nil).build();
+          defaultValue: 'nil'
+        });
+        detailViewCls.method({
+          type: swiftType,
+          name: `get_${p.name}`,
+          body: `
+            if ${p.name}FoamView == nil {
+              ${p.name}FoamView = ${parentCls.model_.swiftName}.${p.crossPlatformAxiomName}()
+                .createView(x_);
+            }
+            return ${p.name}FoamView!;
           `
         });
         detailViewCls.field({
@@ -216,7 +234,6 @@ foam.CLASS({
           type: 'UIView?',
           name: p.name,
           didSet: `
-            ${p.name}FoamView.setView(${p.name});
             ${sub}?.detach();
             ${sub} = nil;
             initSubs();
@@ -224,6 +241,11 @@ foam.CLASS({
         });
       });
 
+      detailViewCls.field({
+        type: foam.cross_platform.Context.model_.swiftName + '?',
+        name: 'x_',
+        defaultValue: 'nil'
+      });
       detailViewCls.field({
         type: name + '?',
         name: '_model_data_',
@@ -242,17 +264,21 @@ foam.CLASS({
           ${axioms.map(p => `
           ${p.name}_sub_?.detach();
           ${p.name}_sub_ = nil;
+          (${p.name}FoamView as? foam_cross_platform_FObject)?.detach();
+          ${p.name}FoamView = nil;
           `).join('\n')}
+          x_ = data.getSubX();
           initSubs();
         `
       });
       detailViewCls.method({
         name: 'initSubs',
         body: `
-          if _model_data_ == nil { return }
+          if _model_data_ == nil { return; }
           ${axioms.map(p => `
           if ${p.name} != nil && ${p.name}_sub_ == nil {
-            ${p.name}_sub_ = ${p.name}FoamView.bindData(
+            get_${p.name}().setView(${p.name});
+            ${p.name}_sub_ = get_${p.name}().bindData(
               _model_data_, _model_data_!.getCls_()!.getAxiomByName("${p.name}"));
           }
           `).join('\n')}

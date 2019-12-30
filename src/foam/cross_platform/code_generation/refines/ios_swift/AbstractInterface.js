@@ -29,6 +29,10 @@ foam.CLASS({
             .filter(a => a.buildSwiftClass)
             .forEach(a => a.buildSwiftClass(protocol, this));
           if ( ! protocol.implements.length ) protocol.implements = ['class'];
+          protocol.imports = protocol.imports.concat(
+            'Foundation',
+            this.model_.swiftImports
+          );
 
           return protocol;
         };

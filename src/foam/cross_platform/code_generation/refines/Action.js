@@ -42,7 +42,20 @@ foam.CLASS({
           foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
           return foam.cross_platform.ui.widget.ActionButton.ActionButtonBuilder(x).build();
         }
+      `,
+      swiftValue: `
+        AnonymousGenericFunction_create()
+          .setFn({[weak self] (args: [Any?]?) -> Any? in
+            if self == nil { return nil }
+            let x = args![0] as! foam_cross_platform_Context;
+            return foam_cross_platform_ui_widget_ActionButton.foam_cross_platform_ui_widget_ActionButtonBuilder(x).build();
+          })
+          .build()
       `
+    },
+    {
+      class: 'StringProperty',
+      name: 'crossPlatformCode',
     },
     {
       class: 'StringProperty',
@@ -77,6 +90,10 @@ foam.CLASS({
         return (foam.cross_platform.ui.AxiomView) getViewInitializer()
           .executeFunction(new Object[] {x});
       `,
+      swiftCode: `
+        return getViewInitializer()!
+          .executeFunction([x]) as? foam_cross_platform_ui_AxiomView
+      `,
     },
     {
       name: 'createIsEnabledSlot',
@@ -88,6 +105,9 @@ foam.CLASS({
         return (foam.core.Slot) getIsEnabledSlotInitializer()
           .executeFunction(new Object[] {o});
       `,
+      swiftCode: `
+        return getIsEnabledSlotInitializer()!.executeFunction([o]) as? foam_core_Slot
+      `,
     },
     {
       name: 'createIsAvailableSlot',
@@ -98,6 +118,9 @@ foam.CLASS({
       androidCode: `
         return (foam.core.Slot) getIsAvailableSlotInitializer()
           .executeFunction(new Object[] {o});
+      `,
+      swiftCode: `
+        return getIsAvailableSlotInitializer()!.executeFunction([o]) as? foam_core_Slot
       `,
     },
     {

@@ -21,6 +21,17 @@ foam.CLASS({
           `return ${crossPlatformFnGetterName}();`
       }
     },
+    {
+      class: 'ArrayProperty',
+      name: 'androidArgs',
+      factory: null,
+      expression: function(args) {
+        return args.map(a => ({
+          name: a.name,
+          type: a.androidType
+        }));
+      }
+    }
   ],
   methods: [
     function buildAndroidClass(cls, parentCls) {
@@ -32,10 +43,7 @@ foam.CLASS({
         static: this.crossPlatformIsStatic,
         type: this.androidType,
         name: this.name,
-        args: this.args.map(a => ({
-          name: a.name,
-          type: a.androidType
-        })),
+        args: this.androidArgs,
         body: foam.cpTemplate(this.androidCode, 'android')
       });
 
@@ -48,7 +56,7 @@ foam.CLASS({
           name: this.crossPlatformFnVarName,
         });
         var methodCall =
-          `self.${this.name}(${this.args.map(a => a.name).join(', ')})`;
+          `self.${this.name}(${this.androidArgs.map(a => a.name).join(', ')})`;
         cls.method({
           visibility: 'public',
           type: 'foam.cross_platform.GenericFunction',
@@ -58,8 +66,8 @@ foam.CLASS({
               final ${parentCls.id} self = this;
               ${this.crossPlatformFnVarName} = new foam.cross_platform.GenericFunction() {
                 public Object executeFunction(Object[] _fnArgs_) {
-                  ${this.args.map((a, i) => `
-                  ${a.androidType} ${a.name} = (${a.androidType}) _fnArgs_[${i}];
+                  ${this.androidArgs.map((a, i) => `
+                  ${a.type} ${a.name} = (${a.type}) _fnArgs_[${i}];
                   `).join('\n')}
                   ${this.androidType == 'void' ? `
                   ${methodCall};

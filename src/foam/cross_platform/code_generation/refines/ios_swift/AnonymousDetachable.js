@@ -5,7 +5,8 @@ foam.CLASS({
   properties: [
     {
       name: 'detachFn',
-      swiftType: '(() -> Void)?'
+      swiftType: '(() -> Void)?',
+      swiftValue: '{() -> Void in }'
     }
   ],
   methods: [
