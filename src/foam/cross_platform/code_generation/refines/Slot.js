@@ -213,6 +213,12 @@ foam.CLASS({
           .setCode(fn)
           .setArgs(new foam.core.SlotInterface[] {this})
           .build();
+      `,
+      swiftCode: `
+        return foam_core_ExpressionSlot.foam_core_ExpressionSlotBuilder(nil)
+          .setCode(fn)
+          .setArgs([self])
+          .build();
       `
     },
     {
@@ -668,6 +674,10 @@ foam.CLASS({
           .map(s -> s.slotGet())
           .toArray();
       `,
+      swiftCode: `
+        return getSlots()!
+          .map({$0.slotGet()});
+      `,
     },
     {
       name: 'slotSub',
@@ -675,6 +685,11 @@ foam.CLASS({
         foam.core.Detachable[] subs = java.util.Arrays.stream(getSlots())
           .map(s -> s.slotSub(listener))
           .toArray(foam.core.Detachable[]::new);
+        return ArrayDetachable_create().setArray(subs).build();
+      `,
+      swiftCode: `
+        let subs = getSlots()!
+          .map({$0.slotSub(listener)})
         return ArrayDetachable_create().setArray(subs).build();
       `,
     },

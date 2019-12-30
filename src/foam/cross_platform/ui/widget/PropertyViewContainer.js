@@ -7,6 +7,9 @@ foam.CLASS({
   implements: [
     'foam.cross_platform.ui.AxiomView',
   ],
+  swiftImports: [
+    'UIKit'
+  ],
   documentation: `
     A view that's a container around another property view. It handles creating
     the child view and handling the correct property and data properties.
@@ -53,6 +56,7 @@ foam.CLASS({
     },
     {
       androidType: 'android.view.ViewGroup',
+      swiftType: 'UIView?',
       name: 'view'
     },
     {
@@ -69,6 +73,12 @@ foam.CLASS({
           }
         });
         return prop.createView(x);
+      `,
+      swiftExpression: `
+        if ( prop == nil ) { return nil; }
+        if ( view == nil ) { return nil; }
+        let x = getSubX();
+        return prop!.createView(x);
       `
     },
     {
@@ -94,6 +104,11 @@ foam.CLASS({
         setProp(getPropExpr().f(data));
         return getSub_();
       `,
+      swiftCode: `
+        setData(getDataExpr()!.f(data));
+        setProp(getPropExpr()!.f(data));
+        return getSub_();
+      `
     }
   ],
   listeners: [
@@ -105,6 +120,15 @@ foam.CLASS({
         if ( getChild() == null ) return;
         if ( getSub_().getDelegate() != null ) getSub_().getDelegate().detach();
         getSub_().setDelegate(getChild().bindData(
+          getData(),
+          getProp()));
+      `,
+      swiftCode: `
+        if ( getData() == nil ) { return; }
+        if ( getProp() == nil ) { return; }
+        if ( getChild() == nil ) { return; }
+        getSub_()!.getDelegate()?.detach();
+        getSub_()!.setDelegate(getChild()!.bindData(
           getData(),
           getProp()));
       `
@@ -120,6 +144,12 @@ foam.CLASS({
             .removeView(getChild().getView());
         }
         getView().addView(getChild().getView());
+      `,
+      swiftCode: `
+        if ( getView() == nil ) { return; }
+        if ( getChild() == nil ) { return; }
+        getChild()!.getView()!.removeFromSuperview();
+        (getView() as! ProxyView).setDelegate(getChild()!.getView()!);
       `
     }
   ]

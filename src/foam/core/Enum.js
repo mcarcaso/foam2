@@ -172,7 +172,10 @@ foam.CLASS({
       name: 'name',
       getter: function() { return this.definition.name; }
     },
-    'definition',
+    {
+      class: 'MapProperty',
+      name: 'definition',
+    },
     // Late priority setting, so that properties/implements etc are defined first.
     [ 'priority', 50 ]
   ],

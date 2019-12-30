@@ -40,21 +40,16 @@ foam.CLASS({
     },
     {
       androidType: 'android.widget.Button',
-      swiftType: 'UIButton?',
+      swiftType: 'UIView?',
       name: 'view',
       androidPostSet: `
         if ( oldValue != null ) {
           ((android.widget.Button) oldValue).setOnClickListener(null);
         }
         if ( newValue != null ) {
-          final ActionButton self = this;
           newValue.setOnClickListener(new android.widget.Button.OnClickListener() {  
             public void onClick(android.view.View v) {
-              self.callAction(self.getSubX().createSubContext(new java.util.HashMap<String, Object>() {
-                {
-                  put("onClickView", v);
-                }
-              }));
+              callAction(v);
             }
           });
         }
@@ -66,7 +61,7 @@ foam.CLASS({
             action: #selector(Self.callAction),
             for: .touchUpInside)
         }
-        newValue?.addTarget(
+        (newValue as! UIButton).addTarget(
           self,
           action: #selector(Self.callAction),
           for: .touchUpInside)
@@ -82,21 +77,26 @@ foam.CLASS({
   methods: [
     {
       name: 'init',
-      androidCode: `updateView(null, null);`
+      androidCode: `updateView(null, null);`,
+      swiftCode: `updateView(nil, nil);`,
     },
     {
       name: 'callAction',
       swiftAnnotations: [
         '@objc'
       ],
-      args: [
-        { type: 'Context', name: 'x' }
+      androidArgs: [
+        { type: 'android.view.View', name: 'v' }
       ],
       androidCode: `
-        if ( getAction() != null ) getAction().call(getData(), new Object[] {x});
+        if ( getAction() == null ) return;
+        foam.cross_platform.Context x = getSubX().createSubContext(new java.util.HashMap<String, Object>() {{
+          put("onClickView", v);
+        }});
+        getAction().call(getData(), new Object[] {x});
       `,
       swiftCode: `
-        _ = getAction()?.call(getData(), nil);
+        _ = getAction()?.call(getData(), [getSubX()]);
       `
     },
     {
@@ -128,16 +128,29 @@ foam.CLASS({
           .build();
       `,
       swiftCode: `
-        setAction(axiom);
+        let action = axiom as! foam_core_Action;
+        setAction(action);
         setData(data);
-        return <%=detachable(\`
-          if foam_cross_platform_Lib.equals(self!.getAction(), axiom) {
-            self!.clearProperty("action")
-          }
-          if foam_cross_platform_Lib.equals(self!.getData(), data) {
-            self!.clearProperty("data")
-          }
-        \`)%>
+
+        let isAvailable = action.createIsAvailableSlot(data);
+        let isEnabled = action.createIsEnabledSlot(data);
+
+        return ArrayDetachable_create()
+          .setArray([
+            isEnabled == nil ? nil : getIsEnabled$().follow(isEnabled),
+            isAvailable == nil ? nil : getIsAvailable$().follow(isAvailable),
+            <%=detachable(\`
+              self!.clearProperty("isEnabled");
+              self!.clearProperty("isAvailable");
+              if ( foam_cross_platform_Lib.equals(self!.getAction(), axiom) ) {
+                self!.clearProperty("action");
+              }
+              if ( foam_cross_platform_Lib.equals(self!.getData(), data) ) {
+                self!.clearProperty("data");
+              }
+            \`)%>
+          ].filter({o -> Bool in return o != nil }))
+          .build();
       `
     }
   ],
@@ -153,8 +166,10 @@ foam.CLASS({
       `,
       swiftCode: `
         if getView() == nil { return }
-        getView()!.isHidden = !getIsAvailable();
-        getView()!.setTitle(getLabel(), for: .normal)
+        let b = getView() as! UIButton;
+        b.isHidden = !getIsAvailable();
+        b.isEnabled = getIsEnabled();
+        b.setTitle(getLabel(), for: .normal)
       `
     }
   ]

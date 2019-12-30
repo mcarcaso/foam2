@@ -14,7 +14,10 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'androidCode'
+      name: 'androidCode',
+      expression: function(crossPlatformCode) {
+        return crossPlatformCode || 'throw new RuntimeException();'
+      }
     },
     {
       class: 'StringProperty',

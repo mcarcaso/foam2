@@ -36,6 +36,7 @@ foam.CLASS({
     },
     {
       androidType: 'android.widget.Switch',
+      swiftType: 'UIView?',
       name: 'view',
       androidFactory: `
         return new android.widget.Switch(getAndroidContext());
@@ -72,8 +73,6 @@ foam.CLASS({
           })
           .build();
       `,
-      swiftCode: `
-      `
     }
   ],
   listeners: [

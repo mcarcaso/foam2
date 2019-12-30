@@ -31,6 +31,7 @@ foam.CLASS({
       hidden: true,
       transient: true,
       androidComparePropertyValues: `null`,
+      swiftComparePropertyValues: `nil`,
       androidFactory: `
         foam.core.SlotInterface slot = ArraySlot_create()
           .setSlots(java.util.Arrays.stream(getCls_().getAxiomsByClass(foam.core.Property.CLS_()))
@@ -48,6 +49,24 @@ foam.CLASS({
         errors__ = (String[]) slot.slotGet();
         onDetach(getErrors_$().follow(slot));
         return errors__;
+      `,
+      swiftFactory: `
+        let slot = ArraySlot_create()
+          .setSlots(getCls_()!.getAxiomsByClass(foam_core_Property.CLS_())!
+            .map({ ($0 as! foam_core_Property).createValidationSlot(self) })
+            .filter({ $0 != nil; }))
+          .build()
+          .map(AnonymousGenericFunction_create()
+            .setFn({(args: [Any?]?) -> Any? in
+              return (args![0] as! [String?])
+                .filter({$0 != nil})
+                .map({String(describing: $0)});
+            })
+            .build())!;
+        errors__isSet_ = true;
+        errors__ = slot.slotGet() as? [String];
+        onDetach(getErrors_$().follow(slot));
+        return errors__;
       `
     },
     {
@@ -56,9 +75,7 @@ foam.CLASS({
       name: 'listeners__',
       hidden: true,
       androidComparePropertyValues: `null`,
-      swiftComparePropertyValues: `
-        foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
-      `,
+      swiftComparePropertyValues: 'nil',
       androidFactory: `
         return ListenerList_create().build();
       `,
@@ -90,9 +107,7 @@ foam.CLASS({
         clearProperty("subX");
       `,
       androidComparePropertyValues: `null`,
-      swiftComparePropertyValues: `
-        foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
-      `,
+      swiftComparePropertyValues: `nil`,
       androidGetter: `
         if ( x_ == null ) {
           return foam.cross_platform.Context.GLOBAL();
@@ -429,8 +444,9 @@ foam.CLASS({
         }
         for a in data.getCls_()!.getAxiomsByClass(foam_core_Property.CLS_())! {
           let p = a as! foam_core_Property
-          let diff = p.compareValues(p.f(self), p.f(data))
-          if diff != 0 { return diff }
+          if p.getComparePropertyValues() == nil { continue; }
+          let diff = p.getComparePropertyValues()!.executeFunction([p.f(self), p.f(data)]) as! Int;
+          if diff != 0 { return diff; }
         }
         return 0
       `

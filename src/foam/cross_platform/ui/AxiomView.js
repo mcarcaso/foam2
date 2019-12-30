@@ -1,6 +1,7 @@
 foam.INTERFACE({
   package: 'foam.cross_platform.ui',
   name: 'AxiomView',
+  swiftImports: ['UIKit'],
   methods: [
     {
       type: 'foam.core.Detachable',
@@ -12,7 +13,8 @@ foam.INTERFACE({
     },
     {
       name: 'getView',
-      androidType: 'android.view.View'
+      androidType: 'android.view.View',
+      swiftType: 'UIView?',
     },
     {
       name: 'setView',

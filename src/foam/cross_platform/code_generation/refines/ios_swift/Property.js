@@ -24,6 +24,15 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
+      name: 'swiftValidationExpression',
+    },
+    {
+      class: 'StringProperty',
+      name: 'swiftVisibilityExpression',
+      value: 'return foam_u2_Visibility.RW;',
+    },
+    {
+      class: 'StringProperty',
       name: 'swiftValueType',
       expression: function(swiftType) {
         return swiftType + (foam.swift.isNullable(swiftType) ? '' : '!')
@@ -136,11 +145,22 @@ foam.CLASS({
         return `return ${crossPlatformGetterName}();`
       }
     },
+    {
+      class: 'StringProperty',
+      name: 'swiftViewFactory'
+    },
   ],
   methods: [
     function buildSwiftClass(cls, parentCls) {
       if ( ! parentCls.hasOwnAxiom(this.name) ) return;
       var superAxiom = parentCls.getSuperClass().getAxiomByName(this.name);
+      if ( superAxiom && superAxiom.forClass_ == 'foam.core.FObject' ) {
+        // All generated classes extend foam.cross_platform.AbstractFObject so
+        // if an axiom comes from foam.core.FObject, don't consider it an
+        // override unless it's in the extended class.
+        superAxiom = parentCls == foam.cross_platform.AbstractFObject ?
+          null : foam.cross_platform.AbstractFObject.getAxiomByName(this.name);
+      }
       var override = !! superAxiom;
 
       cls.field({
@@ -364,6 +384,58 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
       }
       cls.method(setter);
 
+      var expressionData = [
+          ['visibility', 'foam_u2_Visibility'],
+          ['validation', 'String?'],
+        ]
+        .map(p => {
+          var name = p[0];
+          var type = p[1];
+          var Name = foam.String.capitalize(name);
+          var value = this['swift' + Name + 'Expression'];
+          if ( ! value ) return;
+          var args = this[name + 'ExpressionArgs'].map(a => {
+            a = a.split('$').filter(a => a);
+            return {
+              type: a.length != 1 ? 'Any?' : (
+                  foam.cross_platform.AbstractFObject.getAxiomByName(a[0]) ||
+                  parentCls.getAxiomByName(a[0])
+                ).swiftType,
+              localName: a.join('$')
+            }
+          });
+          cls.method({
+            visibility: 'public',
+            override: override,
+            type: type,
+            name: this.name + '_' + name,
+            args: args,
+            body: foam.cpTemplate(`
+              ${value}
+            `, 'swift')
+          });
+          return `
+            ${this.crossPlatformPrivateAxiom}!.set${Name}SlotInitializer(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
+              .setFn({(args: [Any?]?) -> Any? in
+                let o = args?[0] as? ${parentCls.model_.swiftName};
+                return foam_core_ExpressionSlot.foam_core_ExpressionSlotBuilder(nil)
+                  .setObj(o)
+                  .setCode(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
+                    .setFn({(args2: [Any?]?) -> Any? in
+                      return o?.${this.name}_${name}(
+                        ${args.map((a, i) => `args2![${i}] as! ${a.type}`).join(',')}
+                      );
+                    })
+                    .build()
+                  )
+                  .setArgs([${args.map(a => `o?.getSlot("${a.localName}")`).join(',')}])
+                  .build();
+              })
+              .build())
+          `;
+        })
+        .filter(o => o);
+
       cls.field({
         visibility: 'private',
         static: true,
@@ -382,6 +454,15 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
               .getAxiomByName('asSwiftValue')
               .code.call(this)};
             ${this.crossPlatformPrivateAxiom}!.setComparePropertyValues(${this.swiftComparePropertyValues});
+            ${expressionData.join('\n')}
+            ${this.swiftViewFactory ? `
+            ${this.crossPlatformPrivateAxiom}!.setViewInitializer(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
+              .setFn({(args: [Any?]?) -> Any? in
+                let x = args![0] as! foam_cross_platform_Context;
+                ${this.swiftViewFactory}
+              })
+              .build());
+            ` : ''}
           }
           return ${this.crossPlatformPrivateAxiom}!;
         `

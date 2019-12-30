@@ -13,6 +13,10 @@ foam.CLASS({
     {
       name: 'androidValue',
       value: 'foam.cross_platform.NullFunction.NullFunctionBuilder(null).build()'
+    },
+    {
+      name: 'swiftValue',
+      value: 'foam_cross_platform_NullFunction.foam_cross_platform_NullFunctionBuilder(nil).build()'
     }
   ]
 });

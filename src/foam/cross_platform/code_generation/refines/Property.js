@@ -110,6 +110,9 @@ foam.CLASS({
         return (foam.cross_platform.ui.AxiomView) getViewInitializer()
           .executeFunction(new Object[] {x});
       `,
+      swiftCode: `
+        return getViewInitializer()!.executeFunction([x]) as? foam_cross_platform_ui_AxiomView;
+      `,
     },
     {
       name: 'createVisibilitySlot',
@@ -120,6 +123,9 @@ foam.CLASS({
       androidCode: `
         return (foam.core.Slot) getVisibilitySlotInitializer()
           .executeFunction(new Object[] {o});
+      `,
+      swiftCode: `
+        return getVisibilitySlotInitializer()?.executeFunction([o]) as? foam_core_Slot;
       `,
     },
     {
@@ -132,6 +138,10 @@ foam.CLASS({
         foam.cross_platform.GenericFunction f = getValidationSlotInitializer();
         return f == null ? null :
           (foam.core.Slot) f.executeFunction(new Object[] {o});
+      `,
+      swiftCode: `
+        let f = getValidationSlotInitializer();
+        return f?.executeFunction([o]) as? foam_core_Slot;
       `,
     },
     {

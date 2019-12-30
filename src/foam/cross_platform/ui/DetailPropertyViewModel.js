@@ -37,12 +37,21 @@ foam.CLASS({
       `,
       androidViewFactory: `
         return foam.cross_platform.ui.widget.Label.LabelBuilder(x).build();
+      `,
+      swiftViewFactory: `
+        return foam_cross_platform_ui_widget_Label.foam_cross_platform_ui_widget_LabelBuilder(x).build();
       `
     },
     {
       name: 'propData',
       androidViewFactory: `
         return foam.cross_platform.ui.widget.PropertyViewContainer.PropertyViewContainerBuilder(x)
+          .setDataExpr(DATA())
+          .setPropExpr(PROP())
+          .build();
+      `,
+      swiftViewFactory: `
+        return foam_cross_platform_ui_widget_PropertyViewContainer.foam_cross_platform_ui_widget_PropertyViewContainerBuilder(x)
           .setDataExpr(DATA())
           .setPropExpr(PROP())
           .build();
@@ -53,6 +62,9 @@ foam.CLASS({
       name: 'validation',
       androidViewFactory: `
         return foam.cross_platform.ui.widget.Label.LabelBuilder(x).build();
+      `,
+      swiftViewFactory: `
+        return foam_cross_platform_ui_widget_Label.foam_cross_platform_ui_widget_LabelBuilder(x).build();
       `
     },
   ],
@@ -63,7 +75,8 @@ foam.CLASS({
   methods: [
     {
       name: 'init',
-      androidCode: `bindData(null, null);`
+      androidCode: `bindData(null, null);`,
+      swiftCode: `bindData(nil, nil);`,
     }
   ],
   listeners: [
@@ -86,6 +99,23 @@ foam.CLASS({
             .filter(d -> d != null)
             .toArray(foam.core.Detachable[]::new))
           .build());
+      `,
+      swiftCode: `
+        getDataSub_()?.detach(); 
+        if getData() == nil || getProp() == nil { return; }
+
+        let validationSlot = getProp()!.createValidationSlot(getData());
+        setDataSub_(ArrayDetachable_create()
+          .setArray([
+              getPropData$()
+                .linkFrom(getData$().dot(getProp()!.getName())),
+              getVisibility$()
+                .follow(getProp()!.createVisibilitySlot(getData())),
+              validationSlot == nil ? nil : getValidation$().follow(validationSlot)
+            ]
+            .filter({ (d) -> Bool in return d != nil })
+          )
+          .build());
       `
     }
   ],
@@ -97,7 +127,10 @@ foam.CLASS({
         return ! foam.cross_platform.type.StringType.INSTANCE()
           .isEmpty((String) prop$help);
       `,
-      swiftIsAvailable: `return (prop$help as? String).isEmpty ?? false;`,
+      swiftIsAvailable: `
+        return !foam_cross_platform_type_StringType.INSTANCE()
+          .isEmpty(prop$help as? String);
+      `,
       androidCode: `
         com.google.android.material.snackbar.Snackbar.make(
           (android.view.View) x.getXProp("onClickView"),
