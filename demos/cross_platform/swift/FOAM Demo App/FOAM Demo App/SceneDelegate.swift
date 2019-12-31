@@ -23,11 +23,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let navVc = UINavigationController(rootViewController: vc);
     navVc.navigationBar.isTranslucent = false;
     vc.view = VerticalLayout(frame: vc.view.frame);
-    vc.view.backgroundColor = UIColor.red
+    vc.view.backgroundColor = .systemBackground
 
     let p = demo_Person.demo_PersonBuilder(nil)
-      .setFirstName("Mike")
-      .setLastName("Car")
       .build();
     let x = p.getSubX();
     dv = foam_cross_platform_ui_widget_DetailView.foam_cross_platform_ui_widget_DetailViewBuilder(x)

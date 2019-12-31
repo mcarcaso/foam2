@@ -145,7 +145,8 @@ foam.CLASS({
         if ( getView() == nil ) { return; }
         if ( getFeedback() ) { return; }
         setFeedback(true);
-        (getView() as! UISwitch).isOn = getData() as? Bool ?? getData() != nil;
+        (getView() as! UISwitch).isOn =
+          foam_cross_platform_Lib.equals(getCheckedValue(), getData());
         setFeedback(false);
       `
     },

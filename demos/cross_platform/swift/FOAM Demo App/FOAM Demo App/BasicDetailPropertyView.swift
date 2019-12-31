@@ -12,6 +12,7 @@ class BasicDetailPropertyView: foam_cross_platform_ui_DetailPropertyViewDetailVi
   var layout: foam_cross_platform_ui_layout_DetailPropertyView? = nil;
   func maybeInitViews() {
     if layout != nil { return }
+    backgroundColor = .systemBackground
 
     let label = UILabel()
     label.numberOfLines = 0;
@@ -19,10 +20,14 @@ class BasicDetailPropertyView: foam_cross_platform_ui_DetailPropertyViewDetailVi
     self.label = label;
     addSubview(label);
 
-    validation = UILabel();
+    let v = UILabel();
+    v.textColor = .systemRed
+    validation = v;
     addSubview(validation!);
 
-    help = UIButton();
+    let b = UIButton();
+    b.setTitleColor(.label, for: .normal);
+    help = b;
     addSubview(help!);
 
     propData = ProxyView();
@@ -73,6 +78,7 @@ class BasicDetailPropertyView: foam_cross_platform_ui_DetailPropertyViewDetailVi
 class VerticalLayout: UIView {
   override func layoutSubviews() {
     super.layoutSubviews();
+    backgroundColor = .systemGray
     var y: CGFloat = 0;
     for v in subviews {
       if v.isHidden { continue }
@@ -81,7 +87,7 @@ class VerticalLayout: UIView {
       v.frame = CGRect(
         x: f.minX,
         y: y,
-        width: size.width,
+        width: frame.width,
         height: size.height);
       y = v.frame.maxY + 1
     }

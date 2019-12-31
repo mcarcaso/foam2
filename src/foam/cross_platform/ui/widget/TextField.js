@@ -18,10 +18,23 @@ foam.CLASS({
   requires: [
     'foam.util.ArrayDetachable'
   ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      swiftCode: `
+        class TextViewDelegate: NSObject, UITextViewDelegate {
+          weak var o: foam_cross_platform_ui_widget_TextField? = nil;
+          public func textViewDidChange(_ textView: UITextView) {
+            o?.viewToData(nil, nil)
+          }
+        }
+      `,
+    }
+  ],
   properties: [
     {
       androidType: 'android.text.TextWatcher',
-      flags: ['android'],
+      swiftType: 'UITextViewDelegate',
       name: 'textWatcher',
       androidFactory: `
         return new android.text.TextWatcher() {
@@ -35,6 +48,11 @@ foam.CLASS({
             // NOOP
           }
         };
+      `,
+      swiftFactory: `
+        let o = TextViewDelegate();
+        o.o = self;
+        return o;
       `
     },
     {
@@ -52,7 +70,7 @@ foam.CLASS({
         return new com.google.android.material.textfield.TextInputEditText(getAndroidContext());
       `,
       swiftFactory: `
-        return UITextField();
+        return UITextView();
       `,
       androidPostSet: `
         if ( oldValue != null ) {
@@ -62,12 +80,8 @@ foam.CLASS({
         newValue.addTextChangedListener(getTextWatcher());
       `,
       swiftPostSet: `
-        if ( oldValue != nil ) {
-          (oldValue as? UITextField)?.removeTarget(
-            self, action: #selector(onTextFieldChange), for: .editingChanged)
-        }
-        (newValue as? UITextField)?.addTarget(
-          self, action: #selector(onTextFieldChange), for: .editingChanged)
+        (oldValue as? UITextView)?.delegate = nil;
+        (newValue as? UITextView)?.delegate = getTextWatcher();
       `
     },
     {
@@ -102,12 +116,6 @@ foam.CLASS({
           ])
           .build();
       `,
-    },
-    {
-      name: 'onTextFieldChange',
-      flags: ['swift'],
-      swiftAnnotations: ['@objc'],
-      swiftCode: `viewToData(nil, nil)`
     }
   ],
   listeners: [
@@ -118,11 +126,9 @@ foam.CLASS({
         getView().setEnabled(getVisibility() != foam.u2.Visibility.DISABLED);
       `,
       swiftCode: `
-        let tf = (getView() as! UITextField);
-        tf.isUserInteractionEnabled = foam_cross_platform_Lib.equals(
-          getVisibility(), foam_u2_Visibility.RW);
-        tf.isEnabled = !foam_cross_platform_Lib.equals(
-          getVisibility(), foam_u2_Visibility.DISABLED)
+        let tf = (getView() as! UITextView);
+        tf.isEditable = foam_cross_platform_Lib.equals(
+          getVisibility(), foam_u2_Visibility.RW)
       `
     },
     {
@@ -138,7 +144,7 @@ foam.CLASS({
         if ( getView() == nil ) { return; }
         if ( getFeedback() ) { return; }
         setFeedback(true);
-        setData((getView() as! UITextField).text!);
+        setData((getView() as! UITextView).text!);
         setFeedback(false);
       `
     },
@@ -155,7 +161,7 @@ foam.CLASS({
         if ( getView() == nil ) { return; }
         if ( getFeedback() ) { return; }
         setFeedback(true);
-        (getView() as! UITextField).text = getData() == nil ? "" :
+        (getView() as! UITextView).text = getData() == nil ? "" :
           getData() is String ? getData() as! String :
           String(describing: getData());
         setFeedback(false);

@@ -21,6 +21,7 @@ foam.LIB({
       cls.visibility = 'public';
       cls.name = this.model_.swiftName;
       cls.extends = this.model_.swiftExtends;
+      cls.implements = this.model_.swiftImplements;
       cls.documentation = this.model_.documentation;
       cls.imports = cls.imports.concat(
         'Foundation',

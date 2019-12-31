@@ -188,7 +188,7 @@ foam.CLASS({
         var subs = [] as [foam_core_Detachable];
         var views = [] as [Any];
         for i in 0..<getProps()!.count {
-          let p = getProps()![i] as! foam_core_Property;
+          let p = getProps()![i]
           let dpv = BasicDetailPropertyView(frame: f)
           view.addSubview(dpv)
           let dpvm = DetailPropertyViewModel_create()
@@ -205,11 +205,14 @@ foam.CLASS({
         }
 
         for i in 0..<getActions()!.count {
+          let b = UIButton()
+          b.backgroundColor = .systemBackground
+          b.setTitleColor(.label, for: .normal);
           let ab = ActionButton_create()
-            .setView(UIButton())
+            .setView(b)
             .build();
           subs.append(ab.bindData(getData(), getActions()![i])!);
-          view.addSubview(ab.getView()!);
+          view.addSubview(b);
           views.append(ab);
         }
         setViews_(views);
