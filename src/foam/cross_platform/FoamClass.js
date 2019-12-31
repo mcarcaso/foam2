@@ -74,7 +74,18 @@ foam.CLASS({
         return getAxiomMap_().values().toArray();
       `,
       swiftFactory: `
-        return Array(getAxiomMap_()!.values);
+        let own: [foam_cross_platform_FObject] = getOwnAxioms()?
+          .map({ (a) -> foam_cross_platform_FObject in
+            return a as! foam_cross_platform_FObject
+          }) ?? [];
+        let sup: [foam_cross_platform_FObject] = getParent()?.getAxioms()?
+          .map({ (a) -> foam_cross_platform_FObject in
+            return a as! foam_cross_platform_FObject
+          })
+          .filter({ (a) -> Bool in
+            return self.getOwnAxiomMap_()![a.getProperty("name") as! String] == nil;
+          }) ?? [];
+        return own + sup;
       `
     },
   ],

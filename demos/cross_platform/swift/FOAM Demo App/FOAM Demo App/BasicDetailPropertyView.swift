@@ -12,24 +12,20 @@ class BasicDetailPropertyView: foam_cross_platform_ui_DetailPropertyViewDetailVi
   var layout: foam_cross_platform_ui_layout_DetailPropertyView? = nil;
   func maybeInitViews() {
     if layout != nil { return }
-    backgroundColor = .blue
 
     let label = UILabel()
-    label.backgroundColor = .white;
     label.numberOfLines = 0;
     label.lineBreakMode = .byWordWrapping;
     self.label = label;
     addSubview(label);
 
     validation = UILabel();
-    validation?.backgroundColor = .white;
     addSubview(validation!);
 
     help = UIButton();
     addSubview(help!);
 
     propData = ProxyView();
-    propData?.backgroundColor = .white;
     addSubview(propData!);
 
     layout = foam_cross_platform_ui_layout_DetailPropertyView

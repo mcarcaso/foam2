@@ -48,6 +48,15 @@ foam.CLASS({
         newValue.setOnCheckedChangeListener((buttonView, isChecked) -> {
           viewToData(null, null);
         });
+      `,
+      swiftFactory: `
+        return UISwitch();
+      `,
+      swiftPostSet: `
+        (oldValue as? UISwitch)?.removeTarget(
+          self, action: #selector(onChanged), for: .valueChanged)
+        (newValue as? UISwitch)?.addTarget(
+          self, action: #selector(onChanged), for: .valueChanged)
       `
     },
     {
@@ -73,6 +82,21 @@ foam.CLASS({
           })
           .build();
       `,
+      swiftCode: `
+        let prop = axiom as! foam_core_Property;
+        return ArrayDetachable_create()
+          .setArray([
+            getData$().linkFrom(data!.getSlot(prop.getName())),
+            getVisibility$().follow(prop.createVisibilitySlot(data))
+          ])
+          .build();
+      `,
+    },
+    {
+      name: 'onChanged',
+      flags: ['swift'],
+      swiftAnnotations: ['@objc'],
+      swiftCode: `viewToData(nil, nil)`
     }
   ],
   listeners: [
@@ -81,6 +105,13 @@ foam.CLASS({
       androidCode: `
         getView().setFocusable(getVisibility() == foam.u2.Visibility.RW);
         getView().setEnabled(getVisibility() != foam.u2.Visibility.DISABLED);
+      `,
+      swiftCode: `
+        let tf = (getView() as! UISwitch);
+        tf.isUserInteractionEnabled = foam_cross_platform_Lib.equals(
+          getVisibility(), foam_u2_Visibility.RW);
+        tf.isEnabled = !foam_cross_platform_Lib.equals(
+          getVisibility(), foam_u2_Visibility.DISABLED)
       `
     },
     {
@@ -90,6 +121,13 @@ foam.CLASS({
         if ( getFeedback() ) return;
         setFeedback(true);
         setData(getView().isChecked() ? getCheckedValue() : getUncheckedValue());
+        setFeedback(false);
+      `,
+      swiftCode: `
+        if ( getView() == nil ) { return; }
+        if ( getFeedback() ) { return; }
+        setFeedback(true);
+        setData((getView() as! UISwitch).isOn);
         setFeedback(false);
       `
     },
@@ -101,6 +139,13 @@ foam.CLASS({
         setFeedback(true);
         getView().setChecked(
           foam.cross_platform.Lib.equals(getCheckedValue(), getData()));
+        setFeedback(false);
+      `,
+      swiftCode: `
+        if ( getView() == nil ) { return; }
+        if ( getFeedback() ) { return; }
+        setFeedback(true);
+        (getView() as! UISwitch).isOn = getData() as? Bool ?? getData() != nil;
         setFeedback(false);
       `
     },
