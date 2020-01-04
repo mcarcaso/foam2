@@ -8,6 +8,10 @@ foam.CLASS({
   ],
   properties: [
     {
+      name: 'detailPropertyViewResource',
+      androidValue: `"toggle_detail_property_view"`
+    },
+    {
       name: 'viewInitializer',
       androidValue: `
         (foam.cross_platform.GenericFunction) args -> {

@@ -35,6 +35,10 @@ foam.CLASS({
       name: 'data'
     },
     {
+      class: 'StringProperty',
+      name: 'label'
+    },
+    {
       androidType: 'android.widget.Switch',
       swiftType: 'UIView?',
       name: 'view',
@@ -68,7 +72,12 @@ foam.CLASS({
   reactions: [
     ['', 'propertyChange.view', 'dataToView'],
     ['', 'propertyChange.data', 'dataToView'],
+
+    ['', 'propertyChange.view', 'updateVisibility'],
     ['', 'propertyChange.visibility', 'updateVisibility'],
+
+    ['', 'propertyChange.view', 'updateLabel'],
+    ['', 'propertyChange.label', 'updateLabel'],
   ],
   methods: [
     {
@@ -78,7 +87,8 @@ foam.CLASS({
         return ArrayDetachable_create()
           .setArray(new foam.core.Detachable[] {
             getData$().linkFrom(data.getSlot(prop.getName())),
-            getVisibility$().follow(prop.createVisibilitySlot(data))
+            getVisibility$().follow(prop.createVisibilitySlot(data)),
+            getLabel$().follow(prop.getLabel$()),
           })
           .build();
       `,
@@ -101,8 +111,16 @@ foam.CLASS({
   ],
   listeners: [
     {
+      name: 'updateLabel',
+      androidCode: `
+        if ( getView() == null ) return;
+        getView().setText(getLabel());
+      `
+    },
+    {
       name: 'updateVisibility',
       androidCode: `
+        if ( getView() == null ) return;
         getView().setFocusable(getVisibility() == foam.u2.Visibility.RW);
         getView().setEnabled(getVisibility() != foam.u2.Visibility.DISABLED);
       `,

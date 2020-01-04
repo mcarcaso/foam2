@@ -29,12 +29,21 @@ foam.CLASS({
     },
   ],
   methods: [
+    {
+      name: 'getDeps',
+      code: function(flagFilter, deps) {
+        deps['foam.cross_platform.ui.dv.CustomDetailPropertyViewInterface'] = true;
+      }
+    },
     function buildAndroidResources(resources, parentCls) {
       var name = parentCls.model_.name;
       var detailViewCls = foam.java.Class.create({
         name: this.name,
         extends: this.androidClass,
         package: this.package,
+        implements: [
+          'foam.cross_platform.ui.dv.CustomDetailPropertyViewInterface'
+        ]
       });
       detailViewCls.method({
         visibility: 'public',
@@ -146,12 +155,12 @@ foam.CLASS({
         name: 'setData',
         args: [
           {
-            type: name,
+            type: 'foam.cross_platform.FObject',
             name: 'data',
           }
         ],
         body: `
-          _model_data_ = data;
+          _model_data_ = (${name}) data;
           ${axioms.map(p => `
           if ( ${p.name}_sub_ != null ) ${p.name}_sub_.detach();
           ${p.name}_sub_ = null;

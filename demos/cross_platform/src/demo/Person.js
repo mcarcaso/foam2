@@ -10,7 +10,8 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'firstName',
-      help: 'The Person\'s first name'
+      placeholder: 'This is a placeholder',
+      help: 'This is help text'
     },
     {
       class: 'StringProperty',

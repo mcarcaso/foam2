@@ -88,12 +88,6 @@ foam.CLASS({
       name: 'view'
     },
     {
-      class: 'StringProperty',
-      name: 'resourceFile',
-      androidValue: '"detail_property_view"',
-      swiftValue: '"BasicDetailPropertyView"'
-    },
-    {
       class: 'FObjectProperty',
       of: 'foam.core.Detachable',
       name: 'sub_'
@@ -134,26 +128,20 @@ foam.CLASS({
         if ( getView() == null ) return;
         getView().removeAllViews();
         if ( getData() == null ) return;
-        int dpvid = getView().getResources().getIdentifier(
-          getResourceFile(),
-          "layout",
-          getView().getContext().getPackageName());
         foam.core.Detachable[] subs = new foam.core.Detachable[getProps().length + getActions().length];
         Object[] views = new Object[getProps().length + getActions().length];
+        foam.cross_platform.Context x = getSubX().createSubContext(new java.util.HashMap() {{
+          put("parentView", getView());
+        }});
         for ( int i = 0 ; i < getProps().length ; i++ ) {
           foam.core.Property p = (foam.core.Property) getProps()[i];
-          getView().inflate(
-                  getView().getContext(),
-                  dpvid,
-                  getView());
-          final foam.cross_platform.ui.DetailPropertyView dpv =
-                  (foam.cross_platform.ui.DetailPropertyView) getView().getChildAt(i);
+          final foam.cross_platform.ui.dv.CustomDetailPropertyViewInterface dpv = p.createDetailPropertyView(x);
           final foam.cross_platform.ui.DetailPropertyViewModel dpvm = DetailPropertyViewModel_create()
               .setData(getData())
               .setProp(p)
               .build();
           foam.cross_platform.Listener l = (s, a) -> {
-            dpv.setVisibility(dpvm.getVisibility() == foam.u2.Visibility.HIDDEN ? 
+            ((android.view.View) dpv).setVisibility(dpvm.getVisibility() == foam.u2.Visibility.HIDDEN ?
               android.view.View.GONE : android.view.View.VISIBLE);
           };
           subs[i] = dpvm.getVisibility$().slotSub(l);
@@ -161,7 +149,7 @@ foam.CLASS({
           dpv.setData(dpvm);
           views[i] = dpv;
         }
-
+        
         for ( int i = 0 ; i < getActions().length ; i++ ) {
           foam.cross_platform.ui.widget.ActionButton ab = foam.cross_platform.ui.widget.ActionButton.ActionButtonBuilder(null)
             .setView(new android.widget.Button(getView().getContext()))
