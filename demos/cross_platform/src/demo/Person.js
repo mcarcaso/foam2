@@ -5,7 +5,8 @@ foam.CLASS({
   properties: [
     {
       class: 'BooleanProperty',
-      name: 'isMale'
+      name: 'isMale',
+      help: 'Dont get triggered by this question'
     },
     {
       class: 'StringProperty',

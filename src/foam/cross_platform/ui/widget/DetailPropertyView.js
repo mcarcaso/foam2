@@ -27,9 +27,11 @@ foam.CLASS({
       name: 'labelView',
       androidFactory: `
         foam.cross_platform.ui.widget.Label v = Label_create().build();
-        v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+        android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.weight = 1;
+        v.getView().setLayoutParams(params);
         return v;
       `
     },
@@ -53,9 +55,11 @@ foam.CLASS({
         foam.cross_platform.ui.widget.ActionButton v = ActionButton_create()
           .setLabel("Help") // TODO: i18n!!!!
           .build();
-        v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+        android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.weight = 0;
+        v.getView().setLayoutParams(params);
         return v;
       `
     },
@@ -80,6 +84,7 @@ foam.CLASS({
   ],
   reactions: [
     ['validationView', 'propertyChange.data', 'updateValidationView'],
+    ['dataView', 'propertyChange.view', 'updateDataView'],
     ['', 'propertyChange.labelView', 'updateView'],
     ['', 'propertyChange.validationView', 'updateView'],
     ['', 'propertyChange.helpView', 'updateView'],
@@ -152,29 +157,61 @@ foam.CLASS({
       `,
     },
     {
+      name: 'updateDataView',
+      isFramed: true,
+      androidCode: `
+        if ( getDataView() == null ) return;
+        android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.weight = 1;
+        getDataView().getView().setLayoutParams(params);
+      `,
+    },
+    {
       name: 'updateView',
       isFramed: true,
       androidCode: `
         if ( getView() == null ) return;
+        for ( int i = 0; i < getView().getChildCount(); i++ ) {
+          android.view.View child = getView().getChildAt(i);
+          if ( child instanceof android.view.ViewGroup == false ) continue;
+          ((android.view.ViewGroup) child).removeAllViews();
+        }
         getView().removeAllViews();
         if ( getDataView() == null ) return;
 
         if ( hasPropertySet("labelView") ) {
           if ( hasPropertySet("helpView") ) {
-            getView().addView(getLabelView().getView());
-            getView().addView(getHelpView().getView());
+            android.widget.LinearLayout top = new android.widget.LinearLayout(getAndroidContext());
+            android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+            top.setLayoutParams(params);
+            top.setGravity(android.widget.LinearLayout.HORIZONTAL);
+            top.addView(getLabelView().getView());
+            top.addView(getHelpView().getView());
+            getView().addView(top);
           } else {
             getView().addView(getLabelView().getView());
           }
           getView().addView(getDataView().getView());
         } else {
           if ( hasPropertySet("helpView") ) {
-            getView().addView(getDataView().getView());
-            getView().addView(getHelpView().getView());
+            android.widget.LinearLayout top = new android.widget.LinearLayout(getAndroidContext());
+            android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+            top.setLayoutParams(params);
+            top.setGravity(android.widget.LinearLayout.HORIZONTAL);
+            top.addView(getDataView().getView());
+            top.addView(getHelpView().getView());
+            getView().addView(top);
           } else {
             getView().addView(getDataView().getView());
           }
         }
+        updateDataView(null, null);
         if ( hasPropertySet("validationView") ) {
           getView().addView(getValidationView().getView());
           updateValidationView(null, null);
