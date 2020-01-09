@@ -63,8 +63,6 @@
         'demo.Person',
         'demo.Reaction',
         'demo.Slot',
-        'foam.cross_platform.ui.DetailPropertyViewModel',
-        'foam.cross_platform.ui.layout.DetailPropertyView',
         'foam.cross_platform.ui.widget.DetailView',
       ],
       sourcePath: platformArgs.sourcePath,

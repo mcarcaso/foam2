@@ -101,21 +101,6 @@ foam.CLASS({
   ],
   methods: [
     {
-      name: 'createDetailPropertyView',
-      type: 'foam.cross_platform.ui.dv.CustomDetailPropertyViewInterface',
-      args: [
-        { type: 'Context', name: 'x' },
-      ],
-      androidCode: `
-        return (foam.cross_platform.ui.dv.CustomDetailPropertyViewInterface)
-          getDetailPropertyViewInitializer().executeFunction(new Object[] {x});
-      `,
-      swiftCode: `
-        return getDetailPropertyViewInitializer()!.executeFunction([x]) as?
-          foam_cross_platform_ui_dv_CustomerDetailPropertyViewInterface;
-      `,
-    },
-    {
       name: 'createView',
       type: 'foam.cross_platform.ui.AxiomView',
       args: [

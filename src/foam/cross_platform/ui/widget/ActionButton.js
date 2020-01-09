@@ -11,15 +11,18 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
+  imports: [
+    {
+      name: 'androidContext',
+      key: 'androidContext',
+      androidType: 'android.content.Context',
+      flags: ['android']
+    }
+  ],
   properties: [
     {
-      class: 'FObjectProperty',
+      class: 'FunctionProperty',
       name: 'data'
-    },
-    {
-      class: 'FObjectProperty',
-      of: 'foam.core.Action',
-      name: 'action'
     },
     {
       class: 'BooleanProperty',
@@ -33,15 +36,15 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'label',
-      expressionArgs: ['action$name'],
-      androidExpression: `return (String) action$name;`,
-      swiftExpression: `return action$name as? String`
+      name: 'label'
     },
     {
       androidType: 'android.widget.Button',
       swiftType: 'UIView?',
       name: 'view',
+      androidFactory: `
+        return new android.widget.Button(getAndroidContext());
+      `,
       androidPostSet: `
         if ( oldValue != null ) {
           ((android.widget.Button) oldValue).setOnClickListener(null);
@@ -89,11 +92,11 @@ foam.CLASS({
         { type: 'android.view.View', name: 'v' }
       ],
       androidCode: `
-        if ( getAction() == null ) return;
+        if ( getData() == null ) return;
         foam.cross_platform.Context x = getSubX().createSubContext(new java.util.HashMap<String, Object>() {{
           put("onClickView", v);
         }});
-        getAction().call(getData(), new Object[] {x});
+        getData().executeFunction(new Object[] { x });
       `,
       swiftCode: `
         _ = getAction()?.call(getData(), [getSubX()]);
@@ -103,8 +106,12 @@ foam.CLASS({
       name: 'bindData',
       androidCode: `
         foam.core.Action action = (foam.core.Action) axiom;
-        setAction(action);
-        setData(data);
+        final foam.cross_platform.GenericFunction fn = new foam.cross_platform.GenericFunction() {
+          public Object executeFunction(Object[] args) {
+            return action.call(data, args);
+          }
+        };
+        setData(fn);
 
         foam.core.Slot isAvailable = action.createIsAvailableSlot(data);
         foam.core.Slot isEnabled = action.createIsEnabledSlot(data);
@@ -112,15 +119,14 @@ foam.CLASS({
         final ActionButton self = this;
         return ArrayDetachable_create()
           .setArray(new foam.core.Detachable[] {
+            getLabel$().follow(action.getLabel$()),
             isEnabled == null ? null : getIsEnabled$().follow(isEnabled),
             isAvailable == null ? null : getIsAvailable$().follow(isAvailable),
             <%=detachable(\`
+              self.clearProperty("label");
               self.clearProperty("isEnabled");
               self.clearProperty("isAvailable");
-              if ( foam.cross_platform.Lib.equals(self.getAction(), axiom) ) {
-                self.clearProperty("action");
-              }
-              if ( foam.cross_platform.Lib.equals(self.getData(), data) ) {
+              if ( foam.cross_platform.Lib.equals(self.getData(), fn) ) {
                 self.clearProperty("data");
               }
             \`)%>

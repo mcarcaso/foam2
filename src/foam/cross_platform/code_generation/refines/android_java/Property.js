@@ -141,10 +141,6 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'androidViewFactory'
     },
-    {
-      class: 'StringProperty',
-      name: 'androidDetailPropertyViewFactory'
-    },
   ],
   methods: [
     function buildAndroidClass(cls, parentCls) {
@@ -422,12 +418,6 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
             ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};
             ${this.crossPlatformPrivateAxiom}.setComparePropertyValues(${this.androidComparePropertyValues});
             ${expressionData.join('\n')}
-            ${this.androidDetailPropertyViewFactory ? `
-            ${this.crossPlatformPrivateAxiom}.setDetailPropertyViewInitializer((foam.cross_platform.GenericFunction) args -> {
-              foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
-              ${this.androidDetailPropertyViewFactory}
-            });
-            ` : ''}
             ${this.androidViewFactory ? `
             ${this.crossPlatformPrivateAxiom}.setViewInitializer((foam.cross_platform.GenericFunction) args -> {
               foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];

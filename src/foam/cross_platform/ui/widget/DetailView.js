@@ -6,7 +6,7 @@ foam.CLASS({
   ],
   requires: [
     'foam.util.ArrayDetachable',
-    'foam.cross_platform.ui.DetailPropertyViewModel',
+    'foam.cross_platform.ui.widget.DetailPropertyView',
     'foam.cross_platform.ui.widget.ActionButton',
   ],
   swiftImports: [
@@ -132,21 +132,25 @@ foam.CLASS({
         Object[] views = new Object[getProps().length + getActions().length];
         foam.cross_platform.Context x = getSubX().createSubContext(new java.util.HashMap() {{
           put("parentView", getView());
+          put("androidContext", getView().getContext());
         }});
         for ( int i = 0 ; i < getProps().length ; i++ ) {
           foam.core.Property p = (foam.core.Property) getProps()[i];
-          final foam.cross_platform.ui.dv.CustomDetailPropertyViewInterface dpv = p.createDetailPropertyView(x);
-          final foam.cross_platform.ui.DetailPropertyViewModel dpvm = DetailPropertyViewModel_create()
-              .setData(getData())
-              .setProp(p)
-              .build();
+          final foam.cross_platform.ui.widget.DetailPropertyView dpv = DetailPropertyView_create(x)
+            .build();
+          final foam.core.SlotInterface visibility = p.createVisibilitySlot(getData());
           foam.cross_platform.Listener l = (s, a) -> {
-            ((android.view.View) dpv).setVisibility(dpvm.getVisibility() == foam.u2.Visibility.HIDDEN ?
+            dpv.getView().setVisibility(visibility.slotGet() == foam.u2.Visibility.HIDDEN ?
               android.view.View.GONE : android.view.View.VISIBLE);
           };
-          subs[i] = dpvm.getVisibility$().slotSub(l);
-          l.executeListener(null, new Object[] { dpvm.getVisibility() });
-          dpv.setData(dpvm);
+          subs[i] = ArrayDetachable_create()
+            .setArray(new foam.core.Detachable[] {
+              visibility.slotSub(l),
+              dpv.bindData(getData(), p)
+            })
+            .build();
+          l.executeListener(null, null);
+          getView().addView(dpv.getView());
           views[i] = dpv;
         }
         

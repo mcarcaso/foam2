@@ -48,10 +48,25 @@ foam.INTERFACE({
       ]
     },
     {
-      type: 'foam.core.Slot',
+      type: 'foam.core.SlotInterface',
       name: 'map',
       args: [
         { type: 'foam.cross_platform.GenericFunction', name: 'fn' }
+      ]
+    },
+    {
+      documentation: `
+        Relate one slot to another:
+        When "this" changes, set "slot" to result of f().
+        When "slot" changes, set "this" to result of fPrime().
+        On initialization, calls slot.set(f(this.get())).
+      `,
+      type: 'foam.core.Detachable',
+      name: 'relateTo',
+      args: [
+        { type: 'foam.core.SlotInterface', name: 'slot' },
+        { type: 'foam.cross_platform.GenericFunction', name: 'f' },
+        { type: 'foam.cross_platform.GenericFunction', name: 'fPrime' }
       ]
     },
   ]
@@ -65,7 +80,7 @@ foam.CLASS({
     'foam.core.SlotInterface'
   ],
   requires: [
-    'foam.core.internal.SubSlot',
+    'foam.util.ArrayDetachable',
   ],
   methods: [
     {
@@ -246,6 +261,32 @@ foam.CLASS({
           .build()
         l.executeListener(nil, nil)
         return other!.slotSub(l);
+      `
+    },
+    {
+      name: 'relateTo',
+      androidCode: `
+        final boolean[] feedback = { false };
+        foam.cross_platform.Listener l1 = (sub, args) -> {
+          if ( feedback[0] ) return;
+          feedback[0] = true;
+          slot.slotSet(f.executeFunction(new Object[]{slotGet()}));
+          feedback[0] = false;
+        };
+        foam.cross_platform.Listener l2 = (sub, args) -> {
+          if ( feedback[0] ) return;
+          feedback[0] = true;
+          slotSet(f.executeFunction(new Object[]{slot.slotGet()}));
+          feedback[0] = false;
+        };
+        foam.core.Detachable sub = ArrayDetachable_create()
+          .setArray(new foam.core.Detachable[] {
+            slotSub(l1),
+            slot.slotSub(l2)
+          })
+          .build();
+        l1.executeListener(null, null);
+        return sub;
       `
     },
   ],

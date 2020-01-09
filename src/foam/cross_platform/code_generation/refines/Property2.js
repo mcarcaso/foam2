@@ -34,38 +34,6 @@ foam.CLASS({
           })
           .build()
       `
-    },
-    {
-      class: 'StringProperty',
-      name: 'detailPropertyViewResource',
-      androidValue: `"detail_property_view"`
-    },
-    {
-      class: 'FunctionProperty',
-      name: 'detailPropertyViewInitializer',
-      androidValue: `
-        (foam.cross_platform.GenericFunction) args -> {
-          foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
-          android.view.ViewGroup parent = (android.view.ViewGroup) x.getXProp("parentView");
-          int dpvid = parent.getResources().getIdentifier(
-            getDetailPropertyViewResource(),
-            "layout",
-            parent.getContext().getPackageName());
-          parent.inflate(
-            parent.getContext(),
-            dpvid,
-            parent);
-          return parent.getChildAt(parent.getChildCount() - 1);
-        }
-      `,
-      swiftValue: `
-        AnonymousGenericFunction_create()
-          .setFn({(args: [Any?]?) -> Any? in
-            let x = args![0] as! foam_cross_platform_Context;
-            return foam_cross_platform_ui_widget_Label.foam_cross_platform_ui_widget_LabelBuilder(x).build();
-          })
-          .build()
-      `
-    },
+    }
   ]
 });

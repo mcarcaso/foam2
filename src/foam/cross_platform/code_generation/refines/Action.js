@@ -7,6 +7,11 @@ foam.CLASS({
   ],
   properties: [
     {
+      name: 'label',
+      expressionArgs: ['name'],
+      androidExpression: `return name;`
+    },
+    {
       class: 'ClassProperty',
       name: 'crossPlatformView',
       value: 'foam.cross_platform.ui.widget.ActionButton'
