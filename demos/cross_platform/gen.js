@@ -64,6 +64,7 @@
         'demo.Reaction',
         'demo.Slot',
         'foam.cross_platform.ui.widget.DetailView',
+        'foam.cross_platform.ui.Theme',
       ],
       sourcePath: platformArgs.sourcePath,
       testPath: platformArgs.testPath,

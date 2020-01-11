@@ -1,5 +1,6 @@
 package demos.cross_platform.android;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,11 +23,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        foam.cross_platform.ui.Theme theme = foam.cross_platform.ui.Theme
+                .ThemeBuilder(foam.cross_platform.Context.GLOBAL())
+                .build();
+        theme.setError(foam.cross_platform.ui.theme.Color.ColorBuilder(theme.getSubX())
+            .setColor("RED")
+            .build());
+        foam.cross_platform.Context x = foam.cross_platform.Context.GLOBAL()
+                .createSubContext(new java.util.HashMap() {{
+                    put("theme", theme);
+                }});
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dv = DetailView.DetailViewBuilder(null)
+        dv = DetailView.DetailViewBuilder(x)
                 .build();
         dv.setData(Person.PersonBuilder(dv.getSubX()).build());
         dv.setView(findViewById(R.id.detail_view));

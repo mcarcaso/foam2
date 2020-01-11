@@ -9,6 +9,10 @@ foam.CLASS({
   ],
   imports: [
     {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
+    {
       name: 'androidContext',
       key: 'androidContext',
       androidType: 'android.content.Context',
@@ -89,6 +93,7 @@ foam.CLASS({
     ['', 'propertyChange.validationView', 'updateView'],
     ['', 'propertyChange.helpView', 'updateView'],
     ['', 'propertyChange.dataView', 'updateView'],
+    ['theme$error', 'propertyChange.color', 'updateView'],
   ],
   methods: [
     {
@@ -213,6 +218,7 @@ foam.CLASS({
         }
         updateDataView(null, null);
         if ( hasPropertySet("validationView") ) {
+          getValidationView().getView().setTextColor(getTheme().getError().getColor());
           getView().addView(getValidationView().getView());
           updateValidationView(null, null);
         }
