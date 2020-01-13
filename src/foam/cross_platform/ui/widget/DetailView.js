@@ -12,6 +12,18 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
+  constants: [
+    {
+      type: 'Integer',
+      name: 'itemVerticalPadding',
+      value: 16
+    },
+    {
+      type: 'Integer',
+      name: 'itemHorizontalPadding',
+      value: 16
+    },
+  ],
   properties: [
     {
       class: 'FObjectProperty',
@@ -150,6 +162,11 @@ foam.CLASS({
             })
             .build();
           l.executeListener(null, null);
+          dpv.getView().setPadding(
+            ITEM_HORIZONTAL_PADDING(), 
+            ITEM_VERTICAL_PADDING(), 
+            ITEM_HORIZONTAL_PADDING(),
+            ITEM_VERTICAL_PADDING());
           getView().addView(dpv.getView());
           views[i] = dpv;
         }
@@ -159,6 +176,11 @@ foam.CLASS({
             .setView(new android.widget.Button(getView().getContext()))
             .build();
           subs[getProps().length + i] = ab.bindData(getData(), getActions()[i]);
+          ab.getView().setPadding(
+            ITEM_HORIZONTAL_PADDING(), 
+            ITEM_VERTICAL_PADDING(), 
+            ITEM_HORIZONTAL_PADDING(),
+            ITEM_VERTICAL_PADDING());
           getView().addView(ab.getView());
           views[getProps().length + i] = ab;
         }

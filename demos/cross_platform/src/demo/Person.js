@@ -49,13 +49,6 @@ foam.CLASS({
   ],
   actions: [
     {
-      name: 'changeColor',
-      androidCode: `
-        foam.cross_platform.ui.Theme t = (foam.cross_platform.ui.Theme) getSubX().getXProp("theme");
-        t.getError().setColor("GREEN");
-      `,
-    },
-    {
       name: 'appendToFirstName',
       androidCode: `
         setFirstName(getFirstName() + "0");

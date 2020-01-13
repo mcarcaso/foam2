@@ -26,10 +26,11 @@ public class MainActivity extends AppCompatActivity {
 
         foam.cross_platform.ui.Theme theme = foam.cross_platform.ui.Theme
                 .ThemeBuilder(foam.cross_platform.Context.GLOBAL())
+                .setError(getResources().getColor(R.color.colorError, getTheme()))
+                .setOnSurface(Color.parseColor("BLACK"))
+                .setCaption(R.style.TextCaption)
+                .setSubtitle1(R.style.Subtitle1)
                 .build();
-        theme.setError(foam.cross_platform.ui.theme.Color.ColorBuilder(theme.getSubX())
-            .setColor("RED")
-            .build());
         foam.cross_platform.Context x = foam.cross_platform.Context.GLOBAL()
                 .createSubContext(new java.util.HashMap() {{
                     put("theme", theme);

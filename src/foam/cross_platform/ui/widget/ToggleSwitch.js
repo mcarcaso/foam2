@@ -14,7 +14,11 @@ foam.CLASS({
       key: 'androidContext',
       androidType: 'android.content.Context',
       flags: ['android']
-    }
+    },
+    {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
   ],
   requires: [
     'foam.util.ArrayDetachable'
@@ -79,6 +83,7 @@ foam.CLASS({
 
     ['', 'propertyChange.view', 'updateLabel'],
     ['', 'propertyChange.label', 'updateLabel'],
+    ['theme', 'propertyChange', 'updateLabel'],
   ],
   methods: [
     {
@@ -116,6 +121,9 @@ foam.CLASS({
       androidCode: `
         if ( getView() == null ) return;
         getView().setText(getLabel());
+        getView().setAlpha(0.8f);
+        getView().setTextAppearance(getTheme().getSubtitle1());
+        getView().setTextColor(getTheme().getOnSurface());
       `
     },
     {

@@ -3,54 +3,38 @@ foam.CLASS({
   name: 'Theme',
   properties: [
     {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.theme.Color',
+      class: 'ColorProperty',
       name: 'primary'
     },
     {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.theme.Color',
-      name: 'secondary'
+      class: 'ColorProperty',
+      name: 'onPrimary'
     },
     {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.theme.Color',
+      class: 'ColorProperty',
+      name: 'onSurface'
+    },
+    {
+      class: 'ColorProperty',
       name: 'error'
     },
     {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.theme.Color',
-      name: 'background'
+      //class: 'FontProperty',
+      androidType: 'int',
+      androidValue: 0,
+      name: 'caption'
     },
     {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.theme.Color',
-      name: 'surface'
-    },
-    {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.theme.Text',
-      name: 'h1'
-    },
-    {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.theme.Text',
+      //class: 'FontProperty',
+      androidType: 'int',
+      androidValue: 0,
       name: 'subtitle1'
     },
     {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.theme.Text',
-      name: 'body1'
-    },
-    {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.theme.Text',
+      //class: 'FontProperty',
+      androidType: 'int',
+      androidValue: 0,
       name: 'button'
-    },
-    {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.theme.Text',
-      name: 'caption'
     },
   ]
 });

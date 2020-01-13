@@ -8,7 +8,7 @@ foam.CLASS({
     },
     {
       class: 'ColorProperty',
-      name: 'text'
+      name: 'onColor'
     },
   ]
 });

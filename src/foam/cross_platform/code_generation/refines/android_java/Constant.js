@@ -18,25 +18,35 @@ foam.CLASS({
       var superAxiom = parentCls.getSuperAxiomByName(this.name);
       if ( superAxiom === this ) return;
 
-      cls.field({
-        visibility: 'private',
-        static: true,
-        type: this.androidType,
-        name: this.crossPlatformVarName,
-        initializer: null
-      });
-      cls.method({
-        visibility: 'public',
-        static: true,
-        type: this.androidType,
-        name: this.crossPlatformAxiomName,
-        body: `
-          if ( ${this.crossPlatformVarName} == null ) {
-            ${this.crossPlatformVarName} = ${this.androidValue};
-          }
-          return ${this.crossPlatformVarName};
-        `
-      });
+      if ( foam.android.tools.isJavaPrimitive(this.androidType) ) {
+        cls.method({
+          visibility: 'public',
+          static: true,
+          type: this.androidType,
+          name: this.crossPlatformAxiomName,
+          body: `return ${this.androidValue};`
+        });
+      } else {
+        cls.field({
+          visibility: 'private',
+          static: true,
+          type: this.androidType,
+          name: this.crossPlatformVarName,
+          initializer: null
+        });
+        cls.method({
+          visibility: 'public',
+          static: true,
+          type: this.androidType,
+          name: this.crossPlatformAxiomName,
+          body: `
+            if ( ${this.crossPlatformVarName} == null ) {
+              ${this.crossPlatformVarName} = ${this.androidValue};
+            }
+            return ${this.crossPlatformVarName};
+          `
+        });
+      }
       return cls;
     }
   ]

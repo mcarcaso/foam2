@@ -7,6 +7,18 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
+  constants: [
+    {
+      type: 'String',
+      name: 'helpResource',
+      value: 'dpv_help'
+    },
+    {
+      type: 'Integer',
+      name: 'helpSize',
+      value: 24
+    },
+  ],
   imports: [
     {
       name: 'theme',
@@ -57,13 +69,16 @@ foam.CLASS({
       name: 'helpView',
       androidFactory: `
         foam.cross_platform.ui.widget.ActionButton v = ActionButton_create()
-          .setLabel("Help") // TODO: i18n!!!!
           .build();
+        float factor = getAndroidContext().getResources().getDisplayMetrics().density;
         android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.weight = 0;
+          (int)(HELP_SIZE()*factor),
+          (int)(HELP_SIZE()*factor),
+          0 /* weight */);
         v.getView().setLayoutParams(params);
+        v.getView().setBackgroundResource(getAndroidContext().getResources().getIdentifier(
+          HELP_RESOURCE(), "drawable", getAndroidContext().getPackageName()));
+        v.getView().setPadding(0, 0, 0, 0);
         return v;
       `
     },
@@ -187,6 +202,9 @@ foam.CLASS({
         if ( getDataView() == null ) return;
 
         if ( hasPropertySet("labelView") ) {
+          getLabelView().getView().setAlpha(0.8f);
+          getLabelView().getView().setTextAppearance(getTheme().getSubtitle1());
+          getLabelView().getView().setTextColor(getTheme().getOnSurface());
           if ( hasPropertySet("helpView") ) {
             android.widget.LinearLayout top = new android.widget.LinearLayout(getAndroidContext());
             android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
@@ -218,7 +236,8 @@ foam.CLASS({
         }
         updateDataView(null, null);
         if ( hasPropertySet("validationView") ) {
-          getValidationView().getView().setTextColor(getTheme().getError().getColor());
+          getValidationView().getView().setTextAppearance(getTheme().getCaption());
+          getValidationView().getView().setTextColor(getTheme().getError());
           getView().addView(getValidationView().getView());
           updateValidationView(null, null);
         }
