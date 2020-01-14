@@ -39,7 +39,7 @@ foam.CLASS({
       name: 'label'
     },
     {
-      androidType: 'android.widget.Button',
+      androidType: 'android.view.View',
       swiftType: 'UIView?',
       name: 'view',
       androidFactory: `
@@ -168,7 +168,9 @@ foam.CLASS({
         getView().setVisibility(getIsAvailable() ?
           android.view.View.VISIBLE : android.view.View.GONE);
         getView().setEnabled(getIsEnabled());
-        getView().setText(getLabel());
+        if ( getView() instanceof android.widget.Button) {
+          ((android.widget.Button) getView()).setText(getLabel());
+        }
       `,
       swiftCode: `
         if getView() == nil { return }

@@ -15,6 +15,11 @@ foam.CLASS({
     },
     {
       type: 'Integer',
+      name: 'helpPadding',
+      value: 12
+    },
+    {
+      type: 'Integer',
       name: 'helpSize',
       value: 24
     },
@@ -68,18 +73,23 @@ foam.CLASS({
       of: 'foam.cross_platform.ui.widget.ActionButton',
       name: 'helpView',
       androidFactory: `
-        foam.cross_platform.ui.widget.ActionButton v = ActionButton_create()
+        float f = getAndroidContext().getResources().getDisplayMetrics().density;
+        int s = (int)(HELP_SIZE() * f);
+        int p = (int)(HELP_PADDING() * f);
+        android.widget.ImageButton b = new android.widget.ImageButton(getAndroidContext());
+        b.setBackground(null);
+        b.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+          s + 2 * p,
+          s + 2 * p,
+          0 /* weight */));
+        b.setPadding(p, p, p, p);
+        b.setImageResource(getAndroidContext().getResources().getIdentifier(
+          HELP_RESOURCE(),
+          "drawable",
+          getAndroidContext().getPackageName()));
+        return ActionButton_create()
+          .setView(b)
           .build();
-        float factor = getAndroidContext().getResources().getDisplayMetrics().density;
-        android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
-          (int)(HELP_SIZE()*factor),
-          (int)(HELP_SIZE()*factor),
-          0 /* weight */);
-        v.getView().setLayoutParams(params);
-        v.getView().setBackgroundResource(getAndroidContext().getResources().getIdentifier(
-          HELP_RESOURCE(), "drawable", getAndroidContext().getPackageName()));
-        v.getView().setPadding(0, 0, 0, 0);
-        return v;
       `
     },
     {
