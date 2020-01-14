@@ -76,17 +76,21 @@ foam.CLASS({
         float f = getAndroidContext().getResources().getDisplayMetrics().density;
         int s = (int)(HELP_SIZE() * f);
         int p = (int)(HELP_PADDING() * f);
+        android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
+          s + 2 * p,
+          s + 2 * p,
+          0 /* weight */);
+        params.gravity = android.view.Gravity.TOP;
+
         android.widget.ImageButton b = new android.widget.ImageButton(getAndroidContext());
+        b.setLayoutParams(params);
         b.setBackground(null);
-        b.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          s + 2 * p,
-          s + 2 * p,
-          0 /* weight */));
         b.setPadding(p, p, p, p);
         b.setImageResource(getAndroidContext().getResources().getIdentifier(
           HELP_RESOURCE(),
           "drawable",
           getAndroidContext().getPackageName()));
+
         return ActionButton_create()
           .setView(b)
           .build();
@@ -221,7 +225,8 @@ foam.CLASS({
                 android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
                 android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
             top.setLayoutParams(params);
-            top.setGravity(android.widget.LinearLayout.HORIZONTAL);
+            top.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+            top.setGravity(android.view.Gravity.CENTER);
             top.addView(getLabelView().getView());
             top.addView(getHelpView().getView());
             getView().addView(top);
@@ -236,7 +241,8 @@ foam.CLASS({
                 android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
                 android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
             top.setLayoutParams(params);
-            top.setGravity(android.widget.LinearLayout.HORIZONTAL);
+            top.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+            top.setGravity(android.view.Gravity.CENTER);
             top.addView(getDataView().getView());
             top.addView(getHelpView().getView());
             getView().addView(top);

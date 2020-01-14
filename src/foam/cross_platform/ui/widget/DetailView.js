@@ -172,15 +172,22 @@ foam.CLASS({
         }
         
         for ( int i = 0 ; i < getActions().length ; i++ ) {
+          android.widget.Button b = new android.widget.Button(getView().getContext());
+          android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+          params.setMargins(
+            ITEM_HORIZONTAL_PADDING(),
+            ITEM_HORIZONTAL_PADDING(),
+            ITEM_HORIZONTAL_PADDING(),
+            ITEM_HORIZONTAL_PADDING());
+          params.gravity = android.view.Gravity.CENTER;
+          b.setLayoutParams(params);
+
           foam.cross_platform.ui.widget.ActionButton ab = foam.cross_platform.ui.widget.ActionButton.ActionButtonBuilder(null)
-            .setView(new android.widget.Button(getView().getContext()))
+            .setView(b)
             .build();
           subs[getProps().length + i] = ab.bindData(getData(), getActions()[i]);
-          ab.getView().setPadding(
-            ITEM_HORIZONTAL_PADDING(), 
-            ITEM_VERTICAL_PADDING(), 
-            ITEM_HORIZONTAL_PADDING(),
-            ITEM_VERTICAL_PADDING());
           getView().addView(ab.getView());
           views[getProps().length + i] = ab;
         }
