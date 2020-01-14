@@ -13,16 +13,6 @@ foam.CLASS({
       name: 'helpResource',
       value: 'dpv_help'
     },
-    {
-      type: 'Integer',
-      name: 'helpPadding',
-      value: 12
-    },
-    {
-      type: 'Integer',
-      name: 'helpSize',
-      value: 24
-    },
   ],
   imports: [
     {
@@ -48,11 +38,16 @@ foam.CLASS({
       name: 'labelView',
       androidFactory: `
         foam.cross_platform.ui.widget.Label v = Label_create().build();
-        android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
-                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.weight = 1;
-        v.getView().setLayoutParams(params);
+
+        v.getView().setTextColor(getTheme().getOnSurface());
+
+        v.getView().setAlpha(0.8f);
+        v.getView().setTextAppearance(getTheme().getSubtitle1());
+
+        v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+
         return v;
       `
     },
@@ -62,9 +57,15 @@ foam.CLASS({
       name: 'validationView',
       androidFactory: `
         foam.cross_platform.ui.widget.Label v = Label_create().build();
+
+        v.getView().setVisibility(android.view.View.GONE);
+
+        v.getView().setTextColor(getTheme().getError());
+
         v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+
         return v;
       `
     },
@@ -73,23 +74,16 @@ foam.CLASS({
       of: 'foam.cross_platform.ui.widget.ActionButton',
       name: 'helpView',
       androidFactory: `
-        float f = getAndroidContext().getResources().getDisplayMetrics().density;
-        int s = (int)(HELP_SIZE() * f);
-        int p = (int)(HELP_PADDING() * f);
-        android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
-          s + 2 * p,
-          s + 2 * p,
-          0 /* weight */);
-        params.gravity = android.view.Gravity.TOP;
-
         android.widget.ImageButton b = new android.widget.ImageButton(getAndroidContext());
-        b.setLayoutParams(params);
         b.setBackground(null);
-        b.setPadding(p, p, p, p);
         b.setImageResource(getAndroidContext().getResources().getIdentifier(
           HELP_RESOURCE(),
           "drawable",
           getAndroidContext().getPackageName()));
+
+        b.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
 
         return ActionButton_create()
           .setView(b)
@@ -99,7 +93,12 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ui.AxiomView',
-      name: 'dataView'
+      name: 'dataView',
+      androidPostSet: `
+        newValue.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+      `
     },
     {
       name: 'data'
@@ -110,19 +109,15 @@ foam.CLASS({
       name: 'view',
       androidFactory: `
         android.widget.LinearLayout v = new android.widget.LinearLayout(getAndroidContext());
-        v.setOrientation(android.widget.LinearLayout.VERTICAL);
+        v.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+        v.setGravity(android.view.Gravity.CENTER);
         return v;
       `,
     },
   ],
   reactions: [
     ['validationView', 'propertyChange.data', 'updateValidationView'],
-    ['dataView', 'propertyChange.view', 'updateDataView'],
-    ['', 'propertyChange.labelView', 'updateView'],
-    ['', 'propertyChange.validationView', 'updateView'],
-    ['', 'propertyChange.helpView', 'updateView'],
-    ['', 'propertyChange.dataView', 'updateView'],
-    ['theme$error', 'propertyChange.color', 'updateView'],
+    ['', 'propertyChange.validationView', 'updateValidationView'],
   ],
   methods: [
     {
@@ -134,40 +129,37 @@ foam.CLASS({
         // Data
         setDataView(prop.createView(getSubX()));
         subs.add(getDataView().bindData(data, prop));
-        getDataView().getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
 
         // Label
         if ( ! foam.cross_platform.ui.LabelledViewClass.CLS_().isInstance(getDataView()) ) {
+          getLabelView().getView().setVisibility(android.view.View.VISIBLE);
           subs.add(getLabelView().getData$().follow(prop.getLabel$()));
         } else {
-          clearProperty("labelView");
+          getLabelView().getView().setVisibility(android.view.View.GONE);
         }
 
         // Help
         if ( ! foam.cross_platform.type.StringType.INSTANCE().isEmpty(prop.getHelp()) ) {
-          getHelpView().setData(new foam.cross_platform.GenericFunction() {
-            public Object executeFunction(Object[] args) {
-              foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
-              com.google.android.material.snackbar.Snackbar.make(
-                (android.view.View) x.getXProp("onClickView"),
-                prop.getHelp(),
-                com.google.android.material.snackbar.Snackbar.LENGTH_LONG).show();
-              return null;
-            }
-          });
+          getHelpView().getView().setVisibility(android.view.View.VISIBLE);
+          getHelpView().setData(<%=fn(\`
+            foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
+            com.google.android.material.snackbar.Snackbar.make(
+              (android.view.View) x.getXProp("onClickView"),
+              prop.getHelp(),
+              com.google.android.material.snackbar.Snackbar.LENGTH_LONG).show();
+            return null;
+          \`)%>);
         } else {
-          clearProperty("helpView");
+          getHelpView().getView().setVisibility(android.view.View.INVISIBLE);
         }
 
         // Validation
         foam.core.SlotInterface validationSlot = prop.createValidationSlot(data);
         if ( validationSlot != null ) {
           subs.add(getValidationView().getData$().follow(validationSlot));
-        } else {
-          clearProperty("validationView");
         }
+
+        layoutViews(null, null);
 
         return ArrayDetachable_create()
           .setArray(subs
@@ -182,81 +174,48 @@ foam.CLASS({
       name: 'updateValidationView',
       isFramed: true,
       androidCode: `
-        if ( hasPropertySet("validationView") ) {
-          boolean isEmpty = foam.cross_platform.type.StringType.INSTANCE()
-            .isEmpty((String) getValidationView().getData());
-          getValidationView().getView().setVisibility(
-            isEmpty ? android.view.View.GONE : android.view.View.VISIBLE);
-        }
+        boolean isEmpty = foam.cross_platform.type.StringType.INSTANCE()
+          .isEmpty((String) getValidationView().getData());
+        getValidationView().getView().setVisibility(
+          isEmpty ? android.view.View.GONE : android.view.View.VISIBLE);
       `,
     },
     {
-      name: 'updateDataView',
-      isFramed: true,
-      androidCode: `
-        if ( getDataView() == null ) return;
-        android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
-                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.weight = 1;
-        getDataView().getView().setLayoutParams(params);
-      `,
-    },
-    {
-      name: 'updateView',
+      name: 'layoutViews',
       isFramed: true,
       androidCode: `
         if ( getView() == null ) return;
+
         for ( int i = 0; i < getView().getChildCount(); i++ ) {
           android.view.View child = getView().getChildAt(i);
           if ( child instanceof android.view.ViewGroup == false ) continue;
           ((android.view.ViewGroup) child).removeAllViews();
         }
         getView().removeAllViews();
-        if ( getDataView() == null ) return;
 
-        if ( hasPropertySet("labelView") ) {
-          getLabelView().getView().setAlpha(0.8f);
-          getLabelView().getView().setTextAppearance(getTheme().getSubtitle1());
-          getLabelView().getView().setTextColor(getTheme().getOnSurface());
-          if ( hasPropertySet("helpView") ) {
-            android.widget.LinearLayout top = new android.widget.LinearLayout(getAndroidContext());
-            android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
-                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-            top.setLayoutParams(params);
-            top.setOrientation(android.widget.LinearLayout.HORIZONTAL);
-            top.setGravity(android.view.Gravity.CENTER);
-            top.addView(getLabelView().getView());
-            top.addView(getHelpView().getView());
-            getView().addView(top);
-          } else {
-            getView().addView(getLabelView().getView());
-          }
-          getView().addView(getDataView().getView());
-        } else {
-          if ( hasPropertySet("helpView") ) {
-            android.widget.LinearLayout top = new android.widget.LinearLayout(getAndroidContext());
-            android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
-                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-            top.setLayoutParams(params);
-            top.setOrientation(android.widget.LinearLayout.HORIZONTAL);
-            top.setGravity(android.view.Gravity.CENTER);
-            top.addView(getDataView().getView());
-            top.addView(getHelpView().getView());
-            getView().addView(top);
-          } else {
-            getView().addView(getDataView().getView());
-          }
-        }
-        updateDataView(null, null);
-        if ( hasPropertySet("validationView") ) {
-          getValidationView().getView().setTextAppearance(getTheme().getCaption());
-          getValidationView().getView().setTextColor(getTheme().getError());
-          getView().addView(getValidationView().getView());
-          updateValidationView(null, null);
-        }
+        android.widget.LinearLayout left = new android.widget.LinearLayout(getAndroidContext());
+        left.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            1 /* weight */));
+        left.setOrientation(android.widget.LinearLayout.VERTICAL);
+        getView().addView(left);
+
+        left.addView(getLabelView().getView());
+        left.addView(getDataView().getView());
+        left.addView(getValidationView().getView());
+
+        android.widget.LinearLayout right = new android.widget.LinearLayout(getAndroidContext());
+        android.widget.LinearLayout.LayoutParams rParams = new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            0 /* weight */);
+        rParams.gravity = android.view.Gravity.TOP;
+        right.setLayoutParams(rParams);
+        right.setOrientation(android.widget.LinearLayout.VERTICAL);
+        getView().addView(right);
+
+        right.addView(getHelpView().getView());
       `,
     }
   ]

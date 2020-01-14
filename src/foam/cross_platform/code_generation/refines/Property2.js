@@ -35,5 +35,15 @@ foam.CLASS({
           .build()
       `
     }
+  ],
+  methods: [
+    {
+      name: 'toString',
+      androidCode: `
+        return super.toString(); // TODO;
+      `,
+      swiftCode: `
+      `
+    },
   ]
 });
