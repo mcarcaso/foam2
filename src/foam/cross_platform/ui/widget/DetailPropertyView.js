@@ -169,7 +169,7 @@ foam.CLASS({
         // Data
         setDataView(prop.createView(getSubX()));
         subs.add(getDataView().bindData(data, prop));
-        subs.add(getData$().follow(getDataView().getData$()));
+        subs.add(getData$().follow(((foam.cross_platform.FObject) getDataView()).getSlot("data")));
 
         // Label
         if ( ! foam.cross_platform.ui.LabelledViewClass.CLS_().isInstance(getDataView()) ) {
