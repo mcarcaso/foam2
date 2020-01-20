@@ -102,7 +102,6 @@
 		10F1DEA323CFF63F00596261 /* foam_cross_platform_Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DDDE23CFF63E00596261 /* foam_cross_platform_Context.swift */; };
 		10F1DEA423CFF63F00596261 /* foam_core_ObjectProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DDDF23CFF63E00596261 /* foam_core_ObjectProperty.swift */; };
 		10F1DEA523CFF63F00596261 /* foam_mlang_F.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DDE023CFF63E00596261 /* foam_mlang_F.swift */; };
-		10F1DEA623CFF63F00596261 /* foam_cross_platform_ui_LabelledViewClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DDE123CFF63E00596261 /* foam_cross_platform_ui_LabelledViewClass.swift */; };
 		10F1DEA723CFF63F00596261 /* demo_Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DDE223CFF63E00596261 /* demo_Person.swift */; };
 		10F1DEA823CFF63F00596261 /* foam_mlang_predicate_Binary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DDE323CFF63E00596261 /* foam_mlang_predicate_Binary.swift */; };
 		10F1DEA923CFF63F00596261 /* demo_Slot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DDE423CFF63E00596261 /* demo_Slot.swift */; };
@@ -159,7 +158,6 @@
 		10F1DEDC23CFF63F00596261 /* foam_core_Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DE1723CFF63E00596261 /* foam_core_Simple.swift */; };
 		10F1DEDD23CFF63F00596261 /* foam_parse_ParserWithAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DE1823CFF63E00596261 /* foam_parse_ParserWithAction.swift */; };
 		10F1DEDE23CFF63F00596261 /* foam_dao_OrderedDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DE1923CFF63E00596261 /* foam_dao_OrderedDAO.swift */; };
-		10F1DEDF23CFF63F00596261 /* foam_cross_platform_ui_LabelledView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DE1A23CFF63E00596261 /* foam_cross_platform_ui_LabelledView.swift */; };
 		10F1DEE023CFF63F00596261 /* foam_core_SerializableClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DE1B23CFF63E00596261 /* foam_core_SerializableClass.swift */; };
 		10F1DEE123CFF63F00596261 /* foam_lib_csv_CSVOutputterClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DE1C23CFF63E00596261 /* foam_lib_csv_CSVOutputterClass.swift */; };
 		10F1DEE223CFF63F00596261 /* foam_dao_AbstractSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1DE1D23CFF63E00596261 /* foam_dao_AbstractSink.swift */; };
@@ -342,7 +340,6 @@
 		10F1DDDE23CFF63E00596261 /* foam_cross_platform_Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_Context.swift; sourceTree = "<group>"; };
 		10F1DDDF23CFF63E00596261 /* foam_core_ObjectProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_ObjectProperty.swift; sourceTree = "<group>"; };
 		10F1DDE023CFF63E00596261 /* foam_mlang_F.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_mlang_F.swift; sourceTree = "<group>"; };
-		10F1DDE123CFF63E00596261 /* foam_cross_platform_ui_LabelledViewClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_ui_LabelledViewClass.swift; sourceTree = "<group>"; };
 		10F1DDE223CFF63E00596261 /* demo_Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = demo_Person.swift; sourceTree = "<group>"; };
 		10F1DDE323CFF63E00596261 /* foam_mlang_predicate_Binary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_mlang_predicate_Binary.swift; sourceTree = "<group>"; };
 		10F1DDE423CFF63E00596261 /* demo_Slot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = demo_Slot.swift; sourceTree = "<group>"; };
@@ -399,7 +396,6 @@
 		10F1DE1723CFF63E00596261 /* foam_core_Simple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_Simple.swift; sourceTree = "<group>"; };
 		10F1DE1823CFF63E00596261 /* foam_parse_ParserWithAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_parse_ParserWithAction.swift; sourceTree = "<group>"; };
 		10F1DE1923CFF63E00596261 /* foam_dao_OrderedDAO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_dao_OrderedDAO.swift; sourceTree = "<group>"; };
-		10F1DE1A23CFF63E00596261 /* foam_cross_platform_ui_LabelledView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_ui_LabelledView.swift; sourceTree = "<group>"; };
 		10F1DE1B23CFF63E00596261 /* foam_core_SerializableClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_SerializableClass.swift; sourceTree = "<group>"; };
 		10F1DE1C23CFF63E00596261 /* foam_lib_csv_CSVOutputterClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_lib_csv_CSVOutputterClass.swift; sourceTree = "<group>"; };
 		10F1DE1D23CFF63E00596261 /* foam_dao_AbstractSink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_dao_AbstractSink.swift; sourceTree = "<group>"; };
@@ -681,8 +677,6 @@
 				10F1DE5523CFF63E00596261 /* foam_cross_platform_type_Util.swift */,
 				10F1DDB523CFF63E00596261 /* foam_cross_platform_ui_AxiomView.swift */,
 				10F1DDC823CFF63E00596261 /* foam_cross_platform_ui_AxiomViewClass.swift */,
-				10F1DE1A23CFF63E00596261 /* foam_cross_platform_ui_LabelledView.swift */,
-				10F1DDE123CFF63E00596261 /* foam_cross_platform_ui_LabelledViewClass.swift */,
 				10B9D29D23D0EE9A00827208 /* foam_cross_platform_ui_layout_DetailPropertyView.swift */,
 				10F1DE4F23CFF63E00596261 /* foam_cross_platform_ui_Theme.swift */,
 				10F1DDBE23CFF63E00596261 /* foam_cross_platform_ui_widget_ActionButton.swift */,
@@ -970,7 +964,6 @@
 				10F1DEB723CFF63F00596261 /* foam_core_ClassProperty.swift in Sources */,
 				10F1DEE623CFF63F00596261 /* foam_core_FObjectProperty.swift in Sources */,
 				10F1DE9023CFF63F00596261 /* foam_core_Listener.swift in Sources */,
-				10F1DEDF23CFF63F00596261 /* foam_cross_platform_ui_LabelledView.swift in Sources */,
 				10F1DEC823CFF63F00596261 /* foam_parse_ParserProperty.swift in Sources */,
 				10F1DEF023CFF63F00596261 /* foam_mlang_predicate_PredicateArray.swift in Sources */,
 				10F1DF0923CFF63F00596261 /* foam_pattern_Faceted.swift in Sources */,
@@ -1084,7 +1077,6 @@
 				10F1DF0123CFF63F00596261 /* foam_mlang_ExprClass.swift in Sources */,
 				10F1DE5C23CFF63F00596261 /* foam_cross_platform_type_BooleanType.swift in Sources */,
 				10F1DEE223CFF63F00596261 /* foam_dao_AbstractSink.swift in Sources */,
-				10F1DEA623CFF63F00596261 /* foam_cross_platform_ui_LabelledViewClass.swift in Sources */,
 				10F1DEDE23CFF63F00596261 /* foam_dao_OrderedDAO.swift in Sources */,
 				10F1DF0523CFF63F00596261 /* foam_cross_platform_type_StringType.swift in Sources */,
 				10F1DE7223CFF63F00596261 /* foam_dao_OrderedSink.swift in Sources */,
