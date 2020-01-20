@@ -142,6 +142,15 @@ foam.CLASS({
         getView().setFocusable(getVisibility() == foam.u2.Visibility.RW);
         getView().setEnabled(getVisibility() != foam.u2.Visibility.DISABLED);
       `,
+      swiftCode: `
+        if ( getView() == nil ) { return; }
+        let tf = (getView() as! UITextView);
+        //getView().setHint(getPlaceholder());
+        tf.isEditable = foam_cross_platform_Lib.equals(
+          getVisibility(), foam_u2_Visibility.RW)
+        tf.isUserInteractionEnabled = !foam_cross_platform_Lib.equals(
+        getVisibility(), foam_u2_Visibility.DISABLED)
+      `,
     },
     {
       name: 'viewToData',
@@ -150,6 +159,13 @@ foam.CLASS({
         if ( getFeedback_() ) return;
         setFeedback_(true);
         setData(getView().getText().toString());
+        setFeedback_(false);
+      `,
+      swiftCode: `
+        if ( getView() == nil ) { return; }
+        if ( getFeedback_() ) { return; }
+        setFeedback_(true);
+        setData((getView() as! UITextView).text!);
         setFeedback_(false);
       `,
     },

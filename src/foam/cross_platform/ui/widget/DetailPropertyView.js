@@ -30,6 +30,10 @@ foam.CLASS({
     'foam.cross_platform.ui.widget.ActionButton',
     'foam.cross_platform.ui.widget.Label',
     'foam.util.ArrayDetachable',
+    {
+      path: 'foam.cross_platform.ui.layout.DetailPropertyView',
+      flags: ['swift'],
+    },
   ],
   properties: [
     {
@@ -49,6 +53,16 @@ foam.CLASS({
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
 
         return v;
+      `,
+      swiftFactory: `
+        let v = Label_create().build();
+/*
+        v.getView().setTextColor(getTheme().getOnSurface());
+
+        v.getView().setAlpha(0.8f);
+        v.getView().setTextAppearance(getTheme().getSubtitle1());
+*/
+        return v;
       `
     },
     {
@@ -65,6 +79,20 @@ foam.CLASS({
         v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        return v;
+      `,
+      swiftFactory: `
+        let v = Label_create().build();
+/*
+        v.getView().setVisibility(android.view.View.GONE);
+
+        v.getView().setTextColor(getTheme().getError());
+
+        v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+*/
 
         return v;
       `
@@ -85,6 +113,13 @@ foam.CLASS({
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
 
+        return ActionButton_create()
+          .setView(b)
+          .build();
+      `,
+      swiftFactory: `
+        let b = UIButton(type: .infoLight);
+        b.tintColor = .black
         return ActionButton_create()
           .setView(b)
           .build();
@@ -113,6 +148,11 @@ foam.CLASS({
         v.setGravity(android.view.Gravity.CENTER);
         return v;
       `,
+      swiftFactory: `
+        let v = foam_cross_platform_ui_layout_DetailPropertyView.View();
+        v.o = DetailPropertyView_create().build();
+        return v;
+      `
     },
   ],
   reactions: [
@@ -129,6 +169,7 @@ foam.CLASS({
         // Data
         setDataView(prop.createView(getSubX()));
         subs.add(getDataView().bindData(data, prop));
+        subs.add(getData$().follow(getDataView().getData$()));
 
         // Label
         if ( ! foam.cross_platform.ui.LabelledViewClass.CLS_().isInstance(getDataView()) ) {
@@ -167,6 +208,53 @@ foam.CLASS({
             .toArray(foam.core.Detachable[]::new))
           .build();
       `,
+      swiftCode: `
+        var subs: [foam_core_Detachable?] = [];
+        let prop = axiom as! foam_core_Property;
+
+        // Data
+        setDataView(prop.createView(getSubX()));
+        subs.append(getDataView()!.bindData(data, prop));
+        subs.append(getData$().follow((getDataView() as? foam_cross_platform_FObject)?.getSlot("data")));
+
+        // Label
+        if ( !foam_cross_platform_ui_LabelledViewClass.CLS_().isInstance(getDataView()) ) {
+          //getLabelView()?.getView()?.setVisibility(android.view.View.VISIBLE);
+          subs.append(getLabelView()?.getData$().follow(prop.getLabel$()));
+        } else {
+          //getLabelView().getView().setVisibility(android.view.View.GONE);
+        }
+
+        // Help
+        if ( !foam_cross_platform_type_StringType.INSTANCE().isEmpty(prop.getHelp()) ) {
+          //getHelpView().getView().setVisibility(android.view.View.VISIBLE);
+          getHelpView()!.setData(<%=fn(\`
+            let x = args![0] as! foam_cross_platform_Context;
+            print(prop.getHelp()!);
+            /*
+            com.google.android.material.snackbar.Snackbar.make(
+              (android.view.View) x.getXProp("onClickView"),
+              prop.getHelp(),
+              com.google.android.material.snackbar.Snackbar.LENGTH_LONG).show();
+            */
+            return nil;
+          \`)%>);
+        } else {
+          // getHelpView().getView().setVisibility(android.view.View.INVISIBLE);
+        }
+
+        // Validation
+        let validationSlot = prop.createValidationSlot(data);
+        if ( validationSlot != nil ) {
+          subs.append(getValidationView()?.getData$().follow(validationSlot));
+        }
+
+        layoutViews(nil, nil);
+
+        return ArrayDetachable_create()
+          .setArray(subs)
+          .build();
+      `,
     }
   ],
   listeners: [
@@ -178,6 +266,12 @@ foam.CLASS({
           .isEmpty((String) getValidationView().getData());
         getValidationView().getView().setVisibility(
           isEmpty ? android.view.View.GONE : android.view.View.VISIBLE);
+      `,
+      swiftCode: `
+        let isEmpty = foam_cross_platform_type_StringType.INSTANCE()
+          .isEmpty(getValidationView()?.getData() as? String);
+//        getValidationView().getView().setVisibility(
+//          isEmpty ? android.view.View.GONE : android.view.View.VISIBLE);
       `,
     },
     {
@@ -216,6 +310,26 @@ foam.CLASS({
         getView().addView(right);
 
         right.addView(getHelpView().getView());
+      `,
+      swiftCode: `
+        if ( getView() == nil ) { return; }
+        for v in getView()!.subviews {
+          v.removeFromSuperview()
+        }
+
+        let v = getView() as! foam_cross_platform_ui_layout_DetailPropertyView.View
+        v.addSubview(getLabelView()!.getView()!);
+        v.addSubview(getHelpView()!.getView()!);
+        v.addSubview(getDataView()!.getView()!);
+        v.addSubview(getValidationView()!.getView()!);
+
+        v.o?.setLabel(getLabelView()!.getView());
+        v.o?.setHelp(getHelpView()!.getView());
+        v.o?.setValidation(getValidationView()!.getView());
+        v.o?.setPropData(getDataView()!.getView());
+        v.o?.setParent(getView());
+
+        v.setNeedsLayout();
       `,
     }
   ]

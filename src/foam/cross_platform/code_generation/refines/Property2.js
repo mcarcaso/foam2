@@ -40,9 +40,10 @@ foam.CLASS({
     {
       name: 'toString',
       androidCode: `
-        return super.toString(); // TODO;
+        return super.toString();
       `,
       swiftCode: `
+        return super.toString();
       `
     },
   ]

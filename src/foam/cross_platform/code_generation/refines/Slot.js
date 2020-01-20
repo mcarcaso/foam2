@@ -704,9 +704,6 @@ foam.CLASS({
   package: 'foam.cross_platform.code_generation.refines',
   name: 'ArraySlotRefine',
   refines: 'foam.core.ArraySlot',
-  requires: [
-    'foam.util.ArrayDetachable'
-  ],
   methods: [
     {
       name: 'slotGet',

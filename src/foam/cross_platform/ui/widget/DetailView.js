@@ -207,21 +207,35 @@ foam.CLASS({
         }
         if getData() == nil { return; }
         var subs = [] as [foam_core_Detachable];
+        let x = getSubX();
         var views = [] as [Any];
         for i in 0..<getProps()!.count {
           let p = getProps()![i]
-          let dpv = BasicDetailPropertyView(frame: f)
-          view.addSubview(dpv)
-          let dpvm = DetailPropertyViewModel_create()
-              .setData(getData())
-              .setProp(p)
-              .build();
+          let dpv = DetailPropertyView_create(x)
+            .build();
+          let visibility = p.createVisibilitySlot(getData());
           let l = <%=listener(\`
-            dpv.isHidden = foam_cross_platform_Lib.equals(dpvm.getVisibility(), foam_u2_Visibility.HIDDEN);
+            dpv.getView()?.isHidden = foam_cross_platform_Lib.equals(visibility?.slotGet(), foam_u2_Visibility.HIDDEN);
+            self?.getView()?.setNeedsLayout();
           \`)%>
-          subs.append(dpvm.getVisibility$().slotSub(l)!);
-          l.executeListener(nil, [dpvm.getVisibility()]);
-          dpv.setData(dpvm);
+          subs.append(ArrayDetachable_create()
+            .setArray([
+              visibility!.slotSub(l)!,
+              dpv.bindData(getData(), p),
+              dpv.getData$().slotSub(<%=listener(\`
+                let layout = (dpv.getView() as! foam_cross_platform_ui_layout_DetailPropertyView.View).o;
+                let propData = layout?.getPropData();
+                layout?.clearProperty("propData");
+                layout?.setPropData(propData);
+                if ( dpv.getView()!.frame.height != CGFloat(layout!.getParentH()) ) {
+                  self?.getView()?.setNeedsLayout();
+                }
+              \`)%>),
+            ])
+            .build());
+          l.executeListener(nil, nil);
+          dpv.getView()?.frame = f;
+          view.addSubview(dpv.getView()!)
           views.append(dpv);
         }
 
