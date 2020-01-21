@@ -140,7 +140,7 @@ foam.CLASS({
 
         // Help
         if ( ! foam.cross_platform.type.StringType.INSTANCE().isEmpty(prop.getHelp()) ) {
-          getHelpView().getView().setVisibility(android.view.View.VISIBLE);
+          getHelpView().setAndroidVisibility(android.view.View.VISIBLE);
           getHelpView().setData(<%=fn(\`
             foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
             com.google.android.material.snackbar.Snackbar.make(
@@ -150,7 +150,7 @@ foam.CLASS({
             return null;
           \`)%>);
         } else {
-          getHelpView().getView().setVisibility(android.view.View.INVISIBLE);
+          getHelpView().setAndroidVisibility(android.view.View.INVISIBLE);
         }
 
         // Validation
