@@ -53,7 +53,7 @@ foam.CLASS({
         body: `
           let o = ${this.crossPlatformSlotGetterName}()?.slotGet();
           return o${foam.swift.requiresCast(this.swiftType) ?
-            ` as? ${this.swiftType}` : ''};
+            ` as! ${this.swiftType}` : ''};
         `
       });
       cls.method({

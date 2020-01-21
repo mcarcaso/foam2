@@ -8,6 +8,7 @@ foam.CLASS({
     {
       class: 'FObjectArray',
       of: 'foam.core.Detachable',
+      swiftType: '[foam_core_Detachable?]?',
       name: 'array'
     }
   ],
@@ -21,7 +22,7 @@ foam.CLASS({
       `,
       swiftCode: `
         for d in getArray()! {
-          d.detach();
+          d?.detach();
         }
       `
     }

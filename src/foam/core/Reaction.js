@@ -27,6 +27,9 @@ foam.CLASS({
     {
       name: 'listener'
     },
+    {
+      name: 'flags'
+    },
   ],
 
   methods: [
@@ -81,7 +84,12 @@ foam.CLASS({
       of: 'foam.core.Reaction',
       adaptArrayElement: function(e, prop) {
         return foam.Array.isInstance(e) ?
-          foam.core.Reaction.create({target: e[0], topic: e[1] ? e[1].split('.') : [], listener: e[2] }) :
+          foam.core.Reaction.create({
+            target: e[0],
+            topic: e[1] ? e[1].split('.') : [],
+            listener: e[2],
+            flags: e[3]
+          }) :
           e.class ? this.__context__.lookup(e.class).create(e, this) :
           this.__context__.lookup(prop.of).create(e, this);
       }

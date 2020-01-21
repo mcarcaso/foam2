@@ -4,6 +4,28 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      swiftCode: `
+        class View: UIView {
+          var o: foam_cross_platform_ui_layout_DetailPropertyView? = nil;
+          override func layoutSubviews() {
+            o?.doLayout();
+          }
+          override func sizeThatFits(_ size: CGSize) -> CGSize {
+            o!.setParentW(Int(size.width));
+            let s = CGSize(
+              width: o!.getParentW(),
+              height: o!.getParentH()
+            )
+            o!.clearProperty("parentW");
+            return s;
+          }
+        }
+      `,
+    }
+  ],
   properties: [
     {
       swiftType: 'UIView?',
@@ -47,13 +69,29 @@ foam.CLASS({
       class: 'IntProperty',
       name: 'parentH',
       expressionArgs: ['validationY', 'validationH'],
-      swiftExpression: `return validationY + validationH`
+      swiftExpression: `return validationY + validationH + Self.PADDING()`
+    },
+    {
+      class: 'IntProperty',
+      name: 'labelX',
+      swiftValue: `Self.PADDING()`
+    },
+    {
+      class: 'IntProperty',
+      name: 'labelY',
+      swiftValue: `Self.PADDING()`
     },
     {
       class: 'IntProperty',
       name: 'labelW',
       expressionArgs: ['helpW', 'parentW'],
-      swiftExpression: `return parentW - helpW`
+      swiftExpression: `return parentW - helpW - 3 * Self.PADDING()`
+    },
+    {
+      class: 'IntProperty',
+      name: 'labelW',
+      expressionArgs: ['helpW', 'parentW'],
+      swiftExpression: `return parentW - helpW - 2 * Self.PADDING()`
     },
     {
       class: 'IntProperty',
@@ -69,7 +107,12 @@ foam.CLASS({
       class: 'IntProperty',
       name: 'helpX',
       expressionArgs: ['labelW'],
-      swiftExpression: `return labelW;`
+      swiftExpression: `return labelW + Self.PADDING();`
+    },
+    {
+      class: 'IntProperty',
+      name: 'helpY',
+      swiftValue: 'Self.PADDING()'
     },
     {
       swiftType: 'CGSize?',
@@ -95,17 +138,22 @@ foam.CLASS({
     },
     {
       class: 'IntProperty',
+      name: 'propDataX',
+      swiftValue: `Self.PADDING()`
+    },
+    {
+      class: 'IntProperty',
       name: 'propDataY',
-      expressionArgs: ['helpH', 'labelH'],
+      expressionArgs: ['labelH'],
       swiftExpression: `
-        return max(helpH, labelH);
+        return labelH + 2 * Self.PADDING();
       `
     },
     {
       class: 'IntProperty',
       name: 'propDataW',
-      expressionArgs: ['parentW'],
-      swiftExpression: `return parentW`
+      expressionArgs: ['helpW', 'parentW'],
+      swiftExpression: `return parentW - helpW - 3 * Self.PADDING()`
     },
     {
       class: 'IntProperty',
@@ -119,15 +167,20 @@ foam.CLASS({
     },
     {
       class: 'IntProperty',
+      name: 'validationX',
+      swiftValue: `Self.PADDING()`
+    },
+    {
+      class: 'IntProperty',
       name: 'validationY',
       expressionArgs: ['propDataY', 'propDataH'],
-      swiftExpression: `return propDataY + propDataH`
+      swiftExpression: `return propDataY + propDataH + Self.PADDING()`
     },
     {
       class: 'IntProperty',
       name: 'validationW',
-      expressionArgs: ['parentW'],
-      swiftExpression: `return parentW`
+      expressionArgs: ['helpW', 'parentW'],
+      swiftExpression: `return parentW - helpW - 3 * Self.PADDING()`
     },
     {
       class: 'IntProperty',
@@ -140,25 +193,36 @@ foam.CLASS({
       `
     },
   ],
+  constants: [
+    {
+      type: 'Int',
+      name: 'padding',
+      value: 12
+    },
+    {
+      type: 'String[]',
+      name: 'views',
+      swiftValue: `[
+        "parent",
+        "label",
+        "help",
+        "propData",
+        "validation",
+      ]`
+    }
+  ],
   methods: [
     {
       name: 'doLayout',
       swiftCode: `
-        let views = [
-          "parent",
-          "label",
-          "help",
-          "propData",
-          "validation",
-        ];
-        for name in views {
+        for name in Self.VIEWS() {
           // By clearing and re-setting the views, any expressions that use them
           // will get re-evaluated.
           let v = getProperty(name) as! UIView;
           clearProperty(name);
           setProperty(name, v);
         }
-        for name in views {
+        for name in Self.VIEWS() {
           let v = getProperty(name) as! UIView;
           v.frame = CGRect(
             x: getProperty(name + "X") as? Int ?? 0,

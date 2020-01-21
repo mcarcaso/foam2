@@ -3,7 +3,10 @@ foam.CLASS({
   name: 'ToggleSwitch',
   implements: [
     'foam.cross_platform.ui.AxiomView',
-    'foam.cross_platform.ui.LabelledView',
+    {
+      path: 'foam.cross_platform.ui.LabelledView',
+      flags: ['android'],
+    },
   ],
   swiftImports: [
     'UIKit'
@@ -41,7 +44,8 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'label'
+      name: 'label',
+      flags: ['android'],
     },
     {
       androidType: 'android.widget.Switch',
@@ -81,9 +85,9 @@ foam.CLASS({
     ['', 'propertyChange.view', 'updateVisibility'],
     ['', 'propertyChange.visibility', 'updateVisibility'],
 
-    ['', 'propertyChange.view', 'updateLabel'],
-    ['', 'propertyChange.label', 'updateLabel'],
-    ['theme', 'propertyChange', 'updateLabel'],
+    ['', 'propertyChange.view', 'updateLabel', ['android']],
+    ['', 'propertyChange.label', 'updateLabel', ['android']],
+    ['theme', 'propertyChange', 'updateLabel', ['android']],
   ],
   methods: [
     {
@@ -94,7 +98,7 @@ foam.CLASS({
           .setArray(new foam.core.Detachable[] {
             getData$().linkFrom(data.getSlot(prop.getName())),
             getVisibility$().follow(prop.createVisibilitySlot(data)),
-            getLabel$().follow(prop.getLabel$()),
+            getLabel$().follow(prop.getLabel$())
           })
           .build();
       `,
@@ -103,7 +107,8 @@ foam.CLASS({
         return ArrayDetachable_create()
           .setArray([
             getData$().linkFrom(data!.getSlot(prop.getName())),
-            getVisibility$().follow(prop.createVisibilitySlot(data))
+            getVisibility$().follow(prop.createVisibilitySlot(data)),
+            //getLabel$().follow(prop.getLabel$())
           ])
           .build();
       `,
@@ -119,6 +124,7 @@ foam.CLASS({
     {
       name: 'updateLabel',
       isFramed: true,
+      flags: ['android'],
       androidCode: `
         if ( getView() == null ) return;
         getView().setText(getLabel());
@@ -181,4 +187,3 @@ foam.CLASS({
     },
   ]
 });
-

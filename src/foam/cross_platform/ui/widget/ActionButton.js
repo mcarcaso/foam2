@@ -110,7 +110,7 @@ foam.CLASS({
         getData().executeFunction(new Object[] { x });
       `,
       swiftCode: `
-        _ = getAction()?.call(getData(), [getSubX()]);
+        _ = getData()?.executeFunction([getSubX()]);
       `
     },
     {
@@ -146,27 +146,28 @@ foam.CLASS({
       `,
       swiftCode: `
         let action = axiom as! foam_core_Action;
-        setAction(action);
-        setData(data);
+        let fn = <%=fn(\`
+          return action.call(data, args);
+        \`)%>;
+        setData(fn);
 
         let isAvailable = action.createIsAvailableSlot(data);
         let isEnabled = action.createIsEnabledSlot(data);
 
         return ArrayDetachable_create()
           .setArray([
+            getLabel$().follow(action.getLabel$()),
             isEnabled == nil ? nil : getIsEnabled$().follow(isEnabled),
             isAvailable == nil ? nil : getIsAvailable$().follow(isAvailable),
             <%=detachable(\`
+              self!.clearProperty("label");
               self!.clearProperty("isEnabled");
               self!.clearProperty("isAvailable");
-              if ( foam_cross_platform_Lib.equals(self!.getAction(), axiom) ) {
-                self!.clearProperty("action");
-              }
-              if ( foam_cross_platform_Lib.equals(self!.getData(), data) ) {
+              if ( foam_cross_platform_Lib.equals(self!.getData(), fn) ) {
                 self!.clearProperty("data");
               }
             \`)%>
-          ].filter({o -> Bool in return o != nil }))
+          ])
           .build();
       `
     }
@@ -185,10 +186,10 @@ foam.CLASS({
       `,
       swiftCode: `
         if getView() == nil { return }
-        let b = getView() as! UIButton;
-        b.isHidden = !getIsAvailable();
-        b.isEnabled = getIsEnabled();
-        b.setTitle(getLabel(), for: .normal)
+        let b = getView() as? UIButton;
+        b?.isHidden = !getIsAvailable();
+        b?.isEnabled = getIsEnabled();
+        b?.setTitle(getLabel(), for: .normal)
       `
     }
   ]
