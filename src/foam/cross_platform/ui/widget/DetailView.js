@@ -14,6 +14,10 @@ foam.CLASS({
   ],
   imports: [
     {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
+    {
       name: 'androidContext',
       key: 'androidContext',
       androidType: 'android.content.Context',
@@ -112,6 +116,8 @@ foam.CLASS({
         v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+        v.setShowDividers(android.widget.LinearLayout.SHOW_DIVIDER_MIDDLE);
+        v.setDividerDrawable(new android.graphics.drawable.ColorDrawable(getTheme().getOnSurface()));
         return v;
       `
     },
