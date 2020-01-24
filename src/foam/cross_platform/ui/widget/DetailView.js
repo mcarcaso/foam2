@@ -12,6 +12,14 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
+  imports: [
+    {
+      name: 'androidContext',
+      key: 'androidContext',
+      androidType: 'android.content.Context',
+      flags: ['android']
+    }
+  ],
   constants: [
     {
       type: 'Integer',
@@ -97,7 +105,15 @@ foam.CLASS({
     {
       androidType: 'android.widget.LinearLayout',
       swiftType: 'UIView?',
-      name: 'view'
+      name: 'view',
+      androidFactory: `
+        android.widget.LinearLayout v = new android.widget.LinearLayout(getAndroidContext());
+        v.setOrientation(android.widget.LinearLayout.VERTICAL);
+        v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+        return v;
+      `
     },
     {
       class: 'FObjectProperty',
@@ -185,7 +201,7 @@ foam.CLASS({
           params.gravity = android.view.Gravity.CENTER;
           b.setLayoutParams(params);
 
-          foam.cross_platform.ui.widget.ActionButton ab = foam.cross_platform.ui.widget.ActionButton.ActionButtonBuilder(null)
+          foam.cross_platform.ui.widget.ActionButton ab = ActionButton_create()
             .setView(b)
             .build();
           subs[getProps().length + i] = ab.bindData(getData(), getActions()[i]);

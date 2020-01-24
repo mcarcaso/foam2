@@ -134,11 +134,13 @@ foam.CLASS({
       androidFactory: `
         Object[] exports = getCls_().getAxiomsByClass(foam.core.Export.CLS_());
         if ( exports.length == 0 ) return getX();
+        foam.cross_platform.type.StringType st = foam.cross_platform.type.StringType.INSTANCE();
 
         java.util.Map exportMap = new java.util.HashMap();
         for ( Object eO : exports ) {
           foam.core.Export e = (foam.core.Export) eO;
-          exportMap.put(e.getExportName(), getSlot(e.getKey()));
+          exportMap.put(e.getExportName(), st.isEmpty(e.getKey()) ?
+            this : getSlot(e.getKey()));
         }
 
         return getX().createSubContext(exportMap);
@@ -146,11 +148,13 @@ foam.CLASS({
       swiftFactory: `
         let exports = getCls_()!.getAxiomsByClass(foam_core_Export.CLS_())!;
         if exports.count == 0 { return getX(); }
+        let st = foam_cross_platform_type_StringType.INSTANCE();
 
         var exportMap: [AnyHashable:Any?] = [:];
         for eO in exports {
           let e = eO as! foam_core_Export;
-          exportMap[e.getExportName()!] = getSlot(e.getKey());
+          exportMap[e.getExportName()!] = st.isEmpty(e.getKey()) ?
+            self : getSlot(e.getKey());
         }
 
         return getX().createSubContext(exportMap)!;

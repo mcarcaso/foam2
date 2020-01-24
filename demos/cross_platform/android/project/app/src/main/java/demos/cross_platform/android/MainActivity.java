@@ -12,8 +12,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import demo.Person;
+import foam.cross_platform.ui.stack.Stack;
 import foam.cross_platform.ui.widget.DetailView;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,19 +33,28 @@ public class MainActivity extends AppCompatActivity {
                 .setCaption(R.style.TextCaption)
                 .setSubtitle1(R.style.Subtitle1)
                 .build();
+        MainActivity self = this;
         foam.cross_platform.Context x = foam.cross_platform.Context.GLOBAL()
                 .createSubContext(new java.util.HashMap() {{
                     put("theme", theme);
+                    put("androidContext", self);
                 }});
+
+        Stack s = Stack.StackBuilder(x)
+                .setContentId(R.id.main_content)
+                .setFragmentManager(getSupportFragmentManager())
+                .build();
+        x = s.getSubX();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dv = DetailView.DetailViewBuilder(x)
-                .build();
-        dv.setData(Person.PersonBuilder(dv.getSubX()).build());
-        dv.setView(findViewById(R.id.detail_view));
+        Person p = Person.PersonBuilder(x).build();
+
+        s.push(foam.cross_platform.ui.stack.DetailView.DetailViewBuilder(x)
+            .setData(p)
+            .build());
     }
 
     @Override
