@@ -41,12 +41,6 @@ foam.CLASS({
           public ViewHolder(foam.cross_platform.FObject fobj) {
             super((android.view.View) fobj.getProperty("view"));
             this.fobj = fobj;
-            ((android.view.View) fobj.getProperty("view")).setOnClickListener(v -> {
-              ((foam.cross_platform.ui.stack.Stack) fobj.getSubX().getXProp("stack"))
-                .push(foam.cross_platform.ui.stack.DetailView.DetailViewBuilder(fobj.getSubX())
-                  .setData(fobj.getProperty("data"))
-                  .build());
-            });
           }
         }
         public static class Adapter extends androidx.recyclerview.widget.RecyclerView.Adapter<ViewHolder> {
