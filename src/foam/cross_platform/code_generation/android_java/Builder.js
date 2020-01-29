@@ -1,4 +1,4 @@
-foam.CLASS({
+foam.INTERFACE({
   package: 'foam.cross_platform.code_generation.android_java',
   name: 'BuilderInterface',
   methods: [
@@ -65,6 +65,34 @@ foam.CLASS({
   ],
   methods: [
     function buildBuilderClass(cls) {
+      cls.implements.push('foam.cross_platform.Builder');
+      cls.method({
+        visibility: 'public',
+        type: 'foam.cross_platform.Builder',
+        name: 'setBuilderProperty',
+        args: [
+          { type: 'String', name: 'name' },
+          { type: 'Object', name: 'value' },
+        ],
+        body: `
+          switch(name) {
+          ${cls.properties.map(p => `
+            case "${p.name}":
+              ${p.crossPlatformSetterName}(value);
+              break;
+          `).join('\n')}
+          }
+          return this;
+        `
+      });
+      cls.method({
+        visibility: 'public',
+        type: 'foam.cross_platform.FObject',
+        name: 'builderBuild',
+        body: `
+          return build();
+        `
+      });
       cls.method({
         static: true,
         visibility: 'public',

@@ -19,6 +19,7 @@ android {
     }
     sourceSets {
         main.java.srcDirs += 'src/foam_gen'
+        main.res.srcDirs += 'src/foam_res'
     }
     compileOptions {
         sourceCompatibility = 1.8

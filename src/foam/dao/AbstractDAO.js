@@ -883,6 +883,9 @@ foam.CLASS({
       code: function select_(x, sink, skip, limit, order, predicate) {
         return this.delegate.select_(x, sink, this.skip_, limit, order, predicate);
       },
+      androidCode: `
+        return getDelegate().select_(x, sink, getSkip_(), limit, order, predicate);
+      `,
       swiftCode_DELETE: function() {/*
 return try delegate.select_(x, sink, skip_, limit, order, predicate)
       */},
@@ -915,6 +918,9 @@ foam.CLASS({
           limit !== undefined ? Math.min(this.limit_, limit) : this.limit_,
           order, predicate);
       },
+      androidCode: `
+        return getDelegate().select_(x, sink, skip, Math.min(limit, getLimit_()), order, predicate);
+      `,
       swiftCode_DELETE: function() {/*
 return try delegate.select_(
     x, sink, skip,

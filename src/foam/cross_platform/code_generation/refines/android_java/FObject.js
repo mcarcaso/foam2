@@ -218,6 +218,13 @@ ${cls.extends ? `
             initClassInfo_ = foam.cross_platform.FoamClass
               .FoamClassBuilder(null)
               .build();
+            ${this.model_.abstract || foam.core.AbstractInterface.isSubClass(this) ? '' : `
+            initClassInfo_.setBuilderFactory_(new foam.cross_platform.GenericFunction() {
+              public Object executeFunction(Object[] args) {
+                return ${cls.name}Builder_.getInstance((foam.cross_platform.Context) args[0]);
+              }
+            });
+            `}
             ${cInfo.cls_.getAxiomsByClass(foam.core.Property)
                 .filter(flagFilter)
                 .filter(p => cInfo.hasOwnProperty(p.name))

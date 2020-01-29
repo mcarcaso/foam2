@@ -154,7 +154,6 @@ foam.CLASS({
   listeners: [
     {
       name: 'updateView',
-      isFramed: true,
       androidCode: `
         if ( getSub_() != null ) {
           getSub_().detach();

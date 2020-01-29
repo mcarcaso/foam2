@@ -14,6 +14,7 @@
     android: {
       sourcePath: dir + '/android/project/app/src/foam_gen',
       testPath: dir + '/android/project/app/src/test/java',
+      resourcePath: dir + '/android/project/app/src/foam_res',
     }
   };
 
@@ -22,6 +23,7 @@
     var cmd = `rm -rf \\
       "${platforms.swift.sourcePath}" \\
       "${platforms.android.sourcePath}" \\
+      "${platforms.android.resourcePath}" \\
       "${platforms.swift.testPath}" \\
       "${platforms.android.testPath}"`;
     console.log(cmd);
@@ -69,6 +71,7 @@
       ],
       sourcePath: platformArgs.sourcePath,
       testPath: platformArgs.testPath,
+      resourcePath: platformArgs.resourcePath,
       swiftAppName: platformArgs.swiftAppName,
     }
   };

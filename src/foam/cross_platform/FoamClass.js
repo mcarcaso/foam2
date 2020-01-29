@@ -88,8 +88,22 @@ foam.CLASS({
         return own + sup;
       `
     },
+    {
+      class: 'FunctionProperty',
+      name: 'builderFactory_',
+    },
   ],
   methods: [
+    {
+      type: 'foam.cross_platform.Builder',
+      name: 'createBuilder',
+      args: [
+        { type: 'Context', name: 'x' }
+      ],
+      androidCode: `
+        return (foam.cross_platform.Builder) getBuilderFactory_().executeFunction(new Object[] {x});
+      `,
+    },
     {
       type: 'Boolean',
       name: 'isSubClass',

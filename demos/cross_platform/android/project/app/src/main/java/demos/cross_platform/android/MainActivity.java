@@ -2,19 +2,12 @@ package demos.cross_platform.android;
 
 import android.graphics.Color;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.ViewGroup;
-
-import demo.Person;
 import foam.cross_platform.ui.stack.Stack;
 import foam.cross_platform.ui.widget.DetailView;
 
@@ -27,34 +20,51 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         foam.cross_platform.ui.Theme theme = foam.cross_platform.ui.Theme
-                .ThemeBuilder(foam.cross_platform.Context.GLOBAL())
-                .setError(getResources().getColor(R.color.colorError, getTheme()))
-                .setOnSurface(Color.parseColor("BLACK"))
-                .setCaption(R.style.TextCaption)
-                .setSubtitle1(R.style.Subtitle1)
-                .build();
+          .ThemeBuilder(foam.cross_platform.Context.GLOBAL())
+          .setError(getResources().getColor(R.color.colorError, getTheme()))
+          .setOnSurface(Color.parseColor("BLACK"))
+          .setCaption(R.style.TextCaption)
+          .setSubtitle1(R.style.Subtitle1)
+          .build();
         MainActivity self = this;
         foam.cross_platform.Context x = foam.cross_platform.Context.GLOBAL()
-                .createSubContext(new java.util.HashMap() {{
-                    put("theme", theme);
-                    put("androidContext", self);
-                }});
+          .createSubContext(new java.util.HashMap() {{
+              put("theme", theme);
+              put("androidContext", self);
+          }});
 
         Stack s = Stack.StackBuilder(x)
-                .setContentId(R.id.main_content)
-                .setFragmentManager(getSupportFragmentManager())
-                .build();
+          .setContentId(R.id.main_content)
+          .setFragmentManager(getSupportFragmentManager())
+          .build();
         x = s.getSubX();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Person p = Person.PersonBuilder(x).build();
+        foam.dao.DAO d = foam.dao.ArrayDAO.ArrayDAOBuilder(x)
+          .setOf(demo.Person.CLS_())
+          .build();
+        for ( int i = 0 ; i < 1000 ; i++ ) {
+            d.put(demo.Person.PersonBuilder(x)
+              .setFirstName("Mike")
+              .setLastName("Car" + i)
+              .build());
+        }
 
-        s.push(foam.cross_platform.ui.stack.DetailView.DetailViewBuilder(x)
-            .setData(p)
-            .build());
+        s.push(foam.cross_platform.ui.stack.DAOView.DAOViewBuilder(x)
+          .setData(d)
+          .setCitationView(foam.cross_platform.ui.SimpleViewFactory.SimpleViewFactoryBuilder(x)
+            .setViewClass(foam.cross_platform.ui.widget.EmailCitationView.CLS_())
+            .setViewArgs(new java.util.HashMap() {{
+                put("fromExpr", demo.Person.FIRST_NAME());
+                put("subjectExpr", demo.Person.LAST_NAME());
+                put("bodyExpr", demo.Person.FULL_NAME());
+            }})
+            .build())
+          .build());
+
     }
 
     @Override
