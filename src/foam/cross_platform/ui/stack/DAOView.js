@@ -31,7 +31,13 @@ foam.CLASS({
             rv.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT));
-            rv.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(getActivity()));
+            androidx.recyclerview.widget.LinearLayoutManager lm =
+              new androidx.recyclerview.widget.LinearLayoutManager(getActivity());
+            rv.setLayoutManager(lm);
+            androidx.recyclerview.widget.DividerItemDecoration divider =
+              new androidx.recyclerview.widget.DividerItemDecoration(rv.getContext(),
+              lm.getOrientation());
+            rv.addItemDecoration(divider);
             rv.setHasFixedSize(true);
             return rv;
           }
