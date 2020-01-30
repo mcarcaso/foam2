@@ -2,11 +2,7 @@ foam.LIB({
   name: 'foam.core.FObject',
   flags: ['swift'],
   methods: [
-    function buildSwiftResources() {
-      var resources = {
-        tests: [],
-        sources: []
-      };
+    function buildSwiftResources(resources) {
       var flagFilter = foam.util.flagFilter(['swift']);
       this.getAxioms()
         .filter(flagFilter)
