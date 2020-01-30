@@ -68,6 +68,7 @@
         'foam.cross_platform.ui.SimpleViewFactory',
         'foam.cross_platform.ui.Theme',
         'foam.cross_platform.ui.stack.DAOView',
+        'foam.cross_platform.ui.stack.Stack',
         'foam.cross_platform.ui.widget.EmailCitationView',
       ],
       sourcePath: platformArgs.sourcePath,
