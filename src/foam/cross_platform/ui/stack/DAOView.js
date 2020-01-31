@@ -4,6 +4,9 @@ foam.CLASS({
   implements: [
     'foam.cross_platform.ui.Stackable'
   ],
+  requires: [
+    'foam.mlang.sink.Count'
+  ],
   axioms: [
     {
       class: 'foam.cross_platform.code_generation.Resource',
@@ -70,6 +73,52 @@ foam.CLASS({
             return (int) s.getValue();
           }
         }
+      `,
+      swiftCode: `
+        class RowView: UITableViewCell {
+          var citationView: foam_cross_platform_ui_View
+          init(citationView: foam_cross_platform_ui_View, style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+            self.citationView = citationView
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+            let view = citationView.getView()!;
+
+            let viewMap: [String:UIView] = ["v":view]
+            for v in viewMap.values {
+              v.translatesAutoresizingMaskIntoConstraints = false
+              addSubview(v)
+            }
+            addConstraints(NSLayoutConstraint.constraints(
+              withVisualFormat: "H:|[v]|",
+              options: .alignAllCenterY,
+              metrics: nil,
+              views: viewMap))
+            addConstraints(NSLayoutConstraint.constraints(
+              withVisualFormat: "V:|[v]|",
+              options: .alignAllCenterY,
+              metrics: nil,
+              views: viewMap))
+          }
+          required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+          }
+        }
+
+        class TableSource: NSObject, UITableViewDataSource {
+          var daoView: foam_cross_platform_ui_stack_DAOView? = nil;
+          var reusableId = "CellID";
+          public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return daoView!.getCount_()!.getValue();
+          }
+
+          public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            var cell = tableView.dequeueReusableCell(withIdentifier: reusableId) as? RowView;
+            if cell == nil {
+              let citationView = daoView!.getCitationView()!.createView(daoView!.getSubX())!;
+              cell = RowView(citationView: citationView, style: .default, reuseIdentifier: reusableId);
+            }
+            return cell!;
+          }
+        }
       `
     }
   ],
@@ -77,12 +126,29 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.dao.DAO',
-      name: 'data'
+      name: 'data',
+      swiftPostSet: `
+        getListenSub_()?.detach();
+        getCount_()!.reset(nil);
+        _ = newValue?.select(getCount_());
+        setListenSub_(newValue?.listen(getCount_(), nil));
+      `
     },
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ui.ViewFactory',
       name: 'citationView'
+    },
+    {
+      class: 'FObjectProperty',
+      of: 'foam.core.Detachable',
+      name: 'listenSub_',
+    },
+    {
+      class: 'FObjectProperty',
+      of: 'foam.mlang.sink.Count',
+      name: 'count_',
+      swiftFactory: `return Count_create().build();`
     },
   ],
   methods: [
@@ -92,6 +158,14 @@ foam.CLASS({
         Fragment f = new Fragment();
         f.o = this;
         return f;
+      `,
+      swiftCode: `
+        let ts = TableSource()
+        ts.daoView = self;
+        let tv = UITableViewController();
+        tv.tableView.dataSource = ts;
+        tv.tableView.reloadData();
+        return tv;
       `
     }
   ]

@@ -290,7 +290,7 @@ throw new UnsupportedOperationException();
         }
         return this.listen_(this.__context__, sink, undefined);
       },
-      swiftCode_DELETE: 'return try listen_(__context__, sink)',
+      swiftCode: 'return listen_(getSubX(), sink, predicate);',
       javaCode: `this.listen_(this.getX(), sink, predicate);`,
     },
 

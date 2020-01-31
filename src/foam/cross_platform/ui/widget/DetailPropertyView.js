@@ -219,15 +219,15 @@ foam.CLASS({
 
         // Label
         if ( !foam_cross_platform_ui_LabelledViewClass.CLS_().isInstance(getDataView()) ) {
-          //getLabelView()?.getView()?.setVisibility(android.view.View.VISIBLE);
+          getLabelView()!.getView()?.isHidden = false;
           subs.append(getLabelView()?.getData$().follow(prop.getLabel$()));
         } else {
-          //getLabelView().getView().setVisibility(android.view.View.GONE);
+          getLabelView()!.getView()?.isHidden = true;
         }
 
         // Help
         if ( !foam_cross_platform_type_StringType.INSTANCE().isEmpty(prop.getHelp()) ) {
-          //getHelpView().getView().setVisibility(android.view.View.VISIBLE);
+          getHelpView()!.getView()?.isHidden = false;
           getHelpView()!.setData(<%=fn(\`
             let x = args![0] as! foam_cross_platform_Context;
             print(prop.getHelp()!);
@@ -240,7 +240,7 @@ foam.CLASS({
             return nil;
           \`)%>);
         } else {
-          // getHelpView().getView().setVisibility(android.view.View.INVISIBLE);
+          getHelpView()!.getView()?.isHidden = true;
         }
 
         // Validation

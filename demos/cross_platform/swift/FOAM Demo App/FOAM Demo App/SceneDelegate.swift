@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       .build();
     var x = theme.getSubX();
 
-    let navVc = UINavigationController();
+    let navVc = UINavigationController(rootViewController: UIViewController());
     navVc.navigationBar.isTranslucent = false;
     let s = foam_cross_platform_ui_stack_Stack
       .foam_cross_platform_ui_stack_StackBuilder(x)
@@ -37,7 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         .setLastName("Car" + String(i))
         .build());
     }
-/*
+
     s.push(foam_cross_platform_ui_stack_DAOView
       .foam_cross_platform_ui_stack_DAOViewBuilder(x)
       .setData(d)
@@ -50,15 +50,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         ])
         .build())
       .build())
-*/
-
-    s.push(foam_cross_platform_ui_stack_DetailView
-      .foam_cross_platform_ui_stack_DetailViewBuilder(x)
-      .setData(demo_Person.demo_PersonBuilder(x)
-        .setFirstName("Mike")
-        .setLastName("Car")
-        .build())
-      .build());
 
     // Use a UIHostingController as window root view controller.
     if let windowScene = scene as? UIWindowScene {
