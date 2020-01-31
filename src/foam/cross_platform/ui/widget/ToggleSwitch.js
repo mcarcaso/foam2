@@ -3,10 +3,7 @@ foam.CLASS({
   name: 'ToggleSwitch',
   implements: [
     'foam.cross_platform.ui.AxiomView',
-    {
-      path: 'foam.cross_platform.ui.LabelledView',
-      flags: ['android'],
-    },
+    'foam.cross_platform.ui.LabelledView',
   ],
   swiftImports: [
     'UIKit'
