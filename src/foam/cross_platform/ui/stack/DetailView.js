@@ -23,6 +23,11 @@ foam.CLASS({
             return sv;
           }
         }
+      `,
+      swiftCode: `
+        class ViewController: UIViewController {
+          var dv: foam_cross_platform_ui_widget_DetailView? = nil;
+        }
       `
     }
   ],
@@ -41,6 +46,15 @@ foam.CLASS({
           .build();
         f.dv.onDetach(f.dv.getData$().follow(getData$()));
         return f;
+      `,
+      swiftCode: `
+        let vc = ViewController();
+        vc.view = VerticalLayout(frame: vc.view.frame);
+        vc.dv = DetailView_create()
+          .setView(vc.view)
+          .build();
+        vc.dv!.onDetach(vc.dv!.getData$().follow(getData$()));
+        return vc;
       `
     }
   ]

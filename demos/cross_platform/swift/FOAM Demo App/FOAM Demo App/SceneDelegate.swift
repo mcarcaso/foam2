@@ -51,6 +51,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         .build())
       .build())
 */
+
+    s.push(foam_cross_platform_ui_stack_DetailView
+      .foam_cross_platform_ui_stack_DetailViewBuilder(x)
+      .setData(demo_Person.demo_PersonBuilder(x)
+        .setFirstName("Mike")
+        .setLastName("Car")
+        .build())
+      .build());
+
     // Use a UIHostingController as window root view controller.
     if let windowScene = scene as? UIWindowScene {
         let window = UIWindow(windowScene: windowScene)
