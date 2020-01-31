@@ -1,6 +1,9 @@
 foam.CLASS({
   package: 'foam.cross_platform.ui',
   name: 'Theme',
+  exports: [
+    'as theme'
+  ],
   properties: [
     {
       class: 'ColorProperty',

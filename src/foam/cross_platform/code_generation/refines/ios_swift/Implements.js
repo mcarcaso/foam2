@@ -14,8 +14,9 @@ foam.CLASS({
       if ( parentCls.getSuperAxiomByName(this.name) ) return;
       if ( parentCls != foam.cross_platform.FObject &&
            foam.cross_platform.FObject.getAxiomByName(this.name) ) return;
-      cls.implements = cls.implements
-        .concat(foam.lookup(this.path).model_.swiftName);
+      var model = foam.lookup(this.path).model_
+      cls.imports = cls.imports.concat(model.swiftImports);
+      cls.implements = cls.implements.concat(model.swiftName);
     }
   ]
 });

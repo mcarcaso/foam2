@@ -24,6 +24,14 @@ foam.CLASS({
         }
         return (foam.cross_platform.ui.View) builder.builderBuild();
       `,
+      swiftCode: `
+        let builder = getViewClass()!.createBuilder(x)!;
+        for name in getViewArgs()!.keys {
+          let n = name as! String
+          _ = builder.setBuilderProperty(n, getViewArgs()![n]!);
+        }
+        return builder.builderBuild() as? foam_cross_platform_ui_View;
+      `,
     },
   ],
 });

@@ -6,6 +6,7 @@ foam.INTERFACE({
     {
       name: 'toStackableView',
       androidType: 'androidx.fragment.app.Fragment',
+      swiftType: 'UIViewController',
     }
   ]
 });

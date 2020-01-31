@@ -2779,6 +2779,11 @@ foam.CLASS({
         return getComparePropertyValues() == null ? 0 :
           (int) getComparePropertyValues()
             .executeFunction(new Object[] {f(o1), f(o2)});
+      `,
+      swiftCode: `
+        return getComparePropertyValues() == nil ? 0 :
+          getComparePropertyValues()!
+            .executeFunction([f(o1), f(o2)]) as! Int;
       `
     },
   ]

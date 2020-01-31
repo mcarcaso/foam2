@@ -99,14 +99,14 @@ foam.CLASS({
         assertEquals(1, p.getErrors_().length);
       `,
       swiftCode: `
-        Person p = Person_create()
+        let p = Person_create()
           .setFirstName("Mike")
           .setLastName("Car")
           .build();
-        XCTAssertEqual(0, p.getErrors_().count);
+        XCTAssertEqual(0, p.getErrors_()?.count);
 
         p.setLastName("");
-        XCTAssertEqual(1, p.getErrors_().count);
+        XCTAssertEqual(1, p.getErrors_()?.count);
       `,
     },
     {

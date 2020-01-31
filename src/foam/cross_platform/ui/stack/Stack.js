@@ -1,6 +1,7 @@
 foam.CLASS({
   package: 'foam.cross_platform.ui.stack',
   name: 'Stack',
+  swiftImports: ['UIKit'],
   exports: [
     'as stack'
   ],
@@ -18,6 +19,11 @@ foam.CLASS({
       androidType: 'androidx.fragment.app.FragmentManager',
       flags: ['android'],
       name: 'fragmentManager'
+    },
+    {
+      swiftType: 'UINavigationController',
+      flags: ['swift'],
+      name: 'navController'
     },
   ],
   methods: [
@@ -38,6 +44,15 @@ foam.CLASS({
           ft.addToBackStack(null);
         }
         ft.commit();
+      `,
+      swiftCode: `
+        setStack(getStack()! + [v]);
+        let nc = getNavController();
+        if getStack()!.count == 1 {
+          nc.viewControllers = [v!.toStackableView()];
+        } else {
+          nc.pushViewController(v!.toStackableView(), animated: true);
+        }
       `
     }
   ]
