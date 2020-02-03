@@ -399,10 +399,22 @@ foam.CLASS({
           this.delegate.put(obj, sub);
         }
       },
-      swiftCode_DELETE: `count += 1
-if count <= limit {
-  delegate.put(obj, sub)
-}`,
+      androidCode: `
+        if ( getCount() >= getLimit() ) {
+          if ( sub != null ) sub.detach();
+        } else {
+          setCount(getCount() + 1);
+          getDelegate().put(obj, sub);
+        }
+      `,
+      swiftCode: `
+        if ( getCount() >= getLimit() ) {
+          sub?.detach();
+        } else {
+          setCount(getCount() + 1);
+          getDelegate()?.put(obj, sub);
+        }
+      `,
       javaCode: `if ( getCount() >= getLimit() ) {
   if ( sub != null ) sub.detach();
 } else {
@@ -469,11 +481,13 @@ foam.CLASS({
         }
         getDelegate().put(obj, sub);
       `,
-      swiftCode_DELETE: `if count < skip {
-  count += 1
-  return
-}
-delegate.put(obj, sub)`,
+      swiftCode: `
+        if ( getCount() < getSkip() ) {
+          setCount(getCount() + 1);
+          return;
+        }
+        getDelegate()?.put(obj, sub);
+      `,
       javaCode: 'if ( getCount() < getSkip() ) {\n'
         + '  setCount(getCount() + 1);\n'
         + '  return;'

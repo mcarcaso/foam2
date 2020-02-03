@@ -46,7 +46,7 @@ foam.CLASS({
         ft.commit();
       `,
       swiftCode: `
-        setStack(getStack()! + [v]);
+        getStack()?.add(v!);
         let nc = getNavController();
         if getStack()!.count == 1 {
           nc.viewControllers = [v!.toStackableView()];

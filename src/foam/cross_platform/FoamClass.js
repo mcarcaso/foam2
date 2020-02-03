@@ -103,6 +103,9 @@ foam.CLASS({
       androidCode: `
         return (foam.cross_platform.Builder) getBuilderFactory_().executeFunction(new Object[] {x});
       `,
+      swiftCode: `
+        return getBuilderFactory_()?.executeFunction([x]) as? foam_cross_platform_Builder;
+      `,
     },
     {
       type: 'Boolean',

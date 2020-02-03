@@ -5,7 +5,8 @@ foam.CLASS({
     'foam.cross_platform.ui.Stackable'
   ],
   requires: [
-    'foam.mlang.sink.Count'
+    'foam.mlang.sink.Count',
+    'foam.dao.ArraySink',
   ],
   axioms: [
     {
@@ -63,7 +64,7 @@ foam.CLASS({
             return new ViewHolder((foam.cross_platform.FObject) fobj);
           }
           public void onBindViewHolder(ViewHolder holder, int position) {
-            foam.dao.ArraySink a = foam.dao.ArraySink.ArraySinkBuilder(o.getSubX()).build();
+            foam.dao.ArraySink a = o.ArraySink_create().build();
             o.getData().skip(position).limit(1).select(a);
             holder.fobj.setProperty("data", a.getArray().get(0));
           }
@@ -103,7 +104,7 @@ foam.CLASS({
           }
         }
 
-        class TableSource: NSObject, UITableViewDataSource {
+        public class TableSource: NSObject, UITableViewDataSource {
           var daoView: foam_cross_platform_ui_stack_DAOView? = nil;
           var reusableId = "CellID";
           public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -116,6 +117,9 @@ foam.CLASS({
               let citationView = daoView!.getCitationView()!.createView(daoView!.getSubX())!;
               cell = RowView(citationView: citationView, style: .default, reuseIdentifier: reusableId);
             }
+            let a = daoView?.ArraySink_create().build();
+            _ = daoView?.getData()?.skip(indexPath.row)?.limit(1)?.select(a);
+            (cell?.citationView as? foam_cross_platform_FObject)?.setProperty("data", a!.getArray()[0])
             return cell!;
           }
         }
@@ -150,6 +154,16 @@ foam.CLASS({
       name: 'count_',
       swiftFactory: `return Count_create().build();`
     },
+
+    {
+      swiftType: 'TableSource',
+      name: 'tableSource',
+      swiftFactory: `
+        let ts = TableSource()
+        ts.daoView = self;
+        return ts;
+      `
+    }
   ],
   methods: [
     {
@@ -160,10 +174,8 @@ foam.CLASS({
         return f;
       `,
       swiftCode: `
-        let ts = TableSource()
-        ts.daoView = self;
         let tv = UITableViewController();
-        tv.tableView.dataSource = ts;
+        tv.tableView.dataSource = getTableSource();
         tv.tableView.reloadData();
         return tv;
       `

@@ -83,8 +83,8 @@ foam.CLASS({
         var i = 0;
         while i < getArray()!.count {
           if p.compare(obj, getArray()![i]) == 0 {
-            var a = getArray();
-            a![i] = obj;
+            let a = getArray();
+            a![i] = obj!;
             setArray(a);
             break;
           }
@@ -92,8 +92,8 @@ foam.CLASS({
         }
 
         if i == getArray()!.count {
-          var a = getArray();
-          a!.append(obj);
+          let a = getArray();
+          a!.add(obj!);
           setArray(a);
         }
 
@@ -135,8 +135,8 @@ foam.CLASS({
         for i in 0..<getArray()!.count {
           if p.compare(obj, getArray()![i]) == 0 {
             ret = getArray()![i] as? foam_cross_platform_FObject;
-            var a = getArray()!;
-            a.remove(at: i);
+            let a = getArray()!;
+            a.removeObject(at: i);
             setArray(a)
             _ = on().getSubTopic("remove")!.pub([ret]);
             break;

@@ -61,6 +61,36 @@ foam.CLASS({
   ],
   methods: [
     function buildBuilderClass(cls) {
+      cls.implements.push('foam_cross_platform_Builder');
+      cls.method({
+        visibility: 'public',
+        type: 'foam_cross_platform_Builder?',
+        name: 'setBuilderProperty',
+        args: [
+          { type: 'String?', localName: 'name' },
+          { type: 'Any?', localName: 'value' },
+        ],
+        body: `
+          switch(name) {
+          ${cls.properties.map(p => `
+            case "${p.name}":
+              _ = ${p.crossPlatformSetterName}(value);
+              break;
+          `).join('\n')}
+            default:
+              break;
+          }
+          return self;
+        `
+      });
+      cls.method({
+        visibility: 'public',
+        type: 'foam_cross_platform_FObject?',
+        name: 'builderBuild',
+        body: `
+          return build();
+        `
+      });
       cls.method({
         static: true,
         visibility: 'public',

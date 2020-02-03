@@ -231,6 +231,14 @@ ${cls.extends ? `
             initClassInfo_ = foam_cross_platform_FoamClass
               .foam_cross_platform_FoamClassBuilder(nil)
               .build();
+            ${this.model_.abstract || foam.core.AbstractInterface.isSubClass(this) ? '' : `
+            initClassInfo_!.setBuilderFactory_(foam_swift_AnonymousGenericFunction  .foam_swift_AnonymousGenericFunctionBuilder(nil)
+              .setFn({(args: [Any?]?) -> Any? in
+                return ${cls.name}Builder_.getInstance(args![0] as? foam_cross_platform_Context);
+              })
+              .build()
+            );
+            `}
             ${cInfo.cls_.getAxiomsByClass(foam.core.Property)
                 .filter(flagFilter)
                 .filter(p => cInfo.hasOwnProperty(p.name))

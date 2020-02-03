@@ -119,6 +119,9 @@ foam.CLASS({
         v.setShowDividers(android.widget.LinearLayout.SHOW_DIVIDER_MIDDLE);
         v.setDividerDrawable(new android.graphics.drawable.ColorDrawable(getTheme().getOnSurface()));
         return v;
+      `,
+      swiftFactory: `
+        return UIView();
       `
     },
     {

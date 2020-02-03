@@ -338,7 +338,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   properties: [
     ['java', 'java.util.List'],
-    ['swift', '[Any?]'],
+    ['swift', 'NSMutableArray'],
   ],
 });
 

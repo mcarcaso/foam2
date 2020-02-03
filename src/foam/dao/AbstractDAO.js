@@ -886,9 +886,9 @@ foam.CLASS({
       androidCode: `
         return getDelegate().select_(x, sink, getSkip_(), limit, order, predicate);
       `,
-      swiftCode_DELETE: function() {/*
-return try delegate.select_(x, sink, skip_, limit, order, predicate)
-      */},
+      swiftCode: `
+        return getDelegate()?.select_(x, sink, getSkip_(), limit, order, predicate);
+      `,
     },
     function removeAll_(x, skip, limit, order, predicate) {
       return this.delegate.removeAll_(x, this.skip_, limit, order, predicate);
@@ -921,12 +921,9 @@ foam.CLASS({
       androidCode: `
         return getDelegate().select_(x, sink, skip, Math.min(limit, getLimit_()), order, predicate);
       `,
-      swiftCode_DELETE: function() {/*
-return try delegate.select_(
-    x, sink, skip,
-    min(limit_, limit),
-    order, predicate);
-      */},
+      swiftCode: `
+        return getDelegate()?.select_(x, sink, skip, min(limit, getLimit_()), order, predicate);
+      `,
     },
 
     function removeAll_(x, skip, limit, order, predicate) {

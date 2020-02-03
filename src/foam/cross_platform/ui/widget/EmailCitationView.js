@@ -20,7 +20,8 @@ foam.CLASS({
     {
       type: 'foam.mlang.Constant',
       name: 'defaultExp',
-      androidValue: `foam.mlang.Constant.ConstantBuilder(null).setValue("").build();`
+      androidValue: `foam.mlang.Constant.ConstantBuilder(null).setValue("").build()`,
+      swiftValue: `foam_mlang_Constant.foam_mlang_ConstantBuilder(nil).setValue("").build()`,
     },
   ],
   imports: [
@@ -47,66 +48,96 @@ foam.CLASS({
     {
       class: 'foam.mlang.ExprProperty',
       name: 'fromExpr',
-      androidValue: `DEFAULT_EXP()`
+      androidValue: `DEFAULT_EXP()`,
+      swiftValue: `Self.DEFAULT_EXP()`,
     },
     {
       class: 'foam.mlang.ExprProperty',
       name: 'subjectExpr',
-      androidValue: `DEFAULT_EXP()`
+      androidValue: `DEFAULT_EXP()`,
+      swiftValue: `Self.DEFAULT_EXP()`,
     },
     {
       class: 'foam.mlang.ExprProperty',
       name: 'bodyExpr',
-      androidValue: `DEFAULT_EXP()`
+      androidValue: `DEFAULT_EXP()`,
+      swiftValue: `Self.DEFAULT_EXP()`,
     },
     {
       class: 'foam.mlang.ExprProperty',
       name: 'timeExpr',
-      androidValue: `DEFAULT_EXP()`
+      androidValue: `DEFAULT_EXP()`,
+      swiftValue: `Self.DEFAULT_EXP()`,
     },
     {
       class: 'foam.mlang.ExprProperty',
       name: 'avatarTextExpr',
-      androidValue: `DEFAULT_EXP()`
+      androidValue: `DEFAULT_EXP()`,
+      swiftValue: `Self.DEFAULT_EXP()`,
     },
 
     {
       androidType: 'android.widget.TextView',
+      swiftType: 'UILabel',
       name: 'fromView',
       androidFactory: `
         android.widget.TextView v = new android.widget.TextView(getAndroidContext());
         return v;
+      `,
+      swiftFactory: `
+        let v = UILabel();
+        return v;
       `
     },
     {
       androidType: 'android.widget.TextView',
+      swiftType: 'UILabel',
       name: 'subjectView',
       androidFactory: `
         android.widget.TextView v = new android.widget.TextView(getAndroidContext());
         return v;
+      `,
+      swiftFactory: `
+        let v = UILabel();
+        return v;
       `
     },
     {
       androidType: 'android.widget.TextView',
+      swiftType: 'UILabel',
       name: 'bodyView',
       androidFactory: `
         android.widget.TextView v = new android.widget.TextView(getAndroidContext());
         return v;
-      `
-    },
-    {
-      androidType: 'android.widget.TextView',
-      name: 'timeView',
-      androidFactory: `
-        android.widget.TextView v = new android.widget.TextView(getAndroidContext());
+      `,
+      swiftFactory: `
+        let v = UILabel();
         return v;
       `
     },
     {
       androidType: 'android.widget.TextView',
+      swiftType: 'UILabel',
+      name: 'timeView',
+      androidFactory: `
+        android.widget.TextView v = new android.widget.TextView(getAndroidContext());
+        return v;
+      `,
+      swiftFactory: `
+        let v = UILabel();
+        return v;
+      `
+    },
+    {
+      androidType: 'android.widget.TextView',
+      swiftType: 'UILabel',
       name: 'avatarTextView',
       androidFactory: `
         android.widget.TextView v = new android.widget.TextView(getAndroidContext());
+        return v;
+      `,
+      swiftFactory: `
+        let v = UILabel();
         return v;
       `
     },
@@ -126,6 +157,10 @@ foam.CLASS({
             .setData(getData())
             .build());
         });
+        return v;
+      `,
+      swiftFactory: `
+        let v = UIView();
         return v;
       `
     },
@@ -174,6 +209,24 @@ foam.CLASS({
         getBodyView().setText(getBodyExpr().f(getData()).toString());
         getTimeView().setText(getTimeExpr().f(getData()).toString());
       `,
+      swiftCode: `
+        var text: Any? = nil;
+
+        text = getAvatarTextExpr()!.f(getData());
+        getAvatarTextView().text = text as? String ?? String(describing: text);
+
+        text = getFromExpr()!.f(getData());
+        getFromView().text = text as? String ?? String(describing: text);
+
+        text = getSubjectExpr()!.f(getData());
+        getSubjectView().text = text as? String ?? String(describing: text);
+
+        text = getBodyExpr()!.f(getData());
+        getBodyView().text = text as? String ?? String(describing: text);
+
+        text = getTimeExpr()!.f(getData());
+        getTimeView().text = text as? String ?? String(describing: text);
+      `,
     },
     {
       name: 'updateViewLayout',
@@ -198,6 +251,33 @@ foam.CLASS({
         v.addView(mid);
 
         v.addView(getTimeView());
+      `,
+      swiftCode: `
+    if getView() == nil { return }
+    getFromView().frame = getView()!.frame;
+    getFromView().autoresizingMask = [.flexibleHeight, .flexibleWidth];
+    getView()?.addSubview(getFromView());
+      /*
+        android.widget.LinearLayout v = getView();
+        if ( v.getChildCount() > 0 ) {
+          ((android.view.ViewGroup) v.getChildAt(1)).removeAllViews();
+          v.removeAllViews();
+        }
+
+        v.addView(getAvatarTextView());
+
+        android.widget.LinearLayout mid = new android.widget.LinearLayout(getAndroidContext());
+        mid.setOrientation(android.widget.LinearLayout.VERTICAL);
+        mid.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+          android.widget.LinearLayout.LayoutParams.MATCH_PARENT));
+        mid.addView(getFromView());
+        mid.addView(getSubjectView());
+        mid.addView(getBodyView());
+        v.addView(mid);
+
+        v.addView(getTimeView());
+        */
       `,
     },
   ]
