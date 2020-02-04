@@ -73,9 +73,9 @@ foam.CLASS({
     {
       class: 'IntProperty',
       name: 'parentH',
-      expressionArgs: ['avatarTextY', 'avatarTextH', 'bodyY', 'bodyH', 'timeY', 'timeH'],
+      expressionArgs: ['parent', 'avatarTextH', 'bodyY', 'bodyH', 'timeH'],
       swiftExpression: `
-        return max(avatarTextY + avatarTextH, bodyY + bodyH, timeY + timeH);
+        return max(avatarTextH, bodyY + bodyH, timeH);
       `
     },
 

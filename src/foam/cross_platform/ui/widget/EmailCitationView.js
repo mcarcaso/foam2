@@ -7,6 +7,10 @@ foam.CLASS({
   requires: [
     'foam.util.ArrayDetachable',
     'foam.cross_platform.ui.stack.DetailView',
+    {
+      flags: ['swift'],
+      path: 'foam.cross_platform.ui.layout.EmailCitationView',
+    }
   ],
   swiftImports: [
     'UIKit'
@@ -160,7 +164,8 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        let v = UIView();
+        let v = foam_cross_platform_ui_layout_EmailCitationView.View();
+        v.o = EmailCitationView_create().build();
         return v;
       `
     },
@@ -253,31 +258,26 @@ foam.CLASS({
         v.addView(getTimeView());
       `,
       swiftCode: `
-    if getView() == nil { return }
-    getFromView().frame = getView()!.frame;
-    getFromView().autoresizingMask = [.flexibleHeight, .flexibleWidth];
-    getView()?.addSubview(getFromView());
-      /*
-        android.widget.LinearLayout v = getView();
-        if ( v.getChildCount() > 0 ) {
-          ((android.view.ViewGroup) v.getChildAt(1)).removeAllViews();
-          v.removeAllViews();
+        if ( getView() == nil ) { return; }
+        for v in getView()!.subviews {
+          v.removeFromSuperview()
         }
 
-        v.addView(getAvatarTextView());
+        let v = getView() as! foam_cross_platform_ui_layout_EmailCitationView.View
+        v.addSubview(getAvatarTextView());
+        v.addSubview(getFromView());
+        v.addSubview(getSubjectView());
+        v.addSubview(getBodyView());
+        v.addSubview(getTimeView());
 
-        android.widget.LinearLayout mid = new android.widget.LinearLayout(getAndroidContext());
-        mid.setOrientation(android.widget.LinearLayout.VERTICAL);
-        mid.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-          android.widget.LinearLayout.LayoutParams.MATCH_PARENT));
-        mid.addView(getFromView());
-        mid.addView(getSubjectView());
-        mid.addView(getBodyView());
-        v.addView(mid);
+        v.o?.setAvatarText(getAvatarTextView());
+        v.o?.setFrom(getFromView());
+        v.o?.setSubject(getSubjectView());
+        v.o?.setBody(getBodyView());
+        v.o?.setTime(getTimeView());
+        v.o?.setParent(getView());
 
-        v.addView(getTimeView());
-        */
+        v.setNeedsLayout();
       `,
     },
   ]

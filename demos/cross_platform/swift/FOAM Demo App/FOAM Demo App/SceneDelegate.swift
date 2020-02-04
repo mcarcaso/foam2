@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let d = foam_dao_ArrayDAO.foam_dao_ArrayDAOBuilder(x)
       .setOf(demo_Person.CLS_())
       .build();
-    for i in 0..<1000 {
+    for i in 0..<1 {
       _ = d.put(demo_Person.demo_PersonBuilder(x)
         .setFirstName("Mike")
         .setLastName("Car" + String(i))

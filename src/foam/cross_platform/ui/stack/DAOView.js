@@ -82,22 +82,8 @@ foam.CLASS({
             self.citationView = citationView
             super.init(style: style, reuseIdentifier: reuseIdentifier)
             let view = citationView.getView()!;
-
-            let viewMap: [String:UIView] = ["v":view]
-            for v in viewMap.values {
-              v.translatesAutoresizingMaskIntoConstraints = false
-              addSubview(v)
-            }
-            addConstraints(NSLayoutConstraint.constraints(
-              withVisualFormat: "H:|[v]|",
-              options: .alignAllCenterY,
-              metrics: nil,
-              views: viewMap))
-            addConstraints(NSLayoutConstraint.constraints(
-              withVisualFormat: "V:|[v]|",
-              options: .alignAllCenterY,
-              metrics: nil,
-              views: viewMap))
+            view.frame = frame;
+            addSubview(view)
           }
           required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
@@ -175,6 +161,7 @@ foam.CLASS({
       `,
       swiftCode: `
         let tv = UITableViewController();
+        tv.tableView.rowHeight = UITableView.automaticDimension
         tv.tableView.dataSource = getTableSource();
         tv.tableView.reloadData();
         return tv;
