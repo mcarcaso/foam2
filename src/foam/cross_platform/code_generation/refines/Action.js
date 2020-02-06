@@ -9,7 +9,8 @@ foam.CLASS({
     {
       name: 'label',
       expressionArgs: ['name'],
-      androidExpression: `return name;`
+      androidExpression: `return name;`,
+      swiftExpression: `return name;`
     },
     {
       class: 'ClassProperty',

@@ -173,6 +173,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/android_java/BooleanProperty" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/BooleanProperty" },
   { name: "foam/cross_platform/code_generation/refines/android_java/ColorProperty" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/ColorProperty" },
   { name: "foam/cross_platform/code_generation/refines/Requires" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Requires" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Requires" },

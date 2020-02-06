@@ -4,6 +4,9 @@ foam.CLASS({
   exports: [
     'as theme'
   ],
+  swiftImports: [
+    'UIKit'
+  ],
   properties: [
     {
       class: 'ColorProperty',
@@ -12,6 +15,18 @@ foam.CLASS({
     {
       class: 'ColorProperty',
       name: 'onPrimary'
+    },
+    {
+      class: 'ColorProperty',
+      name: 'background'
+    },
+    {
+      class: 'ColorProperty',
+      name: 'onBackground'
+    },
+    {
+      class: 'ColorProperty',
+      name: 'surface'
     },
     {
       class: 'ColorProperty',

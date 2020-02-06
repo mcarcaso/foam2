@@ -17,6 +17,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     let theme = foam_cross_platform_ui_Theme
       .foam_cross_platform_ui_ThemeBuilder(foam_cross_platform_Context.GLOBAL())
+      .setPrimary("#F27931")
+      .setOnPrimary("#253080")
+      .setBackground(UIColor.white)
+      .setOnBackground(UIColor.black)
+      .setSurface(UIColor.lightGray)
+      .setOnSurface(UIColor.black)
       .build();
     var x = theme.getSubX();
 
@@ -31,7 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let d = foam_dao_ArrayDAO.foam_dao_ArrayDAOBuilder(x)
       .setOf(demo_Person.CLS_())
       .build();
-    for i in 0..<1000 {
+    for i in 0..<10 {
       _ = d.put(demo_Person.demo_PersonBuilder(x)
         .setFirstName("Mike")
         .setLastName("Car" + String(i))

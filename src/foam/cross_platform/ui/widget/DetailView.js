@@ -266,8 +266,8 @@ foam.CLASS({
 
         for i in 0..<getActions()!.count {
           let b = UIButton()
-          b.backgroundColor = .systemBackground
-          b.setTitleColor(.label, for: .normal);
+          b.backgroundColor = getTheme()!.getPrimary()
+          b.setTitleColor(getTheme()!.getOnPrimary(), for: .normal);
           let ab = ActionButton_create()
             .setView(b)
             .build();
