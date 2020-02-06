@@ -312,23 +312,27 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.core.type',
   name: 'Number',
-  extends: 'foam.core.type.SimpleType',
+  implements: ['foam.core.type.Type'],
   axioms: [ { class: 'foam.pattern.Singleton' } ],
-  properties: [
-    ['java', 'float'],
-    ['swift', 'Float'],
-  ],
+  methods: [
+    function refs() { return []; },
+    function toAndroidType() { return this.toJavaType() },
+    function toJavaType() { return 'float'; },
+    function toSwiftType() { return 'Float'; }
+  ]
 });
 
 foam.CLASS({
   package: 'foam.core.type',
   name: 'Float',
-  extends: 'foam.core.type.SimpleType',
+  implements: ['foam.core.type.Type'],
   axioms: [ { class: 'foam.pattern.Singleton' } ],
-  properties: [
-    ['java', 'float'],
-    ['swift', 'Float'],
-  ],
+  methods: [
+    function refs() { return []; },
+    function toAndroidType() { return this.toJavaType() },
+    function toJavaType() { return 'float'; },
+    function toSwiftType() { return 'Float'; }
+  ]
 });
 
 foam.CLASS({

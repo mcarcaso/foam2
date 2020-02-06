@@ -5,8 +5,15 @@ foam.CLASS({
     'foam.cross_platform.ui.Stackable'
   ],
   requires: [
-    'foam.mlang.sink.Count',
+    'foam.cross_platform.ui.stack.DetailView',
     'foam.dao.ArraySink',
+    'foam.mlang.sink.Count',
+  ],
+  imports: [
+    {
+      name: 'stack',
+      type: 'foam.cross_platform.ui.stack.Stack',
+    },
   ],
   axioms: [
     {
@@ -76,36 +83,81 @@ foam.CLASS({
         }
       `,
       swiftCode: `
+        class TableViewController: UITableViewController {
+          var daoView: foam_cross_platform_ui_stack_DAOView;
+          init(_ o: foam_cross_platform_ui_stack_DAOView, style: UITableView.Style) {
+            daoView = o;
+            super.init(style: style);
+            tableView.rowHeight = CGFloat(o.getRowHeight());
+            tableView.dataSource = o.getTableSource();
+            tableView.delegate = o.getTableDelegate();
+            tableView.reloadData();
+          }
+          required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+          }
+          override func viewWillAppear(_ animated: Bool) {
+            tableView.reloadData();
+          }
+        }
         class RowView: UITableViewCell {
           var citationView: foam_cross_platform_ui_View
           init(citationView: foam_cross_platform_ui_View, style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
             self.citationView = citationView
             super.init(style: style, reuseIdentifier: reuseIdentifier)
-            let view = citationView.getView()!;
-            view.frame = frame;
-            addSubview(view)
+            citationView.getView()!.frame = frame;
+            separatorInset = UIEdgeInsets.zero;
+            addSubview(citationView.getView()!)
+          }
+          override func layoutSubviews() {
+            super.layoutSubviews();
+            let size = citationView.getView()!.sizeThatFits(CGSize(width: frame.width, height: CGFloat.greatestFiniteMagnitude))
+            citationView.getView()!.frame = CGRect(
+              x: frame.minX,
+              y: (frame.height - size.height) / 2,
+              width: frame.width,
+              height: size.height
+            );
           }
           required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
           }
         }
 
+        public class TableViewDelegate: NSObject, UITableViewDelegate {
+          var daoView: foam_cross_platform_ui_stack_DAOView;
+          init(_ o: foam_cross_platform_ui_stack_DAOView) {
+            daoView = o;
+          }
+          public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            let s = daoView.getStack();
+            guard let row = tableView.cellForRow(at: indexPath) as? RowView else { return }
+            let fobj = row.citationView as! foam_cross_platform_FObject
+            s?.push(daoView.DetailView_create()
+              .setData(fobj.getProperty("data"))
+              .build());
+          }
+        }
+
         public class TableSource: NSObject, UITableViewDataSource {
-          var daoView: foam_cross_platform_ui_stack_DAOView? = nil;
+          var daoView: foam_cross_platform_ui_stack_DAOView;
+          init(_ o: foam_cross_platform_ui_stack_DAOView) {
+            daoView = o;
+          }
           var reusableId = "CellID";
           public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return daoView!.getCount_()!.getValue();
+            return daoView.getCount_()!.getValue();
           }
 
           public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             var cell = tableView.dequeueReusableCell(withIdentifier: reusableId) as? RowView;
             if cell == nil {
-              let citationView = daoView!.getCitationView()!.createView(daoView!.getSubX())!;
+              let citationView = daoView.getCitationView()!.createView(daoView.getSubX())!;
               cell = RowView(citationView: citationView, style: .default, reuseIdentifier: reusableId);
             }
-            let a = daoView?.ArraySink_create().build();
-            _ = daoView?.getData()?.skip(indexPath.row)?.limit(1)?.select(a);
-            (cell?.citationView as? foam_cross_platform_FObject)?.setProperty("data", a!.getArray()[0])
+            let a = daoView.ArraySink_create().build();
+            _ = daoView.getData()?.skip(indexPath.row)?.limit(1)?.select(a);
+            (cell?.citationView as? foam_cross_platform_FObject)?.setProperty("data", a.getArray()[0])
             return cell!;
           }
         }
@@ -142,13 +194,20 @@ foam.CLASS({
     },
 
     {
+      class: 'IntProperty',
+      name: 'rowHeight'
+    },
+    {
+      swiftType: 'TableViewDelegate',
+      flags: ['swift'],
+      name: 'tableDelegate',
+      swiftFactory: `return TableViewDelegate(self)`
+    },
+    {
       swiftType: 'TableSource',
+      flags: ['swift'],
       name: 'tableSource',
-      swiftFactory: `
-        let ts = TableSource()
-        ts.daoView = self;
-        return ts;
-      `
+      swiftFactory: `return TableSource(self)`
     }
   ],
   methods: [
@@ -160,11 +219,7 @@ foam.CLASS({
         return f;
       `,
       swiftCode: `
-        let tv = UITableViewController();
-        tv.tableView.rowHeight = UITableView.automaticDimension
-        tv.tableView.dataSource = getTableSource();
-        tv.tableView.reloadData();
-        return tv;
+        return TableViewController(self, style: .plain);
       `
     }
   ]

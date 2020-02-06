@@ -215,22 +215,23 @@ foam.CLASS({
         getTimeView().setText(getTimeExpr().f(getData()).toString());
       `,
       swiftCode: `
+        let s = foam_cross_platform_type_StringType.INSTANCE();
         var text: Any? = nil;
 
         text = getAvatarTextExpr()!.f(getData());
-        getAvatarTextView().text = text as? String ?? String(describing: text);
+        getAvatarTextView().text = s.toStringValue(text);
 
         text = getFromExpr()!.f(getData());
-        getFromView().text = text as? String ?? String(describing: text);
+        getFromView().text = s.toStringValue(text);
 
         text = getSubjectExpr()!.f(getData());
-        getSubjectView().text = text as? String ?? String(describing: text);
+        getSubjectView().text = s.toStringValue(text);
 
         text = getBodyExpr()!.f(getData());
-        getBodyView().text = text as? String ?? String(describing: text);
+        getBodyView().text = s.toStringValue(text);
 
         text = getTimeExpr()!.f(getData());
-        getTimeView().text = text as? String ?? String(describing: text);
+        getTimeView().text = s.toStringValue(text);
       `,
     },
     {

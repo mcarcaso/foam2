@@ -23,6 +23,16 @@ foam.CLASS({
   ],
   methods: [
     {
+      type: 'String',
+      name: 'toStringValue',
+      args: [
+        { type: 'Any', name: 's' }
+      ],
+      swiftCode: `
+        return s == nil ? "" : s as? String ?? String(describing: s!);
+      `
+    },
+    {
       type: 'Boolean',
       name: 'isEmpty',
       args: [

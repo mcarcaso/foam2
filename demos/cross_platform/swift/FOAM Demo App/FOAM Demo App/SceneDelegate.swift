@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let d = foam_dao_ArrayDAO.foam_dao_ArrayDAOBuilder(x)
       .setOf(demo_Person.CLS_())
       .build();
-    for i in 0..<1 {
+    for i in 0..<1000 {
       _ = d.put(demo_Person.demo_PersonBuilder(x)
         .setFirstName("Mike")
         .setLastName("Car" + String(i))
@@ -40,6 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     s.push(foam_cross_platform_ui_stack_DAOView
       .foam_cross_platform_ui_stack_DAOViewBuilder(x)
+      .setRowHeight(foam_cross_platform_ui_widget_EmailCitationView.HEIGHT())
       .setData(d)
       .setCitationView(foam_cross_platform_ui_SimpleViewFactory
         .foam_cross_platform_ui_SimpleViewFactoryBuilder(x)
@@ -48,6 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
           "fromExpr": demo_Person.FIRST_NAME(),
           "subjectExpr": demo_Person.LAST_NAME(),
           "bodyExpr": demo_Person.FULL_NAME(),
+          "timeExpr": demo_Person.IS_MALE()
         ])
         .build())
       .build())

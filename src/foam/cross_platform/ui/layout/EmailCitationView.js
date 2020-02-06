@@ -14,7 +14,7 @@ foam.CLASS({
             o?.doLayout();
           }
           override func sizeThatFits(_ size: CGSize) -> CGSize {
-            o!.setParentW(Int(size.width));
+            o!.setParentW(size.width);
             let s = CGSize(
               width: o!.getParentW(),
               height: o!.getParentH()
@@ -53,25 +53,25 @@ foam.CLASS({
     },
 
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'parentX',
       expressionArgs: ['parent'],
-      swiftExpression: `return Int(parent?.frame.minX ?? 0)`
+      swiftExpression: `return parent?.frame.minX ?? 0`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'parentY',
       expressionArgs: ['parent'],
-      swiftExpression: `return Int(parent?.frame.minY ?? 0)`
+      swiftExpression: `return parent?.frame.minY ?? 0`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'parentW',
       expressionArgs: ['parent'],
-      swiftExpression: `return Int(parent?.frame.width ?? 0)`
+      swiftExpression: `return parent?.frame.width ?? 0`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'parentH',
       expressionArgs: ['parent', 'avatarTextH', 'bodyY', 'bodyH', 'timeH'],
       swiftExpression: `
@@ -85,107 +85,107 @@ foam.CLASS({
       expressionArgs: ['avatarText', 'parentW'],
       swiftExpression: `
         return avatarText?.sizeThatFits(CGSize(
-          width: parentW, height: Int.max
+          width: parentW, height: CGFloat.greatestFiniteMagnitude
         )) ?? nil;
       `
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'avatarTextW',
       expressionArgs: ['avatarTextSize'],
-      swiftExpression: `return Int(avatarTextSize?.width ?? 0)`
+      swiftExpression: `return avatarTextSize?.width ?? 0`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'avatarTextH',
       expressionArgs: ['avatarTextSize'],
-      swiftExpression: `return Int(avatarTextSize?.height ?? 0)`
+      swiftExpression: `return avatarTextSize?.height ?? 0`
     },
 
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'fromX',
       expressionArgs: ['avatarTextW'],
       swiftExpression: `return avatarTextW`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'fromW',
       expressionArgs: ['parentW', 'fromX', 'timeW'],
       swiftExpression: `return parentW - fromX - timeW`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'fromH',
       expressionArgs: ['from', 'fromW'],
       swiftExpression: `
-        return Int(from?.sizeThatFits(CGSize(
-          width: fromW, height: Int.max
-        )).height ?? 0);
+        return from?.sizeThatFits(CGSize(
+          width: fromW, height: CGFloat.greatestFiniteMagnitude
+        )).height ?? 0;
       `
     },
 
 
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'subjectX',
       expressionArgs: ['fromX'],
       swiftExpression: `return fromX`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'subjectY',
       expressionArgs: ['fromH'],
       swiftExpression: `return fromH`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'subjectW',
       expressionArgs: ['fromW'],
       swiftExpression: `return fromW`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'subjectH',
       expressionArgs: ['subject', 'subjectW'],
       swiftExpression: `
-        return Int(subject?.sizeThatFits(CGSize(
-          width: subjectW, height: Int.max
-        )).height ?? 0);
+        return subject?.sizeThatFits(CGSize(
+          width: subjectW, height: CGFloat.greatestFiniteMagnitude
+        )).height ?? 0;
       `
     },
 
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'bodyX',
       expressionArgs: ['fromX'],
       swiftExpression: `return fromX`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'bodyY',
       expressionArgs: ['subjectY', 'subjectH'],
       swiftExpression: `return subjectY + subjectH`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'bodyW',
       expressionArgs: ['fromW'],
       swiftExpression: `return fromW`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'bodyH',
       expressionArgs: ['body', 'bodyW'],
       swiftExpression: `
-        return Int(body?.sizeThatFits(CGSize(
-          width: bodyW, height: Int.max
-        )).height ?? 0);
+        return body?.sizeThatFits(CGSize(
+          width: bodyW, height: CGFloat.greatestFiniteMagnitude
+        )).height ?? 0;
       `
     },
 
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'timeX',
       expressionArgs: ['fromX', 'fromW'],
       swiftExpression: `return fromX + fromW`
@@ -196,21 +196,21 @@ foam.CLASS({
       expressionArgs: ['time', 'parentW'],
       swiftExpression: `
         return time?.sizeThatFits(CGSize(
-          width: parentW, height: Int.max
+          width: parentW, height: CGFloat.greatestFiniteMagnitude
         ));
       `
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'timeW',
       expressionArgs: ['timeSize'],
-      swiftExpression: `return Int(timeSize?.width ?? 0)`
+      swiftExpression: `return timeSize?.width ?? 0`
     },
     {
-      class: 'IntProperty',
+      swiftType: 'CGFloat',
       name: 'timeH',
       expressionArgs: ['timeSize'],
-      swiftExpression: `return Int(timeSize?.height ?? 0)`
+      swiftExpression: `return timeSize?.height ?? 0`
     },
   ],
   constants: [
@@ -241,10 +241,10 @@ foam.CLASS({
         for name in Self.VIEWS() {
           let v = getProperty(name) as! UIView;
           v.frame = CGRect(
-            x: getProperty(name + "X") as? Int ?? 0,
-            y: getProperty(name + "Y") as? Int ?? 0,
-            width: getProperty(name + "W") as? Int ?? 0,
-            height: getProperty(name + "H") as? Int ?? 0
+            x: getProperty(name + "X") as? CGFloat ?? 0,
+            y: getProperty(name + "Y") as? CGFloat ?? 0,
+            width: getProperty(name + "W") as? CGFloat ?? 0,
+            height: getProperty(name + "H") as? CGFloat ?? 0
           )
         }
       `

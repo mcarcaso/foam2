@@ -57,8 +57,8 @@ foam.CLASS({
       `,
       swiftCode: `
         if getView() == nil { return }
-        (getView() as! UILabel).text = getData() == nil ? "" :
-          getData() as? String ?? String(describing: getData())
+        let s = foam_cross_platform_type_StringType.INSTANCE();
+        (getView() as! UILabel).text = s.toStringValue(getData())
       `
     }
   ]
