@@ -11,6 +11,18 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
+  constants: [
+    {
+      type: 'Integer',
+      name: 'padding',
+      value: 8
+    },
+    {
+      type: 'Integer',
+      name: 'cornerRadius',
+      value: 4
+    },
+  ],
   imports: [
     {
       name: 'theme',
@@ -57,7 +69,24 @@ foam.CLASS({
       swiftType: 'UIView?',
       name: 'view',
       androidFactory: `
-        return new android.widget.Button(getAndroidContext());
+        android.widget.Button b = new android.widget.Button(getAndroidContext());
+        b.setBackgroundColor(getTheme().getSecondary());
+        b.setTextColor(getTheme().getOnSecondary());
+        b.setMinWidth(0);
+        float density = getAndroidContext().getResources().getDisplayMetrics().density;
+        int p = (int)(density * PADDING());
+        b.setPadding(p, p, p, p);
+        b.setMinWidth(0);
+        b.setMinimumWidth(0);
+        b.setMinHeight(0);
+        b.setMinimumHeight(0);
+
+        android.graphics.drawable.GradientDrawable d = new android.graphics.drawable.GradientDrawable();
+        d.setCornerRadius(density * CORNER_RADIUS());
+        d.setColor(getTheme().getSecondary());
+        b.setBackground(d);
+
+        return b;
       `,
       androidPostSet: `
         if ( oldValue != null ) {
@@ -75,9 +104,9 @@ foam.CLASS({
         let b = UIButton()
         b.backgroundColor = getTheme()!.getSecondary()
         b.setTitleColor(getTheme()!.getOnSecondary(), for: .normal);
-        let i: CGFloat = 8
+        let i = CGFLoat(Self.PADDING());
         b.contentEdgeInsets = UIEdgeInsets(top: i, left: i, bottom: i, right: i);
-        b.layer.cornerRadius = 4;
+        b.layer.cornerRadius = CGFloat(Self.CORNER_RADIUS());
         b.clipsToBounds = true;
         return b;
       `,

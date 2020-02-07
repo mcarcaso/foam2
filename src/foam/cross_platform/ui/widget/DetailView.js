@@ -221,7 +221,8 @@ foam.CLASS({
         }
         
         for ( int i = 0 ; i < getActions().length ; i++ ) {
-          android.widget.Button b = new android.widget.Button(getView().getContext());
+          foam.cross_platform.ui.widget.ActionButton ab = ActionButton_create().build();
+          android.widget.Button b = (android.widget.Button) ab.getView();
           android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -233,9 +234,6 @@ foam.CLASS({
           params.gravity = android.view.Gravity.CENTER;
           b.setLayoutParams(params);
 
-          foam.cross_platform.ui.widget.ActionButton ab = ActionButton_create()
-            .setView(b)
-            .build();
           subs[getProps().length + i] = ab.bindData(getData(), getActions()[i]);
           getView().addView(ab.getView());
           views[getProps().length + i] = ab;
