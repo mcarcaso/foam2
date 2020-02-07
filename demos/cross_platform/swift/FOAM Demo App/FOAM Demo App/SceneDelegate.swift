@@ -25,6 +25,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       .setOnBackground(UIColor.black)
       .setSurface(UIColor.white)
       .setOnSurface(UIColor.black)
+      .setSubtitle1(UIFont.systemFont(ofSize: 16))
+      .setCaption(UIFont.systemFont(ofSize: 12))
       .build();
     var x = theme.getSubX();
 

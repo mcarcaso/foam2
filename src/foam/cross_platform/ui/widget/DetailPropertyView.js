@@ -56,12 +56,9 @@ foam.CLASS({
       `,
       swiftFactory: `
         let v = Label_create().build();
-/*
-        v.getView().setTextColor(getTheme().getOnSurface());
-
-        v.getView().setAlpha(0.8f);
-        v.getView().setTextAppearance(getTheme().getSubtitle1());
-*/
+        let lv = v.getView() as? UILabel;
+        lv?.textColor = getTheme()!.getOnSurface().withAlphaComponent(0.8);
+        lv?.font = getTheme()!.getSubtitle1()
         return v;
       `
     },

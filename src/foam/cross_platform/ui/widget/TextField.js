@@ -9,6 +9,10 @@ foam.CLASS({
   ],
   imports: [
     {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
+    {
       name: 'androidContext',
       key: 'androidContext',
       androidType: 'android.content.Context',
@@ -73,7 +77,10 @@ foam.CLASS({
           getAndroidContext());
       `,
       swiftFactory: `
-        return UITextView();
+        let v = UITextView();
+        v.backgroundColor = getTheme()!.getSurface();
+        v.textColor = getTheme()!.getOnSurface();
+        return v;
       `,
       androidPostSet: `
         if ( oldValue != null ) {

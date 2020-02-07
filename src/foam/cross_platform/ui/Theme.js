@@ -47,12 +47,14 @@ foam.CLASS({
     {
       //class: 'FontProperty',
       androidType: 'int',
+      swiftType: 'UIFont',
       androidValue: 0,
       name: 'caption'
     },
     {
       //class: 'FontProperty',
       androidType: 'int',
+      swiftType: 'UIFont',
       androidValue: 0,
       name: 'subtitle1'
     },
