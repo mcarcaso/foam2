@@ -6,7 +6,6 @@ foam.CLASS({
   ],
   requires: [
     'foam.util.ArrayDetachable',
-    'foam.cross_platform.ui.stack.DetailView',
     {
       flags: ['swift'],
       path: 'foam.cross_platform.ui.layout.EmailCitationView',
@@ -29,10 +28,6 @@ foam.CLASS({
     },
   ],
   imports: [
-    {
-      name: 'stack',
-      type: 'foam.cross_platform.ui.stack.Stack',
-    },
     {
       name: 'theme',
       type: 'foam.cross_platform.ui.Theme',
@@ -156,11 +151,6 @@ foam.CLASS({
         v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           (int) (getAndroidContext().getResources().getDisplayMetrics().density * HEIGHT())));
-        v.setOnClickListener(view -> {
-          getStack().push(DetailView_create()
-            .setData(getData())
-            .build());
-        });
         return v;
       `,
       swiftFactory: `

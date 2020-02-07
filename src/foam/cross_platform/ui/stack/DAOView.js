@@ -68,6 +68,11 @@ foam.CLASS({
           public ViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
             foam.cross_platform.ui.View fobj = o.getCitationView().createView(o.getSubX());
             android.view.View v = fobj.getView();
+            v.setOnClickListener(view -> {
+              o.getStack().push(o.DetailView_create()
+                .setData(((foam.cross_platform.FObject) fobj).getProperty("data"))
+                .build());
+            });
             return new ViewHolder((foam.cross_platform.FObject) fobj);
           }
           public void onBindViewHolder(ViewHolder holder, int position) {

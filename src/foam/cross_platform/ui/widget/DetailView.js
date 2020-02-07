@@ -140,7 +140,7 @@ foam.CLASS({
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
         v.setShowDividers(android.widget.LinearLayout.SHOW_DIVIDER_MIDDLE);
-        v.setDividerDrawable(new android.graphics.drawable.ColorDrawable(getTheme().getOnSurface()));
+        v.setDividerDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
         return v;
       `,
       swiftFactory: `
@@ -198,6 +198,7 @@ foam.CLASS({
           foam.core.Property p = (foam.core.Property) getProps()[i];
           final foam.cross_platform.ui.widget.DetailPropertyView dpv = DetailPropertyView_create(x)
             .build();
+          dpv.getView().setBackgroundColor(getTheme().getSurface());
           final foam.core.SlotInterface visibility = p.createVisibilitySlot(getData());
           foam.cross_platform.Listener l = (s, a) -> {
             dpv.getView().setVisibility(visibility.slotGet() == foam.u2.Visibility.HIDDEN ?

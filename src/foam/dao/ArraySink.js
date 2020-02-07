@@ -26,7 +26,7 @@ foam.CLASS({
       },
       androidCode: `
         java.util.List a = getArray();
-        a.add(obj!);
+        a.add(obj);
         setArray(a);
       `,
       swiftCode: `
