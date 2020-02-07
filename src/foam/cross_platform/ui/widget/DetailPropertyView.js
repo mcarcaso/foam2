@@ -105,6 +105,7 @@ foam.CLASS({
           HELP_RESOURCE(),
           "drawable",
           getAndroidContext().getPackageName()));
+        b.setColorFilter(getTheme().getOnSurface());
 
         b.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
