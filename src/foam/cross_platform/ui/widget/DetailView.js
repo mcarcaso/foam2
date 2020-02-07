@@ -22,10 +22,9 @@ foam.CLASS({
             var y: CGFloat = 0;
             for v in subviews {
               if v.isHidden { continue }
-              let f = v.frame;
               let size = v.sizeThatFits(CGSize(width: Int(frame.width), height: Int.max))
               v.frame = CGRect(
-                x: f.minX + (frame.width - size.width),
+                x: frame.width - size.width,
                 y: y,
                 width: size.width,
                 height: size.height);
@@ -290,14 +289,9 @@ foam.CLASS({
         }
 
         for i in 0..<getActions()!.count {
-          let b = UIButton()
-          b.backgroundColor = getTheme()!.getSecondary()
-          b.setTitleColor(getTheme()!.getOnSecondary(), for: .normal);
-          let ab = ActionButton_create()
-            .setView(b)
-            .build();
+          let ab = ActionButton_create().build();
           subs.append(ab.bindData(getData(), getActions()![i])!);
-          view.addSubview(b);
+          view.addSubview(ab.getView()!);
           views.append(ab);
         }
         setViews_(views);

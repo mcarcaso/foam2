@@ -89,12 +89,6 @@ foam.CLASS({
     },
     {
       class: 'IntProperty',
-      name: 'labelW',
-      expressionArgs: ['helpW', 'parentW'],
-      swiftExpression: `return parentW - helpW - 2 * Self.PADDING()`
-    },
-    {
-      class: 'IntProperty',
       name: 'labelH',
       expressionArgs: ['label', 'labelW'],
       swiftExpression: `
@@ -107,7 +101,7 @@ foam.CLASS({
       class: 'IntProperty',
       name: 'helpX',
       expressionArgs: ['labelW'],
-      swiftExpression: `return labelW + Self.PADDING();`
+      swiftExpression: `return labelW + 2 * Self.PADDING();`
     },
     {
       class: 'IntProperty',
@@ -119,7 +113,7 @@ foam.CLASS({
       name: 'helpSize',
       expressionArgs: ['help', 'parentW'],
       swiftExpression: `
-        return help == nil || help!.isHidden ? nil : help!.sizeThatFits(CGSize(
+        return help == nil ? nil : help!.sizeThatFits(CGSize(
           width: parentW, height: Int.max
         ));
       `

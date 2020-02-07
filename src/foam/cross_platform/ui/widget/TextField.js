@@ -80,6 +80,10 @@ foam.CLASS({
         let v = UITextView();
         v.backgroundColor = getTheme()!.getSurface();
         v.textColor = getTheme()!.getOnSurface();
+        v.font = UIFont.systemFont(ofSize: 18)
+        v.layer.borderWidth = 1;
+        v.layer.borderColor = getTheme()?.getSecondary().cgColor;
+        v.layer.cornerRadius = 4
         return v;
       `,
       androidPostSet: `

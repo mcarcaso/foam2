@@ -116,7 +116,7 @@ foam.CLASS({
       `,
       swiftFactory: `
         let b = UIButton(type: .infoLight);
-        b.tintColor = .black
+        b.tintColor = getTheme()!.getOnSurface()
         return ActionButton_create()
           .setView(b)
           .build();

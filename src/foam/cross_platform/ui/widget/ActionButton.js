@@ -13,6 +13,10 @@ foam.CLASS({
   ],
   imports: [
     {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
+    {
       name: 'androidContext',
       key: 'androidContext',
       androidType: 'android.content.Context',
@@ -66,6 +70,16 @@ foam.CLASS({
             }
           });
         }
+      `,
+      swiftFactory: `
+        let b = UIButton()
+        b.backgroundColor = getTheme()!.getSecondary()
+        b.setTitleColor(getTheme()!.getOnSecondary(), for: .normal);
+        let i: CGFloat = 8
+        b.contentEdgeInsets = UIEdgeInsets(top: i, left: i, bottom: i, right: i);
+        b.layer.cornerRadius = 4;
+        b.clipsToBounds = true;
+        return b;
       `,
       swiftPostSet: `
         if oldValue != nil {
