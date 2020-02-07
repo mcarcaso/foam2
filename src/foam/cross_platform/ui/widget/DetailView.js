@@ -24,7 +24,7 @@ foam.CLASS({
               if v.isHidden { continue }
               let size = v.sizeThatFits(CGSize(width: Int(frame.width), height: Int.max))
               v.frame = CGRect(
-                x: frame.width - size.width,
+                x: (frame.width - size.width) / 2,
                 y: y,
                 width: size.width,
                 height: size.height);
