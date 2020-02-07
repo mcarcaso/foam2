@@ -23,6 +23,54 @@ foam.CLASS({
   requires: [
     'foam.util.ArrayDetachable'
   ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      swiftCode: `
+        class LabelledUISwitch: UIView {
+          let l = UILabel();
+          let s = UISwitch();
+          override init(frame: CGRect) {
+            super.init(frame: frame)
+            addSubview(l);
+            addSubview(s);
+          }
+          required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+          }
+          override func layoutSubviews() {
+            super.layoutSubviews();
+            let sSize = s.sizeThatFits(frame.size)
+            let lSize = l.sizeThatFits(frame.size)
+            let height = max(sSize.height, lSize.height)
+            l.frame = CGRect(
+              x: 0,
+              y: 0,
+              width: frame.width - sSize.width,
+              height: height
+            )
+            s.frame = CGRect(
+              x: l.frame.maxX,
+              y: 0,
+              width: sSize.width,
+              height: height
+            )
+          }
+          override func sizeThatFits(_ size: CGSize) -> CGSize {
+            let sSize = s.sizeThatFits(size)
+            let lSize = l.sizeThatFits(CGSize(
+              width: size.width - sSize.width,
+              height: size.height
+            ))
+            return CGSize(
+              width: lSize.width + sSize.width,
+              height: max(sSize.height, lSize.height)
+            )
+          }
+        }
+      `
+    }
+  ],
   properties: [
     {
       class: 'BooleanProperty',
@@ -42,7 +90,6 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'label',
-      flags: ['android'],
     },
     {
       androidType: 'android.widget.Switch',
@@ -60,12 +107,12 @@ foam.CLASS({
         });
       `,
       swiftFactory: `
-        return UISwitch();
+        return LabelledUISwitch();
       `,
       swiftPostSet: `
-        (oldValue as? UISwitch)?.removeTarget(
+        (oldValue as? LabelledUISwitch)?.s.removeTarget(
           self, action: #selector(onChanged), for: .valueChanged)
-        (newValue as? UISwitch)?.addTarget(
+        (newValue as? LabelledUISwitch)?.s.addTarget(
           self, action: #selector(onChanged), for: .valueChanged)
       `
     },
@@ -82,9 +129,9 @@ foam.CLASS({
     ['', 'propertyChange.view', 'updateVisibility'],
     ['', 'propertyChange.visibility', 'updateVisibility'],
 
-    ['', 'propertyChange.view', 'updateLabel', ['android']],
-    ['', 'propertyChange.label', 'updateLabel', ['android']],
-    ['theme', 'propertyChange', 'updateLabel', ['android']],
+    ['', 'propertyChange.view', 'updateLabel'],
+    ['', 'propertyChange.label', 'updateLabel'],
+    ['theme', 'propertyChange', 'updateLabel'],
   ],
   methods: [
     {
@@ -105,7 +152,7 @@ foam.CLASS({
           .setArray([
             getData$().linkFrom(data!.getSlot(prop.getName())),
             getVisibility$().follow(prop.createVisibilitySlot(data)),
-            //getLabel$().follow(prop.getLabel$())
+            getLabel$().follow(prop.getLabel$())
           ])
           .build();
       `,
@@ -121,13 +168,20 @@ foam.CLASS({
     {
       name: 'updateLabel',
       isFramed: true,
-      flags: ['android'],
       androidCode: `
         if ( getView() == null ) return;
         getView().setText(getLabel());
         getView().setAlpha(0.8f);
         getView().setTextAppearance(getTheme().getSubtitle1());
         getView().setTextColor(getTheme().getOnSurface());
+      `,
+      swiftCode: `
+        if ( getView() == nil ) { return; }
+        let v = getView() as! LabelledUISwitch;
+        v.l.text = getLabel();
+        v.l.alpha = 0.8;
+        v.l.font = getTheme()?.getSubtitle1();
+        v.l.textColor = getTheme()?.getOnSurface();
       `
     },
     {
@@ -139,7 +193,7 @@ foam.CLASS({
         getView().setEnabled(getVisibility() != foam.u2.Visibility.DISABLED);
       `,
       swiftCode: `
-        let tf = (getView() as! UISwitch);
+        let tf = (getView() as! LabelledUISwitch).s;
         tf.isUserInteractionEnabled = foam_cross_platform_Lib.equals(
           getVisibility(), foam_u2_Visibility.RW);
         tf.isEnabled = !foam_cross_platform_Lib.equals(
@@ -159,7 +213,7 @@ foam.CLASS({
         if ( getView() == nil ) { return; }
         if ( getFeedback() ) { return; }
         setFeedback(true);
-        setData((getView() as! UISwitch).isOn);
+        setData((getView() as! LabelledUISwitch).s.isOn);
         setFeedback(false);
       `
     },
@@ -177,7 +231,7 @@ foam.CLASS({
         if ( getView() == nil ) { return; }
         if ( getFeedback() ) { return; }
         setFeedback(true);
-        (getView() as! UISwitch).isOn =
+        (getView() as! LabelledUISwitch).s.isOn =
           foam_cross_platform_Lib.equals(getCheckedValue(), getData());
         setFeedback(false);
       `
