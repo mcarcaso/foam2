@@ -12,6 +12,30 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      swiftCode: `
+        class VerticalLayout: UIView {
+          override func layoutSubviews() {
+            super.layoutSubviews();
+            var y: CGFloat = 0;
+            for v in subviews {
+              if v.isHidden { continue }
+              let f = v.frame;
+              let size = v.sizeThatFits(CGSize(width: Int(frame.width), height: Int.max))
+              v.frame = CGRect(
+                x: f.minX + (frame.width - size.width),
+                y: y,
+                width: size.width,
+                height: size.height);
+              y = v.frame.maxY + 1
+            }
+          }
+        }
+      `,
+    }
+  ],
   imports: [
     {
       name: 'theme',
@@ -121,7 +145,7 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        return UIView();
+        return VerticalLayout();
       `
     },
     {
@@ -238,6 +262,7 @@ foam.CLASS({
           let p = getProps()![i]
           let dpv = DetailPropertyView_create(x)
             .build();
+          dpv.getView()!.backgroundColor = getTheme()!.getSurface();
           let visibility = p.createVisibilitySlot(getData());
           let l = <%=listener(\`
             dpv.getView()?.isHidden = foam_cross_platform_Lib.equals(visibility?.slotGet(), foam_u2_Visibility.HIDDEN);
@@ -266,8 +291,8 @@ foam.CLASS({
 
         for i in 0..<getActions()!.count {
           let b = UIButton()
-          b.backgroundColor = getTheme()!.getPrimary()
-          b.setTitleColor(getTheme()!.getOnPrimary(), for: .normal);
+          b.backgroundColor = getTheme()!.getSecondary()
+          b.setTitleColor(getTheme()!.getOnSecondary(), for: .normal);
           let ab = ActionButton_create()
             .setView(b)
             .build();

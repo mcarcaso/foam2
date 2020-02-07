@@ -18,6 +18,14 @@ foam.CLASS({
     },
     {
       class: 'ColorProperty',
+      name: 'secondary'
+    },
+    {
+      class: 'ColorProperty',
+      name: 'onSecondary'
+    },
+    {
+      class: 'ColorProperty',
       name: 'background'
     },
     {

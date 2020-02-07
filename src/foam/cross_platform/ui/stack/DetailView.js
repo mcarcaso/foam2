@@ -7,6 +7,12 @@ foam.CLASS({
   requires: [
     'foam.cross_platform.ui.widget.DetailView'
   ],
+  imports: [
+    {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
+  ],
   axioms: [
     {
       class: 'foam.cross_platform.code_generation.Extras',
@@ -26,7 +32,7 @@ foam.CLASS({
       `,
       swiftCode: `
         class ViewController: UIViewController {
-          var dv: foam_cross_platform_ui_widget_DetailView? = nil;
+          var dv: foam_cross_platform_ui_widget_DetailView! = nil;
         }
       `
     }
@@ -49,10 +55,10 @@ foam.CLASS({
       `,
       swiftCode: `
         let vc = ViewController();
-        vc.view = VerticalLayout(frame: vc.view.frame);
-        vc.dv = DetailView_create()
-          .setView(vc.view)
-          .build();
+        vc.dv = DetailView_create().build();
+        vc.dv.getView()!.frame = vc.view.frame;
+        vc.view = vc.dv.getView();
+        vc.view.backgroundColor = getTheme()!.getBackground();
         vc.dv!.onDetach(vc.dv!.getData$().follow(getData$()));
         return vc;
       `

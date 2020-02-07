@@ -18,15 +18,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let theme = foam_cross_platform_ui_Theme
       .foam_cross_platform_ui_ThemeBuilder(foam_cross_platform_Context.GLOBAL())
       .setPrimary("#F27931")
-      .setOnPrimary("#253080")
-      .setBackground(UIColor.white)
+      .setOnPrimary("#FFFFFF")
+      .setSecondary("#253080")
+      .setOnSecondary("#FFFFFF")
+      .setBackground(UIColor.lightGray)
       .setOnBackground(UIColor.black)
-      .setSurface(UIColor.lightGray)
+      .setSurface(UIColor.white)
       .setOnSurface(UIColor.black)
       .build();
     var x = theme.getSubX();
 
     let navVc = UINavigationController(rootViewController: UIViewController());
+    navVc.navigationBar.barTintColor = theme.getPrimary();
+    navVc.navigationBar.tintColor = theme.getOnPrimary();
     navVc.navigationBar.isTranslucent = false;
     let s = foam_cross_platform_ui_stack_Stack
       .foam_cross_platform_ui_stack_StackBuilder(x)

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1002204B2386EF2A00384ADF /* test_demo_MethodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1002204A2386EF2A00384ADF /* test_demo_MethodTests.swift */; };
-		107C15AA23B7BB51008C62BC /* BasicDetailPropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107C15A923B7BB51008C62BC /* BasicDetailPropertyView.swift */; };
 		107EBCEA23E377CB000913E7 /* foam_cross_platform_ui_widget_EmailCitationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107EBC1823E377CA000913E7 /* foam_cross_platform_ui_widget_EmailCitationView.swift */; };
 		107EBCEB23E377CB000913E7 /* foam_mlang_predicate_False.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107EBC1923E377CA000913E7 /* foam_mlang_predicate_False.swift */; };
 		107EBCEC23E377CB000913E7 /* foam_core_AnonymousAxiom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107EBC1A23E377CA000913E7 /* foam_core_AnonymousAxiom.swift */; };
@@ -224,7 +223,6 @@
 		107EBDC123E8DC4E000913E7 /* foam_cross_platform_ui_layout_EmailCitationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107EBDC023E8DC4E000913E7 /* foam_cross_platform_ui_layout_EmailCitationView.swift */; };
 		108A0D6C236FB42100D687D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108A0D6B236FB42100D687D1 /* AppDelegate.swift */; };
 		108A0D6E236FB42100D687D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108A0D6D236FB42100D687D1 /* SceneDelegate.swift */; };
-		108A0D70236FB42100D687D1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108A0D6F236FB42100D687D1 /* ContentView.swift */; };
 		108A0D72236FB42300D687D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 108A0D71236FB42300D687D1 /* Assets.xcassets */; };
 		108A0D75236FB42300D687D1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 108A0D74236FB42300D687D1 /* Preview Assets.xcassets */; };
 		108A0D78236FB42300D687D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 108A0D76236FB42300D687D1 /* LaunchScreen.storyboard */; };
@@ -257,7 +255,6 @@
 
 /* Begin PBXFileReference section */
 		1002204A2386EF2A00384ADF /* test_demo_MethodTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test_demo_MethodTests.swift; sourceTree = "<group>"; };
-		107C15A923B7BB51008C62BC /* BasicDetailPropertyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDetailPropertyView.swift; sourceTree = "<group>"; };
 		107EBC1823E377CA000913E7 /* foam_cross_platform_ui_widget_EmailCitationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_ui_widget_EmailCitationView.swift; sourceTree = "<group>"; };
 		107EBC1923E377CA000913E7 /* foam_mlang_predicate_False.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_mlang_predicate_False.swift; sourceTree = "<group>"; };
 		107EBC1A23E377CA000913E7 /* foam_core_AnonymousAxiom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_AnonymousAxiom.swift; sourceTree = "<group>"; };
@@ -474,7 +471,6 @@
 		108A0D68236FB42100D687D1 /* FOAM Demo App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FOAM Demo App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		108A0D6B236FB42100D687D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		108A0D6D236FB42100D687D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		108A0D6F236FB42100D687D1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		108A0D71236FB42300D687D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		108A0D74236FB42300D687D1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		108A0D77236FB42300D687D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -767,8 +763,6 @@
 			children = (
 				108A0D6B236FB42100D687D1 /* AppDelegate.swift */,
 				108A0D6D236FB42100D687D1 /* SceneDelegate.swift */,
-				107C15A923B7BB51008C62BC /* BasicDetailPropertyView.swift */,
-				108A0D6F236FB42100D687D1 /* ContentView.swift */,
 				108A0D71236FB42300D687D1 /* Assets.xcassets */,
 				108A0D76236FB42300D687D1 /* LaunchScreen.storyboard */,
 				108A0D79236FB42300D687D1 /* Info.plist */,
@@ -1064,10 +1058,8 @@
 				107EBD4B23E377CB000913E7 /* foam_templates_TemplateAxiom.swift in Sources */,
 				107EBD5C23E377CB000913E7 /* foam_swift_AnonymousGenericFunction.swift in Sources */,
 				107EBDA723E377CB000913E7 /* foam_parse_ParserDecorator.swift in Sources */,
-				108A0D70236FB42100D687D1 /* ContentView.swift in Sources */,
 				107EBD2823E377CB000913E7 /* foam_core_ProxySub.swift in Sources */,
 				107EBD6A23E377CB000913E7 /* foam_core_Proxy.swift in Sources */,
-				107C15AA23B7BB51008C62BC /* BasicDetailPropertyView.swift in Sources */,
 				107EBD4123E377CB000913E7 /* foam_core_Requires.swift in Sources */,
 				107EBD6123E377CB000913E7 /* foam_cross_platform_ui_StackableClass.swift in Sources */,
 				107EBD0723E377CB000913E7 /* foam_dao_OrderedSink.swift in Sources */,
