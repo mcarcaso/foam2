@@ -1,7 +1,11 @@
 package demos.cross_platform.android;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,11 +22,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean isDark = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        int label = Color.parseColor(isDark ? "WHITE" : "BLACK");
 
         foam.cross_platform.ui.Theme theme = foam.cross_platform.ui.Theme
           .ThemeBuilder(foam.cross_platform.Context.GLOBAL())
+          .setPrimary(Color.parseColor("#F27931"))
+          .setOnPrimary(label)
+          .setSecondary(Color.parseColor("#253080"))
+          .setOnSecondary(Color.parseColor("WHITE"))
+
+          .setBackground(Color.parseColor(isDark ? "#212121" : "#FAFAFA"))
+          .setOnBackground(label)
+          .setSurface(Color.parseColor(isDark ? "BLACK" : "WHITE"))
+          .setOnSurface(label)
+
           .setError(getResources().getColor(R.color.colorError, getTheme()))
-          .setOnSurface(Color.parseColor("BLACK"))
           .setCaption(R.style.TextCaption)
           .setSubtitle1(R.style.Subtitle1)
           .build();
@@ -41,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(theme.getPrimary());
         setSupportActionBar(toolbar);
 
         foam.dao.DAO d = foam.dao.ArrayDAO.ArrayDAOBuilder(x)
