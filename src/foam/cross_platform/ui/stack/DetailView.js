@@ -49,6 +49,40 @@ foam.CLASS({
             let sv = view as! UIScrollView;
             sv.contentSize = dv.getView()!.frame.size
           }
+          override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            NotificationCenter.default.addObserver(
+              self,
+              selector: #selector(keyboardDidDisappear),
+              name: UIResponder.keyboardDidHideNotification,
+              object: nil)
+            NotificationCenter.default.addObserver(
+              self,
+              selector: #selector(keyboardDidAppear),
+              name: UIResponder.keyboardDidShowNotification,
+              object: nil)
+          }
+          @objc
+          func keyboardDidAppear(_ notification: NSNotification) {
+            let key = UIResponder.keyboardFrameBeginUserInfoKey
+            guard let frameValue = notification.userInfo?[key] as? NSValue else {
+              return
+            }
+            let frame = frameValue.cgRectValue
+            let sv = view as! UIScrollView
+            sv.contentInset.bottom = frame.size.height
+            sv.verticalScrollIndicatorInsets.bottom = frame.size.height
+          }
+          @objc
+          func keyboardDidDisappear(_ notification: NSNotification) {
+            let sv = view as! UIScrollView
+            sv.contentInset.bottom = 0
+            sv.verticalScrollIndicatorInsets.bottom = 0
+          }
+          override func viewWillDisappear(_ animated: Bool) {
+            NotificationCenter.default.removeObserver(self)
+            super.viewWillAppear(animated)
+          }
         }
       `
     }
