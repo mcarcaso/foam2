@@ -104,7 +104,7 @@ foam.CLASS({
         let b = UIButton()
         b.backgroundColor = getTheme()!.getSecondary()
         b.setTitleColor(getTheme()!.getOnSecondary(), for: .normal);
-        let i = CGFLoat(Self.PADDING());
+        let i = CGFloat(Self.PADDING());
         b.contentEdgeInsets = UIEdgeInsets(top: i, left: i, bottom: i, right: i);
         b.layer.cornerRadius = CGFloat(Self.CORNER_RADIUS());
         b.clipsToBounds = true;

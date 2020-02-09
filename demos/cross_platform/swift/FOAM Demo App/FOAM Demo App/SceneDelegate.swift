@@ -17,6 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     let theme = foam_cross_platform_ui_Theme
       .foam_cross_platform_ui_ThemeBuilder(foam_cross_platform_Context.GLOBAL())
+      .setError("#D50000")
       .setPrimary("#F27931")
       .setOnPrimary(UIColor.label)
       .setSecondary("#253080")

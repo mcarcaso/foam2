@@ -81,16 +81,9 @@ foam.CLASS({
       `,
       swiftFactory: `
         let v = Label_create().build();
-/*
-        v.getView().setVisibility(android.view.View.GONE);
-
-        v.getView().setTextColor(getTheme().getError());
-
-        v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-*/
-
+        let lv = v.getView() as! UILabel;
+        lv.isHidden = true;
+        lv.textColor = getTheme()!.getError();
         return v;
       `
     },
@@ -268,8 +261,11 @@ foam.CLASS({
       swiftCode: `
         let isEmpty = foam_cross_platform_type_StringType.INSTANCE()
           .isEmpty(getValidationView()?.getData() as? String);
-//        getValidationView().getView().setVisibility(
-//          isEmpty ? android.view.View.GONE : android.view.View.VISIBLE);
+        let v = getValidationView()!.getView()!
+        if ( v.isHidden != isEmpty ) {
+          v.isHidden = isEmpty;
+          layoutViews(nil, nil);
+        }
       `,
     },
     {

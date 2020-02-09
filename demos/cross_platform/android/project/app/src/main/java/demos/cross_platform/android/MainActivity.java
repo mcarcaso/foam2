@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
           .setSurface(Color.parseColor(isDark ? "BLACK" : "WHITE"))
           .setOnSurface(label)
 
-          .setError(getResources().getColor(R.color.colorError, getTheme()))
+          .setError(Color.parseColor("#D50000"))
           .setCaption(R.style.TextCaption)
           .setSubtitle1(R.style.Subtitle1)
           .build();
