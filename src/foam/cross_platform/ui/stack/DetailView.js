@@ -32,7 +32,23 @@ foam.CLASS({
       `,
       swiftCode: `
         class ViewController: UIViewController {
-          var dv: foam_cross_platform_ui_widget_DetailView! = nil;
+          var dv: foam_cross_platform_ui_widget_DetailView;
+          init(_ dv: foam_cross_platform_ui_widget_DetailView) {
+            self.dv = dv;
+            super.init(nibName: nil, bundle: nil);
+            let sv = UIScrollView(frame: view.frame);
+            view = sv
+            sv.addSubview(dv.getView()!)
+            dv.getView()?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 0);
+          }
+          required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+          }
+          override func viewWillLayoutSubviews() {
+            super.viewWillLayoutSubviews();
+            let sv = view as! UIScrollView;
+            sv.contentSize = dv.getView()!.frame.size
+          }
         }
       `
     }
@@ -54,12 +70,11 @@ foam.CLASS({
         return f;
       `,
       swiftCode: `
-        let vc = ViewController();
-        vc.dv = DetailView_create().build();
-        vc.dv.getView()!.frame = vc.view.frame;
-        vc.view = vc.dv.getView();
+        let dv = DetailView_create().build();
+        dv.onDetach(dv.getData$().follow(getData$()));
+
+        let vc = ViewController(dv);
         vc.view.backgroundColor = getTheme()!.getBackground();
-        vc.dv!.onDetach(vc.dv!.getData$().follow(getData$()));
         return vc;
       `
     }

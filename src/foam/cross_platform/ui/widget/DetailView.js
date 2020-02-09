@@ -30,6 +30,11 @@ foam.CLASS({
                 height: size.height);
               y = v.frame.maxY + 1
             }
+            self.frame = CGRect(
+              x: self.frame.minX,
+              y: self.frame.minY,
+              width: self.frame.width,
+              height: y)
           }
         }
       `,
