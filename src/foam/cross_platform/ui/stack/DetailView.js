@@ -37,6 +37,7 @@ foam.CLASS({
             self.dv = dv;
             super.init(nibName: nil, bundle: nil);
             let sv = UIScrollView(frame: view.frame);
+            sv.keyboardDismissMode = .onDrag
             view = sv
             sv.addSubview(dv.getView()!)
             dv.getView()?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 0);
