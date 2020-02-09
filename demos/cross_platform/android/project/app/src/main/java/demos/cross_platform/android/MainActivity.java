@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         foam.dao.DAO d = foam.dao.ArrayDAO.ArrayDAOBuilder(x)
           .setOf(demo.Person.CLS_())
           .build();
-        for ( int i = 0 ; i < 1000 ; i++ ) {
+        for ( int i = 0 ; i < 10 ; i++ ) {
             d.put(demo.Person.PersonBuilder(x)
               .setFirstName("Mike")
               .setLastName("Car" + i)
