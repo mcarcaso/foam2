@@ -221,13 +221,11 @@ foam.CLASS({
           getHelpView()!.getView()?.isHidden = false;
           getHelpView()!.setData(<%=fn(\`
             let x = args![0] as! foam_cross_platform_Context;
-            print(prop.getHelp()!);
-            /*
-            com.google.android.material.snackbar.Snackbar.make(
-              (android.view.View) x.getXProp("onClickView"),
-              prop.getHelp(),
-              com.google.android.material.snackbar.Snackbar.LENGTH_LONG).show();
-            */
+            let alertController = UIAlertController(
+              title: "", message: prop.getHelp(), preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            (x.getXProp("stack") as? foam_cross_platform_ui_stack_Stack)?.getNavController()
+              .present(alertController, animated: true, completion: nil)
             return nil;
           \`)%>);
         } else {
