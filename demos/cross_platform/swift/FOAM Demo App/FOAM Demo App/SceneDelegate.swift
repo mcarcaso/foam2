@@ -41,14 +41,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       .build();
     x = s.getSubX();
 
+//    let d = foam_dao_ArrayDAO.foam_dao_ArrayDAOBuilder(x)
+//      .setOf(demo_Person.CLS_())
+//      .build();
+//    for i in 0..<10 {
+//      _ = d.put(demo_Person.demo_PersonBuilder(x)
+//        .setFirstName("Mike")
+//        .setLastName("Car" + String(i))
+//        .build());
+//    }
     let d = foam_dao_ArrayDAO.foam_dao_ArrayDAOBuilder(x)
-      .setOf(demo_Person.CLS_())
+      .setOf(foam_core_Property.CLS_())
       .build();
-    for i in 0..<10 {
-      _ = d.put(demo_Person.demo_PersonBuilder(x)
-        .setFirstName("Mike")
-        .setLastName("Car" + String(i))
-        .build());
+    var curX: foam_cross_platform_Context? = x;
+    while curX != nil {
+      curX!.getClassMap_()?.values.forEach({ (cls) in
+        (cls as! foam_cross_platform_FoamClass)
+          .getAxiomsByClass(foam_core_Property.CLS_())?
+          .forEach({ (a) in
+            _ = d.put(a)
+          })
+      })
+      curX = curX?.getParent_()
     }
 
     s.push(foam_cross_platform_ui_stack_DAOView
@@ -59,10 +73,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         .foam_cross_platform_ui_SimpleViewFactoryBuilder(x)
         .setViewClass(foam_cross_platform_ui_widget_EmailCitationView.CLS_())
         .setViewArgs([
-          "fromExpr": demo_Person.FIRST_NAME(),
-          "subjectExpr": demo_Person.LAST_NAME(),
-          "bodyExpr": demo_Person.FULL_NAME(),
-          "timeExpr": demo_Person.IS_MALE()
+          "fromExpr": foam_core_Property.FOR_CLASS_(),
+          "subjectExpr": foam_core_Property.NAME(),
         ])
         .build())
       .build())

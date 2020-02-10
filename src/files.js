@@ -218,6 +218,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Singleton" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Validation" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Validation" },
+  { name: "foam/cross_platform/code_generation/refines/ios_swift/MultiPartID" },
 
   { name: "foam/json2/Json2PropertyRefine" },
   { name: "foam/json2/OutputterOutput" },

@@ -3,6 +3,12 @@ foam.CLASS({
   name: 'InnerClassRefine',
   refines: 'foam.core.InnerClass',
   flags: ['swift'],
+  properties: [
+    {
+      name: 'name',
+      swiftGetter: `return (getModel() as! foam_core_Model).getName();`
+    }
+  ],
   methods: [
     function getDeps(flagFilter, deps) {
       this.model.buildClass().getDeps(flagFilter, deps);

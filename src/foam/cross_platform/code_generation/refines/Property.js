@@ -6,6 +6,10 @@ foam.CLASS({
     'foam.core.ExpressionSlot',
     'foam.cross_platform.Lib',
   ],
+  ids: [
+    'forClass_',
+    'name'
+  ],
   properties: [
     {
       class: 'StringArrayProperty',
