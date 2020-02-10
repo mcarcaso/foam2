@@ -53,16 +53,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let d = foam_dao_ArrayDAO.foam_dao_ArrayDAOBuilder(x)
       .setOf(foam_core_Property.CLS_())
       .build();
-    var curX: foam_cross_platform_Context? = x;
-    while curX != nil {
-      curX!.getClassMap_()?.values.forEach({ (cls) in
-        (cls as! foam_cross_platform_FoamClass)
-          .getAxiomsByClass(foam_core_Property.CLS_())?
-          .forEach({ (a) in
-            _ = d.put(a)
-          })
-      })
-      curX = curX?.getParent_()
+
+    DispatchQueue.global(qos: .background).async {
+      var curX: foam_cross_platform_Context? = x;
+      var numPut = 0
+      while curX != nil {
+        curX!.getClassMap_()?.values.forEach({ (cls) in
+          (cls as! foam_cross_platform_FoamClass)
+            .getOwnAxiomsByClass(foam_core_Property.CLS_())?
+            .forEach({ (a) in
+              _ = d.put(a)
+              numPut += 1
+              print(numPut)
+            })
+        })
+        curX = curX?.getParent_()
+      }
     }
 
     s.push(foam_cross_platform_ui_stack_DAOView

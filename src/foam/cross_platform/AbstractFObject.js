@@ -128,9 +128,7 @@ foam.CLASS({
       hidden: true,
       swiftOptional: false,
       androidComparePropertyValues: `null`,
-      swiftComparePropertyValues: `
-        foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
-      `,
+      swiftComparePropertyValues: `nil`,
       androidFactory: `
         Object[] exports = getCls_().getAxiomsByClass(foam.core.Export.CLS_());
         if ( exports.length == 0 ) return getX();

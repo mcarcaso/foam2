@@ -68,6 +68,10 @@ foam.CLASS({
       `
     },
     {
+      class: 'MapProperty',
+      name: 'cachedAxiomsByClass_'
+    },
+    {
       class: 'ArrayProperty',
       name: 'axioms',
       androidFactory: `
@@ -151,6 +155,20 @@ foam.CLASS({
     },
     {
       type: 'foam.cross_platform.FObject[]',
+      name: 'getOwnAxiomsByClass',
+      args: [
+        { type: 'foam.cross_platform.FoamClass', name: 'type' }
+      ],
+      swiftCode: `
+        var axioms: [foam_cross_platform_FObject] = [];
+        for a in getOwnAxioms()! {
+          if type!.isInstance(a) { axioms.append(a as! foam_cross_platform_FObject) }
+        }
+        return axioms;
+      `
+    },
+    {
+      type: 'foam.cross_platform.FObject[]',
       name: 'getAxiomsByClass',
       args: [
         { type: 'foam.cross_platform.FoamClass', name: 'type' }
@@ -165,10 +183,16 @@ foam.CLASS({
         return a;
       `,
       swiftCode: `
+        if getCachedAxiomsByClass_()?[type!.getId()] != nil {
+          return getCachedAxiomsByClass_()![type!.getId()] as? [foam_cross_platform_FObject];
+        }
         var axioms: [foam_cross_platform_FObject] = [];
         for a in getAxioms()! {
           if type!.isInstance(a) { axioms.append(a as! foam_cross_platform_FObject) }
         }
+        var m = getCachedAxiomsByClass_()!
+        m[type?.getId()] = axioms;
+        setCachedAxiomsByClass_(m)
         return axioms;
       `
     },

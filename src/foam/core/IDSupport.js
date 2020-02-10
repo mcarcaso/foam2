@@ -134,7 +134,9 @@ foam.CLASS({
           var prop = c.getAxiomByName(n);
           foam.assert(prop, 'Unknown ids property:', c.id + '.' + n);
           foam.assert(foam.core.Property.isInstance(prop), 'Ids property:', c.id + '.' + n, 'is not a Property.');
-          return prop.clone();
+          prop = prop.clone();
+          prop.clearProperty('forClass_');
+          return prop;
         }),
         methods: [
           function toString() {
