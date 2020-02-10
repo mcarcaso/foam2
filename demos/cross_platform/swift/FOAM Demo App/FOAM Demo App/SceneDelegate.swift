@@ -62,9 +62,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
           (cls as! foam_cross_platform_FoamClass)
             .getOwnAxiomsByClass(foam_core_Property.CLS_())?
             .forEach({ (a) in
+              if numPut > 100 { return }
               _ = d.put(a)
               numPut += 1
-              print(numPut)
             })
         })
         curX = curX?.getParent_()
@@ -81,6 +81,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         .setViewArgs([
           "fromExpr": foam_core_Property.FOR_CLASS_(),
           "subjectExpr": foam_core_Property.NAME(),
+          "timeExpr": foam_core_Property.TYPE()
         ])
         .build())
       .build())

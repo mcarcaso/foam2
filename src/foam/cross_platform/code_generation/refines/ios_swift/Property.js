@@ -375,7 +375,7 @@ if hasListeners(args) {
               { type: this.swiftType, localName: 'newValue' },
               { type: 'Bool', localName: 'oldValueSet' }
             ],
-            body: this.swiftPostSet
+            body: foam.cpTemplate(this.swiftPostSet, 'swift')
           });
           setter.body += `
 ${postSetName}(oldValue, castedValue, hasOldValue);

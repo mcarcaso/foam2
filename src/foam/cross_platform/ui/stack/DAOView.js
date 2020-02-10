@@ -4,10 +4,14 @@ foam.CLASS({
   implements: [
     'foam.cross_platform.ui.Stackable'
   ],
+  topics: [
+    'onDAOUpdate'
+  ],
   requires: [
     'foam.cross_platform.ui.stack.DetailView',
     'foam.dao.ArraySink',
     'foam.mlang.sink.Count',
+    'foam.dao.FnSink',
   ],
   imports: [
     {
@@ -97,6 +101,11 @@ foam.CLASS({
             tableView.dataSource = o.getTableSource();
             tableView.delegate = o.getTableDelegate();
             tableView.reloadData();
+            o.onDetach(o.onDAOUpdate().sub(nil, o.AnonymousListener_create()
+              .setFn({ [weak self] (_: foam_core_Detachable?, args: [Any?]?) -> Void in
+                self?.tableView.reloadData();
+              })
+              .build()));
           }
           required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
@@ -151,7 +160,9 @@ foam.CLASS({
           }
           var reusableId = "CellID";
           public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return daoView.getCount_()!.getValue();
+            let c = daoView.Count_create().build();
+            _ = daoView.getData()!.select(c);
+            return c.getValue();
           }
 
           public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -176,9 +187,10 @@ foam.CLASS({
       name: 'data',
       swiftPostSet: `
         getListenSub_()?.detach();
-        getCount_()!.reset(nil);
-        _ = newValue?.select(getCount_());
-        setListenSub_(newValue?.listen(getCount_(), nil));
+        setListenSub_(FnSink_create().setFn(<%=fn(\`
+          self!.onDAOUpdate_(nil, nil)
+          return nil;
+        \`)%>).build());
       `
     },
     {
@@ -190,12 +202,6 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.core.Detachable',
       name: 'listenSub_',
-    },
-    {
-      class: 'FObjectProperty',
-      of: 'foam.mlang.sink.Count',
-      name: 'count_',
-      swiftFactory: `return Count_create().build();`
     },
 
     {
@@ -213,6 +219,15 @@ foam.CLASS({
       flags: ['swift'],
       name: 'tableSource',
       swiftFactory: `return TableSource(self)`
+    }
+  ],
+  listeners: [
+    {
+      name: 'onDAOUpdate_',
+      isFramed: true,
+      swiftCode: `
+        _ = onDAOUpdate().pub([]);
+      `
     }
   ],
   methods: [

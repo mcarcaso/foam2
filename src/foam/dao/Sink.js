@@ -665,9 +665,8 @@ foam.CLASS({
 
   properties: [
     {
+      class: 'FunctionProperty',
       name: 'fn',
-      swiftType: '((String?, Any?, foam_core_Detachable?) -> Void)',
-      swiftRequiresEscaping: true,
     },
   ],
 
@@ -677,7 +676,9 @@ foam.CLASS({
       code: function(obj, s) {
         this.fn('put', obj, s);
       },
-      swiftCode_DELETE: 'fn("put", obj, sub)',
+      swiftCode: `
+        _ = getFn()?.executeFunction(["put", obj, sub]);
+      `,
     },
     {
       name: 'remove',

@@ -10,6 +10,7 @@
 		1002204B2386EF2A00384ADF /* test_demo_MethodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1002204A2386EF2A00384ADF /* test_demo_MethodTests.swift */; };
 		103FC3DC23F062F1007E3AA9 /* foam_core_PropertyId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FC3DA23F062F1007E3AA9 /* foam_core_PropertyId.swift */; };
 		103FC3DD23F062F1007E3AA9 /* foam_core_MultiPartID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FC3DB23F062F1007E3AA9 /* foam_core_MultiPartID.swift */; };
+		10401D5E23F1F0A600C270A9 /* foam_dao_FnSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10401D5D23F1F0A600C270A9 /* foam_dao_FnSink.swift */; };
 		107EBCEA23E377CB000913E7 /* foam_cross_platform_ui_widget_EmailCitationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107EBC1823E377CA000913E7 /* foam_cross_platform_ui_widget_EmailCitationView.swift */; };
 		107EBCEB23E377CB000913E7 /* foam_mlang_predicate_False.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107EBC1923E377CA000913E7 /* foam_mlang_predicate_False.swift */; };
 		107EBCEC23E377CB000913E7 /* foam_core_AnonymousAxiom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107EBC1A23E377CA000913E7 /* foam_core_AnonymousAxiom.swift */; };
@@ -259,6 +260,7 @@
 		1002204A2386EF2A00384ADF /* test_demo_MethodTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test_demo_MethodTests.swift; sourceTree = "<group>"; };
 		103FC3DA23F062F1007E3AA9 /* foam_core_PropertyId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_PropertyId.swift; sourceTree = "<group>"; };
 		103FC3DB23F062F1007E3AA9 /* foam_core_MultiPartID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_MultiPartID.swift; sourceTree = "<group>"; };
+		10401D5D23F1F0A600C270A9 /* foam_dao_FnSink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_dao_FnSink.swift; sourceTree = "<group>"; };
 		107EBC1823E377CA000913E7 /* foam_cross_platform_ui_widget_EmailCitationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_ui_widget_EmailCitationView.swift; sourceTree = "<group>"; };
 		107EBC1923E377CA000913E7 /* foam_mlang_predicate_False.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_mlang_predicate_False.swift; sourceTree = "<group>"; };
 		107EBC1A23E377CA000913E7 /* foam_core_AnonymousAxiom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_AnonymousAxiom.swift; sourceTree = "<group>"; };
@@ -662,6 +664,7 @@
 				107EBC2A23E377CA000913E7 /* foam_dao_DAOProperty.swift */,
 				107EBC2923E377CA000913E7 /* foam_dao_ExternalException.swift */,
 				107EBC2323E377CA000913E7 /* foam_dao_FilteredDAO.swift */,
+				10401D5D23F1F0A600C270A9 /* foam_dao_FnSink.swift */,
 				107EBCCA23E377CB000913E7 /* foam_dao_InternalException.swift */,
 				107EBCC523E377CB000913E7 /* foam_dao_LimitedDAO.swift */,
 				107EBC2523E377CA000913E7 /* foam_dao_LimitedSink.swift */,
@@ -1145,6 +1148,7 @@
 				107EBD8E23E377CB000913E7 /* foam_dao_PredicatedSink.swift in Sources */,
 				107EBD8B23E377CB000913E7 /* foam_cross_platform_AsyncFunction.swift in Sources */,
 				107EBD3B23E377CB000913E7 /* foam_core_ObjectProperty.swift in Sources */,
+				10401D5E23F1F0A600C270A9 /* foam_dao_FnSink.swift in Sources */,
 				107EBD6723E377CB000913E7 /* foam_core_SlotInterfaceClass.swift in Sources */,
 				107EBD9823E377CB000913E7 /* foam_core_ExpressionSlot.swift in Sources */,
 				107EBDBB23E377CB000913E7 /* foam_dao_SkipDAO.swift in Sources */,
