@@ -174,6 +174,7 @@ foam.CLASS({
             let a = daoView.ArraySink_create().build();
             _ = daoView.getData()?.skip(indexPath.row)?.limit(1)?.select(a);
             (cell?.citationView as? foam_cross_platform_FObject)?.setProperty("data", a.getArray()[0])
+            cell?.citationView.getView()?.setNeedsLayout()
             return cell!;
           }
         }
