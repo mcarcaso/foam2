@@ -234,7 +234,8 @@ foam.CLASS({
         for name in Self.VIEWS() {
           // By clearing and re-setting the views, any expressions that use them
           // will get re-evaluated.
-          let v = getProperty(name) as! UIView;
+          let v = getProperty(name) as? UIView;
+          if v == nil { return }
           clearProperty(name);
           setProperty(name, v);
         }

@@ -7,6 +7,35 @@ foam.CLASS({
     function buildSwiftClass(cls, parentCls) {
       if ( ! parentCls.hasOwnAxiom(this.name) ) return;
       this.SUPER(cls, parentCls);
+
+      if ( this.isFramed ) {
+        cls.field({
+          type: '[Any?]?',
+          name: this.name + '_framedArgs',
+          initializer: 'nil'
+        });
+        var framedMethod = cls.getMethod(this.name);
+        framedMethod.body = `
+          if ( ${this.name}_framedArgs == nil ) {
+            ${this.name}_framedArgs = [sub, args];
+            DispatchQueue.main.async {
+              let s = self.${this.name}_framedArgs![0] as? foam_core_Detachable;
+              let a = self.${this.name}_framedArgs![1] as? [Any?];
+              self.${this.name}_framedArgs = nil;
+              self.${this.name}_private(s, a);
+            }
+          } else {
+            ${this.name}_framedArgs![0] = sub;
+            ${this.name}_framedArgs![1] = args;
+          }
+        `;
+
+        var method = framedMethod.clone();
+        method.name = method.name + '_private';
+        method.body = this.swiftCode;
+        cls.method(method);
+      }
+
       var fieldName = this.crossPlatformListenerName + '_var';
       cls.field({
         visibility: 'private',

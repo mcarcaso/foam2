@@ -188,10 +188,10 @@ foam.CLASS({
       name: 'data',
       swiftPostSet: `
         getListenSub_()?.detach();
-        setListenSub_(FnSink_create().setFn(<%=fn(\`
+        setListenSub_(newValue?.listen(FnSink_create().setFn(<%=fn(\`
           self!.onDAOUpdate_(nil, nil)
           return nil;
-        \`)%>).build());
+        \`)%>).build(), nil));
       `
     },
     {
