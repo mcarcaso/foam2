@@ -288,7 +288,6 @@ foam.CLASS({
     },
     {
       name: 'updateValidationView',
-      isFramed: true,
       androidCode: `
         boolean isEmpty = foam.cross_platform.type.StringType.INSTANCE()
           .isEmpty((String) getValidationView().getData());
@@ -299,10 +298,7 @@ foam.CLASS({
         let isEmpty = foam_cross_platform_type_StringType.INSTANCE()
           .isEmpty(getValidationView()?.getData() as? String);
         let v = getValidationView()!.getView()!
-        if v.isHidden != isEmpty {
-          v.isHidden = isEmpty;
-          v.setNeedsLayout();
-        }
+        v.isHidden = isEmpty;
       `,
     }
   ],
@@ -310,23 +306,29 @@ foam.CLASS({
     {
       class: 'foam.cross_platform.code_generation.Extras',
       swiftCode: `
-        class View: UIView {
+       class View: UIView {
           var dpv: foam_cross_platform_ui_widget_DetailPropertyView! = nil;
+          var padding: UIEdgeInsets = UIEdgeInsets.zero;
           override func layoutSubviews() {
             super.layoutSubviews();
+            let p: CGFloat = 12;
+            let w = frame.width - padding.left - padding.right;
             let helpView = dpv.getHelpView()!.getView()!
             helpView.frame.size = helpView.sizeThatFits(CGSize(
-              width: frame.width,
+              width: w,
               height: CGFloat.greatestFiniteMagnitude
             ));
-            let leftWidth = frame.width - helpView.frame.width;
-            helpView.frame.origin.x = leftWidth;
+            helpView.frame.origin.x = frame.maxX - padding.left - helpView.frame.width
+            helpView.frame.origin.y = padding.top
+            let leftWidth = helpView.frame.origin.x - padding.right - p
 
             let labelView = dpv.getLabelView()!.getView()!;
-            labelView.frame.size = labelView.sizeThatFits(CGSize(
+            labelView.frame.size = !labelView.isHidden ? labelView.sizeThatFits(CGSize(
               width: leftWidth,
               height: CGFloat.greatestFiniteMagnitude
-            ))
+            )) : CGSize.zero;
+            labelView.frame.origin.x = padding.left
+            labelView.frame.origin.y = padding.top
 
             let dataView = dpv.getDataView()!.getView()!;
             dataView.frame.size.height = dataView.sizeThatFits(CGSize(
@@ -334,16 +336,18 @@ foam.CLASS({
               height: CGFloat.greatestFiniteMagnitude
               )).height;
             dataView.frame.size.width = leftWidth;
-            dataView.frame.origin.y = labelView.frame.maxY;
+            dataView.frame.origin.y = labelView.isHidden ? padding.top : labelView.frame.maxY + p;
+            dataView.frame.origin.x = padding.left
 
             let validationView = dpv.getValidationView()!.getView()!;
-            validationView.frame.size = validationView.sizeThatFits(CGSize(
+            validationView.frame.size = !validationView.isHidden ? validationView.sizeThatFits(CGSize(
               width: leftWidth,
               height: CGFloat.greatestFiniteMagnitude
-            ));
-            validationView.frame.origin.y = dataView.frame.maxY;
+            )) : CGSize.zero;
+            validationView.frame.origin.y = dataView.frame.maxY + (validationView.isHidden ? 0 : p);
+            validationView.frame.origin.x = padding.left
 
-            frame.size.height = validationView.frame.maxY;
+            frame.size.height = validationView.frame.maxY + padding.bottom;
           }
         }
       `

@@ -271,7 +271,7 @@ foam.CLASS({
       class: 'foam.cross_platform.code_generation.Extras',
       swiftCode: `
         class View: UIView {
-          var dpvs: [UIView] = [];
+          var dpvs: [foam_cross_platform_ui_widget_DetailPropertyView.View] = [];
           var abs: [UIView] = [];
           func clearViews() {
             for v in subviews {
@@ -281,7 +281,7 @@ foam.CLASS({
             abs = [];
           }
           func addDpv(_ v: UIView) {
-            dpvs.append(v);
+            dpvs.append(v as! foam_cross_platform_ui_widget_DetailPropertyView.View);
             addSubview(v);
           }
           func addAb(_ v: UIView) {
@@ -289,26 +289,31 @@ foam.CLASS({
             addSubview(v);
           }
           override func layoutSubviews() {
+            super.layoutSubviews();
+            let hp = CGFloat(foam_cross_platform_ui_widget_DetailView.ITEM_HORIZONTAL_PADDING());
+            let vp = CGFloat(foam_cross_platform_ui_widget_DetailView.ITEM_VERTICAL_PADDING());
+            let padding = UIEdgeInsets(top: vp, left: hp, bottom: vp, right: hp)
             for v in dpvs {
-              v.frame.size.width = frame.width
+              v.padding = padding;
+              v.frame.size.width = frame.width;
               v.layoutSubviews();
             }
             for v in abs {
               v.frame.size = v.sizeThatFits(CGSize(
-                width: frame.width,
+                width: frame.width - 2 * hp,
                 height: CGFloat.greatestFiniteMagnitude
               ))
+              v.frame.origin.x = (frame.width - v.frame.width) / 2
             }
-            super.layoutSubviews();
             var y: CGFloat = 0;
             for v in dpvs {
               if v.isHidden { continue }
               v.frame.origin.y = y;
-              y = v.frame.maxY;
+              y = v.frame.maxY + 1;
             }
             for v in abs {
               if v.isHidden { continue }
-              v.frame.origin.y = y;
+              v.frame.origin.y = y + vp;
               y = v.frame.maxY;
             }
             frame.size.height = y
