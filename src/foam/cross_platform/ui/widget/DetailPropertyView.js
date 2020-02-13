@@ -38,12 +38,9 @@ foam.CLASS({
       name: 'labelView',
       androidFactory: `
         foam.cross_platform.ui.widget.Label v = Label_create().build();
-
         v.getView().setTextColor(getTheme().getOnSurface());
-
         v.getView().setAlpha(0.8f);
         v.getView().setTextAppearance(getTheme().getSubtitle1());
-
         v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -55,7 +52,6 @@ foam.CLASS({
         let lv = v.getView() as? UILabel;
         lv?.textColor = getTheme()!.getOnSurface().withAlphaComponent(0.8);
         lv?.font = getTheme()!.getSubtitle1()
-        lv?.setContentHuggingPriority(.defaultLow, for: .horizontal);
         return v;
       `
     },
@@ -65,15 +61,11 @@ foam.CLASS({
       name: 'validationView',
       androidFactory: `
         foam.cross_platform.ui.widget.Label v = Label_create().build();
-
         v.getView().setVisibility(android.view.View.GONE);
-
         v.getView().setTextColor(getTheme().getError());
-
         v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-
         return v;
       `,
       swiftFactory: `
@@ -81,7 +73,6 @@ foam.CLASS({
         let lv = v.getView() as! UILabel;
         lv.isHidden = true;
         lv.textColor = getTheme()!.getError();
-        lv.setContentHuggingPriority(.defaultLow, for: .horizontal);
         return v;
       `
     },
@@ -97,11 +88,9 @@ foam.CLASS({
           "drawable",
           getAndroidContext().getPackageName()));
         b.setColorFilter(getTheme().getOnSurface());
-
         b.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-
         return ActionButton_create()
           .setView(b)
           .build();
@@ -109,7 +98,6 @@ foam.CLASS({
       swiftFactory: `
         let b = UIButton(type: .infoLight);
         b.tintColor = getTheme()!.getOnSurface()
-        b.setContentHuggingPriority(.defaultHigh, for: .horizontal);
         return ActionButton_create()
           .setView(b)
           .build();
@@ -124,9 +112,6 @@ foam.CLASS({
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
       `,
-      swiftPostSet: `
-        newValue?.getView()?.setContentHuggingPriority(.defaultLow, for: .horizontal);
-      `
     },
     {
       name: 'data'
@@ -143,14 +128,14 @@ foam.CLASS({
       `,
       swiftFactory: `
         let v = View();
+        v.dpv = self;
         return v;
       `
     },
   ],
   reactions: [
     ['validationView', 'propertyChange.data', 'updateValidationView'],
-    ['', 'propertyChange.data', 'updateViewHeight'],
-    ['', 'propertyChange.validationView', 'updateValidationView'],
+    ['', 'propertyChange.data', 'setNeedsLayout', ['swift']],
   ],
   methods: [
     {
@@ -193,7 +178,7 @@ foam.CLASS({
           subs.add(getValidationView().getData$().follow(validationSlot));
         }
 
-        layoutViews(null, null);
+        addViews();
 
         return ArrayDetachable_create()
           .setArray(subs
@@ -240,38 +225,15 @@ foam.CLASS({
           subs.append(getValidationView()?.getData$().follow(validationSlot));
         }
 
-        layoutViews(nil, nil);
+        addViews();
 
         return ArrayDetachable_create()
           .setArray(subs)
           .build();
       `,
-    }
-  ],
-  listeners: [
-    {
-      name: 'updateViewHeight',
-      isFramed: true,
-      swiftCode: `getView()?.setNeedsLayout();`,
     },
     {
-      name: 'updateValidationView',
-      isFramed: true,
-      androidCode: `
-        boolean isEmpty = foam.cross_platform.type.StringType.INSTANCE()
-          .isEmpty((String) getValidationView().getData());
-        getValidationView().getView().setVisibility(
-          isEmpty ? android.view.View.GONE : android.view.View.VISIBLE);
-      `,
-      swiftCode: `
-        let isEmpty = foam_cross_platform_type_StringType.INSTANCE()
-          .isEmpty(getValidationView()?.getData() as? String);
-        let v = getValidationView()!.getView()!
-        v.isHidden = isEmpty;
-      `,
-    },
-    {
-      name: 'layoutViews',
+      name: 'addViews',
       androidCode: `
         if ( getView() == null ) return;
 
@@ -307,33 +269,40 @@ foam.CLASS({
         right.addView(getHelpView().getView());
       `,
       swiftCode: `
-        let v = getView() as! UIStackView;
-        v.arrangedSubviews.forEach { sv in
-          v.removeArrangedSubview(sv);
-          if !(sv is UIStackView) { return }
-          (sv as! UIStackView).arrangedSubviews.forEach { ssv in
-            (sv as! UIStackView).removeArrangedSubview(ssv);
-          }
+        let v = getView()!
+        v.subviews.forEach { sv in
+          sv.removeFromSuperview();
         }
-
-        let left = UIStackView();
-        left.axis = .vertical;
-        left.alignment = .fill
-        left.distribution = .fill
-        left.spacing = 0;
-        left.setContentHuggingPriority(.defaultLow, for: .horizontal);
-        v.addArrangedSubview(left);
-
-        left.addArrangedSubview(getLabelView()!.getView()!);
-        left.addArrangedSubview(getDataView()!.getView()!);
-        left.addArrangedSubview(getValidationView()!.getView()!);
-
-        let right = UIStackView();
-        right.axis = .vertical;
-        right.setContentHuggingPriority(.defaultHigh, for: .horizontal);
-        v.addArrangedSubview(right);
-
-        right.addArrangedSubview(getHelpView()!.getView()!);
+        v.addSubview(getLabelView()!.getView()!);
+        v.addSubview(getDataView()!.getView()!);
+        v.addSubview(getValidationView()!.getView()!);
+        v.addSubview(getHelpView()!.getView()!);
+      `,
+    }
+  ],
+  listeners: [
+    {
+      name: 'setNeedsLayout',
+      flags: ['swift'],
+      swiftCode: `getView()?.setNeedsLayout()`
+    },
+    {
+      name: 'updateValidationView',
+      isFramed: true,
+      androidCode: `
+        boolean isEmpty = foam.cross_platform.type.StringType.INSTANCE()
+          .isEmpty((String) getValidationView().getData());
+        getValidationView().getView().setVisibility(
+          isEmpty ? android.view.View.GONE : android.view.View.VISIBLE);
+      `,
+      swiftCode: `
+        let isEmpty = foam_cross_platform_type_StringType.INSTANCE()
+          .isEmpty(getValidationView()?.getData() as? String);
+        let v = getValidationView()!.getView()!
+        if v.isHidden != isEmpty {
+          v.isHidden = isEmpty;
+          v.setNeedsLayout();
+        }
       `,
     }
   ],
@@ -341,21 +310,40 @@ foam.CLASS({
     {
       class: 'foam.cross_platform.code_generation.Extras',
       swiftCode: `
-        class View: UIStackView {
+        class View: UIView {
+          var dpv: foam_cross_platform_ui_widget_DetailPropertyView! = nil;
           override func layoutSubviews() {
             super.layoutSubviews();
-            if arrangedSubviews.count == 0 { return }
-            let dataView = (arrangedSubviews[0] as! UIStackView).arrangedSubviews[1];
-            dataView.frame.size.height = dataView.sizeThatFits(CGSize(
-              width: dataView.frame.width,
+            let helpView = dpv.getHelpView()!.getView()!
+            helpView.frame.size = helpView.sizeThatFits(CGSize(
+              width: frame.width,
               height: CGFloat.greatestFiniteMagnitude
-            )).height;
-            let h = max(
-              (arrangedSubviews[0] as! UIStackView).systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height,
-              (arrangedSubviews[1] as! UIStackView).systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-            )
-            (arrangedSubviews[0] as! UIStackView).frame.size.height = h;
-            (arrangedSubviews[1] as! UIStackView).frame.size.height = h;
+            ));
+            let leftWidth = frame.width - helpView.frame.width;
+            helpView.frame.origin.x = leftWidth;
+
+            let labelView = dpv.getLabelView()!.getView()!;
+            labelView.frame.size = labelView.sizeThatFits(CGSize(
+              width: leftWidth,
+              height: CGFloat.greatestFiniteMagnitude
+            ))
+
+            let dataView = dpv.getDataView()!.getView()!;
+            dataView.frame.size.height = dataView.sizeThatFits(CGSize(
+              width: leftWidth,
+              height: CGFloat.greatestFiniteMagnitude
+              )).height;
+            dataView.frame.size.width = leftWidth;
+            dataView.frame.origin.y = labelView.frame.maxY;
+
+            let validationView = dpv.getValidationView()!.getView()!;
+            validationView.frame.size = validationView.sizeThatFits(CGSize(
+              width: leftWidth,
+              height: CGFloat.greatestFiniteMagnitude
+            ));
+            validationView.frame.origin.y = dataView.frame.maxY;
+
+            frame.size.height = validationView.frame.maxY;
           }
         }
       `

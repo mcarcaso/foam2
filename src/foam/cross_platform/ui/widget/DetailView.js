@@ -122,10 +122,6 @@ foam.CLASS({
       `,
       swiftFactory: `
         let v = View();
-        v.axis = .vertical;
-        v.alignment = .fill
-        v.distribution = .fill
-        v.spacing = 0;
         return v;
       `
     },
@@ -229,10 +225,8 @@ foam.CLASS({
           setSub_(nil);
         }
         if ( getView() == nil ) { return; }
-        let view = getView() as! UIStackView;
-        for v in view.arrangedSubviews {
-          view.removeArrangedSubview(v);
-        }
+        let view = getView() as! View;
+        view.clearViews();
         if getData() == nil { return; }
         var subs = [] as [foam_core_Detachable];
         let x = getSubX();
@@ -245,7 +239,7 @@ foam.CLASS({
           let visibility = p.createVisibilitySlot(getData());
           let l = <%=listener(\`
             dpv.getView()?.isHidden = foam_cross_platform_Lib.equals(visibility?.slotGet(), foam_u2_Visibility.HIDDEN);
-            self?.getView()?.setNeedsLayout();
+            view.setNeedsLayout();
           \`)%>
           subs.append(ArrayDetachable_create()
             .setArray([
@@ -254,19 +248,19 @@ foam.CLASS({
             ])
             .build());
           l.executeListener(nil, nil);
-          view.addArrangedSubview(dpv.getView()!)
+          view.addDpv(dpv.getView()!)
           views.append(dpv);
         }
 
         for i in 0..<getActions()!.count {
           let ab = ActionButton_create().build();
           subs.append(ab.bindData(getData(), getActions()![i])!);
-          view.addArrangedSubview(ab.getView()!);
+          view.addAb(ab.getView()!);
           views.append(ab);
         }
         setViews_(views);
         subs.append(getData()!.sub(nil, <%=listener(\`
-          self?.getView()?.setNeedsLayout();
+          view.setNeedsLayout();
         \`)%>)!);
         setSub_(ArrayDetachable_create().setArray(subs).build());
       `,
@@ -276,13 +270,48 @@ foam.CLASS({
     {
       class: 'foam.cross_platform.code_generation.Extras',
       swiftCode: `
-        class View: UIStackView {
-          override func layoutSubviews() {
-            super.layoutSubviews();
-            for subView in arrangedSubviews {
-              guard let stackView = subView as? UIStackView else { continue }
-              stackView.frame.size.height = stackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height;
+        class View: UIView {
+          var dpvs: [UIView] = [];
+          var abs: [UIView] = [];
+          func clearViews() {
+            for v in subviews {
+              v.removeFromSuperview();
             }
+            dpvs = [];
+            abs = [];
+          }
+          func addDpv(_ v: UIView) {
+            dpvs.append(v);
+            addSubview(v);
+          }
+          func addAb(_ v: UIView) {
+            abs.append(v);
+            addSubview(v);
+          }
+          override func layoutSubviews() {
+            for v in dpvs {
+              v.frame.size.width = frame.width
+              v.layoutSubviews();
+            }
+            for v in abs {
+              v.frame.size = v.sizeThatFits(CGSize(
+                width: frame.width,
+                height: CGFloat.greatestFiniteMagnitude
+              ))
+            }
+            super.layoutSubviews();
+            var y: CGFloat = 0;
+            for v in dpvs {
+              if v.isHidden { continue }
+              v.frame.origin.y = y;
+              y = v.frame.maxY;
+            }
+            for v in abs {
+              if v.isHidden { continue }
+              v.frame.origin.y = y;
+              y = v.frame.maxY;
+            }
+            frame.size.height = y
           }
         }
       `

@@ -50,9 +50,9 @@ foam.CLASS({
             super.viewDidLayoutSubviews();
           }
           func updateSize() {
-            let dvv = dv.getView() as! UIStackView
+            let dvv = dv.getView()!
             dvv.frame.size.width = view.frame.width;
-            dvv.frame.size.height = dvv.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+            dvv.layoutSubviews();
             let sv = view as! UIScrollView;
             sv.contentSize = dvv.frame.size
           }
