@@ -6,10 +6,6 @@ foam.CLASS({
   ],
   requires: [
     'foam.util.ArrayDetachable',
-    {
-      flags: ['swift'],
-      path: 'foam.cross_platform.ui.layout.EmailCitationView',
-    }
   ],
   swiftImports: [
     'UIKit'
@@ -154,8 +150,8 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        let v = foam_cross_platform_ui_layout_EmailCitationView.View();
-        v.o = EmailCitationView_create().build();
+        let v = UIStackView();
+        v.axis = .horizontal
         return v;
       `
     },
@@ -206,22 +202,11 @@ foam.CLASS({
       `,
       swiftCode: `
         let s = foam_cross_platform_type_StringType.INSTANCE();
-        var text: Any? = nil;
-
-        text = getAvatarTextExpr()!.f(getData());
-        getAvatarTextView().text = s.toStringValue(text);
-
-        text = getFromExpr()!.f(getData());
-        getFromView().text = s.toStringValue(text);
-
-        text = getSubjectExpr()!.f(getData());
-        getSubjectView().text = s.toStringValue(text);
-
-        text = getBodyExpr()!.f(getData());
-        getBodyView().text = s.toStringValue(text);
-
-        text = getTimeExpr()!.f(getData());
-        getTimeView().text = s.toStringValue(text);
+        getAvatarTextView().text = s.toStringValue(getAvatarTextExpr()!.f(getData()));
+        getFromView().text = s.toStringValue(getFromExpr()!.f(getData()));
+        getSubjectView().text = s.toStringValue(getSubjectExpr()!.f(getData()));
+        getBodyView().text = s.toStringValue(getBodyExpr()!.f(getData()));
+        getTimeView().text = s.toStringValue(getTimeExpr()!.f(getData()));
       `,
     },
     {
@@ -249,26 +234,26 @@ foam.CLASS({
         v.addView(getTimeView());
       `,
       swiftCode: `
-        if ( getView() == nil ) { return; }
-        for v in getView()!.subviews {
-          v.removeFromSuperview()
+        let v = getView() as! UIStackView;
+        if ( v.arrangedSubviews.count > 0 ) {
+          v.arrangedSubviews[1].subviews.forEach { sv in sv.removeFromSuperview() }
         }
+        v.arrangedSubviews.forEach { sv in v.removeArrangedSubview(sv) }
 
-        let v = getView() as! foam_cross_platform_ui_layout_EmailCitationView.View
-        v.addSubview(getAvatarTextView());
-        v.addSubview(getFromView());
-        v.addSubview(getSubjectView());
-        v.addSubview(getBodyView());
-        v.addSubview(getTimeView());
+        getAvatarTextView().setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        v.addArrangedSubview(getAvatarTextView());
 
-        v.o?.setAvatarText(getAvatarTextView());
-        v.o?.setFrom(getFromView());
-        v.o?.setSubject(getSubjectView());
-        v.o?.setBody(getBodyView());
-        v.o?.setTime(getTimeView());
-        v.o?.setParent(getView());
+        let mid = UIStackView()
+        mid.axis = .vertical
+        mid.addArrangedSubview(getFromView());
+        mid.addArrangedSubview(getSubjectView());
+        mid.addArrangedSubview(getBodyView());
+        mid.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        v.addArrangedSubview(mid)
+        v.distribution = .fill
 
-        v.setNeedsLayout();
+        getTimeView().setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        v.addArrangedSubview(getTimeView());
       `,
     },
   ]

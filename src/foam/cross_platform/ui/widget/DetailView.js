@@ -12,34 +12,6 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
-  axioms: [
-    {
-      class: 'foam.cross_platform.code_generation.Extras',
-      swiftCode: `
-        class VerticalLayout: UIView {
-          override func layoutSubviews() {
-            super.layoutSubviews();
-            var y: CGFloat = 0;
-            for v in subviews {
-              if v.isHidden { continue }
-              let size = v.sizeThatFits(CGSize(width: Int(frame.width), height: Int.max))
-              v.frame = CGRect(
-                x: (frame.width - size.width) / 2,
-                y: y,
-                width: size.width,
-                height: size.height);
-              y = v.frame.maxY + 1
-            }
-            self.frame = CGRect(
-              x: self.frame.minX,
-              y: self.frame.minY,
-              width: self.frame.width,
-              height: y)
-          }
-        }
-      `,
-    }
-  ],
   imports: [
     {
       name: 'theme',
@@ -149,7 +121,12 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        return VerticalLayout();
+        let v = View();
+        v.axis = .vertical;
+        v.alignment = .fill
+        v.distribution = .fill
+        v.spacing = 0;
+        return v;
       `
     },
     {
@@ -252,10 +229,9 @@ foam.CLASS({
           setSub_(nil);
         }
         if ( getView() == nil ) { return; }
-        let view = getView()!
-        let f = CGRect(x: 0, y: 0, width: view.frame.width, height: 0);
-        for v in view.subviews {
-          v.removeFromSuperview();
+        let view = getView() as! UIStackView;
+        for v in view.arrangedSubviews {
+          view.removeArrangedSubview(v);
         }
         if getData() == nil { return; }
         var subs = [] as [foam_core_Detachable];
@@ -274,33 +250,42 @@ foam.CLASS({
           subs.append(ArrayDetachable_create()
             .setArray([
               visibility!.slotSub(l)!,
-              dpv.bindData(getData(), p),
-              dpv.getData$().slotSub(<%=listener(\`
-                let layout = (dpv.getView() as! foam_cross_platform_ui_layout_DetailPropertyView.View).o;
-                let propData = layout?.getPropData();
-                layout?.clearProperty("propData");
-                layout?.setPropData(propData);
-                if ( dpv.getView()!.frame.height != CGFloat(layout!.getParentH()) ) {
-                  self?.getView()?.setNeedsLayout();
-                }
-              \`)%>),
+              dpv.bindData(getData(), p)
             ])
             .build());
           l.executeListener(nil, nil);
-          dpv.getView()?.frame = f;
-          view.addSubview(dpv.getView()!)
+          view.addArrangedSubview(dpv.getView()!)
           views.append(dpv);
         }
 
         for i in 0..<getActions()!.count {
           let ab = ActionButton_create().build();
           subs.append(ab.bindData(getData(), getActions()![i])!);
-          view.addSubview(ab.getView()!);
+          view.addArrangedSubview(ab.getView()!);
           views.append(ab);
         }
         setViews_(views);
+        subs.append(getData()!.sub(nil, <%=listener(\`
+          self?.getView()?.setNeedsLayout();
+        \`)%>)!);
         setSub_(ArrayDetachable_create().setArray(subs).build());
       `,
     }
-  ]
+  ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      swiftCode: `
+        class View: UIStackView {
+          override func layoutSubviews() {
+            super.layoutSubviews();
+            for subView in arrangedSubviews {
+              guard let stackView = subView as? UIStackView else { continue }
+              stackView.frame.size.height = stackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height;
+            }
+          }
+        }
+      `
+    }
+  ],
 });

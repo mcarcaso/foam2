@@ -30,10 +30,6 @@ foam.CLASS({
     'foam.cross_platform.ui.widget.ActionButton',
     'foam.cross_platform.ui.widget.Label',
     'foam.util.ArrayDetachable',
-    {
-      path: 'foam.cross_platform.ui.layout.DetailPropertyView',
-      flags: ['swift'],
-    },
   ],
   properties: [
     {
@@ -59,6 +55,7 @@ foam.CLASS({
         let lv = v.getView() as? UILabel;
         lv?.textColor = getTheme()!.getOnSurface().withAlphaComponent(0.8);
         lv?.font = getTheme()!.getSubtitle1()
+        lv?.setContentHuggingPriority(.defaultLow, for: .horizontal);
         return v;
       `
     },
@@ -84,6 +81,7 @@ foam.CLASS({
         let lv = v.getView() as! UILabel;
         lv.isHidden = true;
         lv.textColor = getTheme()!.getError();
+        lv.setContentHuggingPriority(.defaultLow, for: .horizontal);
         return v;
       `
     },
@@ -111,6 +109,7 @@ foam.CLASS({
       swiftFactory: `
         let b = UIButton(type: .infoLight);
         b.tintColor = getTheme()!.getOnSurface()
+        b.setContentHuggingPriority(.defaultHigh, for: .horizontal);
         return ActionButton_create()
           .setView(b)
           .build();
@@ -124,6 +123,9 @@ foam.CLASS({
         newValue.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+      `,
+      swiftPostSet: `
+        newValue?.getView()?.setContentHuggingPriority(.defaultLow, for: .horizontal);
       `
     },
     {
@@ -140,14 +142,14 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        let v = foam_cross_platform_ui_layout_DetailPropertyView.View();
-        v.o = DetailPropertyView_create().build();
+        let v = View();
         return v;
       `
     },
   ],
   reactions: [
     ['validationView', 'propertyChange.data', 'updateValidationView'],
+    ['', 'propertyChange.data', 'updateViewHeight'],
     ['', 'propertyChange.validationView', 'updateValidationView'],
   ],
   methods: [
@@ -248,6 +250,11 @@ foam.CLASS({
   ],
   listeners: [
     {
+      name: 'updateViewHeight',
+      isFramed: true,
+      swiftCode: `getView()?.setNeedsLayout();`,
+    },
+    {
       name: 'updateValidationView',
       isFramed: true,
       androidCode: `
@@ -260,15 +267,11 @@ foam.CLASS({
         let isEmpty = foam_cross_platform_type_StringType.INSTANCE()
           .isEmpty(getValidationView()?.getData() as? String);
         let v = getValidationView()!.getView()!
-        if ( v.isHidden != isEmpty ) {
-          v.isHidden = isEmpty;
-          layoutViews(nil, nil);
-        }
+        v.isHidden = isEmpty;
       `,
     },
     {
       name: 'layoutViews',
-      isFramed: true,
       androidCode: `
         if ( getView() == null ) return;
 
@@ -304,25 +307,58 @@ foam.CLASS({
         right.addView(getHelpView().getView());
       `,
       swiftCode: `
-        if ( getView() == nil ) { return; }
-        for v in getView()!.subviews {
-          v.removeFromSuperview()
+        let v = getView() as! UIStackView;
+        v.arrangedSubviews.forEach { sv in
+          v.removeArrangedSubview(sv);
+          if !(sv is UIStackView) { return }
+          (sv as! UIStackView).arrangedSubviews.forEach { ssv in
+            (sv as! UIStackView).removeArrangedSubview(ssv);
+          }
         }
 
-        let v = getView() as! foam_cross_platform_ui_layout_DetailPropertyView.View
-        v.addSubview(getLabelView()!.getView()!);
-        v.addSubview(getHelpView()!.getView()!);
-        v.addSubview(getDataView()!.getView()!);
-        v.addSubview(getValidationView()!.getView()!);
+        let left = UIStackView();
+        left.axis = .vertical;
+        left.alignment = .fill
+        left.distribution = .fill
+        left.spacing = 0;
+        left.setContentHuggingPriority(.defaultLow, for: .horizontal);
+        v.addArrangedSubview(left);
 
-        v.o?.setLabel(getLabelView()!.getView());
-        v.o?.setHelp(getHelpView()!.getView());
-        v.o?.setValidation(getValidationView()!.getView());
-        v.o?.setPropData(getDataView()!.getView());
-        v.o?.setParent(getView());
+        left.addArrangedSubview(getLabelView()!.getView()!);
+        left.addArrangedSubview(getDataView()!.getView()!);
+        left.addArrangedSubview(getValidationView()!.getView()!);
 
-        v.setNeedsLayout();
+        let right = UIStackView();
+        right.axis = .vertical;
+        right.setContentHuggingPriority(.defaultHigh, for: .horizontal);
+        v.addArrangedSubview(right);
+
+        right.addArrangedSubview(getHelpView()!.getView()!);
       `,
     }
-  ]
+  ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      swiftCode: `
+        class View: UIStackView {
+          override func layoutSubviews() {
+            super.layoutSubviews();
+            if arrangedSubviews.count == 0 { return }
+            let dataView = (arrangedSubviews[0] as! UIStackView).arrangedSubviews[1];
+            dataView.frame.size.height = dataView.sizeThatFits(CGSize(
+              width: dataView.frame.width,
+              height: CGFloat.greatestFiniteMagnitude
+            )).height;
+            let h = max(
+              (arrangedSubviews[0] as! UIStackView).systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height,
+              (arrangedSubviews[1] as! UIStackView).systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+            )
+            (arrangedSubviews[0] as! UIStackView).frame.size.height = h;
+            (arrangedSubviews[1] as! UIStackView).frame.size.height = h;
+          }
+        }
+      `
+    }
+  ],
 });

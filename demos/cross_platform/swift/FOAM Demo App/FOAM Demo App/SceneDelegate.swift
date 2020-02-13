@@ -41,35 +41,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       .build();
     x = s.getSubX();
 
-//    let d = foam_dao_ArrayDAO.foam_dao_ArrayDAOBuilder(x)
-//      .setOf(demo_Person.CLS_())
-//      .build();
-//    for i in 0..<10 {
-//      _ = d.put(demo_Person.demo_PersonBuilder(x)
-//        .setFirstName("Mike")
-//        .setLastName("Car" + String(i))
-//        .build());
-//    }
     let d = foam_dao_ArrayDAO.foam_dao_ArrayDAOBuilder(x)
-      .setOf(foam_core_Property.CLS_())
+      .setOf(demo_Person.CLS_())
       .build();
-
-    DispatchQueue.global(qos: .background).async {
-      var curX: foam_cross_platform_Context? = x;
-      var numPut = 0
-      while curX != nil {
-        curX!.getClassMap_()?.values.forEach({ (cls) in
-          (cls as! foam_cross_platform_FoamClass)
-            .getOwnAxiomsByClass(foam_core_Property.CLS_())?
-            .forEach({ (a) in
-              if numPut > 100 { return }
-              _ = d.put(a)
-              numPut += 1
-            })
-        })
-        curX = curX?.getParent_()
-      }
+    for i in 0..<10 {
+      _ = d.put(demo_Person.demo_PersonBuilder(x)
+        .setFirstName("Mike")
+        .setLastName("Car" + String(i))
+        .build());
     }
+//    let d = foam_dao_ArrayDAO.foam_dao_ArrayDAOBuilder(x)
+//      .setOf(foam_core_Property.CLS_())
+//      .build();
+//
+//    DispatchQueue.global(qos: .background).async {
+//      var curX: foam_cross_platform_Context? = x;
+//      var numPut = 0
+//      while curX != nil {
+//        curX!.getClassMap_()?.values.forEach({ (cls) in
+//          (cls as! foam_cross_platform_FoamClass)
+//            .getOwnAxiomsByClass(foam_core_Property.CLS_())?
+//            .forEach({ (a) in
+//              if numPut > 100 { return }
+//              _ = d.put(a)
+//              numPut += 1
+//            })
+//        })
+//        curX = curX?.getParent_()
+//      }
+//    }
 
     s.push(foam_cross_platform_ui_stack_DAOView
       .foam_cross_platform_ui_stack_DAOViewBuilder(x)
@@ -79,9 +79,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         .foam_cross_platform_ui_SimpleViewFactoryBuilder(x)
         .setViewClass(foam_cross_platform_ui_widget_EmailCitationView.CLS_())
         .setViewArgs([
-          "fromExpr": foam_core_Property.FOR_CLASS_(),
-          "subjectExpr": foam_core_Property.NAME(),
-          "timeExpr": foam_core_Property.TYPE()
+          "fromExpr": demo_Person.FIRST_NAME(),
+          "subjectExpr": demo_Person.LAST_NAME(),
+          "timeExpr": demo_Person.FULL_NAME()
+//          "fromExpr": foam_core_Property.FOR_CLASS_(),
+//          "subjectExpr": foam_core_Property.NAME(),
+//          "timeExpr": foam_core_Property.TYPE()
         ])
         .build())
       .build())

@@ -78,6 +78,7 @@ foam.CLASS({
       `,
       swiftFactory: `
         let v = UITextView();
+        v.isScrollEnabled = false;
         v.backgroundColor = getTheme()!.getSurface();
         v.textColor = getTheme()!.getOnSurface();
         v.font = UIFont.systemFont(ofSize: 18)

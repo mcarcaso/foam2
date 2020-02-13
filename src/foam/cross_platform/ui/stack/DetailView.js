@@ -33,6 +33,7 @@ foam.CLASS({
       swiftCode: `
         class ViewController: UIViewController {
           var dv: foam_cross_platform_ui_widget_DetailView;
+          var sub: foam_core_Detachable?;
           init(_ dv: foam_cross_platform_ui_widget_DetailView) {
             self.dv = dv;
             super.init(nibName: nil, bundle: nil);
@@ -40,15 +41,20 @@ foam.CLASS({
             sv.keyboardDismissMode = .onDrag
             view = sv
             sv.addSubview(dv.getView()!)
-            dv.getView()?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 0);
           }
           required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
           }
-          override func viewWillLayoutSubviews() {
-            super.viewWillLayoutSubviews();
+          override func viewDidLayoutSubviews() {
+            updateSize();
+            super.viewDidLayoutSubviews();
+          }
+          func updateSize() {
+            let dvv = dv.getView() as! UIStackView
+            dvv.frame.size.width = view.frame.width;
+            dvv.frame.size.height = dvv.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
             let sv = view as! UIScrollView;
-            sv.contentSize = dv.getView()!.frame.size
+            sv.contentSize = dvv.frame.size
           }
           override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
@@ -62,6 +68,17 @@ foam.CLASS({
               selector: #selector(keyboardDidAppear),
               name: UIResponder.keyboardDidShowNotification,
               object: nil)
+            sub?.detach();
+            sub = dv.getData()?.sub(nil, dv.AnonymousListener_create()
+              .setFn({ [weak self] (_: foam_core_Detachable?, args: [Any?]?) -> Void in
+                self?.updateSize();
+              })
+              .build());
+          }
+          override func viewWillDisappear(_ animated: Bool) {
+            sub?.detach();
+            NotificationCenter.default.removeObserver(self)
+            super.viewWillAppear(animated)
           }
           @objc
           func keyboardDidAppear(_ notification: NSNotification) {
@@ -79,10 +96,6 @@ foam.CLASS({
             let sv = view as! UIScrollView
             sv.contentInset.bottom = 0
             sv.verticalScrollIndicatorInsets.bottom = 0
-          }
-          override func viewWillDisappear(_ animated: Bool) {
-            NotificationCenter.default.removeObserver(self)
-            super.viewWillAppear(animated)
           }
         }
       `
