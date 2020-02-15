@@ -1,0 +1,49 @@
+foam.CLASS({
+  package: 'foam.cross_platform.deserialize.json',
+  name: 'LongParser',
+  implements: ['foam.cross_platform.deserialize.Parser'],
+  axioms: [
+    { class: 'foam.pattern.Singleton' }
+  ],
+  methods: [
+    {
+      name: 'parse',
+      androidCode: `
+        long n = 0;
+
+        boolean negate = false;
+
+        if ( ! ps.valid() ) return null;
+
+        char c = ps.head();
+
+        if ( c == '-' ) {
+          negate = true;
+          ps = ps.tail();
+          if ( ! ps.valid() ) return null;
+          c = ps.head();
+        }
+
+        if ( c.isDigit() ) n = Long.parseLong(c);
+        else return null;
+
+        ps = ps.tail();
+
+        while ( ps.valid() ) {
+          c = ps.head();
+          if (c.isDigit()) {
+            n *= 10;
+            n += Long.parseLong(c);
+          } else {
+            break;
+          }
+          ps = ps.tail();
+        }
+
+        if ( negate ) n *= -1;
+
+        return ps.setValue(n);
+      `
+    },
+  ]
+});

@@ -59,6 +59,7 @@
       classIds: [
         'demo.ArrayDAO',
         'demo.Compare',
+        'demo.Deserialize',
         'demo.ImportExport',
         'demo.MLang',
         'demo.Method',
