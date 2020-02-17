@@ -5,10 +5,10 @@ foam.CLASS({
   requires: [
     'foam.cross_platform.deserialize.Literal',
     'foam.cross_platform.deserialize.ParserContext',
-    'foam.cross_platform.deserialize.StringPStream',
     'foam.cross_platform.deserialize.Seq1',
-    'foam.cross_platform.deserialize.json.Whitespace',
+    'foam.cross_platform.deserialize.StringPStream',
     'foam.cross_platform.deserialize.json.FObjectParser_',
+    'foam.cross_platform.deserialize.json.Whitespace',
   ],
   axioms: [
     { class: 'foam.pattern.Singleton' }

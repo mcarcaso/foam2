@@ -47,17 +47,17 @@ foam.CLASS({
         foam.cross_platform.deserialize.ParserContext subx = x.pxSubContext();
         java.util.Map args = new java.util.HashMap();
         subx.pxSet("obj", args);
-        throw new RuntimeException();
-        /*
-        ps = ModelParserFactory.getInstance(c).parse(ps!, subx)
+        ps = ModelParserFactory_create().build().getInstance(c).parse(ps, subx);
 
-        if ps != nil {
-          let obj = c.create(args: args.value, x: x.get("X") as! Context)
-          return ps!.setValue(obj)
+        if ( ps != null ) {
+          foam.cross_platform.Builder b = c.createBuilder((foam.cross_platform.Context) x.pxGet("X"));
+          for ( Object k : args.keySet() ) {
+            b.setBuilderProperty((String) k, args.get(k));
+          }
+          return ps.setValue(b.builderBuild());
         }
 
-        return nil
-        */
+        return null;
       `
     },
   ],

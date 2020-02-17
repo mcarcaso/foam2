@@ -28,18 +28,20 @@ foam.CLASS({
         { type: 'foam.cross_platform.FoamClass', name: 'cls' }
       ],
       androidCode: `
-        java.util.List parsers = java.util.ArrayList();
-        for ( p : cls.getAxiomsByClass(foam.core.Property.CLS_()) ) {
+        java.util.List parsers = new java.util.ArrayList();
+        for ( foam.cross_platform.FObject p : cls.getAxiomsByClass(foam.core.Property.CLS_()) ) {
           //if p.jsonParser != nil {
             parsers.add(PropertyParser_create().setProperty(p).build());
           //}
         }
         parsers.add(UnknownPropertyParser_create().build());
+        foam.cross_platform.deserialize.Parser[] parsersArray = new foam.cross_platform.deserialize.Parser[parsers.size()];
+        parsers.toArray(parsersArray);
         return Repeat0_create()
           .setDelegate(Seq0_create()
             .setParsers(new foam.cross_platform.deserialize.Parser[] {
               Whitespace_create().build(),
-              Alt_create().setParsers(parsers).build()
+              Alt_create().setParsers(parsersArray).build()
             })
             .build()
           )

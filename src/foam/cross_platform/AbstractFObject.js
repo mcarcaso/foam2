@@ -453,5 +453,15 @@ foam.CLASS({
         return 0
       `
     }
-  ]
+  ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      androidCode: `
+        public boolean equals(Object o) {
+          return compareTo(o) == 0;
+        }
+      `,
+    }
+  ],
 });

@@ -24,7 +24,7 @@ foam.CLASS({
           lastc = c;
           ps = ps.tail();
         }
-        return ps.tail().setValue(sb);
+        return ps.tail().setValue(sb.toString());
       `
     },
   ]

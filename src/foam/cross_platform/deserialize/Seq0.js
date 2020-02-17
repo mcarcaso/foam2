@@ -13,7 +13,7 @@ foam.CLASS({
     {
       name: 'parse',
       androidCode: `
-        for ( foam.cross_platform.deserialize.Parser parser in getParsers() ) {
+        for ( foam.cross_platform.deserialize.Parser parser : getParsers() ) {
           ps = parser.parse(ps, x);
           if ( ps == null ) return null;
         }

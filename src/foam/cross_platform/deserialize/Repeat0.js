@@ -28,8 +28,8 @@ foam.CLASS({
 
         int i = 0;
         while ( getMax() == -1 || i < getMax() ) {
-          if ( delim != null && ! first ) {
-            result = delim.parse(ps, x);
+          if ( getDelegate() != null && ! first ) {
+            result = getDelegate().parse(ps, x);
             if ( result == null ) break;
             ps = result;
           }

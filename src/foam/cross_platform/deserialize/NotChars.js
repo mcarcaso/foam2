@@ -15,7 +15,7 @@ foam.CLASS({
     {
       name: 'parse',
       androidCode: `
-        if ( ps.valid() && chars.indexOf(ps.head()) == -1 ) {
+        if ( ps.valid() && getChars().indexOf(ps.head()) == -1 ) {
           return ps.tail().setValue(ps.head());
         }
         return null;

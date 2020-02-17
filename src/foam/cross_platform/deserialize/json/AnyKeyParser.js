@@ -22,14 +22,14 @@ foam.CLASS({
             Seq1_create()
               .setIndex(1)
               .setParsers(new foam.cross_platform.deserialize.Parser[] {
-                Literal_create().setString("\\"").build(),
+                Literal_create().setString("\\\\"").build(),
                 Substring_create().setDelegate(
                   Repeat0_create().setDelegate(
-                    NotChars_create().setChars("\\"").build()
+                    NotChars_create().setChars("\\\\"").build()
                   )
                   .build())
                 .build(),
-                Literal_create().setString("\\"").build()
+                Literal_create().setString("\\\\"").build()
               })
               .build(),
             Seq1_create()

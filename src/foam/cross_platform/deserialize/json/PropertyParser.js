@@ -3,6 +3,8 @@ foam.CLASS({
   name: 'PropertyParser',
   extends: 'foam.cross_platform.deserialize.ProxyParser',
   requires: [
+    'foam.cross_platform.deserialize.json.AnyParser',
+
     'foam.cross_platform.deserialize.Literal',
     'foam.cross_platform.deserialize.Seq1',
     'foam.cross_platform.deserialize.json.KeyParser',
@@ -16,12 +18,12 @@ foam.CLASS({
     },
     {
       name: 'delegate',
-      androidCode: `
-        return Seq1_create(["index": 5, "parsers": [
+      androidFactory: `
+        return Seq1_create()
           .setIndex(5)
           .setParsers(new foam.cross_platform.deserialize.Parser[] {
             Whitespace_create().build(),
-            KeyParser_create().setKey(getProperty().getName()),
+            KeyParser_create().setKey(getProperty().getName()).build(),
             Whitespace_create().build(),
             Literal_create().setString(":").build(),
             Whitespace_create().build(),
@@ -36,13 +38,13 @@ foam.CLASS({
   methods: [
     {
       name: 'parse',
-      swiftCode_DELETE: function() {/*
-let ps = super.parse(ps, x);
-if ps == nil { return nil }
-let args = x.get("obj") as! Reference<[String:Any?]>
-args.value[property.name] = ps!.value()
-return ps
-      */},
+      androidCode: `
+        ps = super.parse(ps, x);
+        if ( ps == null ) return null;
+        java.util.Map args = (java.util.Map) x.pxGet("obj");
+        args.put(getProperty().getName(), ps.value());
+        return ps;
+      `
     },
   ],
 });
