@@ -12,11 +12,12 @@ foam.CLASS({
         Deserialize o = Deserialize_create().build();
         foam.cross_platform.deserialize.json.FObjectParser p = o.FObjectParser_create().build();
 
-        foam.cross_platform.FObject parsed = p.parseString("{class: 'demo.Person', firstName: 'Mike'}", null);
+        foam.cross_platform.FObject parsed = p.parseString("{class: 'demo.Person', firstName: 'Mike', isMale: true}", null);
         foam.cross_platform.FObject expected = o.Person_create().build();
         assertFalse(parsed.equals(expected));
 
         expected.setProperty("firstName", "Mike");
+        expected.setProperty("isMale", true);
         assertTrue(parsed.equals(expected));
       `
     },
