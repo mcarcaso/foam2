@@ -27,8 +27,7 @@ foam.CLASS({
             Whitespace_create().build(),
             Literal_create().setString(":").build(),
             Whitespace_create().build(),
-            //getProperty().getJsonParser(),
-            AnyParser_create().build(),
+            (foam.cross_platform.deserialize.Parser) getProperty().getCrossPlatformJsonParser(),
             Whitespace_create().build()
           })
         .build();

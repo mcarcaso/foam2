@@ -4,7 +4,8 @@ foam.CLASS({
   refines: 'foam.core.StringProperty',
   flags: ['android'],
   requires: [
-    'foam.cross_platform.ui.widget.TextField'
+    'foam.cross_platform.deserialize.json.StringParser',
+    'foam.cross_platform.ui.widget.TextField',
   ],
   properties: [
     {
@@ -15,6 +16,10 @@ foam.CLASS({
           return foam.cross_platform.ui.widget.TextField.TextFieldBuilder(x).build();
         }
       `
+    },
+    {
+      name: 'crossPlatformJsonParser',
+      androidValue: `StringParser_create().build()`
     },
   ]
 });

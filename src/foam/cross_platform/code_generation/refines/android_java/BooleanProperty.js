@@ -4,7 +4,8 @@ foam.CLASS({
   refines: 'foam.core.BooleanProperty',
   flags: ['android'],
   requires: [
-    'foam.cross_platform.ui.widget.ToggleSwitch'
+    'foam.cross_platform.deserialize.json.BooleanParser',
+    'foam.cross_platform.ui.widget.ToggleSwitch',
   ],
   properties: [
     {
@@ -19,6 +20,10 @@ foam.CLASS({
           return foam.cross_platform.ui.widget.ToggleSwitch.ToggleSwitchBuilder(x).build();
         }
       `
+    },
+    {
+      name: 'crossPlatformJsonParser',
+      androidValue: `BooleanParser_create().build()`
     },
   ]
 });

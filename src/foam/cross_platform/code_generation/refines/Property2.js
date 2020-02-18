@@ -3,7 +3,8 @@ foam.CLASS({
   name: 'PropertyJavaRefinement2',
   refines: 'foam.core.Property',
   requires: [
-    'foam.cross_platform.ui.widget.Label'
+    'foam.cross_platform.deserialize.json.AnyParser',
+    'foam.cross_platform.ui.widget.Label',
   ],
   properties: [
     {
@@ -34,7 +35,12 @@ foam.CLASS({
           })
           .build()
       `
-    }
+    },
+    {
+      class: 'FObjectProperty',
+      name: 'crossPlatformJsonParser',
+      androidValue: `AnyParser_create().build()`
+    },
   ],
   methods: [
     {
