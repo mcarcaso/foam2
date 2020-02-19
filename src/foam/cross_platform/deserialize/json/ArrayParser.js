@@ -3,11 +3,12 @@ foam.CLASS({
   name: 'ArrayParser',
   extends: 'foam.cross_platform.deserialize.ProxyParser',
   requires: [
-    'foam.cross_platform.deserialize.json.Whitespace',
     'foam.cross_platform.deserialize.Literal',
     'foam.cross_platform.deserialize.Repeat',
     'foam.cross_platform.deserialize.Seq0',
     'foam.cross_platform.deserialize.Seq1',
+    'foam.cross_platform.deserialize.json.AnyParser',
+    'foam.cross_platform.deserialize.json.Whitespace',
   ],
   axioms: [
     { class: 'foam.pattern.Singleton' }
@@ -15,7 +16,7 @@ foam.CLASS({
   properties: [
     {
       name: 'delegate',
-      androidCode: `
+      androidFactory: `
         return Seq1_create()
           .setIndex(3)
           .setParsers(new foam.cross_platform.deserialize.Parser[] {
@@ -24,13 +25,13 @@ foam.CLASS({
             Whitespace_create().build(),
             Repeat_create()
               .setDelegate(AnyParser_create().build())
-              .setDelim(Seq0_create()
-                  .setParsers(new foam.cross_platform.deserialize.Parser[] {
-                    Whitespace_create().build(),
-                    Literal_create().setString(",").build(),
-                    Whitespace_create().build(),
-                  })
-                  .build(),
+              .setDelim(
+                Seq0_create().setParsers(new foam.cross_platform.deserialize.Parser[] {
+                  Whitespace_create().build(),
+                  Literal_create().setString(",").build(),
+                  Whitespace_create().build(),
+                })
+                .build()
               )
               .build(),
             Whitespace_create().build(),

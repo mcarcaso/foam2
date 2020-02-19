@@ -59,8 +59,8 @@
       classIds: [
         'demo.ArrayDAO',
         'demo.Compare',
-        'demo.Deserialize',
         'demo.ImportExport',
+        'demo.Json',
         'demo.MLang',
         'demo.Method',
         'demo.Person',

@@ -32,6 +32,7 @@ foam.CLASS({
     {
       name: 'isInstance',
       androidCode: `
+        // Horribly innefficient
         return toObjectArray(o) != null;
       `,
       swiftCode: `
@@ -88,6 +89,9 @@ ${[
           }
         }
 `).join('\n')}
+        if ( o instanceof java.util.List ) {
+          a = ((java.util.List) o).toArray();
+        }
         if ( o instanceof Object[] ) {
           a = (Object[]) o;
         }

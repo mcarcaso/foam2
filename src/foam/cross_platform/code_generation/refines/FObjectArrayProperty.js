@@ -15,7 +15,24 @@ foam.CLASS({
           return `new ${this.of}[] { ${v.map(s => foam.android.tools.asAndroidValue(s)).join(', ')} }`;
         }
       }
-    }
+    },
+    {
+      name: 'androidAdapt',
+      expression: function(of) {
+        return `
+          if ( newValue instanceof ${of}[] ) return (${of}[]) newValue;
+          Object[] oa = foam.cross_platform.type.ArrayType
+            .ArrayTypeBuilder(null)
+            .build()
+            .toObjectArray(newValue);
+          ${of}[] sa = new ${of}[oa.length];
+          for ( int i = 0 ; i < oa.length ; i++ ) {
+            sa[i] = (${of}) oa[i];
+          }
+          return sa;
+        `
+      }
+    },
   ],
   methods: [
     {

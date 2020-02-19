@@ -43,7 +43,7 @@ foam.CLASS({
     },
     {
       class: 'FObjectProperty',
-      of: 'foam.cross_platform.type.Type',
+      of: 'foam.cross_platform.type.ArrayType',
       name: 'arrayType',
       androidFactory: 'return ArrayType_create().build();',
       swiftFactory: 'return ArrayType_create().build();',

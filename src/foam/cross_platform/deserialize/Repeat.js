@@ -43,7 +43,7 @@ foam.CLASS({
         }
         
         if ( getMin() != -1 && values.size() < getMin() ) return null;
-        return ps.setValue(values);
+        return ps.setValue(values.toArray());
       `
     },
   ]

@@ -74,6 +74,7 @@ foam.CLASS({
       of: 'foam.cross_platform.ListenerList',
       name: 'listeners__',
       hidden: true,
+      transient: true,
       androidComparePropertyValues: `null`,
       swiftComparePropertyValues: 'nil',
       androidFactory: `
@@ -97,6 +98,7 @@ foam.CLASS({
       swiftOptional: false,
       name: 'x',
       hidden: true,
+      transient: true,
       androidSetter: `
         x_ = value instanceof foam.cross_platform.Context ?
           (foam.cross_platform.Context) value : null;
@@ -126,6 +128,7 @@ foam.CLASS({
       of: 'foam.cross_platform.Context',
       name: 'subX',
       hidden: true,
+      transient: true,
       swiftOptional: false,
       androidComparePropertyValues: `null`,
       swiftComparePropertyValues: `nil`,
