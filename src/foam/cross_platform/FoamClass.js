@@ -39,7 +39,7 @@ foam.CLASS({
         return m;
       `,
       swiftFactory: `
-        var m: [AnyHashable:Any?] = [:];
+        let m = NSMutableDictionary();
         for aO in getOwnAxioms()! {
           let a = aO as! foam_cross_platform_FObject;
           m[a.getProperty("name") as! String] = a;
@@ -60,8 +60,8 @@ foam.CLASS({
       `,
       swiftFactory: `
         if getParent() == nil { return getOwnAxiomMap_(); }
-        var m: [AnyHashable:Any?] = getOwnAxiomMap_()!;
-        for k in getParent()!.getAxiomMap_()!.keys {
+        let m = getOwnAxiomMap_()!;
+        for k in getParent()!.getAxiomMap_()!.allKeys {
           if m[k] == nil { m[k] = getParent()!.getAxiomMap_()![k]; }
         }
         return m;
@@ -183,16 +183,14 @@ foam.CLASS({
         return a;
       `,
       swiftCode: `
-        if getCachedAxiomsByClass_()?[type!.getId()] != nil {
-          return getCachedAxiomsByClass_()![type!.getId()] as? [foam_cross_platform_FObject];
+        if getCachedAxiomsByClass_()?[type!.getId()!] != nil {
+          return getCachedAxiomsByClass_()![type!.getId()!] as? [foam_cross_platform_FObject];
         }
         var axioms: [foam_cross_platform_FObject] = [];
         for a in getAxioms()! {
           if type!.isInstance(a) { axioms.append(a as! foam_cross_platform_FObject) }
         }
-        var m = getCachedAxiomsByClass_()!
-        m[type?.getId()] = axioms;
-        setCachedAxiomsByClass_(m)
+        getCachedAxiomsByClass_()![type!.getId()!] = axioms;
         return axioms;
       `
     },

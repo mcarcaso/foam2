@@ -36,9 +36,7 @@ foam.CLASS({
         getClassMap_().put(id, cls);
       `,
       swiftCode: `
-        var map = getClassMap_()!;
-        map[id!] = cls;
-        setClassMap_(map);
+        getClassMap_()![id!] = cls;
       `
     },
     {
@@ -85,8 +83,8 @@ foam.CLASS({
           .build();
       `,
       swiftCode: `
-        var slotMap: [AnyHashable:Any?] = [:];
-        for k in map!.keys {
+        let slotMap = NSMutableDictionary();
+        for k in map!.allKeys {
           var value = map![k]!;
           if !foam_core_SlotInterfaceClass.CLS_().isInstance(value) {
             value = ConstantSlot_create()

@@ -25,6 +25,9 @@ foam.CLASS({
       androidCode: `
         return getMap_().containsKey(key) ? getMap_().get(key) :
           getParent_() != null ? getParent_().pxGet(key) : null;
+      `,
+      swiftCode: `
+        return getMap_()?[key!] ?? getParent_()?.pxGet(key);
       `
     },
     {
@@ -41,6 +44,9 @@ foam.CLASS({
       ],
       androidCode: `
         getMap_().put(key, value);
+      `,
+      swiftCode: `
+        getMap_()![key!] = value;
       `
     },
     {
@@ -49,6 +55,12 @@ foam.CLASS({
       androidCode: `
         return ParserContextBuilder(getSubX())
           .setParent_(this)
+          .build();
+      `,
+      swiftCode: `
+        return foam_cross_platform_deserialize_ParserContext
+          .foam_cross_platform_deserialize_ParserContextBuilder(getSubX())
+          .setParent_(self)
           .build();
       `
     }

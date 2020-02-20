@@ -247,6 +247,8 @@ foam.CLASS({
             ${this.swiftExpression}
           `
         });
+        var privateVarCast = this.swiftType == 'Any?' ? '' :
+          ` as${this.swiftType.endsWith('?') ? '!' : '?'} ${this.swiftType}`
         getter.body = `
           if !${this.crossPlatformIsSetVarName} && ${subName} == nil {
             ${subName} = foam_core_ExpressionSlot.foam_core_ExpressionSlotBuilder(getSubX())
@@ -264,13 +266,13 @@ foam.CLASS({
                 .build()
               )
               .build();
-            ${this.crossPlatformPrivateVarName} = ${subName}!.slotGet() as${this.swiftType.endsWith('?') ? '!' : '?'} ${this.swiftType};
+            ${this.crossPlatformPrivateVarName} = ${subName}!.slotGet()${privateVarCast};
 
             onDetach(${subName}!.slotSub(AnonymousListener_create()
               .setFn({[weak self] (sub: foam_core_Detachable?, args: [Any?]?) -> Void in
                 if self == nil { return }
                 if foam_cross_platform_Lib.compare(self!.${subName}!.slotGet(), self!.${this.crossPlatformPrivateVarName}) != 0 {
-                  self!.${this.crossPlatformPrivateVarName} = self!.${subName}!.slotGet() as${this.swiftType.endsWith('?') ? '!' : '?'} ${this.swiftType};
+                  self!.${this.crossPlatformPrivateVarName} = self!.${subName}!.slotGet()${privateVarCast};
                   _ = self!.pub(["propertyChange", "${this.name}", self!.${this.crossPlatformPrivateVarName}]);
                 }
               })

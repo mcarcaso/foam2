@@ -151,7 +151,7 @@ foam.CLASS({
         if exports.count == 0 { return getX(); }
         let st = foam_cross_platform_type_StringType.INSTANCE();
 
-        var exportMap: [AnyHashable:Any?] = [:];
+        let exportMap = NSMutableDictionary();
         for eO in exports {
           let e = eO as! foam_core_Export;
           exportMap[e.getExportName()!] = st.isEmpty(e.getKey()) ?
@@ -237,8 +237,8 @@ foam.CLASS({
         var l = listeners;
         while l != nil {
           l!.getSubscription()?.detach();
-          for (_, child) in l!.getChildren()! {
-            detachListeners_(child as! foam_cross_platform_ListenerList?);
+          for child in l!.getChildren()!.allValues {
+            detachListeners_(child as? foam_cross_platform_ListenerList);
           }
           l = l!.getNext();
         }
@@ -343,7 +343,7 @@ foam.CLASS({
         if args == nil { return count; }
         for arg in args! {
           if !(arg is String) { break; }
-          if !listeners!.getChildren()!.keys.contains(arg as! AnyHashable) { break; }
+          if listeners!.getChildren()![arg!] == nil { break; }
           listeners = listeners!.getChildren()![arg as! AnyHashable]
             as? foam_cross_platform_ListenerList;
           count += notify(listeners!.getNext(), args);
@@ -390,8 +390,8 @@ foam.CLASS({
         var listeners = getListeners__();
         if topics != nil {
           for topic in topics! {
-            if !listeners!.getChildren()!.keys.contains(topic) {
-              var children = listeners!.getChildren()!
+            if listeners!.getChildren()![topic] == nil {
+              let children = listeners!.getChildren()!
               children[topic] = ListenerList_create().build()
               listeners!.setChildren(children)
             }

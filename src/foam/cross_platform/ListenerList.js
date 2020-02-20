@@ -18,7 +18,7 @@ foam.CLASS({
       name: 'children',
       swiftSetter: `
         children_isSet_ = true;
-        children_ = value as! [AnyHashable:Any?]?;
+        children_ = value as? NSMutableDictionary;
       `,
       androidSetter: `
         children_isSet_ = true;

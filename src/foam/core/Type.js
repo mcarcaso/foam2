@@ -353,7 +353,7 @@ foam.CLASS({
   axioms: [ { class: 'foam.pattern.Singleton' } ],
   properties: [
     ['java', 'java.util.Map'],
-    ['swift', '[AnyHashable:Any?]'],
+    ['swift', 'NSMutableDictionary'],
   ],
 });
 

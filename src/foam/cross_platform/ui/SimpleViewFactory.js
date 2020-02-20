@@ -26,7 +26,7 @@ foam.CLASS({
       `,
       swiftCode: `
         let builder = getViewClass()!.createBuilder(x)!;
-        for name in getViewArgs()!.keys {
+        for name in getViewArgs()!.allKeys {
           let n = name as! String
           _ = builder.setBuilderProperty(n, getViewArgs()![n]!);
         }

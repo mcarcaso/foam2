@@ -29,17 +29,19 @@ foam.CLASS({
           })
           .build();
       `,
-      swiftFactory_DELETE: function() {/*
-return
-  Seq1_create(["index": 3, "parsers": [
-    Whitespace_create(),
-    Literal_create(["string": "{"]),
-    Whitespace_create(),
-    FObjectParser__create(),
-    Whitespace_create(),
-    Literal_create(["string": "}"]),
-  ]])
-      */},
+      swiftFactory: `
+        return Seq1_create()
+          .setIndex(3)
+          .setParsers([
+            Whitespace_create().build(),
+            Literal_create().setString("{").build(),
+            Whitespace_create().build(),
+            FObjectParser__create().build(),
+            Whitespace_create().build(),
+            Literal_create().setString("}").build()
+          ])
+          .build();
+      `
     },
   ],
   methods: [
@@ -64,6 +66,15 @@ return
         parserContext.pxSet("X", x != null ? x : getSubX());
         foam.cross_platform.deserialize.PStream result = parse(ps, parserContext);
         return result != null ? (foam.cross_platform.FObject) result.value() : null;
+      `,
+      swiftCode: `
+        let ps = StringPStream_create()
+          .setStr(str)
+          .build();
+        let parserContext = ParserContext_create().build();
+        parserContext.pxSet("X", x != nil ? x : getSubX());
+        let result = parse(ps, parserContext);
+        return result?.value() as? foam_cross_platform_FObject;
       `
     },
   ],
