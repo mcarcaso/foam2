@@ -93,36 +93,91 @@ foam.CLASS({
         assertTrue(parsed.equals(expected));
         assertNotNull(o.stringify(parsed));
         assertEquals(o.stringify(parsed), o.stringify(expected));
-      `
-    },
-    {
-      name: 'testOutAndParsePerson',
-      androidCode: `
-        Json j = Json_create().build();
-        foam.cross_platform.deserialize.json.FObjectParser p = j.FObjectParser_create().build();
-        foam.cross_platform.serialize.json.Outputter o = j.Outputter_create().build();
+      `,
+      swiftCode: `
+        let j = Json_create().build();
+        let p = j.FObjectParser_create().build();
+        let o = j.Outputter_create().build();
 
-        String s1 = "{\\\\"class\\\\":\\\\"demo.Person\\\\",\\\\"isMale\\\\":true,\\\\"firstName\\\\":\\\\"Mike\\\\"}";
-        demo.Person parsedP1 = (demo.Person) p.parseString(s1, null);
-        demo.Person expectedP1 = j.Person_create()
-          .setFirstName("Mike")
-          .setIsMale(true)
+        let s = <%=v(\`{
+          class: "demo.AllTypes",
+          long: 9223372036854775807,
+          string: "String!",
+          boolean: true,
+          stringArray: [
+            'Hi',
+            'there'
+          ],
+          array: [
+            1,
+            "Sup",
+            true
+          ],
+          list: [
+            2,
+            "Not much",
+            false
+          ],
+          map: {
+            one: "two",
+            b: false,
+            n: 123
+          },
+          fobject: {
+            class: 'demo.Person',
+            firstName: 'Mike'
+          },
+          fobjectArray: [
+            {
+              class: 'demo.Person',
+              firstName: 'Mike1'
+            },
+            {
+              class: 'demo.Person',
+              firstName: 'Mike2'
+            },
+          ],
+          date: 12345
+        }\`)%>;
+        let parsed = p.parseString(s, nil) as! demo_AllTypes;
+        let expected = j.AllTypes_create()
+          .setLong(Int.max)
+          .setString("String!")
+          .setBoolean(true)
+          .setStringArray([
+            "Hi",
+            "there"
+          ])
+          .setArray([
+            1,
+            "Sup",
+            true
+          ])
+          .setList([
+            2,
+            "Not much",
+            false
+          ])
+          .setMap([
+            "one": "two",
+            "b": false,
+            "n": 123
+          ])
+          .setFobject(j.Person_create()
+            .setFirstName("Mike")
+            .build()
+          )
+          .setFobjectArray([
+            j.Person_create().setFirstName("Mike1").build(),
+            j.Person_create().setFirstName("Mike2").build(),
+          ])
+          .setDate(Date(timeIntervalSince1970: 12345))
           .build();
-        assertTrue(parsedP1.equals(expectedP1));
-        assertEquals(s1, o.stringify(expectedP1));
 
-        String s2 = "{\\\\"class\\\\":\\\\"demo.Person\\\\",\\\\"firstName\\\\":\\\\"Mike\\\\"}";
-        demo.Person parsedP2 = (demo.Person) p.parseString(s2, null);
-        demo.Person expectedP2 = j.Person_create()
-          .setFirstName("Mike")
-          .build();
-        assertTrue(parsedP2.equals(expectedP2));
-        assertEquals(s2, o.stringify(expectedP2));
-
-        assertFalse(parsedP2.equals(parsedP1));
-        parsedP1.setIsMale(false);
-        assertTrue(parsedP2.equals(parsedP1));
+        XCTAssertTrue(parsed.equals(expected));
+        XCTAssertNotNil(o.stringify(parsed));
+        XCTAssertEqual(o.stringify(parsed), o.stringify(expected));
       `
-    },
+    }
   ]
 });

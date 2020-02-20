@@ -29,7 +29,8 @@ foam.CLASS({
         return getStr().charAt(getPos());
       `,
       swiftCode: `
-        return str[pos]
+        let s = foam_cross_platform_type_StringType.INSTANCE();
+        return s.charAt(getStr(), getPos());
       `
     },
     {
@@ -38,7 +39,7 @@ foam.CLASS({
         return getPos() < getStr().length();
       `,
       swiftCode: `
-        return pos < str.count
+        return getPos() < getStr()!.count;
       `
     },
     {
@@ -53,13 +54,14 @@ foam.CLASS({
         return getTail_();
       `,
       swiftCode: `
-        if tail_ == nil {
-          tail_ = foam_swift_parse_StringPStream([
-            "str": str,
-            "pos": pos + 1,
-          ])
+        if ( getTail_() == nil ) {
+          setTail_(foam_cross_platform_deserialize_StringPStream
+            .foam_cross_platform_deserialize_StringPStreamBuilder(getSubX())
+            .setStr(getStr())
+            .setPos(getPos() + 1)
+            .build());
         }
-        return tail_!
+        return getTail_();
       `,
     },
     {
@@ -68,9 +70,9 @@ foam.CLASS({
         return getStr().substring(getPos(), ((StringPStream) end).getPos());
       `,
       swiftCode: `
-        let startIndex = pos
-        let endIndex = (end as! foam_swift_parse_StringPStream).pos
-        return String(str[startIndex..<endIndex])
+        let s = foam_cross_platform_type_StringType.INSTANCE();
+        let end = end as! foam_cross_platform_deserialize_StringPStream;
+        return s.substring(getStr(), getPos(), end.getPos());
       `
     },
     {
@@ -79,7 +81,7 @@ foam.CLASS({
         return getValue_();
       `,
       swiftCode: `
-        return value_
+        return getValue_();
       `
     },
     {
@@ -92,12 +94,12 @@ foam.CLASS({
           .build();
       `,
       swiftCode: `
-        let ps = foam_swift_parse_StringPStream([
-          "str": str,
-          "pos": pos,
-          "value_": value,
-        ])
-        return ps
+        return foam_cross_platform_deserialize_StringPStream
+          .foam_cross_platform_deserialize_StringPStreamBuilder(getSubX())
+          .setStr(getStr())
+          .setPos(getPos())
+          .setValue_(value)
+          .build();
       `
     },
   ]

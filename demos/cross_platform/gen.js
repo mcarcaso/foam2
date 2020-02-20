@@ -10,6 +10,7 @@
       sourcePath: dir + '/swift/foam_gen',
       testPath: dir + '/swift/foam_gen_test',
       swiftAppName: 'FOAM_Demo_App',
+      resourcePath: dir + '/swift/foam_resources',
     },
     android: {
       sourcePath: dir + '/android/project/app/src/foam_gen',

@@ -5,6 +5,15 @@ foam.CLASS({
   flags: ['swift'],
   properties: [
     {
+      name: 'swiftAdapt',
+      expression: function(swiftOptional) {
+        return `
+          if newValue is [Any] { return NSMutableArray(array: newValue as! [Any]) }
+          return newValue as${swiftOptional ? '?' : '!'} NSMutableArray;
+        `
+      }
+    },
+    {
       name: 'swiftFactory',
       value: 'return []'
     }

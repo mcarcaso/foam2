@@ -33,7 +33,8 @@ foam.CLASS({
     },
     {
       name: 'out',
-      crossPlatformCode: `setStr(getStr() + s);`,
+      androidCode: `setStr(getStr() + s);`,
+      swiftCode: `setStr(getStr()! + s!);`,
     },
     {
       name: 'comma',

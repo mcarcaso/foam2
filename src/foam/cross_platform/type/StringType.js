@@ -1,14 +1,10 @@
-/**
- * @license
- * Copyright 2019 The FOAM Authors. All Rights Reserved.
- * http://www.apache.org/licenses/LICENSE-2.0
- */
-
 foam.CLASS({
   package: 'foam.cross_platform.type',
   name: 'StringType',
   implements: ['foam.cross_platform.type.Type'],
-  axioms: [ { class: 'foam.pattern.Singleton' } ],
+  axioms: [
+    { class: 'foam.pattern.Singleton' },
+  ],
   constants: [
     {
       type: 'foam.cross_platform.type.StringType',
@@ -68,5 +64,33 @@ foam.CLASS({
         return a.compare(b).rawValue
       `,
     },
+    {
+      name: 'charAt',
+      type: 'Char',
+      args: [
+        { type: 'String', name: 's' },
+        { type: 'Integer', name: 'at' },
+      ],
+      swiftCode: `
+        let s = s!;
+        let charIndex = s.index(s.startIndex, offsetBy: at);
+        return s[charIndex];
+      `
+    },
+    {
+      name: 'substring',
+      type: 'String',
+      args: [
+        { type: 'String', name: 's' },
+        { type: 'Integer', name: 'start' },
+        { type: 'Integer', name: 'end' },
+      ],
+      swiftCode: `
+        guard let s = s else { return nil }
+        let startIndex = s.index(s.startIndex, offsetBy: start);
+        let endIndex = s.index(s.startIndex, offsetBy: end);
+        return String(s[startIndex..<endIndex]);
+      `
+    }
   ],
 });

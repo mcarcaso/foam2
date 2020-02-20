@@ -79,6 +79,13 @@ foam.INTERFACE({
       ]
     },
     {
+      type: 'Boolean',
+      name: 'equals',
+      args: [
+        { type: 'Any', name: 'o' }
+      ]
+    },
+    {
       name: 'pub',
       type: 'Integer',
       args: [
