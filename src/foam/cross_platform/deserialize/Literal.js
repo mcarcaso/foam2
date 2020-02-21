@@ -12,7 +12,8 @@ foam.CLASS({
     {
       name: 'value',
       expressionArgs: ['string'],
-      androidExpression: 'return string;'
+      androidExpression: 'return string;',
+      swiftExpression: 'return string;'
     },
   ],
   methods: [
@@ -24,6 +25,17 @@ foam.CLASS({
             return null;
           }
           ps = ps.tail();
+        }
+        return ps.setValue(getValue());
+      `,
+      swiftCode: `
+        let s = foam_cross_platform_type_StringType.INSTANCE();
+        var ps = ps!;
+        for i in 0..<getString()!.count {
+          if ( !ps.valid() || ps.head() != s.charAt(getString(), i) ) {
+            return nil;
+          }
+          ps = ps.tail()!;
         }
         return ps.setValue(getValue());
       `

@@ -13,8 +13,8 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'swiftValue',
-      expression: function(value) {
-        return foam.swift.asSwiftValue(value);
+      expression: function(value, swiftType) {
+        return foam.swift.asSwiftValue(value, swiftType);
       }
     },
   ],

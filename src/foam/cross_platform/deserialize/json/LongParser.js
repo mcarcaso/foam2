@@ -44,6 +44,45 @@ foam.CLASS({
         if ( negate ) n *= -1;
         
         return ps.setValue(n);
+      `,
+      swiftCode: `
+        let s = foam_cross_platform_type_StringType.INSTANCE();
+        var n = 0;
+        
+        var negate = false;
+        
+        var ps = ps!;
+        if ( !ps.valid() ) { return nil; }
+        
+        var c = ps.head();
+        
+        if ( c == "-" ) {
+          negate = true;
+          ps = ps.tail()!;
+          if ( !ps.valid() ) { return nil; }
+          c = ps.head();
+        }
+        
+        if ( s.isDigit(c) ) { n = Int(String(c))! }
+        else { return nil; }
+        
+        ps = ps.tail()!;
+        
+        while ( ps.valid() ) {
+          c = ps.head();
+          if ( s.isDigit(c) ) {
+            n *= 10;
+            n += Int(String(c))!
+            if ( n < 0 ) { return nil; }
+          } else {
+            break;
+          }
+          ps = ps.tail()!;
+        }
+        
+        if ( negate ) { n *= -1; }
+        
+        return ps.setValue(n);
       `
     },
   ]

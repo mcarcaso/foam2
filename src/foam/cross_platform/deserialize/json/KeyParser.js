@@ -24,6 +24,14 @@ foam.CLASS({
             Literal_create().setString(key).build()
           })
           .build();
+      `,
+      swiftExpression: `
+        return Alt_create()
+          .setParsers([
+            Literal_create().setString("\\"" + key! + "\\"").build(),
+            Literal_create().setString(key).build()
+          ])
+          .build();
       `
     },
   ],

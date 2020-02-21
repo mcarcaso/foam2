@@ -47,6 +47,25 @@ foam.CLASS({
           )
           .setDelim(Literal_create().setString(",").build())
           .build();
+      `,
+      swiftCode: `
+        var parsers: [Any] = [];
+        for p in cls!.getAxiomsByClass(foam_core_Property.CLS_())! {
+          if ( (p as! foam_core_Property).getCrossPlatformJsonParser() != nil ) {
+            parsers.append(PropertyParser_create().setProperty(p).build());
+          }
+        }
+        parsers.append(UnknownPropertyParser_create().build());
+        return Repeat0_create()
+          .setDelegate(Seq0_create()
+            .setParsers([
+              Whitespace_create().build(),
+              Alt_create().setParsers(parsers).build()
+            ])
+            .build()
+          )
+          .setDelim(Literal_create().setString(",").build())
+          .build();
       `
     },
     {
@@ -60,6 +79,12 @@ foam.CLASS({
           getParsers().put(cls.getId(), buildInstance_(cls));
         }
         return (foam.cross_platform.deserialize.Parser) getParsers().get(cls.getId());
+      `,
+      swiftCode: `
+        if ( getParsers()![cls!.getId()!] == nil ) {
+          getParsers()![cls!.getId()!] = buildInstance_(cls);
+        }
+        return getParsers()![cls!.getId()!] as? foam_cross_platform_deserialize_Parser
       `
     },
   ],

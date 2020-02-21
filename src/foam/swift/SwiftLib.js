@@ -15,6 +15,8 @@ foam.LIB({
           return '"' + s.
             replace(/\\/g, "\\\\").
             replace(/"/g, '\\"').
+            replace(/\t/g, "\\t").
+            replace(/\r/g, "\\r").
             replace(/\n/g, "\\n") + '"';
         },
         Boolean: function(b) {
@@ -27,10 +29,11 @@ foam.LIB({
         FObject: function(o) {
           return o.asSwiftValue();
         },
-        Array: function(a) {
+        Array: function(a, opt_type) {
+          var type = opt_type || '[Any?]';
           return `[
             ${a.map(foam.swift.asSwiftValue).join(',\n')}
-          ] as [Any?]`;
+          ] as ${type}`;
         },
         Object: function(o) {
           if (foam.core.FObject.isSubClass(o)) {
@@ -50,7 +53,7 @@ foam.LIB({
 ${Object.keys(o).map(k => `
   ${foam.swift.asSwiftValue(k)}: ${foam.swift.asSwiftValue(o[k])}
 `).join(',\n')}
-] as [AnyHashable:Any?]
+] as NSMutableDictionary
           `;
         },
         Date: function(o) {

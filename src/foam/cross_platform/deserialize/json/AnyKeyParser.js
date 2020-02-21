@@ -46,6 +46,37 @@ foam.CLASS({
               .build()
             })
             .build();
+      `,
+      swiftFactory: `
+        return Alt_create()
+          .setParsers([
+            Seq1_create()
+              .setIndex(1)
+              .setParsers([
+                Literal_create().setString("\\\\"").build(),
+                Substring_create().setDelegate(
+                  Repeat0_create().setDelegate(
+                    NotChars_create().setChars("\\\\"").build()
+                  )
+                  .build())
+                .build(),
+                Literal_create().setString("\\\\"").build()
+              ])
+              .build(),
+            Seq1_create()
+              .setIndex(0)
+              .setParsers([
+                Substring_create().setDelegate(
+                  Repeat0_create().setDelegate(
+                    NotChars_create().setChars("{}, :").build()
+                  )
+                  .build()
+                )
+                .build()
+              ])
+              .build()
+            ])
+            .build();
       `
     },
   ],

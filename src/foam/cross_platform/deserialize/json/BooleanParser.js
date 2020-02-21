@@ -19,6 +19,14 @@ foam.CLASS({
             Literal_create().setString("false").setValue(false).build()
           })
           .build();
+      `,
+      swiftFactory: `
+        return Alt_create()
+          .setParsers([
+            Literal_create().setString("true").setValue(true).build(),
+            Literal_create().setString("false").setValue(false).build()
+          ])
+          .build();
       `
     },
   ],

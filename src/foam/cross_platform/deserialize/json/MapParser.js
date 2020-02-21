@@ -50,6 +50,39 @@ foam.CLASS({
             Literal_create().setString("}").build(),
           })
           .build();
+      `,
+      swiftFactory: `
+        return Seq1_create()
+          .setIndex(2)
+          .setParsers([
+            Whitespace_create().build(),
+            Literal_create().setString("{").build(),
+            Repeat_create().setDelegate(
+              Seq2_create()
+                .setIndex1(1)
+                .setIndex2(5)
+                .setParsers([
+                  Whitespace_create().build(),
+                  AnyKeyParser_create().build(),
+                  Whitespace_create().build(),
+                  Literal_create().setString(":").build(),
+                  Whitespace_create().build(),
+                  AnyParser_create().build()
+                ])
+                .build()
+              )
+              .setDelim(
+                Seq0_create().setParsers([
+                  Whitespace_create().build(),
+                  Literal_create().setString(",").build()
+                ])
+                .build()
+              )
+              .build(),
+            Whitespace_create().build(),
+            Literal_create().setString("}").build(),
+          ])
+          .build();
       `
     },
   ],
@@ -66,6 +99,19 @@ foam.CLASS({
             map.put((String) itemA[0], itemA[1]);
           }
           return ps.setValue(map);
+        }
+        return ps;
+      `,
+      swiftCode: `
+        let ps = super.parse(ps, x);
+        if ( ps != nil ) {
+          let values = ps!.value() as! [Any?];
+          let map = NSMutableDictionary();
+          for item in values {
+            let itemA = item as! [Any?];
+            map[itemA[0] as! String] = itemA[1];
+          }
+          return ps!.setValue(map);
         }
         return ps;
       `

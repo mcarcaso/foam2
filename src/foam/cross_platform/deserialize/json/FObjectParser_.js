@@ -31,6 +31,21 @@ foam.CLASS({
             ).build()
           })
           .build();
+      `,
+      swiftFactory: `
+        return Seq1_create()
+          .setIndex(4)
+          .setParsers([
+            KeyParser_create().setKey("class").build(),
+            Whitespace_create().build(),
+            Literal_create().setString(":").build(),
+            Whitespace_create().build(),
+            StringParser_create().build(),
+            Optional_create().setDelegate(
+              Literal_create().setString(",").build()
+            ).build()
+          ])
+          .build();
       `
     },
   ],
@@ -58,6 +73,29 @@ foam.CLASS({
         }
 
         return null;
+      `,
+      swiftCode: `
+        var ps = ps;
+        let ps1 = getDelegate()!.parse(ps, x);
+        if ( ps1 == nil ) { return nil; }
+        let c = getSubX().lookup(ps1?.value() as? String);
+        if ( c == nil ) { return nil; }
+        ps = ps1;
+
+        let subx = x!.pxSubContext()!;
+        let args = NSMutableDictionary();
+        subx.pxSet("obj", args);
+        ps = ModelParserFactory_create().build().getInstance(c)?.parse(ps, subx);
+
+        if ( ps != nil ) {
+          let b = c!.createBuilder(x?.pxGet("X") as? foam_cross_platform_Context);
+          for k in args.allKeys {
+            _ = b?.setBuilderProperty(k as? String, args[k]);
+          }
+          return ps?.setValue(b?.builderBuild());
+        }
+
+        return nil;
       `
     },
   ],

@@ -18,6 +18,13 @@ foam.CLASS({
           if ( ret != null ) return ret;
         }
         return null;
+      `,
+      swiftCode: `
+        for parser in getParsers()! {
+          let ret = parser.parse(ps, x);
+          if ( ret != nil ) { return ret; }
+        }
+        return nil;
       `
     },
   ]

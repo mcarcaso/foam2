@@ -22,6 +22,17 @@ foam.CLASS({
             AnyParser_create().build()
           })
           .build();
+      `,
+      swiftFactory: `
+        return Seq0_create()
+          .setParsers([
+            Whitespace_create().build(),
+            AnyKeyParser_create().build(),
+            Whitespace_create().build(),
+            Literal_create().setString(":").build(),
+            AnyParser_create().build()
+          ])
+          .build();
       `
     },
   ],

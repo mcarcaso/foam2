@@ -65,6 +65,16 @@ foam.CLASS({
       `,
     },
     {
+      name: 'isDigit',
+      type: 'Boolean',
+      args: [
+        { type: 'Char', name: 'c' },
+      ],
+      swiftCode: `
+        return "0"..."9" ~= c;
+      `
+    },
+    {
       name: 'charAt',
       type: 'Char',
       args: [

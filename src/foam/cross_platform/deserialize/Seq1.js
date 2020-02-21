@@ -26,6 +26,16 @@ foam.CLASS({
           if ( i == getIndex() ) value = ps.value();
         }
         return ps.setValue(value);
+      `,
+      swiftCode: `
+        var ps = ps;
+        var value: Any? = nil;
+        for i in 0..<getParsers()!.count {
+          ps = getParsers()![i].parse(ps, x);
+          if ( ps == nil ) { return nil; }
+          if ( i == getIndex() ) { value = ps!.value(); }
+        }
+        return ps?.setValue(value);
       `
     },
   ]

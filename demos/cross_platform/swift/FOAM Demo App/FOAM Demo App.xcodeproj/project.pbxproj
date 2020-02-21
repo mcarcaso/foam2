@@ -614,8 +614,6 @@
 				108A0D8C236FB42400D687D1 /* FOAM Demo AppUITests */,
 				108EBC5823FE1BF7005F9760 /* foam_gen */,
 				108EBE6323FEE79B005F9760 /* foam_gen_test */,
-				108EBE5E23FE27DB005F9760 /* foam_resources */,
-				10B7599123874865000E4F21 /* foam_resources */,
 				108A0D69236FB42100D687D1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -934,14 +932,6 @@
 			path = ../foam_gen;
 			sourceTree = "<group>";
 		};
-		108EBE5E23FE27DB005F9760 /* foam_resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = foam_resources;
-			path = ../foam_resources;
-			sourceTree = "<group>";
-		};
 		108EBE6323FEE79B005F9760 /* foam_gen_test */ = {
 			isa = PBXGroup;
 			children = (
@@ -957,13 +947,6 @@
 			);
 			name = foam_gen_test;
 			path = ../foam_gen_test;
-			sourceTree = "<group>";
-		};
-		10B7599123874865000E4F21 /* foam_resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = foam_resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

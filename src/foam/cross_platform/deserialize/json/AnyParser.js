@@ -34,6 +34,21 @@ foam.CLASS({
             MapParser_create().build(),
           })
           .build();
+      `,
+      swiftFactory: `
+        return Alt_create()
+          .setParsers([
+            NullParser_create().build(),
+            StringParser_create().build(),
+            FloatParser_create().build(),
+            LongParser_create().build(),
+            IntParser_create().build(),
+            BooleanParser_create().build(),
+            FObjectParser_create().build(),
+            ArrayParser_create().build(),
+            MapParser_create().build(),
+          ])
+          .build();
       `
     },
   ],
