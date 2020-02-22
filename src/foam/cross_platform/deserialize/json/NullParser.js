@@ -13,6 +13,9 @@ foam.CLASS({
       name: 'delegate',
       androidFactory: `
         return Literal_create().setString("null").setValue(null).build();
+      `,
+      swiftFactory: `
+        return Literal_create().setString("null").setValue(nil).build();
       `
     },
   ],

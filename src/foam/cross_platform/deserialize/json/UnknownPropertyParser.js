@@ -9,6 +9,7 @@ foam.CLASS({
     {
       name: 'delegate',
       androidFactory: 'return KeyValueParser0_create().build();',
+      swiftFactory: 'return KeyValueParser0_create().build();',
     },
   ],
 });

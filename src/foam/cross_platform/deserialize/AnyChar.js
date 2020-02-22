@@ -13,6 +13,10 @@ foam.CLASS({
       androidCode: `
         if ( ps.valid() ) return ps.tail().setValue(ps.head());
         return null;
+      `,
+      swiftCode: `
+        if ( ps!.valid() ) { return ps!.tail()!.setValue(ps!.head()); }
+        return nil;
       `
     },
   ]

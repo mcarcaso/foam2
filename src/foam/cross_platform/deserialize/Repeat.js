@@ -44,6 +44,30 @@ foam.CLASS({
         
         if ( getMin() != -1 && values.size() < getMin() ) return null;
         return ps.setValue(values.toArray());
+      `,
+      swiftCode: `
+        var ps = ps!;
+        var values: [Any?] = [];
+        var result: foam_cross_platform_deserialize_PStream? = nil;
+
+        var i = 0;
+        while ( getMax() == -1 || i < getMax() ) {
+          if ( getDelim() != nil && values.count != 0 ) {
+            result = getDelim()!.parse(ps, x);
+            if ( result == nil ) { break; }
+            ps = result!;
+          }
+          result = getDelegate()!.parse(ps, x);
+          if ( result == nil ) { break; }
+          
+          values.append(result!.value());
+          ps = result!;
+          
+          i+=1;
+        }
+        
+        if ( getMin() != -1 && values.count < getMin() ) { return nil; }
+        return ps.setValue(values);
       `
     },
   ]

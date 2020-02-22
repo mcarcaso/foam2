@@ -25,7 +25,25 @@ foam.CLASS({
           ps = ps.tail();
         }
         return ps.tail().setValue(sb.toString());
-      `
+      `,
+      swiftCode: `
+        let escape_: Character = "\\\\\\\\";
+        let delim_ = ps!.head();
+        if ( delim_ != "\\\\"" && delim_ != "\\\\'" ) { return nil; }
+
+        var ps = ps!.tail()!;
+        var lastc = delim_;
+
+        var sb = "";
+        while ( ps.valid() ) {
+          let c = ps.head();
+          if ( c == delim_ && lastc != escape_ ) { break; }
+          if ( c != escape_ ) { sb.append(c); }
+          lastc = c;
+          ps = ps.tail()!;
+        }
+        return ps.tail()!.setValue(sb);
+      `,
     },
   ]
 });

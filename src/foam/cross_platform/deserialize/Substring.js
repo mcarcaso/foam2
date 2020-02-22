@@ -12,6 +12,14 @@ foam.CLASS({
           return ps.setValue(start.substring(ps));
         }
         return ps;
+      `,
+      swiftCode: `
+        let start = ps;
+        let ps = super.parse(ps, x);
+        if ( ps != nil ) {
+          return ps!.setValue(start!.substring(ps));
+        }
+        return ps;
       `
     },
   ]

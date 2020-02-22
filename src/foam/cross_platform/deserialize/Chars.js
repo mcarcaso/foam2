@@ -21,6 +21,13 @@ foam.CLASS({
           return ps.tail().setValue(ps.head());
         }
         return null;
+      `,
+      swiftCode: `
+        let ps = ps!;
+        if ( ps.valid() && getChars()!.firstIndex(of: ps.head()) != nil ) {
+          return ps.tail()!.setValue(ps.head());
+        }
+        return nil;
       `
     },
   ]

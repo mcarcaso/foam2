@@ -9,6 +9,11 @@ foam.CLASS({
         foam.cross_platform.deserialize.PStream ret = getDelegate().parse(ps, x);
         if ( ret != null ) return ret;
         return ps.setValue(null);
+      `,
+      swiftCode: `
+        let ret = getDelegate()!.parse(ps, x);
+        if ( ret != nil ) { return ret; }
+        return ps!.setValue(nil);
       `
     },
   ]
