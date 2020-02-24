@@ -17,16 +17,25 @@ foam.CLASS({
     {
       class: 'foam.cross_platform.code_generation.Extras',
       androidCode: `
-        public static class Fragment extends androidx.fragment.app.Fragment {
-          public foam.cross_platform.ui.widget.DetailView dv = null;
+        public static class Fragment extends foam.cross_platform.ui.stack.Stack.ToolbarFragment {
+          public foam.cross_platform.ui.widget.DetailView dv;
+          public Fragment(
+              foam.cross_platform.ui.widget.DetailView dv,
+              foam.cross_platform.Context x) {
+            super(x);
+            this.dv = dv;
+          }
           public android.view.View onCreateView(
-                  android.view.LayoutInflater inflater, 
-                  android.view.ViewGroup container, 
-                  android.os.Bundle savedInstanceState) {
+              android.view.LayoutInflater inflater, 
+              android.view.ViewGroup container, 
+              android.os.Bundle savedInstanceState) {
             android.widget.ScrollView sv = new android.widget.ScrollView(dv.getAndroidContext());
             dv.clearProperty("view");
             sv.addView(dv.getView());
-            return sv;
+            android.widget.LinearLayout v = (android.widget.LinearLayout)
+              super.onCreateView(inflater, container, savedInstanceState);
+            v.addView(sv);
+            return v;
           }
         }
       `,
@@ -119,10 +128,12 @@ foam.CLASS({
     {
       name: 'toStackableView',
       androidCode: `
-        Fragment f = new Fragment();
-        f.dv = DetailView_create()
-          .build();
+        Fragment f = new Fragment(DetailView_create().build(), getSubX());
         f.dv.onDetach(f.dv.getData$().follow(getData$()));
+
+        f.getToolbar().setTitle("YO");
+
+        f.backgroundColor = getTheme().getBackground();
         return f;
       `,
       swiftCode: `

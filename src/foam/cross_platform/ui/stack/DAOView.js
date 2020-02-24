@@ -34,8 +34,14 @@ foam.CLASS({
     {
       class: 'foam.cross_platform.code_generation.Extras',
       androidCode: `
-        public static class Fragment extends androidx.fragment.app.Fragment {
+        public static class Fragment extends foam.cross_platform.ui.stack.Stack.ToolbarFragment {
           DAOView o = null;
+          public Fragment(
+              DAOView o,
+              foam.cross_platform.Context x) {
+            super(x);
+            this.o = o;
+          }
           public android.view.View onCreateView(
                   android.view.LayoutInflater inflater,
                   android.view.ViewGroup container,
@@ -54,7 +60,10 @@ foam.CLASS({
               lm.getOrientation());
             rv.addItemDecoration(divider);
             rv.setHasFixedSize(true);
-            return rv;
+            
+            android.widget.LinearLayout v = (android.widget.LinearLayout) super.onCreateView(inflater, container, savedInstanceState);
+            v.addView(rv);
+            return v;
           }
         }
         public static class ViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
@@ -246,8 +255,7 @@ foam.CLASS({
     {
       name: 'toStackableView',
       androidCode: `
-        Fragment f = new Fragment();
-        f.o = this;
+        Fragment f = new Fragment(this, getSubX());
         return f;
       `,
       swiftCode: `

@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import foam.cross_platform.Application;
 import foam.intent.DAOBrowseIntent;
@@ -37,15 +36,8 @@ public class MainActivity extends AppCompatActivity {
     a.getTheme().setCaption(R.style.TextCaption);
     a.getTheme().setSubtitle1(R.style.Subtitle1);
 
-    Toolbar toolbar = findViewById(R.id.toolbar);
-    toolbar.setBackgroundColor(a.getTheme().getPrimary());
-    toolbar.setTitleTextColor(a.getTheme().getOnPrimary());
-    toolbar.setTitle("");
-    setSupportActionBar(toolbar);
-
     a.getStack().setContentId(R.id.main_content);
     a.getStack().setFragmentManager(getSupportFragmentManager());
-    a.getStack().setToolbar(toolbar);
 
     foam.cross_platform.Context x = a.getSubX();
     foam.dao.DAO d = foam.dao.ArrayDAO.ArrayDAOBuilder(x)

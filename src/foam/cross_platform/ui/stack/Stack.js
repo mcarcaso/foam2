@@ -5,6 +5,12 @@ foam.CLASS({
   exports: [
     'as stack'
   ],
+  requires: [
+    {
+      path: 'foam.cross_platform.ui.android.Toolbar',
+      flags: ['android']
+    }
+  ],
   properties: [
     {
       class: 'ListProperty',
@@ -21,31 +27,56 @@ foam.CLASS({
       name: 'fragmentManager'
     },
     {
-      androidType: 'androidx.appcompat.widget.Toolbar',
-      flags: ['android'],
-      name: 'toolbar'
-    },
-    {
       swiftType: 'UINavigationController',
       flags: ['swift'],
       name: 'navController'
     },
+  ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      androidCode: `
+        public static class ToolbarFragment extends androidx.fragment.app.Fragment {
+          private foam.cross_platform.ui.android.Toolbar toolbar = null;
+          public int backgroundColor;
+          public ToolbarFragment(foam.cross_platform.Context x) {
+            this.toolbar = foam.cross_platform.ui.android.Toolbar
+              .ToolbarBuilder(x)
+              .build();
+          }
+          public foam.cross_platform.ui.android.Toolbar getToolbar() {
+            return toolbar;
+          }
+          public android.view.View onCreateView(
+              android.view.LayoutInflater inflater,
+              android.view.ViewGroup container,
+              android.os.Bundle savedInstanceState) {
+            android.widget.LinearLayout v =
+              new android.widget.LinearLayout(getContext());
+            v.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+            android.widget.Toolbar toolbar =
+              new android.widget.Toolbar(getContext());
+            toolbar.setElevation(8);
+            getToolbar().setView(toolbar);
+            v.addView(toolbar);
+
+            v.setBackgroundColor(backgroundColor);
+
+            return v;
+          }
+        }
+      `
+    }
   ],
   methods: [
     {
       name: 'pop',
       androidCode: `
         getStack().remove(getStack().size() - 1);
-        updateToolbar();
-      `
-    },
-    {
-      name: 'updateToolbar',
-      flags: ['android'],
-      androidCode: `
-        foam.cross_platform.ui.Stackable s =
-          (foam.cross_platform.ui.Stackable) getStack().get(getStack().size() - 1);
-        getToolbar().setTitle(s.getTitle());
+      `,
+      swiftCode: `
+        getStack()!.removeLastObject();
       `
     },
     {
@@ -58,13 +89,21 @@ foam.CLASS({
       ],
       androidCode: `
         getStack().add(v);
+        androidx.fragment.app.Fragment f = v.toStackableView();
         androidx.fragment.app.FragmentTransaction ft = getFragmentManager()
           .beginTransaction()
-          .replace(getContentId(), v.toStackableView());
+          .setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+          .replace(getContentId(), f);
         if ( getStack().size() > 1 ) {
           ft.addToBackStack(null);
+          if ( f instanceof ToolbarFragment ) {
+            foam.cross_platform.ui.android.Toolbar toolbar = ((ToolbarFragment) f).getToolbar();
+            toolbar.setBackButtonFn((foam.cross_platform.GenericFunction) args -> {
+              getFragmentManager().popBackStack();
+              return null;
+            });
+          }
         }
-        updateToolbar();
         ft.commit();
       `,
       swiftCode: `

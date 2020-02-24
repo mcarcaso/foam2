@@ -7,13 +7,6 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
-  constants: [
-    {
-      type: 'String',
-      name: 'helpResource',
-      value: 'dpv_help'
-    },
-  ],
   imports: [
     {
       name: 'theme',
@@ -84,7 +77,7 @@ foam.CLASS({
         android.widget.ImageButton b = new android.widget.ImageButton(getAndroidContext());
         b.setBackground(null);
         b.setImageResource(getAndroidContext().getResources().getIdentifier(
-          HELP_RESOURCE(),
+          "dpv_help",
           "drawable",
           getAndroidContext().getPackageName()));
         b.setColorFilter(getTheme().getOnSurface());
@@ -303,6 +296,21 @@ foam.CLASS({
     }
   ],
   axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Resource',
+      androidPath: 'drawable/dpv_help.xml',
+      androidCode: `
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M11,17h2v-6h-2v6zM12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM12,20c-4.41,0 -8,-3.59 -8,-8s3.59,-8 8,-8 8,3.59 8,8 -3.59,8 -8,8zM11,9h2L13,7h-2v2z"/>
+</vector>
+      `
+    },
     {
       class: 'foam.cross_platform.code_generation.Extras',
       swiftCode: `
