@@ -106,6 +106,14 @@ foam.CLASS({
       class: 'FObjectProperty',
       name: 'data'
     },
+    {
+      class: 'StringProperty',
+      name: 'title',
+      expressionArgs: ['data'],
+      androidExpression: `
+        return data.getCls_().getId();
+      `
+    }
   ],
   methods: [
     {

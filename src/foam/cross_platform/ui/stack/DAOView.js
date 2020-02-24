@@ -8,15 +8,15 @@ foam.CLASS({
     'onDAOUpdate'
   ],
   requires: [
-    'foam.cross_platform.ui.stack.DetailView',
     'foam.dao.ArraySink',
-    'foam.mlang.sink.Count',
     'foam.dao.FnSink',
+    'foam.intent.DAOReadIntent',
+    'foam.mlang.sink.Count',
   ],
   imports: [
     {
-      name: 'stack',
-      type: 'foam.cross_platform.ui.stack.Stack',
+      name: 'intentManager',
+      type: 'foam.intent.IntentManager',
     },
   ],
   axioms: [
@@ -73,8 +73,10 @@ foam.CLASS({
             foam.cross_platform.ui.View fobj = o.getCitationView().createView(o.getSubX());
             android.view.View v = fobj.getView();
             v.setOnClickListener(view -> {
-              o.getStack().push(o.DetailView_create()
-                .setData(((foam.cross_platform.FObject) fobj).getProperty("data"))
+              foam.cross_platform.FObject data = (foam.cross_platform.FObject) ((foam.cross_platform.FObject) fobj).getProperty("data");
+              o.getIntentManager().launchIntent(o.DAOReadIntent_create()
+                .setDao(o.getData())
+                .setId(data.getProperty("id"))
                 .build());
             });
             return new ViewHolder((foam.cross_platform.FObject) fobj);
@@ -220,6 +222,15 @@ foam.CLASS({
       flags: ['swift'],
       name: 'tableSource',
       swiftFactory: `return TableSource(self)`
+    },
+    {
+      class: 'StringProperty',
+      name: 'title',
+      expressionArgs: ['data'],
+      androidExpression: `
+        // TODO translations
+        return "Browse " + data.getOf().getId();
+      `
     }
   ],
   listeners: [

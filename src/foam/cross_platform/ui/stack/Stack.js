@@ -21,12 +21,33 @@ foam.CLASS({
       name: 'fragmentManager'
     },
     {
+      androidType: 'androidx.appcompat.widget.Toolbar',
+      flags: ['android'],
+      name: 'toolbar'
+    },
+    {
       swiftType: 'UINavigationController',
       flags: ['swift'],
       name: 'navController'
     },
   ],
   methods: [
+    {
+      name: 'pop',
+      androidCode: `
+        getStack().remove(getStack().size() - 1);
+        updateToolbar();
+      `
+    },
+    {
+      name: 'updateToolbar',
+      flags: ['android'],
+      androidCode: `
+        foam.cross_platform.ui.Stackable s =
+          (foam.cross_platform.ui.Stackable) getStack().get(getStack().size() - 1);
+        getToolbar().setTitle(s.getTitle());
+      `
+    },
     {
       name: 'push',
       args: [
@@ -43,6 +64,7 @@ foam.CLASS({
         if ( getStack().size() > 1 ) {
           ft.addToBackStack(null);
         }
+        updateToolbar();
         ft.commit();
       `,
       swiftCode: `

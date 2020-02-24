@@ -58,6 +58,8 @@
     modelArgs: {
       platform: platform,
       classIds: [
+        'foam.cross_platform.Application',
+
         'demo.ArrayDAO',
         'demo.Compare',
         'demo.ImportExport',
@@ -68,10 +70,9 @@
         'demo.Reaction',
         'demo.Slot',
         'foam.cross_platform.ui.SimpleViewFactory',
-        'foam.cross_platform.ui.Theme',
         'foam.cross_platform.ui.stack.DAOView',
-        'foam.cross_platform.ui.stack.Stack',
         'foam.cross_platform.ui.widget.EmailCitationView',
+        'foam.intent.DAOBrowseIntent',
       ],
       sourcePath: platformArgs.sourcePath,
       testPath: platformArgs.testPath,
