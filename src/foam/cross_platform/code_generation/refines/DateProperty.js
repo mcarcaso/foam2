@@ -12,5 +12,14 @@ foam.CLASS({
         return (java.util.Date) newValue;
       `
     },
+    {
+      name: 'swiftAdapt',
+      value: `
+        if ( newValue is NSNumber ) {
+          return Date(timeIntervalSince1970: (newValue as! NSNumber).doubleValue);
+        }
+        return newValue as? Date;
+      `
+    },
   ]
 });

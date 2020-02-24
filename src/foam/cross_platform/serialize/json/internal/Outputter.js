@@ -9,15 +9,21 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.serialize.json.internal.OutputBuilder',
-      required: true,
+      swiftOptional: false,
       name: 'out',
       crossPlatformFactory: `return SimpleOutputBuilder_create().build();`
     },
     {
       class: 'ListProperty',
       name: 'state',
+      swiftOptional: false,
       androidFactory: `
         java.util.List l = new java.util.ArrayList();
+        l.add(OutputterState_create().build());
+        return l;
+      `,
+      swiftFactory: `
+        let l = NSMutableArray();
         l.add(OutputterState_create().build());
         return l;
       `,
@@ -36,6 +42,15 @@ foam.CLASS({
           .build());
         return this;
       `,
+      swiftCode: `
+        e();
+        getOut().startObj();
+        getState().add(OutputterState_create()
+          .setEndObj(true)
+          .setComma(false)
+          .build());
+        return self;
+      `,
     },
     {
       name: 'array',
@@ -50,13 +65,28 @@ foam.CLASS({
           .build());
         return this;
       `,
+      swiftCode: `
+        e();
+        getOut().startArray();
+        getState().add(OutputterState_create()
+          .setEndArray(true)
+          .setArray(true)
+          .setComma(false)
+          .build());
+        return self;
+      `,
     },
     {
       name: 'top',
       type: 'foam.cross_platform.serialize.json.internal.OutputterState',
       androidCode: `
         return (foam.cross_platform.serialize.json.internal.OutputterState)
-          getState().get(getState().size()-1);`,
+          getState().get(getState().size()-1);
+      `,
+      swiftCode: `
+        return getState().lastObject
+          as? foam_cross_platform_serialize_json_internal_OutputterState;
+      `,
     },
     {
       name: 'key',
@@ -71,6 +101,15 @@ foam.CLASS({
 
         return this;
       `,
+      swiftCode: `
+        if ( top()!.getComma() ) { getOut().comma(); }
+        else { top()!.setComma(true); }
+
+        getOut().out(string(s));
+        getOut().keySep();
+
+        return self;
+      `,
     },
     {
       name: 'e',
@@ -78,6 +117,12 @@ foam.CLASS({
         if (top().getArray()) {
           if ( top().getComma() ) getOut().comma();
           top().setComma(true);
+        }
+      `,
+      swiftCode: `
+        if (top()!.getArray()) {
+          if ( top()!.getComma() ) { getOut().comma(); }
+          top()!.setComma(true);
         }
       `,
     },
@@ -94,6 +139,16 @@ foam.CLASS({
           .replace("\\\\n", "\\\\\\\\n")
           + '"';
       `,
+      swiftCode: `
+        let s = s!;
+        return "\\\\"" + s
+          .replacingOccurrences(of: "\\\\\\\\", with: "\\\\\\\\\\\\\\\\")
+          .replacingOccurrences(of: "\\\\"", with: "\\\\\\\\\\\\"")
+          .replacingOccurrences(of: "\\\\t", with: "\\\\\\\\t")
+          .replacingOccurrences(of: "\\\\r", with: "\\\\\\\\r")
+          .replacingOccurrences(of: "\\\\n", with: "\\\\\\\\n")
+          + "\\\\"";
+      `,
     },
     {
       name: 's',
@@ -104,15 +159,25 @@ foam.CLASS({
         getOut().out(string(s));
         return this;
       `,
+      swiftCode: `
+        e();
+        getOut().out(string(s));
+        return self;
+      `,
     },
     {
       name: 'n',
-      args: [{ name: 'n', androidType: 'Number' }],
+      args: [{ name: 'n', androidType: 'Number', swiftType: 'NSNumber' }],
       type: 'foam.cross_platform.serialize.json.internal.Outputter',
       androidCode: `
         e();
         getOut().out(n.toString());
         return this;
+      `,
+      swiftCode: `
+        e();
+        getOut().out(n.stringValue);
+        return self;
       `,
     },
     {
@@ -124,6 +189,11 @@ foam.CLASS({
         getOut().out(b ? "true" : "false");
         return this;
       `,
+      swiftCode: `
+        e();
+        getOut().out(b ? "true" : "false");
+        return self;
+      `,
     },
     {
       name: 'nul',
@@ -132,6 +202,11 @@ foam.CLASS({
         e();
         getOut().out("null");
         return this;
+      `,
+      swiftCode: `
+        e();
+        getOut().out("null");
+        return self;
       `,
     },
     {
@@ -143,6 +218,14 @@ foam.CLASS({
         if ( s.getEndObj() ) getOut().endObj();
         if ( s.getEndArray() ) getOut().endArray();
         return this;
+      `,
+      swiftCode: `
+        let s = getState().lastObject
+          as! foam_cross_platform_serialize_json_internal_OutputterState;
+        getState().removeLastObject()
+        if ( s.getEndObj() ) { getOut().endObj(); }
+        if ( s.getEndArray() ) { getOut().endArray(); }
+        return self;
       `
     },
     {
@@ -150,11 +233,16 @@ foam.CLASS({
       androidCode: `
         getOut().reset();
         clearProperty("state");
+      `,
+      swiftCode: `
+        getOut().reset();
+        clearProperty("state");
       `
     },
     {
       name: 'toString',
-      androidCode: `return getOut().output();`
+      androidCode: `return getOut().output();`,
+      swiftCode: `return getOut().output();`
     }
   ]
 });

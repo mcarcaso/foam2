@@ -92,7 +92,7 @@ foam.CLASS({
 
         assertTrue(parsed.equals(expected));
         assertNotNull(o.stringify(parsed));
-        assertEquals(o.stringify(parsed), o.stringify(expected));
+        assertTrue(expected.equals(p.parseString(o.stringify(expected), null)));
       `,
       swiftCode: `
         let j = Json_create().build();
@@ -176,7 +176,7 @@ foam.CLASS({
 
         XCTAssertTrue(parsed.equals(expected));
         XCTAssertNotNil(o.stringify(parsed));
-        XCTAssertEqual(o.stringify(parsed), o.stringify(expected));
+        XCTAssertTrue(expected.equals(p.parseString(o.stringify(expected), nil)));
       `
     }
   ]

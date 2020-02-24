@@ -7,9 +7,21 @@ foam.CLASS({
   ],
   constants: [
     {
-      type: 'String',
+      type: 'Map',
       name: 'WS',
-      value: ' \t\r\n'
+      androidValue: `new java.util.HashMap() {{
+        put(' ', true);
+        put('\\t', true);
+        put('\\n', true);
+        put('\\r', true);
+      }}`,
+      swiftValue: `[
+        Character(" "): true,
+        Character("\\t"): true,
+        Character("\\n"): true,
+        Character("\\r"): true,
+        Character("\\r\\n"): true,
+      ]`
     }
   ],
   methods: [
@@ -18,7 +30,7 @@ foam.CLASS({
       androidCode: `
         while ( ps.valid() ) {
           char c = ps.head();
-          if ( WS().indexOf(c) != -1 ) {
+          if ( WS().containsKey(c) ) {
             ps = ps.tail();
           } else {
             return ps;
@@ -30,7 +42,7 @@ foam.CLASS({
         var ps = ps;
         while ( ps?.valid() ?? false ) {
           let c = ps!.head();
-          if Self.WS().firstIndex(of: c) != nil {
+          if Self.WS()[c] != nil {
             ps = ps!.tail();
           } else {
             return ps;

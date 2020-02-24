@@ -96,6 +96,9 @@ ${[
           a = (Object[]) o;
         }
         return a;
+      `,
+      swiftCode: `
+        return o as? [Any?];
       `
     },
   ],

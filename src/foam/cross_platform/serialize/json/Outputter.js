@@ -11,7 +11,8 @@ foam.CLASS({
     {
       name: 'DEFAULT',
       type: 'foam.cross_platform.serialize.json.Outputter',
-      androidFactory: `return OutputterBuilder(null).build();`
+      androidFactory: `return OutputterBuilder(null).build();`,
+      swiftFactory: `return OutputterBuilder(nil).build();`
     },
   ],
   properties: [
@@ -19,7 +20,8 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.cross_platform.serialize.json.internal.Outputter',
       name: 'outputter',
-      androidFactory: `return Outputter_create().build();`
+      androidFactory: `return Outputter_create().build();`,
+      swiftFactory: `return Outputter_create().build();`
     },
     {
       class: 'FObjectProperty',
@@ -28,6 +30,12 @@ foam.CLASS({
       androidFactory: `
         return Eq_create()
           .setArg1(foam.core.Property.TRANSIENT())
+          .setArg2(Constant_create().setValue(false).build())
+          .build();
+      `,
+      swiftFactory: `
+        return Eq_create()
+          .setArg1(foam_core_Property.TRANSIENT())
           .setArg2(Constant_create().setValue(false).build())
           .build();
       `
@@ -93,6 +101,55 @@ foam.CLASS({
           out.nul();
         }
       `,
+      swiftCode: `
+        let out = out!;
+        let u = Util_create().build();
+        if ( foam_cross_platform_FoamClass.CLS_().isInstance(data) ) {
+          _ = out.obj()!
+            .key("class")!
+            .s("__Class__")!
+            .key("forClass_")!
+            .s((data as! foam_cross_platform_FoamClass).getId())!
+            .end();
+        } else if ( foam_core_Property.CLS_().isInstance(data) ) {
+          _ = out.obj()!
+            .key("class")!
+            .s("__Property__")!
+            .key("forClass_")!
+            .s((data as! foam_core_Property).getCls_()!.getId())!
+            .key("name")!
+            .s((data as! foam_core_Property).getName())!
+            .end();
+        } else if ( u.getStringType()!.isInstance(data) ) {
+          _ = out.s(data as? String);
+        } else if ( u.getBooleanType()!.isInstance(data) ) {
+          _ = out.b(data as! Bool);
+        } else if ( u.getNumberType()!.isInstance(data) ) {
+          _ = out.n(data as! NSNumber);
+        } else if ( u.getArrayType()!.isInstance(data) ) {
+          _ = out.array();
+          for d in u.getArrayType()!.toObjectArray(data)! {
+            output(out, d);
+          }
+          _ = out.end();
+        } else if ( u.getMapType()!.isInstance(data) ) {
+          _ = out.obj();
+          for d in (data as! [String:Any?]).keys {
+            _ = out.key(d);
+            output(out, (data as! [String:Any?])[d]!);
+          };
+          _ = out.end();
+        } else if ( u.getDateType()!.isInstance(data) ) {
+          _ = out.n(NSNumber(value: (data as! Date).timeIntervalSince1970));
+        } else if ( u.getFObjectType()!.isInstance(data) ) {
+          outputFObject(out, data as? foam_cross_platform_FObject);
+        } else if ( u.getNullType()!.isInstance(data) ) {
+          _ = out.nul();
+        } else {
+          print("Unable to output " + String(describing: data));
+          _ = out.nul();
+        }
+      `,
     },
     {
       name: 'outputFObject',
@@ -123,6 +180,25 @@ foam.CLASS({
 
         out.end();
       `,
+      swiftCode: `
+        let out = out!;
+        let data = data!;
+        let info = data.getCls_()!;
+        _ = out.obj();
+
+        _ = out.key("class")!.s(info.getId());
+
+        for po in info.getAxiomsByClass(foam_core_Property.CLS_())! {
+          let p = po as! foam_core_Property;
+          if ( !data.hasPropertySet(p.getName()) ) { continue; }
+          if ( getPropertyPredicate()!.f(p) ) {
+            _ = out.key(p.getName());
+            output(out, p.f(data));
+          }
+        }
+
+        _ = out.end();
+      `,
     },
     {
       type: 'String',
@@ -135,6 +211,12 @@ foam.CLASS({
       ],
       androidCode: `
         foam.cross_platform.serialize.json.internal.Outputter s = getOutputter();
+        s.reset();
+        output(s, data);
+        return s.toString();
+      `,
+      swiftCode: `
+        let s = getOutputter()!;
         s.reset();
         output(s, data);
         return s.toString();

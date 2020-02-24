@@ -39,7 +39,8 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       name: 'crossPlatformJsonParser',
-      androidValue: `AnyParser_create().build()`
+      androidValue: `AnyParser_create().build()`,
+      swiftValue: `AnyParser_create().build()`,
     },
   ],
   methods: [
