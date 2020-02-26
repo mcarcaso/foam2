@@ -20,6 +20,10 @@ foam.CLASS({
                            this.implements.map(function(i) { return i.path }) :
                            []);
 
+        deps = deps.concat(this.traits ?
+                           this.traits.map(function(i) { return i.path }) :
+                           []);
+
         if ( this.extends ) deps.push(this.extends);
 
         if ( this.refines ) deps.push(this.refines);

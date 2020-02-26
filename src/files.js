@@ -49,6 +49,7 @@ FOAM_FILES([
   { name: "foam/core/InnerClass" },
   { name: "foam/core/InnerEnum" },
   { name: "foam/core/Implements" },
+  { name: "foam/core/Traits" },
   { name: "foam/core/ImportsExports" },
   { name: "foam/core/Listener" },
   { name: "foam/core/IDSupport" },
@@ -223,6 +224,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/android_java/Validation" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Validation" },
   { name: "foam/cross_platform/code_generation/refines/MultiPartID" },
+  { name: "foam/cross_platform/code_generation/refines/Trait" },
 
   { name: "foam/json2/Json2PropertyRefine" },
   { name: "foam/json2/OutputterOutput" },
