@@ -8,6 +8,9 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
+  traits: [
+    'foam.cross_platform.ui.DisplayModeTrait',
+  ],
   imports: [
     {
       name: 'androidContext',
@@ -116,18 +119,13 @@ foam.CLASS({
           self, action: #selector(onChanged), for: .valueChanged)
       `
     },
-    {
-      class: 'Enum',
-      of: 'foam.u2.Visibility',
-      name: 'visibility'
-    },
   ],
   reactions: [
     ['', 'propertyChange.view', 'dataToView'],
     ['', 'propertyChange.data', 'dataToView'],
 
     ['', 'propertyChange.view', 'updateVisibility'],
-    ['', 'propertyChange.visibility', 'updateVisibility'],
+    ['', 'propertyChange.mode', 'updateVisibility'],
 
     ['', 'propertyChange.view', 'updateLabel'],
     ['', 'propertyChange.label', 'updateLabel'],
@@ -189,8 +187,7 @@ foam.CLASS({
       isFramed: true,
       androidCode: `
         if ( getView() == null ) return;
-        getView().setFocusable(getVisibility() == foam.u2.Visibility.RW);
-        getView().setEnabled(getVisibility() != foam.u2.Visibility.DISABLED);
+        getView().setEnabled(getMode() == foam.u2.DisplayMode.RW);
       `,
       swiftCode: `
         let tf = (getView() as! LabelledUISwitch).s;
