@@ -187,7 +187,9 @@ foam.CLASS({
         { name: 'dv', type: 'foam.cross_platform.ui.widget.DetailView' },
       ],
       androidCode: `
-        dv.setData(getDao().find(getId()).clone());
+        dv.setData(getId() == null ?
+          getDao().getOf().createBuilder(getSubX()).builderBuild() :
+          getDao().find(getId()).clone(getSubX()));
       `
     },
     {

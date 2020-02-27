@@ -5,7 +5,9 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'name',
-      value: 'cross_platform_resource'
+      expression: function(androidPath, swiftPath) {
+        return androidPath + swiftPath;
+      },
     },
     {
       class: 'StringProperty',

@@ -469,7 +469,7 @@ foam.CLASS({
     {
       name: 'clone',
       androidCode: `
-        FObject clone = getCls_().createBuilder(getX()).builderBuild();
+        FObject clone = getCls_().createBuilder(x != null ? x : getX()).builderBuild();
         for ( FObject a : getCls_().getAxiomsByClass(foam.core.Property.CLS_()) ) {
           foam.core.Property p = (foam.core.Property) a;
           if ( ! hasPropertySet(p.getName()) ) continue;

@@ -11,15 +11,36 @@ foam.CLASS({
     'foam.dao.ArraySink',
     'foam.dao.FnSink',
     'foam.intent.DAOReadIntent',
+    'foam.intent.DAOCreateIntent',
     'foam.mlang.sink.Count',
   ],
   imports: [
+    {
+      name: 'androidContext',
+      androidType: 'android.content.Context',
+      flags: ['android'],
+    },
     {
       name: 'intentManager',
       type: 'foam.intent.IntentManager',
     },
   ],
   axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Resource',
+      androidPath: 'drawable/dv_create.xml',
+      androidCode: `
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M19,13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+</vector>
+      `
+    },
     {
       class: 'foam.cross_platform.code_generation.Resource',
       androidPath: 'values/dao_view_styles.xml',
@@ -257,6 +278,16 @@ foam.CLASS({
       androidCode: `
         Fragment f = new Fragment(this, getSubX());
         f.getToolbar().setTitle("Browse " + getData().getOf().getId());
+        f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
+          getIntentManager().launchIntent(DAOCreateIntent_create()
+            .setDao(getData())
+            .build());
+          return null;
+        });
+        f.getToolbar().setActionButtonIcon(getAndroidContext().getResources().getIdentifier(
+          "dv_create",
+          "drawable",
+          getAndroidContext().getPackageName()));
         return f;
       `,
       swiftCode: `

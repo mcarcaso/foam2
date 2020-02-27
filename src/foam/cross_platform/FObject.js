@@ -112,6 +112,9 @@ foam.INTERFACE({
     {
       name: 'clone',
       type: 'FObject',
+      args: [
+        { type: 'Context', name: 'x' }
+      ]
     },
   ]
 });
