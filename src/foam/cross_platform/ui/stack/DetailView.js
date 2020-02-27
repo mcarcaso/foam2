@@ -17,6 +17,10 @@ foam.CLASS({
       name: 'intentManager',
       type: 'foam.intent.IntentManager',
     },
+    {
+      name: 'stack',
+      type: 'foam.cross_platform.ui.stack.Stack',
+    },
   ],
   exports: [
     'controllerMode',
@@ -178,7 +182,7 @@ foam.CLASS({
       ],
       androidCode: `
         getDao().put(o);
-        // TODO pop
+        getStack().pop();
       `
     },
     {

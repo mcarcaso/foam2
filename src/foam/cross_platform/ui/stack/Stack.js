@@ -71,8 +71,16 @@ foam.CLASS({
   ],
   methods: [
     {
+      name: 'onBackPressed',
+      flags: ['android'],
+      androidCode: `
+        getStack().remove(getStack().size() - 1);
+      `,
+    },
+    {
       name: 'pop',
       androidCode: `
+        getFragmentManager().popBackStack();
         getStack().remove(getStack().size() - 1);
       `,
       swiftCode: `
