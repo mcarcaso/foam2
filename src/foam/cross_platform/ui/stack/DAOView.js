@@ -69,10 +69,14 @@ foam.CLASS({
                   android.os.Bundle savedInstanceState) {
             int id = getResources().getIdentifier("DAOViewStyle", "style", getActivity().getPackageName());
             androidx.recyclerview.widget.RecyclerView rv = new androidx.recyclerview.widget.RecyclerView(new android.view.ContextThemeWrapper(getActivity(), id));
-            rv.setAdapter(new Adapter(o));
+            Adapter adapter = new Adapter(o);
+            rv.setAdapter(adapter);
             rv.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT));
+            androidx.recyclerview.widget.ItemTouchHelper itemTouchHelper = new androidx.recyclerview.widget.ItemTouchHelper(
+              new SwipeToDeleteCallback(adapter));
+            itemTouchHelper.attachToRecyclerView(rv);
             androidx.recyclerview.widget.LinearLayoutManager lm =
               new androidx.recyclerview.widget.LinearLayoutManager(getActivity());
             rv.setLayoutManager(lm);
@@ -120,6 +124,31 @@ foam.CLASS({
             foam.mlang.sink.Count s = foam.mlang.sink.Count.CountBuilder(o.getSubX()).build();
             o.getData().select(s);
             return (int) s.getValue();
+          }
+          public void deleteItem(ViewHolder viewHolder) {
+            foam.cross_platform.FObject fobj = (foam.cross_platform.FObject) viewHolder.fobj.getProperty("data");
+            o.getData().remove(fobj);
+            notifyItemRemoved(viewHolder.getAdapterPosition());
+          }
+        }
+        public static class SwipeToDeleteCallback extends androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback {
+          private Adapter mAdapter;
+          public SwipeToDeleteCallback(Adapter adapter) {
+            super(0,
+              androidx.recyclerview.widget.ItemTouchHelper.LEFT |
+              androidx.recyclerview.widget.ItemTouchHelper.RIGHT);
+            mAdapter = adapter;
+          }
+          public boolean onMove(
+              androidx.recyclerview.widget.RecyclerView recyclerView,
+              androidx.recyclerview.widget.RecyclerView.ViewHolder viewHolder,
+              androidx.recyclerview.widget.RecyclerView.ViewHolder target) {
+            return false;
+          }
+          public void onSwiped(
+              androidx.recyclerview.widget.RecyclerView.ViewHolder viewHolder,
+              int direction) {
+            mAdapter.deleteItem((ViewHolder) viewHolder);
           }
         }
       `,
