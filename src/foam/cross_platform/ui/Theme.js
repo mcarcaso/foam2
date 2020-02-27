@@ -45,6 +45,10 @@ foam.CLASS({
       name: 'error'
     },
     {
+      class: 'ColorProperty',
+      name: 'onError'
+    },
+    {
       //class: 'FontProperty',
       androidType: 'int',
       swiftType: 'UIFont',

@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     a.getTheme().setSurface(Color.parseColor(isDark ? "BLACK" : "WHITE"));
     a.getTheme().setOnSurface(label);
     a.getTheme().setError(Color.parseColor("#D50000"));
+    a.getTheme().setOnError(Color.parseColor("WHITE"));
     a.getTheme().setCaption(R.style.TextCaption);
     a.getTheme().setSubtitle1(R.style.Subtitle1);
 

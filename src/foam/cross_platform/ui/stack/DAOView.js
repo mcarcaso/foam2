@@ -24,8 +24,27 @@ foam.CLASS({
       name: 'intentManager',
       type: 'foam.intent.IntentManager',
     },
+    {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
   ],
   axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Resource',
+      androidPath: 'drawable/dv_delete.xml',
+      androidCode: `
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M6,19c0,1.1 0.9,2 2,2h8c1.1,0 2,-0.9 2,-2V7H6v12zM19,4h-3.5l-1,-1h-5l-1,1H5v2h14V4z"/>
+</vector>
+      `
+    },
     {
       class: 'foam.cross_platform.code_generation.Resource',
       androidPath: 'drawable/dv_create.xml',
@@ -74,8 +93,21 @@ foam.CLASS({
             rv.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT));
+
+            android.graphics.drawable.Drawable deleteIcon = getContext().getDrawable(getContext().getResources().getIdentifier(
+                    "dv_delete",
+                    "drawable",
+                    getContext().getPackageName()));
+            deleteIcon.setColorFilter(new android.graphics.PorterDuffColorFilter(
+                    o.getTheme().getOnError(),
+                    android.graphics.PorterDuff.Mode.SRC_IN));
+
+            int backgroundColor = o.getTheme().getError();
             androidx.recyclerview.widget.ItemTouchHelper itemTouchHelper = new androidx.recyclerview.widget.ItemTouchHelper(
-              new SwipeToDeleteCallback(adapter));
+              new SwipeToDeleteCallback(
+                      adapter,
+                      deleteIcon,
+                      new android.graphics.drawable.ColorDrawable(backgroundColor)));
             itemTouchHelper.attachToRecyclerView(rv);
             androidx.recyclerview.widget.LinearLayoutManager lm =
               new androidx.recyclerview.widget.LinearLayoutManager(getActivity());
@@ -133,11 +165,17 @@ foam.CLASS({
         }
         public static class SwipeToDeleteCallback extends androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback {
           private Adapter mAdapter;
-          public SwipeToDeleteCallback(Adapter adapter) {
+          private android.graphics.drawable.Drawable icon;
+          private final android.graphics.drawable.ColorDrawable background;
+          public SwipeToDeleteCallback(
+                  Adapter adapter,
+                  android.graphics.drawable.Drawable icon,
+                  android.graphics.drawable.ColorDrawable background) {
             super(0,
-              androidx.recyclerview.widget.ItemTouchHelper.LEFT |
-              androidx.recyclerview.widget.ItemTouchHelper.RIGHT);
+              androidx.recyclerview.widget.ItemTouchHelper.LEFT);
             mAdapter = adapter;
+            this.icon = icon;
+            this.background = background;
           }
           public boolean onMove(
               androidx.recyclerview.widget.RecyclerView recyclerView,
@@ -149,6 +187,42 @@ foam.CLASS({
               androidx.recyclerview.widget.RecyclerView.ViewHolder viewHolder,
               int direction) {
             mAdapter.deleteItem((ViewHolder) viewHolder);
+          }
+          public void onChildDraw(
+                  android.graphics.Canvas c,
+                  androidx.recyclerview.widget.RecyclerView recyclerView,
+                  androidx.recyclerview.widget.RecyclerView.ViewHolder viewHolder,
+                  float dX,
+                  float dY,
+                  int actionState,
+                  boolean isCurrentlyActive) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+            android.view.View v = viewHolder.itemView;
+            int backgroundCornerOffset = 20;
+
+            if ( dX < 0 ) {
+              background.setBounds(
+                      v.getRight() + ((int) dX) - backgroundCornerOffset,
+                      v.getTop(),
+                      v.getRight(),
+                      v.getBottom());
+            } else {
+              background.setBounds(0, 0, 0, 0);
+            }
+            background.draw(c);
+
+            int iconMargin = (v.getHeight() - icon.getIntrinsicHeight()) / 2;
+            int iconTop = v.getTop() + (v.getHeight() - icon.getIntrinsicHeight()) / 2;
+            int iconBottom = iconTop + icon.getIntrinsicHeight();
+            if (dX < 0) { // Swiping to the left
+              int iconLeft = Math.max(
+                      v.getRight() + ((Number)dX).intValue(),
+                      v.getRight() - iconMargin - icon.getIntrinsicWidth());
+              int iconRight = iconLeft + icon.getIntrinsicWidth();
+              icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+              icon.draw(c);
+            }
           }
         }
       `,
