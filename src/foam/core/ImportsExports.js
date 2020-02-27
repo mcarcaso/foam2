@@ -88,7 +88,8 @@ foam.CLASS({
   properties: [
     {
       class: 'StringProperty',
-      name: 'name'
+      name: 'name',
+      postSet: function(_, n) { if ( ! this.key ) this.key = n }
     },
     'key',
     'of',

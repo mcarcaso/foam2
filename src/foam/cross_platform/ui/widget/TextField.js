@@ -2,7 +2,10 @@ foam.CLASS({
   package: 'foam.cross_platform.ui.widget',
   name: 'TextField',
   implements: [
-    'foam.cross_platform.ui.AxiomView'
+    'foam.cross_platform.ui.AxiomView',
+  ],
+  traits: [
+    'foam.cross_platform.ui.DisplayModeTrait',
   ],
   swiftImports: [
     'UIKit'
@@ -14,7 +17,6 @@ foam.CLASS({
     },
     {
       name: 'androidContext',
-      key: 'androidContext',
       androidType: 'android.content.Context',
       flags: ['android']
     }
@@ -100,11 +102,6 @@ foam.CLASS({
       `
     },
     {
-      class: 'Enum',
-      of: 'foam.u2.Visibility',
-      name: 'visibility'
-    },
-    {
       class: 'BooleanProperty',
       name: 'feedback_'
     },
@@ -113,7 +110,8 @@ foam.CLASS({
     ['', 'propertyChange.view', 'dataToView'],
     ['', 'propertyChange.data', 'dataToView'],
 
-    ['', 'propertyChange.visibility', 'updateView'],
+    ['', 'propertyChange.view', 'updateView'],
+    ['', 'propertyChange.mode', 'updateView'],
     ['', 'propertyChange.placeholder', 'updateView'],
   ],
   methods: [
@@ -151,8 +149,9 @@ foam.CLASS({
 
         getView().setHint(getPlaceholder());
 
-        getView().setFocusable(getVisibility() == foam.u2.Visibility.RW);
-        getView().setEnabled(getVisibility() != foam.u2.Visibility.DISABLED);
+        getView().setFocusable(getMode() == foam.u2.DisplayMode.RW);
+        getView().setFocusableInTouchMode(getMode() == foam.u2.DisplayMode.RW);
+        getView().setEnabled(getMode() != foam.u2.DisplayMode.DISABLED);
       `,
       swiftCode: `
         if ( getView() == nil ) { return; }

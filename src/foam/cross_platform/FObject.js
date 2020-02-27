@@ -109,5 +109,9 @@ foam.INTERFACE({
         }
       ]
     },
+    {
+      name: 'clone',
+      type: 'FObject',
+    },
   ]
 });

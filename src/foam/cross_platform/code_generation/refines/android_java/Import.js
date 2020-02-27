@@ -35,7 +35,7 @@ foam.CLASS({
         name: this.crossPlatformSlotGetterName,
         type: 'foam.core.SlotInterface',
         visibility: 'public',
-        body: `return getSubX().getXSlot("${this.name}");`
+        body: `return getX().getXSlot("${this.key}");`
       });
       cls.method({
         name: this.crossPlatformGetterName,

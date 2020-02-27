@@ -39,7 +39,15 @@ foam.CLASS({
     {
       class: 'FunctionProperty',
       name: 'backButtonFn'
-    }
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'actionButtonFn'
+    },
+    {
+      class: 'IntProperty',
+      name: 'actionButtonIcon'
+    },
   ],
   reactions: [
     ['', 'propertyChange', 'updateView']
@@ -55,8 +63,8 @@ foam.CLASS({
         
         getView().setTitle(getTitle());
         
+        android.content.Context x = getView().getContext();
         if ( hasPropertySet("backButtonFn") ) {
-          android.content.Context x = getView().getContext();
           getView().setNavigationIcon(x.getResources().getIdentifier(
                   "toolbar_back",
                   "drawable",
@@ -64,6 +72,24 @@ foam.CLASS({
           getView().setNavigationOnClickListener(v -> {
             getBackButtonFn().executeFunction(null);
           });
+        }
+        if ( hasPropertySet("actionButtonIcon") ) {
+          android.widget.Toolbar.LayoutParams lp = new android.widget.Toolbar.LayoutParams(
+            android.widget.Toolbar.LayoutParams.WRAP_CONTENT,
+            android.widget.Toolbar.LayoutParams.WRAP_CONTENT
+          );
+          lp.gravity = android.view.Gravity.RIGHT;
+          lp.rightMargin = getView().getContentInsetStart();
+
+          android.widget.ImageButton rightBtn = new android.widget.ImageButton(x);
+          rightBtn.setLayoutParams(lp);
+          rightBtn.setImageResource(getActionButtonIcon());
+          rightBtn.setOnClickListener(v -> {
+            getActionButtonFn().executeFunction(null);
+          });
+          rightBtn.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+          rightBtn.setColorFilter(getTheme().getOnPrimary());
+          getView().addView(rightBtn);
         }
       `
     }

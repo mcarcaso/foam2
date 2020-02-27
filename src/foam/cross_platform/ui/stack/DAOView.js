@@ -256,6 +256,7 @@ foam.CLASS({
       name: 'toStackableView',
       androidCode: `
         Fragment f = new Fragment(this, getSubX());
+        f.getToolbar().setTitle("Browse " + getData().getOf().getId());
         return f;
       `,
       swiftCode: `

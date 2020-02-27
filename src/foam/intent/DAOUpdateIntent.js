@@ -1,6 +1,6 @@
 foam.CLASS({
   package: 'foam.intent',
-  name: 'DAOReadIntent',
+  name: 'DAOUpdateIntent',
   implements: [
     'foam.intent.Intent'
   ],
@@ -27,7 +27,7 @@ foam.CLASS({
       name: 'launch',
       androidCode: `
         getStack().push(DetailView_create()
-          .setControllerMode(foam.u2.ControllerMode.VIEW)
+          .setControllerMode(foam.u2.ControllerMode.EDIT)
           .setDao(getDao())
           .setId(getId())
           .build());

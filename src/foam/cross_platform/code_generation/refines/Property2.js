@@ -42,6 +42,27 @@ foam.CLASS({
       androidValue: `AnyParser_create().build()`,
       swiftValue: `AnyParser_create().build()`,
     },
+    {
+      class: 'FunctionProperty',
+      name: 'cloneProperty',
+      androidValue: `
+        (foam.cross_platform.GenericFunction) args -> {
+          foam.cross_platform.FObject from = (foam.cross_platform.FObject) args[0];
+          foam.cross_platform.FObject to = (foam.cross_platform.FObject) args[1];
+          to.setProperty(getName(), from.getProperty(getName()));
+          return null;
+        }
+      `,
+      value: function(
+        /* any // The value to clone */         value,
+        /* object // Add values to this map to
+           have them installed on the clone. */ cloneMap
+        ) {
+          /** Override to provide special deep cloning behavior. */
+          cloneMap[this.name] = ( value && value.clone ) ? value.clone() :
+            foam.util.clone(value);
+      }
+    },
   ],
   methods: [
     {

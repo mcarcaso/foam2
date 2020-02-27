@@ -30,6 +30,7 @@ foam.CLASS({
       name: 'errors_',
       hidden: true,
       transient: true,
+      androidCloneProperty: `null`,
       androidComparePropertyValues: `null`,
       swiftComparePropertyValues: `nil`,
       androidFactory: `
@@ -75,6 +76,7 @@ foam.CLASS({
       name: 'listeners__',
       hidden: true,
       transient: true,
+      androidCloneProperty: `null`,
       androidComparePropertyValues: `null`,
       swiftComparePropertyValues: 'nil',
       androidFactory: `
@@ -108,6 +110,7 @@ foam.CLASS({
         x_ = value as? foam_cross_platform_Context;
         clearProperty("subX");
       `,
+      androidCloneProperty: `null`,
       androidComparePropertyValues: `null`,
       swiftComparePropertyValues: `nil`,
       androidGetter: `
@@ -130,6 +133,7 @@ foam.CLASS({
       hidden: true,
       transient: true,
       swiftOptional: false,
+      androidCloneProperty: `null`,
       androidComparePropertyValues: `null`,
       swiftComparePropertyValues: `nil`,
       androidFactory: `
@@ -460,6 +464,19 @@ foam.CLASS({
       name: 'equals',
       crossPlatformCode: `
         return compareTo(o) == 0;
+      `
+    },
+    {
+      name: 'clone',
+      androidCode: `
+        FObject clone = getCls_().createBuilder(getX()).builderBuild();
+        for ( FObject a : getCls_().getAxiomsByClass(foam.core.Property.CLS_()) ) {
+          foam.core.Property p = (foam.core.Property) a;
+          if ( ! hasPropertySet(p.getName()) ) continue;
+          if ( p.getCloneProperty() == null ) continue;
+          p.getCloneProperty().executeFunction(new Object[] {this, clone});
+        }
+        return clone;
       `
     }
   ]

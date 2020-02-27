@@ -5,24 +5,65 @@ foam.CLASS({
     'foam.cross_platform.ui.Stackable'
   ],
   requires: [
-    'foam.cross_platform.ui.widget.DetailView'
+    'foam.cross_platform.ui.widget.DetailView',
+    'foam.intent.DAOUpdateIntent',
   ],
   imports: [
     {
       name: 'theme',
       type: 'foam.cross_platform.ui.Theme',
     },
+    {
+      name: 'intentManager',
+      type: 'foam.intent.IntentManager',
+    },
+  ],
+  exports: [
+    'controllerMode',
   ],
   axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Resource',
+      androidPath: 'drawable/dv_edit.xml',
+      androidCode: `
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M3,17.25V21h3.75L17.81,9.94l-3.75,-3.75L3,17.25zM20.71,7.04c0.39,-0.39 0.39,-1.02 0,-1.41l-2.34,-2.34c-0.39,-0.39 -1.02,-0.39 -1.41,0l-1.83,1.83 3.75,3.75 1.83,-1.83z"/>
+</vector>
+      `
+    },
+    {
+      class: 'foam.cross_platform.code_generation.Resource',
+      androidPath: 'drawable/dv_save.xml',
+      androidCode: `
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M17,3L5,3c-1.11,0 -2,0.9 -2,2v14c0,1.1 0.89,2 2,2h14c1.1,0 2,-0.9 2,-2L21,7l-4,-4zM12,19c-1.66,0 -3,-1.34 -3,-3s1.34,-3 3,-3 3,1.34 3,3 -1.34,3 -3,3zM15,9L5,9L5,5h10v4z"/>
+</vector>
+      `
+    },
     {
       class: 'foam.cross_platform.code_generation.Extras',
       androidCode: `
         public static class Fragment extends foam.cross_platform.ui.stack.Stack.ToolbarFragment {
+          public DetailView self;
           public foam.cross_platform.ui.widget.DetailView dv;
           public Fragment(
+              DetailView self,
               foam.cross_platform.ui.widget.DetailView dv,
               foam.cross_platform.Context x) {
             super(x);
+            this.self = self;
             this.dv = dv;
           }
           public android.view.View onCreateView(
@@ -36,6 +77,10 @@ foam.CLASS({
               super.onCreateView(inflater, container, savedInstanceState);
             v.addView(sv);
             return v;
+          }
+          public void onResume() {
+            super.onResume();
+            self.refreshData(dv);
           }
         }
       `,
@@ -112,26 +157,69 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'FObjectProperty',
-      name: 'data'
+      class: 'foam.dao.DAOProperty',
+      name: 'dao'
     },
     {
-      class: 'StringProperty',
-      name: 'title',
-      expressionArgs: ['data'],
-      androidExpression: `
-        return data.getCls_().getId();
-      `
-    }
+      name: 'id'
+    },
+    {
+      class: 'Enum',
+      of: 'foam.u2.ControllerMode',
+      name: 'controllerMode',
+      value: 'VIEW'
+    },
   ],
   methods: [
     {
+      name: 'doUpdate',
+      args: [
+        { name: 'o', type: 'FObject' },
+      ],
+      androidCode: `
+        getDao().put(o);
+        // TODO pop
+      `
+    },
+    {
+      name: 'refreshData',
+      args: [
+        { name: 'dv', type: 'foam.cross_platform.ui.widget.DetailView' },
+      ],
+      androidCode: `
+        dv.setData(getDao().find(getId()).clone());
+      `
+    },
+    {
       name: 'toStackableView',
       androidCode: `
-        Fragment f = new Fragment(DetailView_create().build(), getSubX());
-        f.dv.onDetach(f.dv.getData$().follow(getData$()));
-
-        f.getToolbar().setTitle("YO");
+        Fragment f = new Fragment(this, DetailView_create().build(), getSubX());
+        android.content.Context x = f.dv.getAndroidContext();
+        f.getToolbar().setTitle(
+          getControllerMode().getLabel() + " " +
+          getDao().getOf().getId());
+        if ( getControllerMode() == foam.u2.ControllerMode.VIEW ) {
+          f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
+            getIntentManager().launchIntent(DAOUpdateIntent_create()
+              .setDao(getDao())
+              .setId(getId())
+              .build());
+            return null;
+          });
+          f.getToolbar().setActionButtonIcon(x.getResources().getIdentifier(
+            "dv_edit",
+            "drawable",
+            x.getPackageName()));
+        } else {
+          f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
+            doUpdate(f.dv.getData());
+            return null;
+          });
+          f.getToolbar().setActionButtonIcon(x.getResources().getIdentifier(
+            "dv_save",
+            "drawable",
+            x.getPackageName()));
+        }
 
         f.backgroundColor = getTheme().getBackground();
         return f;
