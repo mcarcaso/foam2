@@ -20,7 +20,12 @@ foam.CLASS({
     },
     {
       name: 'compare',
-      androidCode: `return 0;`,
+      androidCode: `
+        if ( o1 instanceof Comparable ) {
+          return ((Comparable) o1).compareTo(o2);
+        }
+        return 0;
+      `,
       swiftCode: `return 0`,
     },
   ],

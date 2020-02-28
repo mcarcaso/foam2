@@ -58,8 +58,7 @@
     modelArgs: {
       platform: platform,
       classIds: [
-        'foam.cross_platform.Application',
-
+        'foam.dao.GUIDDAO',
         'demo.ArrayDAO',
         'demo.Compare',
         'demo.ImportExport',
@@ -69,6 +68,8 @@
         'demo.Person',
         'demo.Reaction',
         'demo.Slot',
+        'demo.Timer',
+        'foam.cross_platform.Application',
         'foam.cross_platform.ui.SimpleViewFactory',
         'foam.cross_platform.ui.stack.DAOView',
         'foam.cross_platform.ui.widget.EmailCitationView',

@@ -41,24 +41,20 @@ public class MainActivity extends AppCompatActivity {
     a.getStack().setFragmentManager(getSupportFragmentManager());
 
     foam.cross_platform.Context x = a.getSubX();
-    foam.dao.DAO d = foam.dao.ArrayDAO.ArrayDAOBuilder(x)
-      .setOf(demo.Person.CLS_())
-      .build();
-    for (int i = 0; i < 10; i++) {
-      d.put(demo.Person.PersonBuilder(x)
-        .setFirstName("Mike")
-        .setLastName("Car" + i)
-        .build());
-    }
+    foam.dao.DAO d = foam.dao.GUIDDAO.GUIDDAOBuilder(x)
+     .setDelegate(foam.dao.ArrayDAO.ArrayDAOBuilder(x)
+        .setOf(demo.Timer.CLS_())
+        .build()
+     )
+     .build();
 
     a.getIntentManager().launchIntent(DAOBrowseIntent.DAOBrowseIntentBuilder(x)
       .setDao(d)
       .setCitationView(foam.cross_platform.ui.SimpleViewFactory.SimpleViewFactoryBuilder(x)
         .setViewClass(foam.cross_platform.ui.widget.EmailCitationView.CLS_())
         .setViewArgs(new java.util.HashMap() {{
-          put("fromExpr", demo.Person.FIRST_NAME());
-          put("subjectExpr", demo.Person.LAST_NAME());
-          put("bodyExpr", demo.Person.FULL_NAME());
+          put("fromExpr", demo.Timer.NAME());
+          put("subjectExpr", demo.Timer.MS_PASSED());
         }})
         .build())
       .build());
