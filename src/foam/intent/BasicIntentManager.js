@@ -7,7 +7,8 @@ foam.CLASS({
   methods: [
     {
       name: 'launchIntent',
-      crossPlatformCode: `return intent.launch();`
+      androidCode: `return intent.launch();`,
+      swiftCode: `return intent!.launch();`,
     }
   ]
 });

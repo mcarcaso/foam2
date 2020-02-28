@@ -140,10 +140,7 @@ foam.CLASS({
             android.view.View v = fobj.getView();
             v.setOnClickListener(view -> {
               foam.cross_platform.FObject data = (foam.cross_platform.FObject) ((foam.cross_platform.FObject) fobj).getProperty("data");
-              o.getIntentManager().launchIntent(o.DAOReadIntent_create()
-                .setDao(o.getData())
-                .setId(data.getProperty("id"))
-                .build());
+              o.onRowPressed(data.getProperty("id"));
             });
             return new ViewHolder((foam.cross_platform.FObject) fobj);
           }
@@ -279,12 +276,9 @@ foam.CLASS({
             daoView = o;
           }
           public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let s = daoView.getStack();
             guard let row = tableView.cellForRow(at: indexPath) as? RowView else { return }
-            let fobj = row.citationView as! foam_cross_platform_FObject
-            s?.push(daoView.DetailView_create()
-              .setData(fobj.getProperty("data"))
-              .build());
+            let fobj = (row.citationView as! foam_cross_platform_FObject).getProperty("data") as! foam_cross_platform_FObject
+            daoView.onRowPressed(fobj.getProperty("id"));
           }
         }
 
@@ -355,15 +349,6 @@ foam.CLASS({
       flags: ['swift'],
       name: 'tableSource',
       swiftFactory: `return TableSource(self)`
-    },
-    {
-      class: 'StringProperty',
-      name: 'title',
-      expressionArgs: ['data'],
-      androidExpression: `
-        // TODO translations
-        return "Browse " + data.getOf().getId();
-      `
     }
   ],
   listeners: [
@@ -377,14 +362,48 @@ foam.CLASS({
   ],
   methods: [
     {
+      name: 'onCreatePressed',
+      androidCode: `
+        getIntentManager().launchIntent(DAOCreateIntent_create()
+          .setDao(getData())
+          .build());
+      `,
+      swiftAnnotations: ['@objc'],
+      swiftCode: `
+        _ = getIntentManager()!.launchIntent(DAOCreateIntent_create()
+          .setDao(getData())
+          .build());
+      `
+    },
+    {
+      name: 'onRowPressed',
+      args: [
+        { type: 'Any', name: 'id' }
+      ],
+      androidCode: `
+        getIntentManager().launchIntent(DAOReadIntent_create()
+          .setDao(getData())
+          .setId(id)
+          .build());
+      `
+    },
+    {
+      type: 'String',
+      name: 'getTitle',
+      androidCode: `
+        return "Browse " + getData().getOf().getId();
+      `,
+      swiftCode: `
+        return "Browse " + getData()!.getOf().getId()!;
+      `
+    },
+    {
       name: 'toStackableView',
       androidCode: `
         Fragment f = new Fragment(this, getSubX());
-        f.getToolbar().setTitle("Browse " + getData().getOf().getId());
+        f.getToolbar().setTitle(getTitle());
         f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
-          getIntentManager().launchIntent(DAOCreateIntent_create()
-            .setDao(getData())
-            .build());
+          onCreatePressed();
           return null;
         });
         f.getToolbar().setActionButtonIcon(getAndroidContext().getResources().getIdentifier(
@@ -394,7 +413,14 @@ foam.CLASS({
         return f;
       `,
       swiftCode: `
-        return TableViewController(self, style: .plain);
+        let vc = TableViewController(self, style: .plain);
+        vc.title = getTitle();
+        vc.navigationItem.rightBarButtonItem = UIBarButtonItem(
+          barButtonSystemItem: .add,
+          target: self,
+          action: #selector(onCreatePressed));
+        return vc;
+
       `
     }
   ]

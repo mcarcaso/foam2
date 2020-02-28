@@ -183,7 +183,8 @@ foam.CLASS({
       // abstract classes to swift.
       if ( parentCls.model_.abstract &&
            parentCls.getSuperClass().getAxiomByName(this.name) !== this &&
-           parentCls.getAxiomByName(this.name) === this ) {
+           parentCls.getAxiomByName(this.name) === this &&
+          ! cls.getMethod(this.name) ) {
         cls.method({
           override: this.swiftIsOverride(parentCls),
           visibility: 'public',

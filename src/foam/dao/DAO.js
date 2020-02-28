@@ -364,6 +364,7 @@ foam.INTERFACE({
       name: 'getOf',
       flags: ['java', 'android', 'swift'],
       type: 'Class',
+      swiftOptional: false,
       javaType: 'foam.core.ClassInfo',
     }
   ]

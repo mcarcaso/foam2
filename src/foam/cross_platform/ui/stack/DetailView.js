@@ -156,6 +156,13 @@ foam.CLASS({
             sv.verticalScrollIndicatorInsets.bottom = 0
           }
         }
+        public class BarButtonItem: UIBarButtonItem {
+          public var dv: foam_cross_platform_ui_widget_DetailView? = nil;
+        }
+        @objc
+        public func onBarButtonItemPressed(sender: UIBarButtonItem) {
+          onSavePressed((sender as! BarButtonItem).dv!.getData());
+        }
       `
     }
   ],
@@ -176,14 +183,18 @@ foam.CLASS({
   ],
   methods: [
     {
-      name: 'doUpdate',
+      name: 'onSavePressed',
       args: [
         { name: 'o', type: 'FObject' },
       ],
       androidCode: `
         getDao().put(o);
         getStack().pop();
-      `
+      `,
+      swiftCode: `
+        _ = getDao()!.put(o);
+        getStack()!.pop();
+      `,
     },
     {
       name: 'refreshData',
@@ -197,19 +208,40 @@ foam.CLASS({
       `
     },
     {
+      name: 'onUpdatePressed',
+      androidCode: `
+        getIntentManager().launchIntent(DAOUpdateIntent_create()
+          .setDao(getDao())
+          .setId(getId())
+          .build());
+      `,
+      swiftAnnotations: ['@objc'],
+      swiftCode: `
+        _ = getIntentManager()!.launchIntent(DAOUpdateIntent_create()
+          .setDao(getDao())
+          .setId(getId())
+          .build());
+      `,
+    },
+    {
+      name: 'getTitle',
+      type: 'String',
+      androidCode: `
+        return getControllerMode().getLabel() + " " + getDao().getOf().getId();
+      `,
+      swiftCode: `
+        return getControllerMode()!.getLabel()! + " " + getDao()!.getOf().getId()!;
+      `,
+    },
+    {
       name: 'toStackableView',
       androidCode: `
         Fragment f = new Fragment(this, DetailView_create().build(), getSubX());
         android.content.Context x = f.dv.getAndroidContext();
-        f.getToolbar().setTitle(
-          getControllerMode().getLabel() + " " +
-          getDao().getOf().getId());
+        f.getToolbar().setTitle(getTitle());
         if ( getControllerMode() == foam.u2.ControllerMode.VIEW ) {
           f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
-            getIntentManager().launchIntent(DAOUpdateIntent_create()
-              .setDao(getDao())
-              .setId(getId())
-              .build());
+            onUpdatePressed();
             return null;
           });
           f.getToolbar().setActionButtonIcon(x.getResources().getIdentifier(
@@ -218,7 +250,7 @@ foam.CLASS({
             x.getPackageName()));
         } else {
           f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
-            doUpdate(f.dv.getData());
+            onSavePressed(f.dv.getData());
             return null;
           });
           f.getToolbar().setActionButtonIcon(x.getResources().getIdentifier(
@@ -226,15 +258,25 @@ foam.CLASS({
             "drawable",
             x.getPackageName()));
         }
-
         f.backgroundColor = getTheme().getBackground();
         return f;
       `,
       swiftCode: `
-        let dv = DetailView_create().build();
-        dv.onDetach(dv.getData$().follow(getData$()));
-
-        let vc = ViewController(dv);
+        let vc = ViewController(DetailView_create().build());
+        vc.title = getTitle();
+        if foam_cross_platform_Lib.equals(getControllerMode(), foam_u2_ControllerMode.VIEW) {
+          vc.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .edit,
+            target: self,
+            action: #selector(onUpdatePressed))
+        } else {
+          let b = BarButtonItem(
+            barButtonSystemItem: .save,
+            target: self,
+            action: #selector(onBarButtonItemPressed))
+          b.dv = vc.dv;
+          vc.navigationItem.rightBarButtonItem = b;
+        }
         vc.view.backgroundColor = getTheme()!.getBackground();
         return vc;
       `
