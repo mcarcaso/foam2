@@ -152,18 +152,23 @@ foam.CLASS({
 
         getView().setHint(getPlaceholder());
 
-        getView().setFocusable(getMode() == foam.u2.DisplayMode.RW);
-        getView().setFocusableInTouchMode(getMode() == foam.u2.DisplayMode.RW);
-        getView().setEnabled(getMode() != foam.u2.DisplayMode.DISABLED);
+        getView().setFocusable(
+          getMode() == foam.u2.DisplayMode.RW);
+        getView().setFocusableInTouchMode(
+          getMode() == foam.u2.DisplayMode.RW);
+        getView().setEnabled(
+          getMode() != foam.u2.DisplayMode.DISABLED);
       `,
       swiftCode: `
         if ( getView() == nil ) { return; }
         let tf = (getView() as! UITextView);
+
         //getView().setHint(getPlaceholder());
+
         tf.isEditable = foam_cross_platform_Lib.equals(
-          getVisibility(), foam_u2_Visibility.RW)
+          getMode(), foam_u2_DisplayMode.RW)
         tf.isUserInteractionEnabled = !foam_cross_platform_Lib.equals(
-        getVisibility(), foam_u2_Visibility.DISABLED)
+          getMode(), foam_u2_DisplayMode.DISABLED)
       `,
     },
     {

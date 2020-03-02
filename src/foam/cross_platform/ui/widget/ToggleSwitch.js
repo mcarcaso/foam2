@@ -187,14 +187,15 @@ foam.CLASS({
       isFramed: true,
       androidCode: `
         if ( getView() == null ) return;
-        getView().setEnabled(getMode() == foam.u2.DisplayMode.RW);
+        getView().setEnabled(
+          getMode() == foam.u2.DisplayMode.RW);
       `,
       swiftCode: `
         let tf = (getView() as! LabelledUISwitch).s;
         tf.isUserInteractionEnabled = foam_cross_platform_Lib.equals(
-          getVisibility(), foam_u2_Visibility.RW);
+          getMode(), foam_u2_DisplayMode.RW);
         tf.isEnabled = !foam_cross_platform_Lib.equals(
-          getVisibility(), foam_u2_Visibility.DISABLED)
+          getMode(), foam_u2_DisplayMode.DISABLED)
       `
     },
     {
