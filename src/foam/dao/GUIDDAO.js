@@ -31,6 +31,12 @@ foam.CLASS({
           obj.setProperty(getProperty(), java.util.UUID.randomUUID());
         }
         return super.put_(x, obj);
+      `,
+      swiftCode: `
+        if ( !(obj?.hasPropertySet(getProperty()) ?? true) ) {
+          obj?.setProperty(getProperty(), UUID().uuidString);
+        }
+        return super.put_(x, obj);
       `
     },
   ],

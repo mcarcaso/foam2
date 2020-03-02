@@ -31,6 +31,13 @@ foam.CLASS({
           .setCitationView(getCitationView())
           .build());
         return true;
+      `,
+      swiftCode: `
+        getStack()!.push(DAOView_create()
+          .setData(getDao())
+          .setCitationView(getCitationView())
+          .build());
+        return true;
       `
     }
   ]

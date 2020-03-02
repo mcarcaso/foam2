@@ -53,6 +53,17 @@ foam.CLASS({
           return null;
         }
       `,
+      swiftValue: `
+        AnonymousGenericFunction_create()
+          .setFn({[weak self] (args: [Any?]?) -> Any? in
+            if self == nil { return nil }
+            let from = args![0] as! foam_cross_platform_FObject;
+            let to = args![1] as! foam_cross_platform_FObject;
+            to.setProperty(self!.getName(), from.getProperty(self!.getName()));
+            return nil;
+          })
+          .build()
+      `,
       value: function(
         /* any // The value to clone */         value,
         /* object // Add values to this map to

@@ -336,7 +336,8 @@ foam.CLASS({
 
     {
       class: 'IntProperty',
-      name: 'rowHeight'
+      name: 'rowHeight',
+      value: 88
     },
     {
       swiftType: 'TableViewDelegate',
@@ -382,6 +383,12 @@ foam.CLASS({
       ],
       androidCode: `
         getIntentManager().launchIntent(DAOReadIntent_create()
+          .setDao(getData())
+          .setId(id)
+          .build());
+      `,
+      swiftCode: `
+        _ = getIntentManager()!.launchIntent(DAOReadIntent_create()
           .setDao(getData())
           .setId(id)
           .build());

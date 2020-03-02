@@ -31,6 +31,7 @@ foam.CLASS({
       hidden: true,
       transient: true,
       androidCloneProperty: `null`,
+      swiftCloneProperty: `nil`,
       androidComparePropertyValues: `null`,
       swiftComparePropertyValues: `nil`,
       androidFactory: `
@@ -77,6 +78,7 @@ foam.CLASS({
       hidden: true,
       transient: true,
       androidCloneProperty: `null`,
+      swiftCloneProperty: `nil`,
       androidComparePropertyValues: `null`,
       swiftComparePropertyValues: 'nil',
       androidFactory: `
@@ -111,6 +113,7 @@ foam.CLASS({
         clearProperty("subX");
       `,
       androidCloneProperty: `null`,
+      swiftCloneProperty: `nil`,
       androidComparePropertyValues: `null`,
       swiftComparePropertyValues: `nil`,
       androidGetter: `
@@ -134,6 +137,7 @@ foam.CLASS({
       transient: true,
       swiftOptional: false,
       androidCloneProperty: `null`,
+      swiftCloneProperty: `nil`,
       androidComparePropertyValues: `null`,
       swiftComparePropertyValues: `nil`,
       androidFactory: `
@@ -475,6 +479,16 @@ foam.CLASS({
           if ( ! hasPropertySet(p.getName()) ) continue;
           if ( p.getCloneProperty() == null ) continue;
           p.getCloneProperty().executeFunction(new Object[] {this, clone});
+        }
+        return clone;
+      `,
+      swiftCode: `
+        let clone = getCls_()!.createBuilder(x != nil ? x : getX())!.builderBuild();
+        for a in getCls_()!.getAxiomsByClass(foam_core_Property.CLS_())! {
+          let p = a as! foam_core_Property;
+          if ( !hasPropertySet(p.getName()) ) { continue; }
+          if ( p.getCloneProperty() == nil ) { continue; }
+          _ = p.getCloneProperty()!.executeFunction([self, clone]);
         }
         return clone;
       `

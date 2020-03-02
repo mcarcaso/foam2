@@ -149,6 +149,10 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'swiftViewFactory'
     },
+    {
+      class: 'StringProperty',
+      name: 'swiftCloneProperty'
+    },
   ],
   methods: [
     function buildSwiftClass(cls, parentCls) {
@@ -456,6 +460,7 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
               .getAxiomByName('asSwiftValue')
               .code.call(this)};
             ${this.crossPlatformPrivateAxiom}!.setComparePropertyValues(${this.swiftComparePropertyValues});
+            ${this.swiftCloneProperty ? `${this.crossPlatformPrivateAxiom}!.setCloneProperty(${this.swiftCloneProperty});` : ''}
             ${expressionData.join('\n')}
             ${this.swiftViewFactory ? `
             ${this.crossPlatformPrivateAxiom}!.setViewInitializer(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)

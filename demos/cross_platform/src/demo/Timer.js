@@ -29,6 +29,12 @@ foam.CLASS({
           setLastTime_(new java.util.Date());
           tick(null, null);
         }
+      `,
+      swiftPostSet: `
+        if ( newValue ) {
+          setLastTime_(Date());
+          tick(nil, nil);
+        }
       `
     },
   ],
@@ -42,7 +48,16 @@ foam.CLASS({
         setMsPassed(getMsPassed() + now.getTime() - getLastTime_().getTime());
         setLastTime_(now);
         tick(null, null);
-      `
+      `,
+      swiftCode: `
+        if ( !getIsStarted() ) { return; }
+        let now = Date();
+        setMsPassed(getMsPassed() + Int(1000 * (
+          now.timeIntervalSince1970 -
+          getLastTime_()!.timeIntervalSince1970)));
+        setLastTime_(now);
+        tick(nil, nil);
+      `,
     }
   ],
   actions: [
@@ -50,7 +65,9 @@ foam.CLASS({
       name: 'reset',
       isAvailableExpressionArgs: ['msPassed'],
       androidIsAvailable: `return msPassed > 0;`,
-      androidCode: `setMsPassed(0);`
+      swiftIsAvailable: `return msPassed > 0;`,
+      androidCode: `setMsPassed(0);`,
+      swiftCode: `setMsPassed(0);`
     }
   ]
 });

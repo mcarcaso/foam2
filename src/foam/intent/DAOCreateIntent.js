@@ -28,6 +28,13 @@ foam.CLASS({
           .setDao(getDao())
           .build());
         return true;
+      `,
+      swiftCode: `
+        getStack()!.push(DetailView_create()
+          .setControllerMode(foam_u2_ControllerMode.CREATE)
+          .setDao(getDao())
+          .build());
+        return true;
       `
     }
   ]

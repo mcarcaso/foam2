@@ -98,6 +98,7 @@ foam.CLASS({
       `,
       swiftCode: `
         getStack()!.removeLastObject();
+        getNavController().popViewController(animated: true);
       `
     },
     {

@@ -91,9 +91,12 @@ foam.CLASS({
       swiftCode: `
         class ViewController: UIViewController {
           var dv: foam_cross_platform_ui_widget_DetailView;
+          var this: foam_cross_platform_ui_stack_DetailView;
           var sub: foam_core_Detachable?;
-          init(_ dv: foam_cross_platform_ui_widget_DetailView) {
+          init(_ dv: foam_cross_platform_ui_widget_DetailView,
+               _ this: foam_cross_platform_ui_stack_DetailView) {
             self.dv = dv;
+            self.this = this;
             super.init(nibName: nil, bundle: nil);
             let sv = UIScrollView(frame: view.frame);
             sv.keyboardDismissMode = .onDrag
@@ -115,6 +118,7 @@ foam.CLASS({
             sv.contentSize = dvv.frame.size
           }
           override func viewWillAppear(_ animated: Bool) {
+            this.refreshData(dv);
             super.viewWillAppear(animated)
             NotificationCenter.default.addObserver(
               self,
@@ -205,7 +209,12 @@ foam.CLASS({
         dv.setData(getId() == null ?
           getDao().getOf().createBuilder(getSubX()).builderBuild() :
           getDao().find(getId()).clone(getSubX()));
-      `
+      `,
+      swiftCode: `
+        dv!.setData(getId() == nil ?
+          getDao()!.getOf().createBuilder(getSubX())!.builderBuild() :
+          getDao()!.find(getId())!.clone(getSubX()));
+      `,
     },
     {
       name: 'onUpdatePressed',
@@ -262,7 +271,7 @@ foam.CLASS({
         return f;
       `,
       swiftCode: `
-        let vc = ViewController(DetailView_create().build());
+        let vc = ViewController(DetailView_create().build(), self);
         vc.title = getTitle();
         if foam_cross_platform_Lib.equals(getControllerMode(), foam_u2_ControllerMode.VIEW) {
           vc.navigationItem.rightBarButtonItem = UIBarButtonItem(

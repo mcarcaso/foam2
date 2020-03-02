@@ -10,10 +10,6 @@ foam.CLASS({
       name: 'size',
     },
     {
-      class: 'StringProperty',
-      name: 'font',
-    },
-    {
       class: 'BooleanProperty',
       name: 'bold',
     },
@@ -40,7 +36,8 @@ foam.CLASS({
             getBold() ? android.graphics.Typeface.BOLD :
             getItalic() ? android.graphics.Typeface.ITALIC :
             android.graphics.Typeface.NORMAL;
-          android.graphics.Typeface tf = android.graphics.Typeface.create(getFont(), style);
+          android.graphics.Typeface tf = android.graphics.Typeface.create(
+            android.graphics.Typeface.DEFAULT, style);
           tv.setTypeface(tf);
           tv.setTextSize(getSize());
         } else {
@@ -48,7 +45,7 @@ foam.CLASS({
         }
       `,
       swiftCode: `
-        var f = UIFont(name: getFont()!, size: CGFloat(getSize()))!;
+        var f = UIFont.systemFont(ofSize: CGFloat(getSize()));
         if ( self.getBold() || self.getItalic() ) {
           let traits: UIFontDescriptor.SymbolicTraits =
             getBold() && getItalic() ? [.traitBold, .traitItalic] :

@@ -32,6 +32,14 @@ foam.CLASS({
           .setId(getId())
           .build());
         return true;
+      `,
+      swiftCode: `
+        getStack()!.push(DetailView_create()
+          .setControllerMode(foam_u2_ControllerMode.EDIT)
+          .setDao(getDao())
+          .setId(getId())
+          .build());
+        return true;
       `
     }
   ]
