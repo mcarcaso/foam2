@@ -13,7 +13,11 @@ foam.CLASS({
       key: 'androidContext',
       androidType: 'android.content.Context',
       flags: ['android']
-    }
+    },
+    {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
   ],
   properties: [
     {
@@ -24,7 +28,10 @@ foam.CLASS({
       swiftType: 'UIView?',
       name: 'view',
       androidFactory: `
-        return new android.widget.TextView(getAndroidContext());
+        android.widget.TextView v = new android.widget.TextView(getAndroidContext());
+        getTheme().getWidgetTextStyle().applyTextStyle(v);
+        v.setTextColor(getTheme().getOnSurface());
+        return v;
       `,
       swiftFactory: `
         return UILabel();

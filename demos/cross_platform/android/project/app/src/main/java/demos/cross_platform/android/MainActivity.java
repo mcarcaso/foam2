@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import foam.cross_platform.Application;
+import foam.cross_platform.ui.TextStyle;
 import foam.intent.DAOBrowseIntent;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,8 +35,13 @@ public class MainActivity extends AppCompatActivity {
     a.getTheme().setOnSurface(label);
     a.getTheme().setError(Color.parseColor("#D50000"));
     a.getTheme().setOnError(Color.parseColor("WHITE"));
-    a.getTheme().setCaption(R.style.TextCaption);
-    a.getTheme().setSubtitle1(R.style.Subtitle1);
+    a.getTheme().setWidgetTextStyle(TextStyle.TextStyleBuilder(null)
+      .setSize(18)
+      .build());
+    a.getTheme().setSubtitle1(TextStyle.TextStyleBuilder(null)
+      .setSize(16)
+      .setBold(true)
+      .build());
 
     a.getStack().setContentId(R.id.main_content);
     a.getStack().setFragmentManager(getSupportFragmentManager());

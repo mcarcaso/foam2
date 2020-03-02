@@ -75,8 +75,11 @@ foam.CLASS({
       swiftType: 'UIView?',
       name: 'view',
       androidFactory: `
-        return new com.google.android.material.textfield.TextInputEditText(
-          getAndroidContext());
+        com.google.android.material.textfield.TextInputEditText v =
+          new com.google.android.material.textfield.TextInputEditText(getAndroidContext());
+        getTheme().getWidgetTextStyle().applyTextStyle(v);
+        v.setTextColor(getTheme().getOnSurface());
+        return v;
       `,
       swiftFactory: `
         let v = UITextView();

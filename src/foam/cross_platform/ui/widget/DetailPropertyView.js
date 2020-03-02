@@ -33,7 +33,7 @@ foam.CLASS({
         foam.cross_platform.ui.widget.Label v = Label_create().build();
         v.getView().setTextColor(getTheme().getOnSurface());
         v.getView().setAlpha(0.8f);
-        v.getView().setTextAppearance(getTheme().getSubtitle1());
+        getTheme().getSubtitle1().applyTextStyle(v.getView());
         v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));

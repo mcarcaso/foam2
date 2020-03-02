@@ -49,24 +49,14 @@ foam.CLASS({
       name: 'onError'
     },
     {
-      //class: 'FontProperty',
-      androidType: 'int',
-      swiftType: 'UIFont',
-      androidValue: 0,
-      name: 'caption'
-    },
-    {
-      //class: 'FontProperty',
-      androidType: 'int',
-      swiftType: 'UIFont',
-      androidValue: 0,
+      class: 'FObjectProperty',
+      of: 'foam.cross_platform.ui.TextStyle',
       name: 'subtitle1'
     },
     {
-      //class: 'FontProperty',
-      androidType: 'int',
-      androidValue: 0,
-      name: 'button'
+      class: 'FObjectProperty',
+      of: 'foam.cross_platform.ui.TextStyle',
+      name: 'widgetTextStyle'
     },
   ]
 });

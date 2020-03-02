@@ -170,7 +170,7 @@ foam.CLASS({
         if ( getView() == null ) return;
         getView().setText(getLabel());
         getView().setAlpha(0.8f);
-        getView().setTextAppearance(getTheme().getSubtitle1());
+        getTheme().getSubtitle1().applyTextStyle(getView());
         getView().setTextColor(getTheme().getOnSurface());
       `,
       swiftCode: `
