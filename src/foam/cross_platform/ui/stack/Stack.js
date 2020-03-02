@@ -5,6 +5,12 @@ foam.CLASS({
   exports: [
     'as stack'
   ],
+  imports: [
+    {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
+  ],
   requires: [
     {
       path: 'foam.cross_platform.ui.android.Toolbar',
@@ -29,7 +35,14 @@ foam.CLASS({
     {
       swiftType: 'UINavigationController',
       flags: ['swift'],
-      name: 'navController'
+      name: 'navController',
+      swiftFactory: `
+        let navVc = UINavigationController();
+        navVc.navigationBar.barTintColor = getTheme()!.getPrimary();
+        navVc.navigationBar.tintColor = getTheme()!.getOnPrimary();
+        navVc.navigationBar.isTranslucent = false;
+        return navVc;
+      `
     },
   ],
   axioms: [

@@ -178,7 +178,7 @@ foam.CLASS({
         let v = getView() as! LabelledUISwitch;
         v.l.text = getLabel();
         v.l.alpha = 0.8;
-        v.l.font = getTheme()?.getSubtitle1();
+        getTheme()?.getSubtitle1()?.applyTextStyle(v.l);
         v.l.textColor = getTheme()?.getOnSurface();
       `
     },

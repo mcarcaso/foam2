@@ -44,7 +44,7 @@ foam.CLASS({
         let v = Label_create().build();
         let lv = v.getView() as? UILabel;
         lv?.textColor = getTheme()!.getOnSurface().withAlphaComponent(0.8);
-        lv?.font = getTheme()!.getSubtitle1()
+        getTheme()!.getSubtitle1()!.applyTextStyle(lv!);
         return v;
       `
     },

@@ -28,6 +28,7 @@ foam.CLASS({
       args: [
         {
           androidType: 'android.view.View',
+          swiftType: 'UIView',
           name: 'v'
         }
       ],
@@ -44,6 +45,21 @@ foam.CLASS({
           tv.setTextSize(getSize());
         } else {
           throw new RuntimeException("Dont know how to apply font to " + v);
+        }
+      `,
+      swiftCode: `
+        var f = UIFont(name: getFont()!, size: CGFloat(getSize()))!;
+        if ( self.getBold() || self.getItalic() ) {
+          let traits: UIFontDescriptor.SymbolicTraits =
+            getBold() && getItalic() ? [.traitBold, .traitItalic] :
+            getBold() ? .traitBold :
+            .traitItalic;
+          f = UIFont(descriptor: f.fontDescriptor.withSymbolicTraits(traits)!, size: 0);
+        }
+        if ( v is UILabel ) {
+          (v as! UILabel).font = f;
+        } else {
+          fatalError("Dont know how to apply font to " + String(describing: v));
         }
       `
     }
