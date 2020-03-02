@@ -59,6 +59,7 @@
       platform: platform,
       classIds: [
         'foam.dao.GUIDDAO',
+        'demo.App',
         'demo.ArrayDAO',
         'demo.Compare',
         'demo.ImportExport',
