@@ -8,6 +8,13 @@ foam.CLASS({
   ],
   properties: [
     {
+      name: 'swiftAdapt',
+      value: `
+        if newValue is String? { return newValue as? String }
+        return String(describing: newValue!);
+      `
+    },
+    {
       name: 'viewInitializer',
       swiftValue: `
         foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)

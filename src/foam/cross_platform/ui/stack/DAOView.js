@@ -8,10 +8,11 @@ foam.CLASS({
     'onDAOUpdate'
   ],
   requires: [
+    'foam.cross_platform.ui.widget.DefaultCitationView',
     'foam.dao.ArraySink',
     'foam.dao.FnSink',
-    'foam.intent.DAOReadIntent',
     'foam.intent.DAOCreateIntent',
+    'foam.intent.DAOReadIntent',
     'foam.mlang.sink.Count',
   ],
   imports: [
@@ -247,8 +248,10 @@ foam.CLASS({
           }
         }
         class RowView: UITableViewCell {
-          var citationView: foam_cross_platform_ui_View
-          init(citationView: foam_cross_platform_ui_View, style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+          var citationView: foam_cross_platform_ui_AxiomView
+          var sub: foam_core_Detachable? = nil;
+          var id: Any? = nil;
+          init(citationView: foam_cross_platform_ui_AxiomView, style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
             self.citationView = citationView
             super.init(style: style, reuseIdentifier: reuseIdentifier)
             citationView.getView()!.frame = frame;
@@ -265,6 +268,11 @@ foam.CLASS({
               height: size.height
             );
           }
+          func setData(data: foam_cross_platform_FObject) {
+            sub?.detach();
+            sub = citationView.bindData(data, nil);
+            id = data.getProperty("id");
+          }
           required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
           }
@@ -277,8 +285,7 @@ foam.CLASS({
           }
           public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             guard let row = tableView.cellForRow(at: indexPath) as? RowView else { return }
-            let fobj = (row.citationView as! foam_cross_platform_FObject).getProperty("data") as! foam_cross_platform_FObject
-            daoView.onRowPressed(fobj.getProperty("id"));
+            daoView.onRowPressed(row.id);
           }
         }
 
@@ -297,12 +304,14 @@ foam.CLASS({
           public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             var cell = tableView.dequeueReusableCell(withIdentifier: reusableId) as? RowView;
             if cell == nil {
-              let citationView = daoView.getCitationView()!.createView(daoView.getSubX())!;
+              let citationView = daoView.getCitationView()!
+                .createBuilder(daoView.getSubX())!
+                .builderBuild() as! foam_cross_platform_ui_AxiomView
               cell = RowView(citationView: citationView, style: .default, reuseIdentifier: reusableId);
             }
             let a = daoView.ArraySink_create().build();
             _ = daoView.getData()?.skip(indexPath.row)?.limit(1)?.select(a);
-            (cell?.citationView as? foam_cross_platform_FObject)?.setProperty("data", a.getArray()[0])
+            cell?.setData(data: a.getArray()[0] as! foam_cross_platform_FObject)
             cell?.citationView.getView()?.setNeedsLayout()
             return cell!;
           }
@@ -324,9 +333,9 @@ foam.CLASS({
       `
     },
     {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.ViewFactory',
-      name: 'citationView'
+      class: 'ClassProperty',
+      name: 'citationView',
+      value: 'foam.cross_platform.ui.widget.DefaultCitationView'
     },
     {
       class: 'FObjectProperty',

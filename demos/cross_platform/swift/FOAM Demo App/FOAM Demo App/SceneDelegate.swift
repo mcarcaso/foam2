@@ -23,14 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     _ = a.getIntentManager()!.launchIntent(foam_intent_DAOBrowseIntent
       .foam_intent_DAOBrowseIntentBuilder(x)
       .setDao(d)
-      .setCitationView(foam_cross_platform_ui_SimpleViewFactory
-        .foam_cross_platform_ui_SimpleViewFactoryBuilder(x)
-        .setViewClass(foam_cross_platform_ui_widget_EmailCitationView.CLS_())
-        .setViewArgs([
-          "fromExpr": demo_Timer.NAME(),
-          "subjectExpr": demo_Timer.MS_PASSED()
-        ])
-        .build())
       .build());
 
     // Use a UIHostingController as window root view controller.

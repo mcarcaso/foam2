@@ -7,12 +7,6 @@ foam.INTERFACE({
       name: 'getView',
       androidType: 'android.view.View',
       swiftType: 'UIView?',
-    },
-    {
-      name: 'setView',
-      args: [
-        { name: 'value', type: 'Object' },
-      ]
     }
   ]
 });

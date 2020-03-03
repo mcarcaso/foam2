@@ -18,9 +18,6 @@ foam.CLASS({
       class: 'foam.dao.DAOProperty',
       name: 'dao'
     },
-    {
-      name: 'citationView'
-    },
   ],
   methods: [
     {
@@ -28,14 +25,12 @@ foam.CLASS({
       androidCode: `
         getStack().push(DAOView_create()
           .setData(getDao())
-          .setCitationView(getCitationView())
           .build());
         return true;
       `,
       swiftCode: `
         getStack()!.push(DAOView_create()
           .setData(getDao())
-          .setCitationView(getCitationView())
           .build());
         return true;
       `
