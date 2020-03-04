@@ -73,12 +73,15 @@ foam.CLASS({
         android.widget.LinearLayout mid = new android.widget.LinearLayout(getAndroidContext());
         mid.setOrientation(android.widget.LinearLayout.VERTICAL);
         mid.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-          android.widget.LinearLayout.LayoutParams.MATCH_PARENT));
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1));
         mid.addView(titleView.getView());
         mid.addView(subtitleView.getView());
         v.addView(mid);
         
+        timeView.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
         v.addView(timeView.getView());
         
         return v;
