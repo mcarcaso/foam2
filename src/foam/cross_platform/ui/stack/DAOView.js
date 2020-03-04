@@ -87,9 +87,10 @@ foam.CLASS({
                   android.view.LayoutInflater inflater,
                   android.view.ViewGroup container,
                   android.os.Bundle savedInstanceState) {
+            Adapter adapter = new Adapter(o);
             int id = getResources().getIdentifier("DAOViewStyle", "style", getActivity().getPackageName());
             androidx.recyclerview.widget.RecyclerView rv = new androidx.recyclerview.widget.RecyclerView(new android.view.ContextThemeWrapper(getActivity(), id));
-            Adapter adapter = new Adapter(o);
+            rv.setBackgroundColor(o.getTheme().getBackground());
             rv.setAdapter(adapter);
             rv.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
@@ -125,10 +126,17 @@ foam.CLASS({
           }
         }
         public static class ViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
-          foam.cross_platform.FObject fobj;
-          public ViewHolder(foam.cross_platform.FObject fobj) {
-            super((android.view.View) fobj.getProperty("view"));
-            this.fobj = fobj;
+          foam.cross_platform.ui.AxiomView citationView = null;
+          foam.core.Detachable sub = null;
+          Object id = null;
+          public ViewHolder(foam.cross_platform.ui.AxiomView citationView) {
+            super(citationView.getView());
+            this.citationView = citationView;
+          }
+          public void setData(foam.cross_platform.FObject data) {
+            if ( sub != null ) sub.detach();
+            sub = citationView.bindData(data, null);
+            id = data.getProperty("id");
           }
         }
         public static class Adapter extends androidx.recyclerview.widget.RecyclerView.Adapter<ViewHolder> {
@@ -137,18 +145,19 @@ foam.CLASS({
             o = data;
           }
           public ViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
-            foam.cross_platform.ui.View fobj = o.getCitationView().createView(o.getSubX());
-            android.view.View v = fobj.getView();
-            v.setOnClickListener(view -> {
-              foam.cross_platform.FObject data = (foam.cross_platform.FObject) ((foam.cross_platform.FObject) fobj).getProperty("data");
-              o.onRowPressed(data.getProperty("id"));
+            foam.cross_platform.ui.AxiomView citationView = (foam.cross_platform.ui.AxiomView) o.getCitationView()
+              .createBuilder(o.getSubX())
+              .builderBuild();
+            ViewHolder vh = new ViewHolder(citationView);
+            citationView.getView().setOnClickListener(view -> {
+              o.onRowPressed(vh.id);
             });
-            return new ViewHolder((foam.cross_platform.FObject) fobj);
+            return vh;
           }
           public void onBindViewHolder(ViewHolder holder, int position) {
             foam.dao.ArraySink a = o.ArraySink_create().build();
             o.getData().skip(position).limit(1).select(a);
-            holder.fobj.setProperty("data", a.getArray().get(0));
+            holder.setData((foam.cross_platform.FObject) a.getArray().get(0));
           }
           public int getItemCount() {
             foam.mlang.sink.Count s = foam.mlang.sink.Count.CountBuilder(o.getSubX()).build();
@@ -156,8 +165,8 @@ foam.CLASS({
             return (int) s.getValue();
           }
           public void deleteItem(ViewHolder viewHolder) {
-            foam.cross_platform.FObject fobj = (foam.cross_platform.FObject) viewHolder.fobj.getProperty("data");
-            o.getData().remove(fobj);
+            o.getData().remove(o.getData().find(viewHolder.id));
+            notifyItemRemoved(viewHolder.getAdapterPosition());
             notifyItemRemoved(viewHolder.getAdapterPosition());
           }
         }

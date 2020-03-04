@@ -17,12 +17,13 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
 
     a.setAndroidContext(this);
-
     a.getStack().setContentId(R.id.main_content);
     a.getStack().setFragmentManager(getSupportFragmentManager());
+
+    setContentView(R.layout.activity_main);
+    findViewById(R.id.main_content).setBackgroundColor(a.getTheme().getBackground());
 
     foam.cross_platform.Context x = a.getSubX();
     foam.dao.DAO d = foam.dao.GUIDDAO.GUIDDAOBuilder(x)
@@ -34,13 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
     a.getIntentManager().launchIntent(DAOBrowseIntent.DAOBrowseIntentBuilder(x)
       .setDao(d)
-      .setCitationView(foam.cross_platform.ui.SimpleViewFactory.SimpleViewFactoryBuilder(x)
-        .setViewClass(foam.cross_platform.ui.widget.EmailCitationView.CLS_())
-        .setViewArgs(new java.util.HashMap() {{
-          put("fromExpr", demo.Timer.NAME());
-          put("subjectExpr", demo.Timer.MS_PASSED());
-        }})
-        .build())
       .build());
   }
   @Override

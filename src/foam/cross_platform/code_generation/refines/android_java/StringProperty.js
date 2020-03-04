@@ -9,6 +9,13 @@ foam.CLASS({
   ],
   properties: [
     {
+      name: 'androidAdapt',
+      value: `
+        if ( newValue instanceof String ) return (String) newValue;
+        return newValue != null ? newValue.toString() : null;
+      `
+    },
+    {
       name: 'viewInitializer',
       androidValue: `
         (foam.cross_platform.GenericFunction) args -> {
