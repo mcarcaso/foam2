@@ -11,13 +11,6 @@ foam.CLASS({
   swiftImports: [
     'UIKit'
   ],
-  constants: [
-    {
-      type: 'Integer',
-      name: 'height',
-      value: 88
-    },
-  ],
   imports: [
     {
       name: 'theme',
@@ -25,7 +18,6 @@ foam.CLASS({
     },
     {
       name: 'androidContext',
-      key: 'androidContext',
       androidType: 'android.content.Context',
       flags: ['android']
     }
@@ -34,17 +26,14 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'title',
-      value: 'title'
     },
     {
       class: 'StringProperty',
       name: 'subtitle',
-      value: 'subtitle'
     },
     {
       class: 'StringProperty',
       name: 'time',
-      value: 'time'
     },
     {
       androidType: 'android.widget.LinearLayout',
@@ -55,7 +44,7 @@ foam.CLASS({
         v.setOrientation(android.widget.LinearLayout.HORIZONTAL);
         v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-          (int) (getAndroidContext().getResources().getDisplayMetrics().density * HEIGHT())));
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
         v.setBackgroundColor(getTheme().getSurface());
         
         foam.cross_platform.ui.widget.Label titleView = Label_create().build();

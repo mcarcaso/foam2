@@ -277,8 +277,10 @@ foam.CLASS({
           foam.cross_platform.Listener listener = l.getListener();
           foam.core.Detachable sub = l.getSubscription();
           l = l.getNext();
-          listener.executeListener(sub, args);
-          count += 1;
+          if ( listener != null ) {
+            listener.executeListener(sub, args);
+            count += 1;
+          }
         }
         return count;
       `,
@@ -289,8 +291,10 @@ foam.CLASS({
           let listener = l!.getListener();
           let sub = l!.getSubscription();
           l = l!.getNext();
-          listener?.executeListener(sub, args);
-          count += 1;
+          if listener != nil {
+            listener!.executeListener(sub, args);
+            count += 1;
+          }
         }
         return count;
       `
