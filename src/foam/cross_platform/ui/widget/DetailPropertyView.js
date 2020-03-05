@@ -315,7 +315,7 @@ foam.CLASS({
       class: 'foam.cross_platform.code_generation.Extras',
       swiftCode: `
        class View: UIView {
-          var dpv: foam_cross_platform_ui_widget_DetailPropertyView! = nil;
+          weak var dpv: foam_cross_platform_ui_widget_DetailPropertyView! = nil;
           var padding: UIEdgeInsets = UIEdgeInsets.zero;
           override func layoutSubviews() {
             super.layoutSubviews();

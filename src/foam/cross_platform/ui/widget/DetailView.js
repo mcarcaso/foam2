@@ -228,9 +228,8 @@ foam.CLASS({
         let view = getView() as! View;
         view.clearViews();
         if getData() == nil { return; }
-        var subs = [] as [foam_core_Detachable];
+        var subs = [] as [foam_core_Detachable?];
         let x = getSubX();
-        var views = [] as [Any];
         for i in 0..<getProps()!.count {
           let p = getProps()![i]
           let dpv = DetailPropertyView_create(x)
@@ -241,28 +240,24 @@ foam.CLASS({
             dpv.getView()?.isHidden = foam_cross_platform_Lib.equals(visibility?.slotGet(), foam_u2_Visibility.HIDDEN);
             view.setNeedsLayout();
           \`)%>
-          subs.append(ArrayDetachable_create()
-            .setArray([
-              visibility!.slotSub(l)!,
-              dpv.bindData(getData(), p)
-            ])
-            .build());
+          subs.append(visibility!.slotSub(l));
+          subs.append(dpv.bindData(getData(), p));
+          subs.append(dpv);
           l.executeListener(nil, nil);
           view.addDpv(dpv.getView()!)
-          views.append(dpv);
         }
 
         for i in 0..<getActions()!.count {
           let ab = ActionButton_create().build();
           subs.append(ab.bindData(getData(), getActions()![i])!);
+          subs.append(ab);
           view.addAb(ab.getView()!);
-          views.append(ab);
         }
-        setViews_(views);
         subs.append(getData()!.sub(nil, <%=listener(\`
           view.setNeedsLayout();
         \`)%>)!);
         setSub_(ArrayDetachable_create().setArray(subs).build());
+        onDetach(getSub_());
       `,
     }
   ],
