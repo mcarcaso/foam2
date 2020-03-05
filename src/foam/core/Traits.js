@@ -20,7 +20,7 @@ foam.CLASS({
       if ( ! m ) throw 'No such trait: ' + this.path;
       m.getAxioms().forEach(a => {
         if ( ! a.clone ) return;
-        if ( a.name == 'init' ) return;
+        if ( a.forClass_ == 'foam.core.FObject' ) return;
         a = a.clone();
         a.sourceCls_ = undefined;
         cls.installAxiom(a);
