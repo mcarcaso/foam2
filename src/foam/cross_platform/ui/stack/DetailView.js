@@ -70,9 +70,12 @@ foam.CLASS({
             this.self = self;
             this.dv = dv;
           }
+          public void finalize() {
+            dv.detach();
+          }
           public android.view.View onCreateView(
-              android.view.LayoutInflater inflater, 
-              android.view.ViewGroup container, 
+              android.view.LayoutInflater inflater,
+              android.view.ViewGroup container,
               android.os.Bundle savedInstanceState) {
             android.widget.ScrollView sv = new android.widget.ScrollView(dv.getAndroidContext());
             dv.clearProperty("view");
@@ -105,6 +108,10 @@ foam.CLASS({
           }
           required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
+          }
+          deinit {
+            dv.detach();
+            sub?.detach();
           }
           override func viewDidLayoutSubviews() {
             updateSize();
@@ -206,14 +213,18 @@ foam.CLASS({
         { name: 'dv', type: 'foam.cross_platform.ui.widget.DetailView' },
       ],
       androidCode: `
+        if ( dv.getData() != null ) dv.getData().detach();
         dv.setData(getId() == null ?
           getDao().getOf().createBuilder(getSubX()).builderBuild() :
           getDao().find(getId()).clone(getSubX()));
+        onDetach(dv.getData());
       `,
       swiftCode: `
+        dv?.getData()?.detach();
         dv!.setData(getId() == nil ?
           getDao()!.getOf().createBuilder(getSubX())!.builderBuild() :
           getDao()!.find(getId())!.clone(getSubX()));
+        onDetach(dv?.getData());
       `,
     },
     {

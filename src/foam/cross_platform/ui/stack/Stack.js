@@ -33,11 +33,12 @@ foam.CLASS({
       name: 'fragmentManager'
     },
     {
-      swiftType: 'UINavigationController',
+      swiftType: 'NavigationController',
       flags: ['swift'],
       name: 'navController',
       swiftFactory: `
-        let navVc = UINavigationController();
+        let navVc = NavigationController();
+        navVc.this = self;
         navVc.navigationBar.barTintColor = getTheme()!.getPrimary();
         navVc.navigationBar.tintColor = getTheme()!.getOnPrimary();
         navVc.navigationBar.isTranslucent = false;
@@ -79,6 +80,18 @@ foam.CLASS({
             return v;
           }
         }
+      `,
+      swiftCode: `
+        public class NavigationController: UINavigationController {
+          weak var this: foam_cross_platform_ui_stack_Stack? = nil;
+          override public func popViewController(animated: Bool) -> UIViewController? {
+            this?.pop();
+            return nil;
+          }
+          func popViewController_() {
+            super.popViewController(animated: true)
+          }
+        }
       `
     }
   ],
@@ -87,18 +100,22 @@ foam.CLASS({
       name: 'onBackPressed',
       flags: ['android'],
       androidCode: `
-        getStack().remove(getStack().size() - 1);
+        foam.cross_platform.FObject o = (foam.cross_platform.FObject) getStack().remove(getStack().size() - 1);
+        o.detach();
       `,
     },
     {
       name: 'pop',
       androidCode: `
-        getFragmentManager().popBackStack();
-        getStack().remove(getStack().size() - 1);
+      foam.cross_platform.FObject o = (foam.cross_platform.FObject) getStack().remove(getStack().size() - 1);
+      o.detach();
+      getFragmentManager().popBackStack();
       `,
       swiftCode: `
+        let o = getStack()?.lastObject as? foam_cross_platform_FObject;
         getStack()!.removeLastObject();
-        getNavController().popViewController(animated: true);
+        o?.detach()
+        getNavController().popViewController_();
       `
     },
     {

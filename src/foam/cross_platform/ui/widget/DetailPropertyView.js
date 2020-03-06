@@ -31,6 +31,7 @@ foam.CLASS({
       name: 'labelView',
       androidFactory: `
         foam.cross_platform.ui.widget.Label v = Label_create().build();
+        onDetach(v);
         v.getView().setTextColor(getTheme().getOnSurface());
         v.getView().setAlpha(0.8f);
         getTheme().getSubtitle1().applyTextStyle(v.getView());
@@ -42,6 +43,7 @@ foam.CLASS({
       `,
       swiftFactory: `
         let v = Label_create().build();
+        onDetach(v);
         let lv = v.getView() as? UILabel;
         lv?.textColor = getTheme()!.getOnSurface().withAlphaComponent(0.8);
         getTheme()!.getSubtitle1()!.applyTextStyle(lv!);
@@ -54,6 +56,7 @@ foam.CLASS({
       name: 'validationView',
       androidFactory: `
         foam.cross_platform.ui.widget.Label v = Label_create().build();
+        onDetach(v);
         v.getView().setVisibility(android.view.View.GONE);
         v.getView().setTextColor(getTheme().getError());
         v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
@@ -63,6 +66,7 @@ foam.CLASS({
       `,
       swiftFactory: `
         let v = Label_create().build();
+        onDetach(v);
         let lv = v.getView() as! UILabel;
         lv.isHidden = true;
         lv.textColor = getTheme()!.getError();
@@ -84,16 +88,20 @@ foam.CLASS({
         b.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-        return ActionButton_create()
+        foam.cross_platform.ui.widget.ActionButton v = ActionButton_create()
           .setView(b)
           .build();
+        onDetach(v);
+        return v;
       `,
       swiftFactory: `
         let b = UIButton(type: .infoLight);
         b.tintColor = getTheme()!.getOnSurface()
-        return ActionButton_create()
+        let v = ActionButton_create()
           .setView(b)
           .build();
+        onDetach(v);
+        return v;
       `
     },
     {
@@ -139,6 +147,7 @@ foam.CLASS({
 
         // Data
         setDataView(prop.createView(getSubX()));
+        onDetach((foam.core.Detachable) getDataView());
         subs.add(getDataView().bindData(data, prop));
         subs.add(getData$().follow(((foam.cross_platform.FObject) getDataView()).getSlot("data")));
 
@@ -185,6 +194,7 @@ foam.CLASS({
 
         // Data
         setDataView(prop.createView(getSubX()));
+        onDetach(getDataView() as? foam_core_Detachable);
         subs.append(getDataView()!.bindData(data, prop));
         subs.append(getData$().follow((getDataView() as? foam_cross_platform_FObject)?.getSlot("data")));
 
@@ -276,6 +286,7 @@ foam.CLASS({
   listeners: [
     {
       name: 'setNeedsLayout',
+      isFramed: true,
       flags: ['swift'],
       swiftCode: `getView()?.setNeedsLayout()`
     },

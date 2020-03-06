@@ -157,6 +157,12 @@ foam.CLASS({
   ],
   listeners: [
     {
+      name: 'setNeedsLayout',
+      isFramed: true,
+      flags: ['swift'],
+      swiftCode: `getView()?.setNeedsLayout()`
+    },
+    {
       name: 'updateView',
       androidCode: `
         if ( getSub_() != null ) {
@@ -238,7 +244,7 @@ foam.CLASS({
           let visibility = p.createVisibilitySlot(getData());
           let l = <%=listener(\`
             dpv.getView()?.isHidden = foam_cross_platform_Lib.equals(visibility?.slotGet(), foam_u2_Visibility.HIDDEN);
-            view.setNeedsLayout();
+            self?.setNeedsLayout(nil, nil);
           \`)%>
           subs.append(visibility!.slotSub(l));
           subs.append(dpv.bindData(getData(), p));
@@ -254,7 +260,7 @@ foam.CLASS({
           view.addAb(ab.getView()!);
         }
         subs.append(getData()!.sub(nil, <%=listener(\`
-          view.setNeedsLayout();
+          self?.setNeedsLayout(nil, nil);
         \`)%>)!);
         setSub_(ArrayDetachable_create().setArray(subs).build());
         onDetach(getSub_());
