@@ -9,14 +9,25 @@ foam.CLASS({
   properties: [
     {
       class: 'StringProperty',
-      name: 'label',
-      expressionArgs: ['name'],
-      androidExpression: `
-        return name.substring(0, 1).toUpperCase() + name.substring(1);
-      `,
-      swiftExpression: `
-        return name;
-      `,
+      name: 'i18nLabel',
+    },
+    {
+      class: 'StringProperty',
+      name: 'i18nLabelDescription',
+      expression: function(forClass_, name) {
+        return `Label for the ${forClass_}.${name} property`;
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'i18nHelp',
+    },
+    {
+      class: 'StringProperty',
+      name: 'i18nHelpDescription',
+      expression: function (forClass_, name) {
+        return `Help text for the ${forClass_}.${name} property`;
+      }
     },
     {
       class: 'FunctionProperty',

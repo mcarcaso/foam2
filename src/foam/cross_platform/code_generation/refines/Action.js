@@ -7,10 +7,8 @@ foam.CLASS({
   ],
   properties: [
     {
-      name: 'label',
-      expressionArgs: ['name'],
-      androidExpression: `return name;`,
-      swiftExpression: `return name;`
+      class: 'StringProperty',
+      name: 'i18nLabel'
     },
     {
       class: 'ClassProperty',
@@ -144,6 +142,24 @@ foam.CLASS({
         return (obj!.getProperty(getName()) as! foam_cross_platform_GenericFunction)
           .executeFunction(args);
       `,
+    },
+    function getMessages(flagFilter, map) {
+      var id = `${this.forClass_}.${this.name}`;
+      var lid = `${id}.Label`;
+      map[lid] = foam.i18n.Message.create({
+        id: lid,
+        description: `Label for the ${id} action`,
+        translations: {en: this.label}
+      });
+      if (this.help) {
+        var hid = `${id}.Help`;
+        map[hid] = foam.i18n.Message.create({
+          id: hid,
+          description: `Help text for the ${id} action`,
+          translations: {en: this.help}
+        });
+      }
+      return map;
     }
   ],
 });

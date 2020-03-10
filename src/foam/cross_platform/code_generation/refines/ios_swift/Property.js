@@ -460,6 +460,12 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
               .getAxiomByName('asSwiftValue')
               .code.call(this)};
             ${this.crossPlatformPrivateAxiom}!.setComparePropertyValues(${this.swiftComparePropertyValues});
+            ${this.crossPlatformPrivateAxiom}!.setI18nLabel(NSLocalizedString(
+              ${foam.swift.asSwiftValue(this.label)},
+              comment: ${foam.swift.asSwiftValue(this.i18nLabelDescription)}));
+            ${this.crossPlatformPrivateAxiom}!.setI18nHelp(NSLocalizedString(
+              ${foam.swift.asSwiftValue(this.help)},
+              comment: ${foam.swift.asSwiftValue(this.i18nHelpDescription)}));
             ${this.swiftCloneProperty ? `${this.crossPlatformPrivateAxiom}!.setCloneProperty(${this.swiftCloneProperty});` : ''}
             ${expressionData.join('\n')}
             ${this.swiftViewFactory ? `

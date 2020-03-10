@@ -419,8 +419,11 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
         name: this.crossPlatformAxiomName,
         body: `
           if ( ${this.crossPlatformPrivateAxiom} == null ) {
+            foam.cross_platform.Context x = foam.cross_platform.Context.GLOBAL();
             ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};
             ${this.crossPlatformPrivateAxiom}.setComparePropertyValues(${this.androidComparePropertyValues});
+            ${this.crossPlatformPrivateAxiom}.setI18nLabel(x.getLocalizedString("${this.forClass_.replace(/\./g, '_')}_${this.name}_Label"));
+            ${this.crossPlatformPrivateAxiom}.setI18nHelp(x.getLocalizedString("${this.forClass_.replace(/\./g, '_')}_${this.name}_Help"));
             ${this.androidCloneProperty ? `${this.crossPlatformPrivateAxiom}.setCloneProperty(${this.androidCloneProperty});` : ''}
             ${expressionData.join('\n')}
             ${this.androidViewFactory ? `

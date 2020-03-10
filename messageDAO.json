@@ -1,0 +1,20 @@
+[
+	{
+		"class": "foam.i18n.Message",
+		"id": "demo.Timer.name.Label",
+		"description": "Label for the demo.Timer.name property",
+		"translations": {
+			"en": "Name",
+			"fr": "nom"
+		}
+	},
+	{
+		"class": "foam.i18n.Message",
+		"id": "demo.Timer.isStarted.Label",
+		"description": "Label for the demo.Timer.isStarted property",
+		"translations": {
+			"en": "Is Started",
+			"fr": "A démarré"
+		}
+	}
+]

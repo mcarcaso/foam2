@@ -225,6 +225,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Validation" },
   { name: "foam/cross_platform/code_generation/refines/MultiPartID" },
   { name: "foam/cross_platform/code_generation/refines/Trait" },
+  { name: "foam/cross_platform/code_generation/refines/MessageAxiom" },
 
   { name: "foam/json2/Json2PropertyRefine" },
   { name: "foam/json2/OutputterOutput" },

@@ -25,6 +25,25 @@ foam.SCRIPT({
 
 foam.CLASS({
   package: 'foam.i18n',
+  name: 'Message',
+  properties: [
+    {
+      class: 'StringProperty',
+      name: 'id'
+    },
+    {
+      class: 'StringProperty',
+      name: 'description'
+    },
+    {
+      class: 'MapProperty',
+      name: 'translations'
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.i18n',
   name: 'MessageAxiom',
 
   properties: [

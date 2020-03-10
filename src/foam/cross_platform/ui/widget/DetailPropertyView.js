@@ -154,19 +154,19 @@ foam.CLASS({
         // Label
         if ( ! foam.cross_platform.ui.LabelledViewClass.CLS_().isInstance(getDataView()) ) {
           getLabelView().getView().setVisibility(android.view.View.VISIBLE);
-          subs.add(getLabelView().getData$().follow(prop.getLabel$()));
+          subs.add(getLabelView().getData$().follow(prop.getI18nLabel$()));
         } else {
           getLabelView().getView().setVisibility(android.view.View.GONE);
         }
 
         // Help
-        if ( ! foam.cross_platform.type.StringType.INSTANCE().isEmpty(prop.getHelp()) ) {
+        if ( ! foam.cross_platform.type.StringType.INSTANCE().isEmpty(prop.getI18nHelp()) ) {
           getHelpView().setAndroidVisibility(android.view.View.VISIBLE);
           getHelpView().setData(<%=fn(\`
             foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
             com.google.android.material.snackbar.Snackbar.make(
               (android.view.View) x.getXProp("onClickView"),
-              prop.getHelp(),
+              prop.getI18nHelp(),
               com.google.android.material.snackbar.Snackbar.LENGTH_LONG).show();
             return null;
           \`)%>);
@@ -201,18 +201,18 @@ foam.CLASS({
         // Label
         if ( !foam_cross_platform_ui_LabelledViewClass.CLS_().isInstance(getDataView()) ) {
           getLabelView()!.getView()?.isHidden = false;
-          subs.append(getLabelView()?.getData$().follow(prop.getLabel$()));
+          subs.append(getLabelView()?.getData$().follow(prop.getI18nLabel$()));
         } else {
           getLabelView()!.getView()?.isHidden = true;
         }
 
         // Help
-        if ( !foam_cross_platform_type_StringType.INSTANCE().isEmpty(prop.getHelp()) ) {
+        if ( !foam_cross_platform_type_StringType.INSTANCE().isEmpty(prop.getI18nHelp()) ) {
           getHelpView()!.getView()?.isHidden = false;
           getHelpView()!.setData(<%=fn(\`
             let x = args![0] as! foam_cross_platform_Context;
             let alertController = UIAlertController(
-              title: "", message: prop.getHelp(), preferredStyle: .alert)
+              title: "", message: prop.getI18nHelp(), preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             (x.getXProp("stack") as? foam_cross_platform_ui_stack_Stack)?.getNavController()
               .present(alertController, animated: true, completion: nil)

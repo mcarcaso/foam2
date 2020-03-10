@@ -12,7 +12,8 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    a.setAndroidContext(this);
+    foam.cross_platform.Context.setGlobalAndroidContext(this);
+
     a.getStack().setContentId(R.id.main_content);
     a.getStack().setFragmentManager(getSupportFragmentManager());
 

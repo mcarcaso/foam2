@@ -8,6 +8,28 @@ foam.CLASS({
     {
       type: 'Context',
       name: 'GLOBAL',
+      swiftValue: `foam_cross_platform_GlobalContext()`,
+      androidValue: `new foam.cross_platform.GlobalContext()`,
+    }
+  ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      androidCode: `
+        private static android.content.Context ANDROID_CONTEXT = null;
+      `
+    }
+  ],
+  static: [
+    {
+      flags: ['android'],
+      name: 'setGlobalAndroidContext',
+      args: [{androidType: 'android.content.Context', name: 'ctx'}],
+      androidCode: `
+          ANDROID_CONTEXT = ctx;
+          foam.cross_platform.GlobalContext x = (foam.cross_platform.GlobalContext) GLOBAL();
+          x.setAndroidContext(ctx);
+      `
     }
   ],
   properties: [
@@ -152,6 +174,21 @@ foam.CLASS({
           return getSlotMap_()![name!] as? foam_core_SlotInterface;
         }
         return getParent_()?.getXSlot(name);
+      `
+    },
+    {
+      type: 'String',
+      name: 'getLocalizedString',
+      args: [
+        { type: 'String', name: 'id' },
+      ],
+      flags: ['android'],
+      androidCode: `
+        android.content.Context actx = (android.content.Context) getXProp("androidContext");
+        if ( actx == null ) actx = ANDROID_CONTEXT;
+        int resId = actx.getResources().getIdentifier(id, "string", actx.getPackageName());
+        if ( resId == 0 ) return id;
+        return resId == 0 ? id : actx.getString(resId);
       `
     },
   ]

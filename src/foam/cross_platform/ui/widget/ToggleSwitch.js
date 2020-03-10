@@ -140,7 +140,7 @@ foam.CLASS({
           .setArray(new foam.core.Detachable[] {
             getData$().linkFrom(data.getSlot(prop.getName())),
             getVisibility$().follow(prop.createVisibilitySlot(data)),
-            getLabel$().follow(prop.getLabel$())
+            getLabel$().follow(prop.getI18nLabel$())
           })
           .build();
       `,
@@ -150,7 +150,7 @@ foam.CLASS({
           .setArray([
             getData$().linkFrom(data!.getSlot(prop.getName())),
             getVisibility$().follow(prop.createVisibilitySlot(data)),
-            getLabel$().follow(prop.getLabel$())
+            getLabel$().follow(prop.getI18nLabel$())
           ])
           .build();
       `,

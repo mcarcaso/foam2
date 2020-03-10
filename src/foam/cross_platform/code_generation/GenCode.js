@@ -5,7 +5,11 @@ foam.CLASS({
     'classloader'
   ],
   requires: [
-    'foam.cross_platform.code_generation.Platform'
+    'foam.cross_platform.code_generation.Platform',
+    'foam.cross_platform.code_generation.GlobalContext',
+    'foam.cross_platform.code_generation.StringGenerator',
+    'foam.dao.MDAO',
+    'foam.i18n.Message',
   ],
   properties: [
     {
@@ -45,6 +49,11 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'swiftAppName'
+    },
+    {
+      class: 'StringProperty',
+      name: 'translationsPath',
+      value: 'messageDAO.json'
     },
     {
       name: 'fs',
@@ -98,11 +107,50 @@ foam.CLASS({
           this.fs.writeFileSync(path, body);
         }.bind(this);
 
-        foam.cross_platform.Context.getAxiomByName('GLOBAL').value = foam.cross_platform.Context.create({
-          classMap_: classes
-        });
+        var translatedJsonStr = this.fs.existsSync(this.translationsPath) &&
+          this.fs.readFileSync(this.translationsPath, 'utf-8');
+        var translatedMessages = translatedJsonStr ?
+          foam.json.parseString(translatedJsonStr) : [];
+        var translatedMessagesById = {};
+        translatedMessages.forEach(m => translatedMessagesById[m.id] = m);
+
+        var messagesById = {};
+        Object.values(classes).map(c => c.getMessages(flagFilter, messagesById));
+
+        Object.values(messagesById)
+            .forEach(m => {
+              var t = translatedMessagesById[m.id];
+              if ( ! t ) return m;
+              if ( m.description != t.description ) {
+                console.warn(`
+${m.id} description changed from
+${t.description}
+to
+${m.description}
+                `.trim());
+              }
+              if ( m.translations['en'] != t.translations['en'] ) {
+                console.warn(`
+${m.id} has changed from
+${t.translations['en']}
+to
+${m.translations['en']}
+                `.trim());
+              }
+              Object.keys(t.translations)
+                .filter(k => k != 'en')
+                .forEach(k => m.translations[k] = t.translations[k])
+              delete translatedMessagesById[t.id];
+            })
+
+        var messages = Object.values(messagesById);
+        this.fs.writeFileSync(
+          this.translationsPath,
+          foam.json.PrettyStrict.stringify(messages.filter(m => Object.keys(m.translations).length > 1)));
 
         Object.values(classes)
+          .concat(this.GlobalContext.create({classMap: classes}))
+          .concat(this.StringGenerator.create({ messages: messages }))
           .map(cls => cls[this.platform.buildResourcesMethod]({
             sources: [],
             resources: [],

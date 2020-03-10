@@ -160,6 +160,24 @@ foam.CLASS({
       swiftCode: `
         return (o as! foam_cross_platform_FObject?)?.getProperty(getName());
       `
+    },
+    function getMessages(flagFilter, map) {
+      var id = `${ this.forClass_}.${this.name}`;
+      var lid = `${id}.Label`;
+      map[lid] = foam.i18n.Message.create({
+        id: lid,
+        description: `Label for the ${id} property`,
+        translations: {en: this.label}
+      });
+      if ( this.help ) {
+        var hid = `${id}.Help`;
+        map[hid] = foam.i18n.Message.create({
+          id: hid,
+          description: `Help text for ${id} property`,
+          translations: {en: this.help}
+        });
+      }
+      return map;
     }
   ]
 });

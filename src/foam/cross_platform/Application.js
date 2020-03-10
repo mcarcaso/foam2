@@ -10,11 +10,6 @@ foam.CLASS({
     'intentManager',
     'stack',
     'theme',
-    {
-      flags: ['android'],
-      key: 'androidContext',
-      exportName: 'androidContext',
-    }
   ],
   properties: [
     {
@@ -37,11 +32,5 @@ foam.CLASS({
         return BasicIntentManager_create().build();
       `
     },
-
-    {
-      flags: ['android'],
-      androidType: 'android.content.Context',
-      name: 'androidContext'
-    }
   ]
 });

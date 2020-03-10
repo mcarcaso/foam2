@@ -22,6 +22,13 @@ foam.LIB({
           a.getDeps && a.getDeps(flagFilter, deps);
         }
       });
+    },
+    function getMessages(flagFilter, dao) {
+      if (!flagFilter(this.model_)) return;
+      return Promise.all(this.getAxioms()
+        .filter(a => flagFilter(a))
+        .filter(a => a.getMessages)
+        .map(a => a.getMessages(flagFilter, dao)));
     }
   ]
 });
