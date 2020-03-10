@@ -51,7 +51,7 @@ ${foam.swift.asSwiftValue(m.translations['en'])} = ${foam.swift.asSwiftValue(m.t
   ${this.messages
     .filter(m => m.translations[l])
     .map(m => `
-    <string name="${m.id.replace(/\./g, '_')}">${m.translations[l]}</string>
+    <string name="${m.id.replace(/\./g, '_')}">${m.translations[l].replace(/'/g, "\\'")}</string>
     `).join('')}
   </resources>
             `,

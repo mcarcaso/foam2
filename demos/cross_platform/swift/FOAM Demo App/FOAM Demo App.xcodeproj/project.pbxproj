@@ -283,6 +283,7 @@
 		1054E9EB24185403006F91E8 /* foam_cross_platform_deserialize_Seq2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1054E8D524185403006F91E8 /* foam_cross_platform_deserialize_Seq2.swift */; };
 		1054E9EC24185404006F91E8 /* foam_dao_SkipDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1054E8D624185403006F91E8 /* foam_dao_SkipDAO.swift */; };
 		1054E9ED24185404006F91E8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1054E8D824185403006F91E8 /* Localizable.strings */; };
+		1054E9EF24185B3B006F91E8 /* foam_i18n_MessageAxiom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1054E9EE24185B3A006F91E8 /* foam_i18n_MessageAxiom.swift */; };
 		108A0D6C236FB42100D687D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108A0D6B236FB42100D687D1 /* AppDelegate.swift */; };
 		108A0D6E236FB42100D687D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108A0D6D236FB42100D687D1 /* SceneDelegate.swift */; };
 		108A0D72236FB42300D687D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 108A0D71236FB42300D687D1 /* Assets.xcassets */; };
@@ -594,6 +595,7 @@
 		1054E8D524185403006F91E8 /* foam_cross_platform_deserialize_Seq2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_deserialize_Seq2.swift; sourceTree = "<group>"; };
 		1054E8D624185403006F91E8 /* foam_dao_SkipDAO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_dao_SkipDAO.swift; sourceTree = "<group>"; };
 		1054E8D924185403006F91E8 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1054E9EE24185B3A006F91E8 /* foam_i18n_MessageAxiom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_i18n_MessageAxiom.swift; sourceTree = "<group>"; };
 		108A0D68236FB42100D687D1 /* FOAM Demo App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FOAM Demo App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		108A0D6B236FB42100D687D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		108A0D6D236FB42100D687D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -854,6 +856,7 @@
 				1054E89224185403006F91E8 /* foam_dao_SQLException.swift */,
 				1054E80324185403006F91E8 /* foam_dao_SQLStatement.swift */,
 				1054E82024185403006F91E8 /* foam_dao_SQLStatementClass.swift */,
+				1054E9EE24185B3A006F91E8 /* foam_i18n_MessageAxiom.swift */,
 				1054E7F424185403006F91E8 /* foam_intent_BasicIntentManager.swift */,
 				1054E82224185403006F91E8 /* foam_intent_DAOBrowseIntent.swift */,
 				1054E82624185403006F91E8 /* foam_intent_DAOCreateIntent.swift */,
@@ -1307,6 +1310,7 @@
 				1054E8F324185403006F91E8 /* foam_core_MapProperty.swift in Sources */,
 				1054E95824185403006F91E8 /* foam_core_PromiseSlot.swift in Sources */,
 				1054E95324185403006F91E8 /* foam_core_Requires.swift in Sources */,
+				1054E9EF24185B3B006F91E8 /* foam_i18n_MessageAxiom.swift in Sources */,
 				1054E96724185403006F91E8 /* foam_cross_platform_type_ArrayType.swift in Sources */,
 				1054E9DE24185403006F91E8 /* foam_mlang_predicate_Nary.swift in Sources */,
 				1054E90224185403006F91E8 /* foam_cross_platform_type_FObjectType.swift in Sources */,

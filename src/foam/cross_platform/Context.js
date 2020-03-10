@@ -186,7 +186,7 @@ foam.CLASS({
       androidCode: `
         android.content.Context actx = (android.content.Context) getXProp("androidContext");
         if ( actx == null ) actx = ANDROID_CONTEXT;
-        int resId = actx.getResources().getIdentifier(id, "string", actx.getPackageName());
+        int resId = actx == null ? 0 : actx.getResources().getIdentifier(id, "string", actx.getPackageName());
         if ( resId == 0 ) return id;
         return resId == 0 ? id : actx.getString(resId);
       `

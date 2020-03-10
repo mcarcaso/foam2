@@ -18,8 +18,8 @@ foam.CLASS({
         String s = <%=v(\`{
           class: "demo.AllTypes",
           long: 9223372036854775807,
-          string: "String!",
-          boolean: true,
+          stringProperty: "String!",
+          booleanProperty: true,
           stringArray: [
             'Hi',
             'there'
@@ -58,8 +58,8 @@ foam.CLASS({
         demo.AllTypes parsed = (demo.AllTypes) p.parseString(s, null);
         demo.AllTypes expected = j.AllTypes_create()
           .setLong(Long.MAX_VALUE)
-          .setString("String!")
-          .setBoolean(true)
+          .setStringProperty("String!")
+          .setBooleanProperty(true)
           .setStringArray(new String[] {
             "Hi",
             "there"
@@ -102,8 +102,8 @@ foam.CLASS({
         let s = <%=v(\`{
           class: "demo.AllTypes",
           long: 9223372036854775807,
-          string: "String!",
-          boolean: true,
+          stringProperty: "String!",
+          booleanProperty: true,
           stringArray: [
             'Hi',
             'there'
@@ -142,8 +142,8 @@ foam.CLASS({
         let parsed = p.parseString(s, nil) as! demo_AllTypes;
         let expected = j.AllTypes_create()
           .setLong(Int.max)
-          .setString("String!")
-          .setBoolean(true)
+          .setStringProperty("String!")
+          .setBooleanProperty(true)
           .setStringArray([
             "Hi",
             "there"

@@ -11,7 +11,6 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'firstName',
-      placeholder: 'This is a placeholder',
       help: 'This is help text'
     },
     {
@@ -249,7 +248,7 @@ foam.CLASS({
         slot.setCode(<%=fn(\`
             return args[1] + ", " + args[0];
         \`)%>);
-        
+
         o.setFirstName("Mike");
         o.setLastName("C");
         assertEquals(slot.slotGet(), "C, Mike");
