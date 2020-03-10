@@ -11,6 +11,13 @@ foam.CLASS({
       name: 'i18nLabel'
     },
     {
+      class: 'StringProperty',
+      name: 'i18nLabelDescription',
+      expression: function (forClass_, name) {
+        return `Label for the ${forClass_}.${name} action`;
+      }
+    },
+    {
       class: 'ClassProperty',
       name: 'crossPlatformView',
       value: 'foam.cross_platform.ui.widget.ActionButton'

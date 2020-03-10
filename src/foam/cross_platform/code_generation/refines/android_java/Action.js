@@ -137,7 +137,9 @@ foam.CLASS({
         name: this.crossPlatformAxiomName,
         body: `
           if ( ${this.crossPlatformPrivateAxiom} == null ) {
+            foam.cross_platform.Context x = foam.cross_platform.Context.GLOBAL();
             ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(this)};
+            ${this.crossPlatformPrivateAxiom}.setI18nLabel(x.getLocalizedString("${this.forClass_.replace(/\./g, '_')}_${this.name}_Label"));
             ${expressionData.map(d => d.axiomSetter).join('\n')}
             ${this.androidViewFactory ? `
             ${this.crossPlatformPrivateAxiom}.setViewInitializer((foam.cross_platform.GenericFunction) args -> {

@@ -143,6 +143,9 @@ foam.CLASS({
           if ${this.crossPlatformPrivateAxiom} == nil {
             ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject.getAxiomByName('asSwiftValue').code.call(this)};
             ${expressionData.map(d => d.axiomSetter).join('\n')}
+            ${this.crossPlatformPrivateAxiom}!.setI18nLabel(NSLocalizedString(
+              ${foam.swift.asSwiftValue(this.label)},
+              comment: ${foam.swift.asSwiftValue(this.i18nLabelDescription)}));
             ${this.swiftViewFactory ? `
             ${this.crossPlatformPrivateAxiom}.setViewInitializer(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
               .setFn({(args: [Any?]?) -> Any? in

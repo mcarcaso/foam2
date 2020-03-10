@@ -11,7 +11,7 @@ foam.CLASS({
     }
   ],
   requires: [
-    'foam.cross_platform.ui.stack.DAOView'
+    'foam.cross_platform.ui.stack.DAOBrowseView'
   ],
   properties: [
     {
@@ -23,13 +23,13 @@ foam.CLASS({
     {
       name: 'launch',
       androidCode: `
-        getStack().push(DAOView_create()
+        getStack().push(DAOBrowseView_create()
           .setData(getDao())
           .build());
         return true;
       `,
       swiftCode: `
-        getStack()!.push(DAOView_create()
+        getStack()!.push(DAOBrowseView_create()
           .setData(getDao())
           .build());
         return true;

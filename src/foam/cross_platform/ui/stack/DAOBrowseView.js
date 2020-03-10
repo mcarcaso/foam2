@@ -1,6 +1,6 @@
 foam.CLASS({
   package: 'foam.cross_platform.ui.stack',
-  name: 'DAOView',
+  name: 'DAOBrowseView',
   implements: [
     'foam.cross_platform.ui.Stackable'
   ],
@@ -66,7 +66,7 @@ foam.CLASS({
       androidPath: 'values/dao_view_styles.xml',
       androidCode: `
         <resources>
-          <style name="DAOViewStyle" parent="android:Widget">
+          <style name="DAOBrowseViewStyle" parent="android:Widget">
               <item name="android:scrollbars">vertical</item>
           </style>
         </resources>
@@ -76,9 +76,9 @@ foam.CLASS({
       class: 'foam.cross_platform.code_generation.Extras',
       androidCode: `
         public static class Fragment extends foam.cross_platform.ui.stack.Stack.ToolbarFragment {
-          DAOView o = null;
+          DAOBrowseView o = null;
           public Fragment(
-              DAOView o,
+              DAOBrowseView o,
               foam.cross_platform.Context x) {
             super(x);
             this.o = o;
@@ -88,7 +88,7 @@ foam.CLASS({
                   android.view.ViewGroup container,
                   android.os.Bundle savedInstanceState) {
             Adapter adapter = new Adapter(o);
-            int id = getResources().getIdentifier("DAOViewStyle", "style", getActivity().getPackageName());
+            int id = getResources().getIdentifier("DAOBrowseViewStyle", "style", getActivity().getPackageName());
             androidx.recyclerview.widget.RecyclerView rv = new androidx.recyclerview.widget.RecyclerView(new android.view.ContextThemeWrapper(getActivity(), id));
             rv.setBackgroundColor(o.getTheme().getBackground());
             rv.setAdapter(adapter);
@@ -119,7 +119,7 @@ foam.CLASS({
               lm.getOrientation());
             rv.addItemDecoration(divider);
             rv.setHasFixedSize(true);
-            
+
             android.widget.LinearLayout v = (android.widget.LinearLayout) super.onCreateView(inflater, container, savedInstanceState);
             v.addView(rv);
             return v;
@@ -140,8 +140,8 @@ foam.CLASS({
           }
         }
         public static class Adapter extends androidx.recyclerview.widget.RecyclerView.Adapter<ViewHolder> {
-          DAOView o = null;
-          public Adapter(DAOView data) {
+          DAOBrowseView o = null;
+          public Adapter(DAOBrowseView data) {
             o = data;
           }
           public ViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
@@ -235,8 +235,8 @@ foam.CLASS({
       `,
       swiftCode: `
         class TableViewController: UITableViewController {
-          var daoView: foam_cross_platform_ui_stack_DAOView;
-          init(_ o: foam_cross_platform_ui_stack_DAOView, style: UITableView.Style) {
+          var daoView: foam_cross_platform_ui_stack_DAOBrowseView;
+          init(_ o: foam_cross_platform_ui_stack_DAOBrowseView, style: UITableView.Style) {
             daoView = o;
             super.init(style: style);
             tableView.rowHeight = CGFloat(o.getRowHeight());
@@ -288,8 +288,8 @@ foam.CLASS({
         }
 
         public class TableViewDelegate: NSObject, UITableViewDelegate {
-          var daoView: foam_cross_platform_ui_stack_DAOView;
-          init(_ o: foam_cross_platform_ui_stack_DAOView) {
+          var daoView: foam_cross_platform_ui_stack_DAOBrowseView;
+          init(_ o: foam_cross_platform_ui_stack_DAOBrowseView) {
             daoView = o;
           }
           public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -299,8 +299,8 @@ foam.CLASS({
         }
 
         public class TableSource: NSObject, UITableViewDataSource {
-          var daoView: foam_cross_platform_ui_stack_DAOView;
-          init(_ o: foam_cross_platform_ui_stack_DAOView) {
+          var daoView: foam_cross_platform_ui_stack_DAOBrowseView;
+          init(_ o: foam_cross_platform_ui_stack_DAOBrowseView) {
             daoView = o;
           }
           var reusableId = "CellID";

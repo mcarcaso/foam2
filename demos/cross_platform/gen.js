@@ -70,7 +70,7 @@
         'demo.Slot',
         'demo.Timer',
         'foam.cross_platform.Application',
-        'foam.cross_platform.ui.stack.DAOView',
+        'foam.cross_platform.ui.stack.DAOBrowseView',
         'foam.dao.GUIDDAO',
         'foam.intent.DAOBrowseIntent',
       ],

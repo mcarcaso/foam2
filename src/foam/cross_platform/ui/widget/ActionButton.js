@@ -93,7 +93,7 @@ foam.CLASS({
           ((android.widget.Button) oldValue).setOnClickListener(null);
         }
         if ( newValue != null ) {
-          newValue.setOnClickListener(new android.widget.Button.OnClickListener() {  
+          newValue.setOnClickListener(new android.widget.Button.OnClickListener() {
             public void onClick(android.view.View v) {
               callAction(v);
             }
@@ -173,7 +173,7 @@ foam.CLASS({
         final ActionButton self = this;
         return ArrayDetachable_create()
           .setArray(new foam.core.Detachable[] {
-            getLabel$().follow(action.getLabel$()),
+            getLabel$().follow(action.getI18nLabel$()),
             isEnabled == null ? null : getIsEnabled$().follow(isEnabled),
             isAvailable == null ? null : getIsAvailable$().follow(isAvailable),
             <%=detachable(\`
@@ -199,7 +199,7 @@ foam.CLASS({
 
         return ArrayDetachable_create()
           .setArray([
-            getLabel$().follow(action.getLabel$()),
+            getLabel$().follow(action.getI18nLabel$()),
             isEnabled == nil ? nil : getIsEnabled$().follow(isEnabled),
             isAvailable == nil ? nil : getIsAvailable$().follow(isAvailable),
             <%=detachable(\`
