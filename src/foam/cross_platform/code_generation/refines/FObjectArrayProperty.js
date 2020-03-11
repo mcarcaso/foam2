@@ -7,12 +7,12 @@ foam.CLASS({
     {
       name: 'androidFAsAndroidValue',
       expression: function() {
-        return o => {
+        return (o, t, x) => {
           var v = this.f(o);
           if ( ! foam.Array.isInstance(v) ) {
             return foam.android.tools.asAndroidValue(v);
           }
-          return `new ${this.of}[] { ${v.map(s => foam.android.tools.asAndroidValue(s)).join(', ')} }`;
+          return `new ${this.of}[] { ${v.map(s => foam.android.tools.asAndroidValue(s, this.androidType, x)).join(', ')} }`;
         }
       }
     },

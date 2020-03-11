@@ -12,22 +12,21 @@ foam.CLASS({
   properties: [
     {
       name: 'delegate',
-      androidFactory: `
-        return Alt_create()
-          .setParsers(new foam.cross_platform.deserialize.Parser[] {
-            Literal_create().setString("true").setValue(true).build(),
-            Literal_create().setString("false").setValue(false).build()
-          })
-          .build();
-      `,
-      swiftFactory: `
-        return Alt_create()
-          .setParsers([
-            Literal_create().setString("true").setValue(true).build(),
-            Literal_create().setString("false").setValue(false).build()
-          ])
-          .build();
-      `
+      crossPlatformFactoryValue: {
+        class: 'foam.cross_platform.deserialize.Alt',
+        parsers: [
+          {
+            class: 'foam.cross_platform.deserialize.Literal',
+            string: 'true',
+            value: true
+          },
+          {
+            class: 'foam.cross_platform.deserialize.Literal',
+            string: 'false',
+            value: false
+          },
+        ]
+      }
     },
   ],
 });
