@@ -52,8 +52,7 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'translationsPath',
-      value: 'messageDAO.json'
+      name: 'translationsPath'
     },
     {
       name: 'fs',

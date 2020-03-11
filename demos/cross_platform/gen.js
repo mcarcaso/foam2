@@ -73,6 +73,7 @@
       testPath: platformArgs.testPath,
       resourcePath: platformArgs.resourcePath,
       swiftAppName: platformArgs.swiftAppName,
+      translationsPath: dir + '/messages.json'
     }
   };
 
