@@ -2,7 +2,6 @@ foam.CLASS({
   package: 'foam.cross_platform.code_generation.refines',
   name: 'FObjectPropertyJavaRefinement',
   refines: 'foam.core.FObjectProperty',
-  flags: ['android'],
   methods: [
     {
       name: 'getDeps',

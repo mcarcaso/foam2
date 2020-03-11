@@ -60,15 +60,16 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'androidFactory',
-      expression: function(crossPlatformFactory, javaFactory) {
-        return crossPlatformFactory || javaFactory;
+      expression: function (crossPlatformFactoryValue, crossPlatformFactory, javaFactory, androidType) {
+        return foam.Undefined.isInstance(crossPlatformFactoryValue) ? crossPlatformFactory || javaFactory :
+          `return ${foam.android.tools.asAndroidValue(foam.json.parse(crossPlatformFactoryValue), androidType, 'getSubX()')};`
       }
     },
     {
       class: 'FunctionProperty',
       name: 'androidFAsAndroidValue',
       expression: function() {
-        return o => foam.android.tools.asAndroidValue(this.f(o));
+        return (o, t, x) => foam.android.tools.asAndroidValue(this.f(o), t, x);
       }
     },
     {

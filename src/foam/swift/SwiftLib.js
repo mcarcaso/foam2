@@ -26,16 +26,16 @@ foam.LIB({
           return '' + n;
           return '' + n + (n > Math.pow(2, 31) ? 'L' : '');
         },
-        FObject: function(o) {
-          return o.asSwiftValue();
+        FObject: function(o, _, x) {
+          return o.asSwiftValue(x);
         },
-        Array: function(a, opt_type) {
+        Array: function(a, opt_type, x) {
           var type = opt_type || '[Any?]';
           return `[
-            ${a.map(foam.swift.asSwiftValue).join(',\n')}
+            ${a.map(a => foam.swift.asSwiftValue(a, null, x)).join(',\n')}
           ] as ${type}`;
         },
-        Object: function(o) {
+        Object: function(o, opt_type, x) {
           if (foam.core.FObject.isSubClass(o)) {
             if ( foam.core.InterfaceModel.isInstance(o.model_) ) {
               return o.model_.swiftName + 'Class.CLS_()';
@@ -51,7 +51,7 @@ foam.LIB({
           return `
 [
 ${Object.keys(o).map(k => `
-  ${foam.swift.asSwiftValue(k)}: ${foam.swift.asSwiftValue(o[k])}
+  ${foam.swift.asSwiftValue(k, null, x)}: ${foam.swift.asSwiftValue(o[k], null, x)}
 `).join(',\n')}
 ] as NSMutableDictionary
           `;

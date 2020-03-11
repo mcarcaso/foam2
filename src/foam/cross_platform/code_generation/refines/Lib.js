@@ -34,15 +34,16 @@ foam.LIB({
         Number: function(n) {
           return '' + n + (n > Math.pow(2, 31) ? 'L' : '');
         },
-        FObject: function(o) {
-          return o.asAndroidValue();
+        FObject: function(o, _, x) {
+          return o.asAndroidValue(x);
         },
-        Array: function(a) {
-          return 'new Object[] {' +
-            a.map(foam.android.tools.asAndroidValue).join(', ') +
-            '}';
+        Array: function(a, t, x) {
+          var type = 'Object[]';
+          return `new ${type} {
+            ${a.map(a => foam.android.tools.asAndroidValue(a, null, x)).join(', ')}
+          }`;
         },
-        Object: function(o) {
+        Object: function(o, _, x) {
           if (foam.core.FObject.isSubClass(o)) {
             if ( foam.core.InterfaceModel.isInstance(o.model_) ) {
               return o.id + 'Class.CLS_()';
@@ -59,7 +60,7 @@ foam.LIB({
 new java.util.HashMap<String, Object>() {
   {
 ${Object.keys(o).map(function(k) {
-  return `  put(${foam.android.tools.asAndroidValue(k)}, ${foam.android.tools.asAndroidValue(o[k])});`
+  return `  put(${foam.android.tools.asAndroidValue(k, null, x)}, ${foam.android.tools.asAndroidValue(o[k], null, x)});`
 }).join('\n')}
   }
 }

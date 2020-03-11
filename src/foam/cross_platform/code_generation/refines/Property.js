@@ -11,6 +11,7 @@ foam.CLASS({
     'name'
   ],
   properties: [
+    'crossPlatformFactoryValue',
     {
       class: 'StringArrayProperty',
       name: 'validationExpressionArgs'

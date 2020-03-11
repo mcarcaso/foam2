@@ -255,13 +255,14 @@ foam.CLASS({
   methods: [
     {
       name: 'asAndroidValue',
-      code: function() {
-        var body = `${this.cls_.id}.${this.model_.name}Builder(null)\n`;
+      code: function(x) {
+        x = x || null;
+        var body = `${this.cls_.id}.${this.model_.name}Builder(${x})\n`;
         this.cls_.getAxiomsByClass(foam.core.Property)
           .filter(foam.util.flagFilter(['android']))
           .filter(p => this.hasOwnProperty(p.name))
           .forEach(p => {
-            body += `  .${p.crossPlatformSetterName}(${p.androidFAsAndroidValue(this)})\n`;
+            body += `  .${p.crossPlatformSetterName}(${p.androidFAsAndroidValue(this, p.javaType, x)})\n`;
           });
         body += `  .build()`;
         return body;

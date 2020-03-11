@@ -1,20 +1,11 @@
 [
 	{
 		"class": "foam.i18n.Message",
-		"id": "demo.Timer.name.Label",
-		"description": "Label for the demo.Timer.name property",
+		"id": "demo.App.APP_TITLE",
+		"description": "The title for the app.",
 		"translations": {
-			"en": "Name",
-			"fr": "nom"
-		}
-	},
-	{
-		"class": "foam.i18n.Message",
-		"id": "demo.Timer.isStarted.Label",
-		"description": "Label for the demo.Timer.isStarted property",
-		"translations": {
-			"en": "Is Started",
-			"fr": "A démarré"
+			"en": "FOAM Demo App",
+			"fr": "Application de démonstration FOAM"
 		}
 	}
 ]

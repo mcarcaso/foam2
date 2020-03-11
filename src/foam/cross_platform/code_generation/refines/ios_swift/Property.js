@@ -53,8 +53,9 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'swiftFactory',
-      expression: function(crossPlatformFactory) {
-        return crossPlatformFactory;
+      expression: function(crossPlatformFactoryValue, crossPlatformFactory, swiftType) {
+        return foam.Undefined.isInstance(crossPlatformFactoryValue) ? crossPlatformFactory :
+          foam.swift.asSwiftValue(foam.json.parse(crossPlatformFactoryValue), swiftType, 'getSubX()')
       }
     },
     {
@@ -77,7 +78,7 @@ foam.CLASS({
       class: 'FunctionProperty',
       name: 'swiftFAsSwiftValue',
       expression: function() {
-        return o => foam.swift.asSwiftValue(this.f(o));
+        return (o, t, x) => foam.swift.asSwiftValue(this.f(o), t, x);
       }
     },
     {

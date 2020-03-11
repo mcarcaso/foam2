@@ -269,13 +269,14 @@ foam.CLASS({
   methods: [
     {
       name: 'asSwiftValue',
-      code: function () {
-        var body = `${this.model_.swiftName}.${this.model_.swiftName}Builder(nil)\n`;
+      code: function (x) {
+        x = x || 'nil'
+        var body = `${this.model_.swiftName}.${this.model_.swiftName}Builder(${x})\n`;
         this.cls_.getAxiomsByClass(foam.core.Property)
           .filter(foam.util.flagFilter(['swift']))
           .filter(p => this.hasOwnProperty(p.name))
           .forEach(p => {
-            body += `  .${p.crossPlatformSetterName}(${p.swiftFAsSwiftValue(this)})\n`;
+            body += `  .${p.crossPlatformSetterName}(${p.swiftFAsSwiftValue(this, p.swiftType, x)})\n`;
           });
         body += `  .build()`;
         return body;
