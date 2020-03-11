@@ -1,6 +1,24 @@
 [
 	{
 		"class": "foam.i18n.Message",
+		"id": "demo.AllTypes.BOOLEAN_VALIDATION",
+		"description": "Validation text for the boolean property.",
+		"translations": {
+			"en": "Please make this true.",
+			"fr": "Veuillez rendre cela vrai."
+		}
+	},
+	{
+		"class": "foam.i18n.Message",
+		"id": "demo.AllTypes.id.Help",
+		"description": "Help text for demo.AllTypes.id property",
+		"translations": {
+			"en": "You can only set this when creating. If you don't set it, it will be set for you.",
+			"fr": "Vous ne pouvez le définir que lors de la création. Si vous ne le définissez pas, il le sera pour vous."
+		}
+	},
+	{
+		"class": "foam.i18n.Message",
 		"id": "demo.App.APP_TITLE",
 		"description": "The title for the app.",
 		"translations": {
