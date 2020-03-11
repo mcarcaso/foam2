@@ -49,10 +49,6 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'StringProperty',
-      name: 'placeholder'
-    },
-    {
       androidType: 'android.text.TextWatcher',
       swiftType: 'UITextViewDelegate',
       name: 'textWatcher',
@@ -115,7 +111,6 @@ foam.CLASS({
 
     ['', 'propertyChange.view', 'updateView'],
     ['', 'propertyChange.mode', 'updateView'],
-    ['', 'propertyChange.placeholder', 'updateView'],
   ],
   methods: [
     {
@@ -125,8 +120,7 @@ foam.CLASS({
         return ArrayDetachable_create()
           .setArray(java.util.Arrays.stream(new foam.core.Detachable[] {
               getData$().linkFrom(data.getSlot(prop.getName())),
-              getVisibility$().follow(prop.createVisibilitySlot(data)),
-              getPlaceholder$().follow(prop.getPlaceholder$())
+              getVisibility$().follow(prop.createVisibilitySlot(data))
             })
             .filter(d -> d!= null)
             .toArray(foam.core.Detachable[]::new))
@@ -149,9 +143,6 @@ foam.CLASS({
       isFramed: true,
       androidCode: `
         if ( getView() == null ) return;
-
-        getView().setHint(getPlaceholder());
-
         getView().setFocusable(
           getMode() == foam.u2.DisplayMode.RW);
         getView().setFocusableInTouchMode(
@@ -162,9 +153,6 @@ foam.CLASS({
       swiftCode: `
         if ( getView() == nil ) { return; }
         let tf = (getView() as! UITextView);
-
-        //getView().setHint(getPlaceholder());
-
         tf.isEditable = foam_cross_platform_Lib.equals(
           getMode(), foam_u2_DisplayMode.RW)
         tf.isUserInteractionEnabled = !foam_cross_platform_Lib.equals(
