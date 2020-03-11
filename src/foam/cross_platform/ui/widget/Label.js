@@ -34,7 +34,9 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        return UILabel();
+        let l = UILabel();
+        l.numberOfLines = 0;
+        return l;
       `,
     },
   ],

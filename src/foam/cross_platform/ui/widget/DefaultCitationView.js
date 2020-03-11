@@ -46,19 +46,19 @@ foam.CLASS({
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
         v.setBackgroundColor(getTheme().getSurface());
-        
+
         foam.cross_platform.ui.widget.Label titleView = Label_create().build();
         onDetach(titleView);
         onDetach(titleView.getData$().follow(getTitle$()));
-        
+
         foam.cross_platform.ui.widget.Label subtitleView = Label_create().build();
         onDetach(subtitleView);
         onDetach(subtitleView.getData$().follow(getSubtitle$()));
-        
+
         foam.cross_platform.ui.widget.Label timeView = Label_create().build();
         onDetach(timeView);
         onDetach(timeView.getData$().follow(getTime$()));
-        
+
         android.widget.LinearLayout mid = new android.widget.LinearLayout(getAndroidContext());
         mid.setOrientation(android.widget.LinearLayout.VERTICAL);
         mid.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
@@ -67,27 +67,27 @@ foam.CLASS({
         mid.addView(titleView.getView());
         mid.addView(subtitleView.getView());
         v.addView(mid);
-        
+
         timeView.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
         v.addView(timeView.getView());
-        
+
         return v;
       `,
       swiftFactory: `
         let v = UIStackView();
         v.axis = .horizontal
 
-        let titleView = Label_create().build();
+        let titleView = Label_create().setView(UILabel()).build();
         onDetach(titleView);
         onDetach(titleView.getData$().follow(getTitle$()));
 
-        let subtitleView = Label_create().build();
+        let subtitleView = Label_create().setView(UILabel()).build();
         onDetach(subtitleView);
         onDetach(subtitleView.getData$().follow(getSubtitle$()));
 
-        let timeView = Label_create().build();
+        let timeView = Label_create().setView(UILabel()).build();
         onDetach(timeView);
         onDetach(timeView.getData$().follow(getTime$()));
 
@@ -111,13 +111,13 @@ foam.CLASS({
       name: 'bindData',
       androidCode: `
         java.util.List subs = new java.util.ArrayList();
-        
+
         java.util.List<foam.core.Property> props = java.util.Arrays.stream(data.getCls_()
           .getAxiomsByClass(foam.core.Property.CLS_()))
           .map(foam.core.Property.class::cast)
           .filter(p -> !p.getHidden())
           .collect(java.util.stream.Collectors.toList());
-        
+
         foam.core.SlotInterface titleSlot = null;
         if ( props.size() > 0 ) {
           foam.core.Property p = props.get(0);
@@ -125,7 +125,7 @@ foam.CLASS({
           titleSlot = data.getSlot(p.getName());
         }
         if ( titleSlot != null ) subs.add(getTitle$().follow(titleSlot));
-        
+
         foam.core.SlotInterface subtitleSlot = null;
         if ( props.size() > 0 ) {
           foam.core.Property p = props.get(0);
@@ -133,7 +133,7 @@ foam.CLASS({
           subtitleSlot = data.getSlot(p.getName());
         }
         if ( subtitleSlot != null ) subs.add(getSubtitle$().follow(subtitleSlot));
-        
+
         foam.core.SlotInterface timeSlot = null;
         if ( props.size() > 0 ) {
           foam.core.Property p = props.get(0);
@@ -141,7 +141,7 @@ foam.CLASS({
           timeSlot = data.getSlot(p.getName());
         }
         if ( timeSlot != null ) subs.add(getTime$().follow(timeSlot));
-        
+
         return ArrayDetachable_create()
           .setArray(subs)
           .build();
