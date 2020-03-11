@@ -21,7 +21,7 @@ foam.CLASS({
       factory: function () {
         var v = this.visibility;
         return `
-          return foam.u2.Visibility.${v ? v.name : 'RW'}
+          return foam.u2.Visibility.${v ? v.name : 'RW'};
         `
       }
     },
