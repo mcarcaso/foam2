@@ -17,7 +17,7 @@ foam.CLASS({
               static: true,
               type: self.model_.swiftName,
               name: v.name,
-              defaultValue: v.asSwiftValue()
+              defaultValue: foam.core.FObject.getAxiomByName('asSwiftValue').code.call(v)
             });
           });
           if ( this.model_.id != 'foam.core.AbstractEnum' ) {
@@ -45,6 +45,11 @@ ${self.VALUES.map(v => `
           return cls
         };
       }
+    }
+  ],
+  methods: [
+    function asSwiftValue() {
+      return this.model_.swiftName + '.' + this.name;
     }
   ]
 });

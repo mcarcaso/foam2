@@ -18,7 +18,12 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'androidVisibilityExpression',
-      value: 'return foam.u2.Visibility.RW;',
+      factory: function () {
+        var v = this.visibility;
+        return `
+          return foam.u2.Visibility.${v ? v.name : 'RW'}
+        `
+      }
     },
     {
       class: 'StringProperty',

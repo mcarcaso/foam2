@@ -29,7 +29,12 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'swiftVisibilityExpression',
-      value: 'return foam_u2_Visibility.RW;',
+      factory: function() {
+        var v = this.visibility;
+        return `
+          return foam_u2_Visibility.${v ? v.name : 'RW'}
+        `
+      }
     },
     {
       class: 'StringProperty',
