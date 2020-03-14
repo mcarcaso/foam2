@@ -137,6 +137,10 @@ foam.CLASS({
         foam.cross_platform.FObject fobj = id == null ?
           dao.getOf().createBuilder(getSubX()).builderBuild() :
           dao.find(id).clone(getSubX());
+        if ( fobj == null ) {
+          System.out.println("Warning! Object deleted");
+          return;
+        }
         onDetach(fobj);
         setData(fobj);
       `,
@@ -146,6 +150,10 @@ foam.CLASS({
         let fobj = id == nil ?
           dao.getOf().createBuilder(getSubX())?.builderBuild() :
           dao.find(id)?.clone(getSubX());
+        if ( fobj == nil ) {
+          print("Warning! Object deleted");
+          return;
+        }
         onDetach(fobj);
         setData(fobj);
       `
@@ -163,6 +171,7 @@ foam.CLASS({
             .setArg2(Constant_create().setValue(getId()).build())
             .build())
           .listen(ListenerSink_create().setListener(refreshData_listener()).build()));
+        onDetach(getDaoSub_());
       `,
       swiftCode: `
         getDaoSub_()?.detach();
@@ -174,6 +183,7 @@ foam.CLASS({
             .setArg2(Constant_create().setValue(getId()).build())
             .build())!
           .listen(ListenerSink_create().setListener(refreshData_listener()).build()));
+        onDetach(getDaoSub_());
       `,
     }
   ],

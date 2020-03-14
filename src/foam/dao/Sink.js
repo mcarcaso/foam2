@@ -365,8 +365,12 @@ foam.CLASS({
       code: function remove(obj, sub) {
         if ( this.predicate.f(obj) ) this.delegate.remove(obj, sub);
       },
-      swiftCode_DELETE: 'if predicate.f(obj) { delegate.remove(obj, sub) }',
-      javaCode: 'if ( getPredicate().f(obj) ) getDelegate().remove(obj, sub);'
+      androidCode: `
+        if ( getPredicate().f(obj) ) getDelegate().remove(obj, sub);
+      `,
+      swiftCode: `
+        if getPredicate()!.f(obj) { getDelegate()!.remove(obj, sub); }
+      `,
     }
   ]
 });
