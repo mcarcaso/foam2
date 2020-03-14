@@ -14,6 +14,7 @@ foam.CLASS({
           var name = this.model_.swiftName;
           var staticCls = foam.swift.SwiftClass.create();
           staticCls.name = name + 'Class';
+          staticCls.imports.push('Foundation');
           this.addSwiftStaticClassInfo(staticCls);
           resources.sources.push(staticCls);
 

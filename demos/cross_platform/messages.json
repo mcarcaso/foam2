@@ -1,6 +1,15 @@
 [
 	{
 		"class": "foam.i18n.Message",
+		"id": "foam.u2.ControllerMode.CREATE.Label",
+		"description": "Label for the foam.u2.ControllerMode.CREATE enum",
+		"translations": {
+			"en": "Create",
+			"fr": "Créer"
+		}
+	},
+	{
+		"class": "foam.i18n.Message",
 		"id": "demo.AllTypes.BOOLEAN_VALIDATION",
 		"description": "Validation text for the boolean property.",
 		"translations": {
@@ -11,7 +20,7 @@
 	{
 		"class": "foam.i18n.Message",
 		"id": "demo.AllTypes.id.Help",
-		"description": "Help text for demo.AllTypes.id property",
+		"description": "Help text for the demo.AllTypes.id property",
 		"translations": {
 			"en": "You can only set this when creating. If you don't set it, it will be set for you.",
 			"fr": "Vous ne pouvez le définir que lors de la création. Si vous ne le définissez pas, il le sera pour vous."

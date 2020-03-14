@@ -2,7 +2,6 @@ foam.CLASS({
   package: 'foam.cross_platform.code_generation.refines',
   name: 'ModelJavaRefinement',
   refines: 'foam.core.Model',
-  flags: ['android'],
   properties: [
     {
       class: 'StringProperty',
@@ -20,9 +19,44 @@ foam.CLASS({
         if ( extends$ == 'FObject' ) return foam.cross_platform.AbstractFObject;
         return foam.lookup(extends$);
       }
-    }
+    },
+    {
+      class: 'StringProperty',
+      name: 'i18nLabelDescription',
+      expression: function (id) {
+        return `Label for the ${id} model`;
+      }
+    },
+    {
+      class: 'StringProperty',
+      name: 'i18nPluralDescription',
+      expression: function (id) {
+        return `Pluralized label for the ${id} model`;
+      }
+    },
+
   ],
   methods: [
+    {
+      name: 'getMessages',
+      flags: ['js'],
+      code: function getMessages(flagFilter, map) {
+        var id = this.id;
+        var lid = `${id}.Label`;
+        map[lid] = foam.i18n.Message.create({
+          id: lid,
+          description: this.i18nLabelDescription,
+          translations: { en: this.label }
+        });
+        var pid = `${id}.Plural`;
+        map[pid] = foam.i18n.Message.create({
+          id: pid,
+          description: this.i18nPluralDescription,
+          translations: { en: this.plural }
+        });
+        return map;
+      },
+    },
     {
       name: 'getDeps',
       code: function(flagFilter, deps) {

@@ -23,12 +23,14 @@ foam.LIB({
         }
       });
     },
-    function getMessages(flagFilter, dao) {
+    function getMessages(flagFilter, map) {
       if (!flagFilter(this.model_)) return;
-      return Promise.all(this.getAxioms()
+      this.model_.getMessages(flagFilter, map);
+      this.getAxioms()
         .filter(a => flagFilter(a))
         .filter(a => a.getMessages)
-        .map(a => a.getMessages(flagFilter, dao)));
+        .map(a => a.getMessages(flagFilter, map));
+      return map;
     }
   ]
 });

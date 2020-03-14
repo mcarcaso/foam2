@@ -231,6 +231,14 @@ ${cls.extends ? `
             initClassInfo_ = foam_cross_platform_FoamClass
               .foam_cross_platform_FoamClassBuilder(nil)
               .build();
+            initClassInfo_!.setI18nLabel(NSLocalizedString(
+              ${foam.swift.asSwiftValue(this.model_.label)},
+              comment: ${foam.swift.asSwiftValue(this.model_.i18nLabelDescription)}
+            ))
+            initClassInfo_!.setI18nPlural(NSLocalizedString(
+              ${foam.swift.asSwiftValue(this.model_.plural)},
+              comment: ${foam.swift.asSwiftValue(this.model_.i18nPluralDescription)}
+            ))
             ${this.model_.abstract || foam.core.AbstractInterface.isSubClass(this) ? '' : `
             initClassInfo_!.setBuilderFactory_(foam_swift_AnonymousGenericFunction  .foam_swift_AnonymousGenericFunctionBuilder(nil)
               .setFn({(args: [Any?]?) -> Any? in

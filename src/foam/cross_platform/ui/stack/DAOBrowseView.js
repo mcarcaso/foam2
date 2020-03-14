@@ -15,6 +15,20 @@ foam.CLASS({
     'foam.intent.DAOReadIntent',
     'foam.mlang.sink.Count',
   ],
+  messages: [
+    {
+      name: 'DELETE',
+      message: 'Delete',
+      description: `The text shown when swiping to delete a row in the table`
+    },
+    {
+      name: 'BROWSE',
+      message: 'Browse',
+      description: `
+        The text shown in the top toolbar before the name of the entity that's being browsed.
+      `
+    }
+  ],
   imports: [
     {
       name: 'androidContext',
@@ -262,7 +276,7 @@ foam.CLASS({
         class RowView: UITableViewCell {
           var citationView: foam_cross_platform_ui_AxiomView
           var sub: foam_core_Detachable? = nil;
-          var id: Any? = nil;
+          var obj: foam_cross_platform_FObject? = nil;
           init(citationView: foam_cross_platform_ui_AxiomView, style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
             self.citationView = citationView
             super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -283,7 +297,7 @@ foam.CLASS({
           func setData(data: foam_cross_platform_FObject) {
             sub?.detach();
             sub = citationView.bindData(data, nil);
-            id = data.getProperty("id");
+            obj = data;
           }
           required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
@@ -297,7 +311,14 @@ foam.CLASS({
           }
           public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             guard let row = tableView.cellForRow(at: indexPath) as? RowView else { return }
-            daoView.onRowPressed(row.id);
+            daoView.onRowPressed(row.obj?.getProperty("id"));
+          }
+          public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+            let deleteAction = UIContextualAction(style: .destructive, title: foam_cross_platform_ui_stack_DAOBrowseView.DELETE) { (action, view, handler) in
+              guard let row = tableView.cellForRow(at: indexPath) as? RowView else { return }
+              _ = self.daoView.getData()?.remove(row.obj);
+            }
+            return UISwipeActionsConfiguration(actions: [deleteAction]);
           }
         }
 
@@ -428,10 +449,10 @@ foam.CLASS({
       type: 'String',
       name: 'getTitle',
       androidCode: `
-        return "Browse " + getData().getOf().getId();
+        return BROWSE + " " + getData().getOf().getI18nPlural();
       `,
       swiftCode: `
-        return "Browse " + getData()!.getOf().getId()!;
+        return Self.BROWSE + " " + getData()!.getOf().getI18nPlural()!;
       `
     },
     {

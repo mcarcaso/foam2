@@ -10,6 +10,14 @@ foam.CLASS({
       name: 'id'
     },
     {
+      class: 'StringProperty',
+      name: 'i18nLabel'
+    },
+    {
+      class: 'StringProperty',
+      name: 'i18nPlural'
+    },
+    {
       class: 'ClassProperty',
       name: 'parent'
     },

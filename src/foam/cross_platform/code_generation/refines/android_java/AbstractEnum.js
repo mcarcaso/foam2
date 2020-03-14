@@ -12,12 +12,24 @@ foam.CLASS({
           var self = this;
           var cls = buildAndroidClass.call(self);
           self.VALUES.forEach(function(v) {
+            cls.method({
+              visibility: 'private',
+              static: true,
+              type: self.id,
+              name: v.name + '_',
+              body: `
+                foam.cross_platform.Context x = foam.cross_platform.Context.GLOBAL();
+                ${self.id} v = ${foam.core.FObject.getAxiomByName('asAndroidValue').code.call(v)};
+                v.setI18nLabel(x.getLocalizedString("${self.id.replace(/\./g, '_')}_${v.name}_Label"));
+                return v;
+              `
+            });
             cls.field({
               visibility: 'public',
               static: true,
               type: self.id,
               name: v.name,
-              initializer: foam.core.FObject.getAxiomByName('asAndroidValue').code.call(v)
+              initializer: `${v.name}_()`
             });
           });
           if ( this.model_.id != 'foam.core.AbstractEnum' ) {

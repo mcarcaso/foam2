@@ -115,10 +115,10 @@ foam.CLASS({
       name: 'title',
       expressionArgs: ['controllerMode', 'dao$of'],
       androidExpression: `
-        return controllerMode.getLabel() + " " + ((foam.cross_platform.FoamClass)dao$of).getId();
+        return controllerMode.getI18nLabel() + " " + ((foam.cross_platform.FoamClass)dao$of).getI18nLabel();
       `,
       swiftExpression: `
-        return controllerMode!.getLabel()! + " " + (dao$of as! foam_cross_platform_FoamClass).getId()!;
+        return controllerMode!.getI18nLabel()! + " " + (dao$of as! foam_cross_platform_FoamClass).getI18nLabel()!;
       `
     }
   ],

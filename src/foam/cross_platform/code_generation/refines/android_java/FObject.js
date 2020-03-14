@@ -218,6 +218,9 @@ ${cls.extends ? `
             initClassInfo_ = foam.cross_platform.FoamClass
               .FoamClassBuilder(null)
               .build();
+            foam.cross_platform.Context x = foam.cross_platform.Context.GLOBAL();
+            initClassInfo_.setI18nLabel(x.getLocalizedString("${this.id.replace(/\./g, '_')}_Label"));
+            initClassInfo_.setI18nPlural(x.getLocalizedString("${this.id.replace(/\./g, '_')}_Plural"));
             ${this.model_.abstract || foam.core.AbstractInterface.isSubClass(this) ? '' : `
             initClassInfo_.setBuilderFactory_(new foam.cross_platform.GenericFunction() {
               public Object executeFunction(Object[] args) {

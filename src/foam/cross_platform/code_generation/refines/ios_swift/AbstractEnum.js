@@ -17,7 +17,14 @@ foam.CLASS({
               static: true,
               type: self.model_.swiftName,
               name: v.name,
-              defaultValue: foam.core.FObject.getAxiomByName('asSwiftValue').code.call(v)
+              initializer: `
+                let v = ${foam.core.FObject.getAxiomByName('asSwiftValue').code.call(v)}
+                v.setI18nLabel(NSLocalizedString(
+                  ${foam.swift.asSwiftValue(v.label)},
+                  comment: ${foam.swift.asSwiftValue(v.i18nLabelDescription)}
+                ))
+                return v
+              `
             });
           });
           if ( this.model_.id != 'foam.core.AbstractEnum' ) {

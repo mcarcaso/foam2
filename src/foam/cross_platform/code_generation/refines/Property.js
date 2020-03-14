@@ -167,14 +167,14 @@ foam.CLASS({
       var lid = `${id}.Label`;
       map[lid] = foam.i18n.Message.create({
         id: lid,
-        description: `Label for the ${id} property`,
+        description: this.i18nLabelDescription,
         translations: {en: this.label}
       });
       if ( this.help ) {
         var hid = `${id}.Help`;
         map[hid] = foam.i18n.Message.create({
           id: hid,
-          description: `Help text for ${id} property`,
+          description: this.i18nHelpDescription,
           translations: {en: this.help}
         });
       }
