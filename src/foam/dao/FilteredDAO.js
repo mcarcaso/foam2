@@ -83,7 +83,7 @@ return null;`
     },
 
     {
-      name: 'listen_',
+      name: 'listen',
       code: function listen_(x, sink, predicate) {
         return this.delegate.listen_(
           x, sink,
@@ -91,12 +91,11 @@ return null;`
             this.And.create({ args: [this.predicate, predicate] }) :
             this.predicate);
       },
-      swiftCode_DELETE: `
-return try delegate.listen_(
-  x, sink,
-  predicate != nil ?
-    And_create(["args": [self.predicate, predicate]]) :
-    predicate)
+      androidCode: `
+        return listen_(getSubX(), sink, getPredicate());
+      `,
+      swiftCode: `
+        return listen_(getSubX(), sink, getPredicate());
       `,
       javaCode: 'super.listen_(x, sink, predicate == null ? getPredicate() : foam.mlang.MLang.AND(getPredicate(), predicate));'
     },

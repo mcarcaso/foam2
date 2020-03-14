@@ -84,6 +84,20 @@ foam.CLASS({
   ],
   methods: [
     {
+      type: 'Boolean',
+      name: 'isDifferent',
+      args: [
+        { type: 'Any', name: 'o1' },
+        { type: 'Any', name: 'o2' },
+      ],
+      androidCode: `
+        return o1 != o2;
+      `,
+      swiftCode: `
+        return (o1 as AnyObject) !== (o2 as AnyObject);
+      `
+    },
+    {
       name: 'slotGet',
       code: function() { return this.get() }
     },
@@ -119,10 +133,10 @@ foam.CLASS({
           boolean feedback1 = false;
           public void executeListener(foam.core.Detachable sub, Object[] args) {
             if ( feedback1 ) return;
-            if ( ! foam.cross_platform.Lib.equals(s1.slotGet(), s2.slotGet()) ) {
+            if ( isDifferent(s1.slotGet(), s2.slotGet()) ) {
               feedback1 = true;
               s2.slotSet(s1.slotGet());
-              if ( ! foam.cross_platform.Lib.equals(s1.slotGet(), s2.slotGet()) ) {
+              if ( isDifferent(s1.slotGet(), s2.slotGet()) ) {
                 s1.slotSet(s2.slotGet());
               }
               feedback1 = false;
@@ -133,10 +147,10 @@ foam.CLASS({
           boolean feedback2 = false;
           public void executeListener(foam.core.Detachable sub, Object[] args) {
             if ( feedback2 ) return;
-            if ( ! foam.cross_platform.Lib.equals(s1.slotGet(), s2.slotGet()) ) {
+            if ( isDifferent(s1.slotGet(), s2.slotGet()) ) {
               feedback2 = true;
               s1.slotSet(s2.slotGet());
-              if ( ! foam.cross_platform.Lib.equals(s1.slotGet(), s2.slotGet()) ) {
+              if ( isDifferent(s1.slotGet(), s2.slotGet()) ) {
                 s2.slotSet(s1.slotGet());
               }
               feedback2 = false;
@@ -170,32 +184,28 @@ foam.CLASS({
         let s2 = slot!;
         var feedback1 = false;
         var feedback2 = false;
-        let l1 = AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
-            if feedback1 { return; }
-            if !foam_cross_platform_Lib.equals(s1.slotGet(), s2.slotGet()) {
-              feedback1 = true;
-              s2.slotSet(s1.slotGet());
-              if !foam_cross_platform_Lib.equals(s1.slotGet(), s2.slotGet()) {
-                s1.slotSet(s2.slotGet());
-              }
-              feedback1 = false;
-            }
-          })
-          .build();
-        let l2 = AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
-            if feedback2 { return; }
-            if !foam_cross_platform_Lib.equals(s1.slotGet(), s2.slotGet()) {
-              feedback2 = true;
+        let l1 = <%=listener(\`
+          if feedback1 { return; }
+          if ( self!.isDifferent(s1.slotGet(), s2.slotGet()) ) {
+            feedback1 = true;
+            s2.slotSet(s1.slotGet());
+            if ( self!.isDifferent(s1.slotGet(), s2.slotGet()) ) {
               s1.slotSet(s2.slotGet());
-              if !foam_cross_platform_Lib.equals(s1.slotGet(), s2.slotGet()) {
-                s2.slotSet(s1.slotGet());
-              }
-              feedback2 = false;
             }
-          })
-          .build();
+            feedback1 = false;
+          }
+        \`)%>
+        let l2 = <%=listener(\`
+          if feedback2 { return; }
+          if ( self!.isDifferent(s1.slotGet(), s2.slotGet()) ) {
+            feedback2 = true;
+            s1.slotSet(s2.slotGet());
+            if ( self!.isDifferent(s1.slotGet(), s2.slotGet()) ) {
+              s2.slotSet(s1.slotGet());
+            }
+            feedback2 = false;
+          }
+        \`)%>
 
         var sub1 = s1.slotSub(l1);
         var sub2 = s2.slotSub(l2);
@@ -243,7 +253,7 @@ foam.CLASS({
         final foam.core.SlotInterface finalOther = other;
         foam.cross_platform.Listener l = new foam.cross_platform.Listener() {
           public void executeListener(foam.core.Detachable sub, Object[] args) {
-            if ( ! foam.cross_platform.Lib.equals(self.slotGet(), finalOther.slotGet()) ) {
+            if ( isDifferent(self.slotGet(), finalOther.slotGet()) ) {
               self.slotSet(finalOther.slotGet());
             }
           }
@@ -252,13 +262,11 @@ foam.CLASS({
         return other.slotSub(l);
       `,
       swiftCode: `
-        let l = AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
-            if !foam_cross_platform_Lib.equals(self.slotGet(), other!.slotGet()) {
-              self.slotSet(other!.slotGet());
-            }
-          })
-          .build()
+        let l = <%=listener(\`
+          if ( self!.isDifferent(self!.slotGet(), other!.slotGet()) ) {
+            self!.slotSet(other!.slotGet());
+          }
+        \`)%>
         l.executeListener(nil, nil)
         return other!.slotSub(l);
       `

@@ -261,7 +261,7 @@ return new LimitedDAO(this.getX(), count, this);
           .setDao(this)
           .build();
 
-        foam.core.Detachable sub = listen(sink2, null);
+        foam.core.Detachable sub = listen(sink2);
         sink2.reset(sub);
 
         return sub;
@@ -272,7 +272,7 @@ return new LimitedDAO(this.getX(), count, this);
           .setDao(self)
           .build();
 
-        let sub = listen(sink2, nil);
+        let sub = listen(sink2);
         sink2.reset(sub);
 
         return sub;
@@ -290,8 +290,8 @@ throw new UnsupportedOperationException();
         }
         return this.listen_(this.__context__, sink, undefined);
       },
-      swiftCode: 'return listen_(getSubX(), sink, predicate);',
-      javaCode: `this.listen_(this.getX(), sink, predicate);`,
+      androidCode: `return listen_(getSubX(), sink, null);`,
+      swiftCode: 'return listen_(getSubX(), sink, nil);'
     },
 
     /**
@@ -387,16 +387,13 @@ listeners_.add(new DAOListener(sink, listeners_));
         return sink;
       },
       crossPlatformCode: `
-// TODO: There are probably optimizations we can make here
-// but every time I try it comes out broken.  So for the time being,
-// if you have any sort of skip/limit/order/predicate we will just
-// issue reset events for everything.
-if ( predicate != <%=nul()%> ) {
-  return ResetListener_create()
-    .setDelegate(sink)
-    .build();
-}
-return sink;
+        if ( predicate != <%=nul()%> ) {
+          return PredicatedSink_create()
+            .setPredicate(predicate)
+            .setDelegate(sink)
+            .build();
+        }
+        return sink;
       `,
       javaCode: `
 if ( predicate != null ) {

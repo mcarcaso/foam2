@@ -70,15 +70,21 @@ if let oldValue = oldValue as? foam_dao_AbstractDAO {
 
         return listener;
       },
-      swiftCode_DELETE: `
-let listener = ProxyListener_create([
-  "delegate": sink,
-  "predicate": predicate
-], x)
-
-listener.onDetach(listener.dao$.follow(delegate$))
-
-return listener
+      androidCode: `
+        foam.dao.ProxyListener listener = ProxyListener_create(x)
+          .setDelegate(sink)
+          .setPredicate(predicate)
+          .build();
+        listener.onDetach(listener.getDao$().follow(getDelegate$()));
+        return listener;
+      `,
+      swiftCode: `
+        let listener = ProxyListener_create(x)
+          .setDelegate(sink)
+          .setPredicate(predicate)
+          .build();
+        listener.onDetach(listener.getDao$().follow(getDelegate$()));
+        return listener;
       `,
       javaCode: `
         // TODO: Support changing of delegate
@@ -109,14 +115,18 @@ public ProxyDAO(foam.core.X x, foam.dao.DAO delegate) {
 foam.CLASS({
   package: 'foam.dao',
   name: 'ProxyListener',
-  flags: ['js', 'swift'],
+  requires: [
+    'foam.util.SimpleDetachable'
+  ],
+  flags: ['js', 'swift', 'android'],
 
   implements: ['foam.dao.Sink'],
 
   properties: [
     {
+      class: 'FObjectProperty',
+      of: 'foam.mlang.predicate.Predicate',
       name: 'predicate',
-      swiftType: 'foam_mlang_predicate_Predicate?'
     },
     {
       class: 'Proxy',
@@ -124,23 +134,32 @@ foam.CLASS({
       name: 'delegate',
     },
     {
+      class: 'FObjectProperty',
+      of: 'foam.core.Detachable',
       name: 'innerSub',
-      type: 'foam.core.Detachable',
       postSet: function(_, s) {
         if (s) this.onDetach(s);
       },
-      swiftPostSet_DELETE: 'if let s = newValue { onDetach(s) }',
+      androidPostSet: 'if ( newValue != null ) onDetach(newValue);',
+      swiftPostSet: 'if ( newValue != nil ) { onDetach(newValue); }',
     },
     {
       class: 'foam.dao.DAOProperty',
       name: 'dao',
-      swiftPostSet_DELETE: `
-self.innerSub?.detach()
-try? self.innerSub = newValue?.listen_(__context__, self, predicate)
-if oldValue != nil {
-  self.reset(Subscription(detach: {}))
-}
-      `
+      androidPostSet: `
+        if ( getInnerSub() != null ) getInnerSub().detach();
+        setInnerSub(newValue.listen_(getX(), this, getPredicate()));
+        if ( oldValue != null ) {
+          reset(SimpleDetachable_create().build());
+        }
+      `,
+      swiftPostSet: `
+        getInnerSub()?.detach();
+        setInnerSub(newValue?.listen_(getX(), self, getPredicate()));
+        if ( oldValue != nil ) {
+          reset(SimpleDetachable_create().build());
+        }
+      `,
     }
   ],
 
@@ -150,7 +169,8 @@ if oldValue != nil {
       code: function put(obj, s) {
         this.delegate.put(obj, this);
       },
-      swiftCode_DELETE: 'delegate.put(obj, self)',
+      androidCode: `getDelegate().put(obj, this);`,
+      swiftCode: `getDelegate()?.put(obj, self);`
     },
 
     function outputJSON(outputter) {
@@ -162,7 +182,8 @@ if oldValue != nil {
       code: function remove(obj, s) {
         this.delegate.remove(obj, this);
       },
-      swiftCode_DELETE: 'delegate.remove(obj, self)',
+      androidCode: `getDelegate().remove(obj, this);`,
+      swiftCode: `getDelegate()?.remove(obj, self);`,
     },
 
     {
@@ -170,7 +191,8 @@ if oldValue != nil {
       code: function reset(s) {
         this.delegate.reset(this);
       },
-      swiftCode_DELETE: 'delegate.reset(self)',
+      androidCode: `getDelegate().reset(this);`,
+      swiftCode: `getDelegate()?.reset(self);`,
     },
   ],
   listeners: [

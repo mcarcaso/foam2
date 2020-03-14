@@ -216,11 +216,6 @@ foam.INTERFACE({
           name: 'sink',
           type: 'foam.dao.Sink',
           swiftDefaultValue: 'foam_dao_ArraySink()',
-        },
-        {
-          name: 'predicate',
-          type: 'foam.mlang.predicate.Predicate',
-          swiftDefaultValue: 'nil',
         }
       ]
     },

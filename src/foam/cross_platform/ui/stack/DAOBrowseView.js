@@ -10,7 +10,7 @@ foam.CLASS({
   requires: [
     'foam.cross_platform.ui.widget.DefaultCitationView',
     'foam.dao.ArraySink',
-    'foam.dao.FnSink',
+    'foam.dao.ListenerSink',
     'foam.intent.DAOCreateIntent',
     'foam.intent.DAOReadIntent',
     'foam.mlang.sink.Count',
@@ -143,6 +143,9 @@ foam.CLASS({
           DAOBrowseView o = null;
           public Adapter(DAOBrowseView data) {
             o = data;
+            o.onDetach(o.onDAOUpdate().sub(null, <%=listener(\`
+              notifyDataSetChanged();
+            \`)%>));
           }
           public ViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
             foam.cross_platform.ui.AxiomView citationView = (foam.cross_platform.ui.AxiomView) o.getCitationView()
@@ -330,15 +333,21 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'FObjectProperty',
-      of: 'foam.dao.DAO',
+      class: 'foam.dao.DAOProperty',
       name: 'data',
+      androidPostSet: `
+        if ( getListenSub_() != null ) getListenSub_().detach();
+        setListenSub_(newValue.listen(
+          ListenerSink_create()
+            .setListener(onDAOUpdate__listener())
+            .build()));
+      `,
       swiftPostSet: `
         getListenSub_()?.detach();
-        setListenSub_(newValue?.listen(FnSink_create().setFn(<%=fn(\`
-          self!.onDAOUpdate_(nil, nil)
-          return nil;
-        \`)%>).build(), nil));
+        setListenSub_(newValue?.listen(
+          ListenerSink_create()
+            .setListener(onDAOUpdate__listener())
+            .build()));
       `
     },
     {
@@ -374,6 +383,9 @@ foam.CLASS({
     {
       name: 'onDAOUpdate_',
       isFramed: true,
+      androidCode: `
+        onDAOUpdate().pub(new Object[0]);
+      `,
       swiftCode: `
         _ = onDAOUpdate().pub([]);
       `

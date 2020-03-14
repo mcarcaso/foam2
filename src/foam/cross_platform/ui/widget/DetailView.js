@@ -46,9 +46,9 @@ foam.CLASS({
       name: 'of',
       expressionArgs: ['data'],
       androidFactory: null,
-      androidExpression: `return data.getCls_();`,
+      androidExpression: `return data == null ? null : data.getCls_();`,
       swiftFactory: null,
-      swiftExpression: `return data!.getCls_();`,
+      swiftExpression: `return data?.getCls_();`,
     },
     {
       class: 'FObjectArray',
@@ -57,6 +57,7 @@ foam.CLASS({
       expressionArgs: ['of'],
       androidFactory: null,
       androidExpression: `
+        if ( of == null ) return new foam.core.Property[0];
         return java.util.Arrays.stream(of.getAxiomsByClass(foam.core.Property.CLS_()))
           .filter(p -> ! ((foam.core.Property) p).getHidden())
           .sorted((a, b) -> {
@@ -68,6 +69,7 @@ foam.CLASS({
       `,
       swiftFactory: null,
       swiftExpression: `
+        if of == nil { return [] }
         return of!.getAxiomsByClass(foam_core_Property.CLS_())!
           .map({ p -> foam_core_Property in return p as! foam_core_Property })
           .filter({ p -> Bool in
@@ -85,6 +87,7 @@ foam.CLASS({
       expressionArgs: ['of'],
       androidFactory: null,
       androidExpression: `
+        if ( of == null ) return new foam.core.Action[0];
         return java.util.Arrays.stream(of.getAxiomsByClass(foam.core.Action.CLS_()))
           .sorted((a, b) -> {
             foam.core.Action pa = (foam.core.Action) a;
@@ -95,6 +98,7 @@ foam.CLASS({
       `,
       swiftFactory: null,
       swiftExpression: `
+        if of == nil { return [] }
         return of!.getAxiomsByClass(foam_core_Action.CLS_())!
           .map({ p -> foam_core_Action in return p as! foam_core_Action })
           .sorted(by: { (a, b) -> Bool in
@@ -149,11 +153,6 @@ foam.CLASS({
         return nil;
       `,
     },
-    {
-      name: 'init',
-      androidCode: `updateView(null, null);`,
-      swiftCode: `updateView(nil, nil);`
-    }
   ],
   listeners: [
     {
@@ -196,14 +195,14 @@ foam.CLASS({
             .build();
           l.executeListener(null, null);
           dpv.getView().setPadding(
-            ITEM_HORIZONTAL_PADDING(), 
-            ITEM_VERTICAL_PADDING(), 
+            ITEM_HORIZONTAL_PADDING(),
+            ITEM_VERTICAL_PADDING(),
             ITEM_HORIZONTAL_PADDING(),
             ITEM_VERTICAL_PADDING());
           getView().addView(dpv.getView());
           views[i] = dpv;
         }
-        
+
         for ( int i = 0 ; i < getActions().length ; i++ ) {
           foam.cross_platform.ui.widget.ActionButton ab = ActionButton_create().build();
           android.widget.Button b = (android.widget.Button) ab.getView();

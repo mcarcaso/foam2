@@ -13,6 +13,41 @@ foam.INTERFACE({
 
 foam.CLASS({
   package: 'foam.cross_platform.code_generation.ios_swift',
+  name: 'BuildMethod',
+  extends: 'foam.swift.Method',
+  properties: [
+    {
+      class: 'StringProperty',
+      name: 'objInit'
+    },
+    {
+      class: 'StringProperty',
+      name: 'preObjPropInit'
+    },
+    {
+      class: 'StringProperty',
+      name: 'objPropInit'
+    },
+    {
+      class: 'StringProperty',
+      name: 'objReturn'
+    },
+    {
+      name: 'body',
+      expression: function (objInit, preObjPropInit, objPropInit, objReturn) {
+        return [
+            objInit,
+            preObjPropInit,
+            objPropInit,
+            objReturn
+          ].join('\n');
+      }
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.ios_swift',
   name: 'BuilderClass',
   extends: 'foam.swift.SwiftClass',
   requires: [
@@ -141,32 +176,26 @@ foam.CLASS({
         ],
         body: `_x_ = x;`
       }));
-      cls.method({
+      cls.method(foam.cross_platform.code_generation.ios_swift.BuildMethod.create({
         visibility: 'public',
         name: 'build',
         type: cls.clsName,
-        body: `
+        objInit: `
           let o = ${cls.clsName}();
           o.setX(_x_);
+        `,
+        objPropInit: `
 ${cls.properties.map(p => `
           if ${p.crossPlatformIsSetVarName} {
             o.${p.crossPlatformSetterName}(${p.crossPlatformPrivateVarName});
           }
 `).join('')}
-          initObj(o);
+        `,
+        objReturn: `
+          o.\`init\`();
           return o;
         `
-      });
-      cls.method({
-        visibility: 'private',
-        name: 'initObj',
-        args: [
-          { type: cls.clsName, localName: 'o' }
-        ],
-        body: `
-          o.\`init\`();
-        `
-      });
+      }));
     }
   ]
 });
@@ -188,7 +217,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.cross_platform.code_generation.ios_swift',
-  name: 'PostObjInitBuilder',
+  name: 'PreObjInitBuilder',
   extends: 'foam.cross_platform.code_generation.ios_swift.ProxyBuilder',
   properties: [
     {
@@ -199,8 +228,8 @@ foam.CLASS({
   methods: [
     function buildBuilderClass(cls) {
       this.SUPER(cls);
-      var m = cls.getMethod('initObj');
-      m.body += '\n' + this.body;
+      var m = cls.getMethod('build');
+      m.preObjPropInit += '\n' + this.body;
     }
   ]
 });

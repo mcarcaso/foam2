@@ -16,7 +16,7 @@ foam.CLASS({
         visibility: 'public',
         type: model.swiftName + '.' + model.swiftName + 'Builder_',
         args: [
-          { type: 'foam_cross_platform_Context', localName: 'x' }
+          { type: 'foam_cross_platform_Context?', localName: 'x' }
         ],
         name: this.name + '_create',
         body: `return ${model.swiftName}.${model.swiftName}Builder(x);`
@@ -32,4 +32,3 @@ foam.CLASS({
     }
   ]
 });
-

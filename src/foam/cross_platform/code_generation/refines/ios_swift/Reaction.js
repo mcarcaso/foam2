@@ -42,7 +42,7 @@ foam.CLASS({
       });
 
       var b = cls.classes.find(c => foam.cross_platform.code_generation.ios_swift.BuilderClass.isInstance(c));
-      b.builder = foam.cross_platform.code_generation.ios_swift.PostObjInitBuilder.create({
+      b.builder = foam.cross_platform.code_generation.ios_swift.PreObjInitBuilder.create({
         delegate: b.builder,
         body: `o.init_${this.name}();`
       });

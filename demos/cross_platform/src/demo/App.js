@@ -66,7 +66,7 @@ foam.CLASS({
           DAOBrowseIntent_create(getApp().getSubX()).setDao(getDao()).build());
       `,
       swiftCode: `
-        getApp().getIntentManager()!.launchIntent(
+        _ = getApp().getIntentManager()!.launchIntent(
           DAOBrowseIntent_create(getApp().getSubX()).setDao(getDao()).build());
       `
     }

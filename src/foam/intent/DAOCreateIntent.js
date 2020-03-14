@@ -11,7 +11,7 @@ foam.CLASS({
     }
   ],
   requires: [
-    'foam.cross_platform.ui.stack.DetailView',
+    'foam.cross_platform.ui.stack.DAOCRUView',
   ],
   properties: [
     {
@@ -23,14 +23,14 @@ foam.CLASS({
     {
       name: 'launch',
       androidCode: `
-        getStack().push(DetailView_create()
+        getStack().push(DAOCRUView_create()
           .setControllerMode(foam.u2.ControllerMode.CREATE)
           .setDao(getDao())
           .build());
         return true;
       `,
       swiftCode: `
-        getStack()!.push(DetailView_create()
+        getStack()!.push(DAOCRUView_create()
           .setControllerMode(foam_u2_ControllerMode.CREATE)
           .setDao(getDao())
           .build());

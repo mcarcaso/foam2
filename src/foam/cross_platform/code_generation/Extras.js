@@ -29,7 +29,7 @@ foam.CLASS({
       var superAxiom = parentCls.getSuperAxiomByName(this.name);
       if ( superAxiom === this ) return;
 
-      cls.extras = cls.extras.concat(this.androidCode);
+      cls.extras = cls.extras.concat(foam.cpTemplate(this.androidCode, 'android'));
     }
   ]
 });

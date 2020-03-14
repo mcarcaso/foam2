@@ -13,6 +13,43 @@ foam.INTERFACE({
 
 foam.CLASS({
   package: 'foam.cross_platform.code_generation.android_java',
+  name: 'BuildMethod',
+  extends: 'foam.java.Method',
+  properties: [
+    {
+      class: 'StringProperty',
+      name: 'objInit'
+    },
+    {
+      class: 'StringProperty',
+      name: 'preObjPropInit'
+    },
+    {
+      class: 'StringProperty',
+      name: 'objPropInit'
+    },
+    {
+      class: 'StringProperty',
+      name: 'objReturn'
+    },
+    {
+      name: 'body',
+      expression: function(objInit, preObjPropInit, objPropInit, objReturn) {
+        return foam.java.Code.create({
+          data: [
+            objInit,
+            preObjPropInit,
+            objPropInit,
+            objReturn
+          ].join('\n')
+        });
+      }
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.android_java',
   name: 'BuilderClass',
   extends: 'foam.java.Class',
   requires: [
@@ -146,32 +183,26 @@ foam.CLASS({
         ],
         body: `_x_ = x;`
       });
-      cls.method({
+      cls.methods.push(foam.cross_platform.code_generation.android_java.BuildMethod.create({
         visibility: 'public',
         name: 'build',
         type: cls.clsName,
-        body: `
+        objInit: `
           ${cls.clsName} o = new ${cls.clsName}();
           o.setX(_x_);
+        `,
+        objPropInit: `
 ${cls.properties.map(p => `
           if ( ${p.crossPlatformIsSetVarName} ) {
             o.${p.crossPlatformSetterName}(${p.crossPlatformPrivateVarName});
           }
 `).join('')}
-          initObj(o);
+        `,
+        objReturn: `
+          o.init();
           return o;
         `
-      });
-      cls.method({
-        visibility: 'private',
-        name: 'initObj',
-        args: [
-          { type: cls.clsName, name: 'o' }
-        ],
-        body: `
-          o.init();
-        `
-      });
+      }));
     }
   ]
 });
@@ -193,7 +224,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.cross_platform.code_generation.android_java',
-  name: 'PostObjInitBuilder',
+  name: 'PreObjInitBuilder',
   extends: 'foam.cross_platform.code_generation.android_java.ProxyBuilder',
   properties: [
     {
@@ -204,8 +235,8 @@ foam.CLASS({
   methods: [
     function buildBuilderClass(cls) {
       this.SUPER(cls);
-      var m = cls.getMethod('initObj');
-      m.body.data += '\n' + this.body;
+      var m = cls.getMethod('build');
+      m.preObjPropInit += '\n' + this.body;
     }
   ]
 });
