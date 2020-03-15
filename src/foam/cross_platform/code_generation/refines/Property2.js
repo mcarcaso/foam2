@@ -30,22 +30,9 @@ foam.CLASS({
       }
     },
     {
-      class: 'FunctionProperty',
-      name: 'viewInitializer',
-      androidValue: `
-        (foam.cross_platform.GenericFunction) args -> {
-          foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
-          return foam.cross_platform.ui.widget.Label.LabelBuilder(x).build();
-        }
-      `,
-      swiftValue: `
-        AnonymousGenericFunction_create()
-          .setFn({(args: [Any?]?) -> Any? in
-            let x = args![0] as! foam_cross_platform_Context;
-            return foam_cross_platform_ui_widget_Label.foam_cross_platform_ui_widget_LabelBuilder(x).build();
-          })
-          .build()
-      `
+      class: 'ClassProperty',
+      name: 'viewClass',
+      value: 'foam.cross_platform.ui.widget.Label'
     },
     {
       class: 'FObjectProperty',

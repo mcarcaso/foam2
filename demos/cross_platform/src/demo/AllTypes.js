@@ -39,33 +39,14 @@ foam.CLASS({
       name: 'stringProperty',
     },
     {
-      class: 'ArrayProperty',
-      name: 'array',
-    },
-    {
-      class: 'StringArrayProperty',
-      name: 'stringArray',
-    },
-    {
-      class: 'MapProperty',
-      name: 'map',
-    },
-    {
-      class: 'ListProperty',
-      name: 'list',
-    },
-    {
       class: 'FObjectProperty',
       name: 'fobject',
-    },
-    {
-      class: 'FObjectArray',
-      of: 'demo.Person',
-      name: 'fobjectArray',
-    },
-    {
-      class: 'DateProperty',
-      name: 'date',
+      crossPlatformFactoryValue: {
+        class: 'demo.Person',
+        firstName: 'Mike',
+        lastName: 'Car',
+        isMale: true
+      }
     },
   ]
 });

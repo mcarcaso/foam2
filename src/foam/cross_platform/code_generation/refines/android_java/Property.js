@@ -145,10 +145,6 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'androidViewFactory'
-    },
-    {
-      class: 'StringProperty',
       name: 'androidCloneProperty',
     }
   ],
@@ -434,12 +430,6 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
             `}
             ${this.androidCloneProperty ? `${this.crossPlatformPrivateAxiom}.setCloneProperty(${this.androidCloneProperty});` : ''}
             ${expressionData.join('\n')}
-            ${this.androidViewFactory ? `
-            ${this.crossPlatformPrivateAxiom}.setViewInitializer((foam.cross_platform.GenericFunction) args -> {
-              foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
-              ${this.androidViewFactory}
-            });
-            ` : ''}
           }
           return ${this.crossPlatformPrivateAxiom};
         `

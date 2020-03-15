@@ -153,10 +153,6 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftViewFactory'
-    },
-    {
-      class: 'StringProperty',
       name: 'swiftCloneProperty'
     },
   ],
@@ -476,14 +472,6 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
             `}
             ${this.swiftCloneProperty ? `${this.crossPlatformPrivateAxiom}!.setCloneProperty(${this.swiftCloneProperty});` : ''}
             ${expressionData.join('\n')}
-            ${this.swiftViewFactory ? `
-            ${this.crossPlatformPrivateAxiom}!.setViewInitializer(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
-              .setFn({(args: [Any?]?) -> Any? in
-                let x = args![0] as! foam_cross_platform_Context;
-                ${this.swiftViewFactory}
-              })
-              .build());
-            ` : ''}
           }
           return ${this.crossPlatformPrivateAxiom}!;
         `
