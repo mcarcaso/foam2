@@ -13,18 +13,6 @@ foam.CLASS({
         if newValue is String? { return newValue as? String }
         return String(describing: newValue!);
       `
-    },
-    {
-      name: 'viewInitializer',
-      swiftValue: `
-        foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
-          .setFn({(args: [Any?]?) -> Any? in
-            let x = args![0] as! foam_cross_platform_Context;
-            return foam_cross_platform_ui_widget_TextField.foam_cross_platform_ui_widget_TextFieldBuilder(x).build();
-          })
-          .build()
-      `
-    },
+    }
   ]
 });
-

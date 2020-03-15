@@ -46,23 +46,9 @@ foam.CLASS({
       name: 'isAvailableSlotInitializer'
     },
     {
-      class: 'FunctionProperty',
-      name: 'viewInitializer',
-      androidValue: `
-        (foam.cross_platform.GenericFunction) args -> {
-          foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
-          return foam.cross_platform.ui.widget.ActionButton.ActionButtonBuilder(x).build();
-        }
-      `,
-      swiftValue: `
-        AnonymousGenericFunction_create()
-          .setFn({[weak self] (args: [Any?]?) -> Any? in
-            if self == nil { return nil }
-            let x = args![0] as! foam_cross_platform_Context;
-            return foam_cross_platform_ui_widget_ActionButton.foam_cross_platform_ui_widget_ActionButtonBuilder(x).build();
-          })
-          .build()
-      `
+      class: 'ClassProperty',
+      name: 'viewClass',
+      value: 'foam.cross_platform.ui.widget.ActionButton'
     },
     {
       class: 'StringProperty',
@@ -98,12 +84,10 @@ foam.CLASS({
         { type: 'Context', name: 'x' },
       ],
       androidCode: `
-        return (foam.cross_platform.ui.AxiomView) getViewInitializer()
-          .executeFunction(new Object[] {x});
+        return getViewClass()?.createBuilder(x)?.builderBuild() as? foam_cross_platform_ui_AxiomView;
       `,
       swiftCode: `
-        return getViewInitializer()!
-          .executeFunction([x]) as? foam_cross_platform_ui_AxiomView
+        return getViewClass()?.createBuilder(x)?.builderBuild() as? foam_cross_platform_ui_AxiomView;
       `,
     },
     {

@@ -27,10 +27,6 @@ foam.CLASS({
       class: 'StringProperty',
       name: 'swiftIsAvailable'
     },
-    {
-      class: 'StringProperty',
-      name: 'swiftViewFactory'
-    },
   ],
   methods: [
     function buildSwiftClass(cls, parentCls) {
@@ -146,15 +142,6 @@ foam.CLASS({
             ${this.crossPlatformPrivateAxiom}!.setI18nLabel(NSLocalizedString(
               ${foam.swift.asSwiftValue(this.label)},
               comment: ${foam.swift.asSwiftValue(this.i18nLabelDescription)}));
-            ${this.swiftViewFactory ? `
-            ${this.crossPlatformPrivateAxiom}.setViewInitializer(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
-              .setFn({(args: [Any?]?) -> Any? in
-                foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
-                ${this.swiftViewFactory}
-              })
-              .build()
-            );
-            ` : ''}
           }
           return ${this.crossPlatformPrivateAxiom}!;
         `
