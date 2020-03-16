@@ -107,9 +107,9 @@ foam.CLASS({
     {
       name: 'pop',
       androidCode: `
-      foam.cross_platform.FObject o = (foam.cross_platform.FObject) getStack().remove(getStack().size() - 1);
-      o.detach();
-      getFragmentManager().popBackStack();
+        foam.cross_platform.FObject o = (foam.cross_platform.FObject) getStack().remove(getStack().size() - 1);
+        o.detach();
+        getFragmentManager().popBackStack();
       `,
       swiftCode: `
         let o = getStack()?.lastObject as? foam_cross_platform_FObject;
@@ -138,7 +138,7 @@ foam.CLASS({
           if ( f instanceof ToolbarFragment ) {
             foam.cross_platform.ui.android.Toolbar toolbar = ((ToolbarFragment) f).getToolbar();
             toolbar.setBackButtonFn((foam.cross_platform.GenericFunction) args -> {
-              getFragmentManager().popBackStack();
+              pop();
               return null;
             });
           }
