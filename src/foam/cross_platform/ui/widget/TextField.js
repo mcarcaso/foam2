@@ -191,7 +191,7 @@ foam.CLASS({
         setFeedback_(true);
         (getView() as! UITextView).text = getData() == nil ? "" :
           getData() is String ? getData() as! String :
-          String(describing: getData());
+          String(describing: getData()!);
         setFeedback_(false);
       `
     }
