@@ -14,6 +14,13 @@ foam.LIB({
     function buildSwiftClass(cls) {
       cls = cls || foam.swift.SwiftClass.create();
 
+      var initImports = function (model) {
+        if (!model) return [];
+        var parent = foam.lookup(model.extends).model_;
+        if (parent.id == model.id) return [];
+        return model.swiftImports.concat(initImports(parent));
+      };
+
       cls.visibility = 'public';
       cls.name = this.model_.swiftName;
       cls.extends = this.model_.swiftExtends;
@@ -21,7 +28,7 @@ foam.LIB({
       cls.documentation = this.model_.documentation;
       cls.imports = cls.imports.concat(
         'Foundation',
-        this.model_.swiftImports
+        initImports(this.model_)
       );
 
       var flagFilter = foam.util.flagFilter(['swift']);
