@@ -28,7 +28,15 @@ foam.CLASS({
     },
     {
       class: 'LongProperty',
-      name: 'long',
+      name: 'longProperty',
+      help: 'By default, this is equal to the value of "Int Property"',
+      expressionArgs: ['intProperty'],
+      androidExpression: `return intProperty;`,
+      swiftExpression: `return intProperty;`,
+    },
+    {
+      class: 'IntProperty',
+      name: 'intProperty',
       help: 'By default, this is the count of characters in the string property',
       expressionArgs: ['stringProperty'],
       androidExpression: `return stringProperty.length();`,

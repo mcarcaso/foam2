@@ -5,12 +5,17 @@ foam.CLASS({
   flags: ['android'],
   properties: [
     {
-      name: 'androidNumberObjType',
-      value: 'Long'
-    },
-    {
-      name: 'androidNumberToValueMethod',
-      value: 'longValue'
+      name: 'androidAdapt',
+      value: `
+        if ( newValue instanceof Long ) {
+          return (long) newValue;
+        }
+        if ( newValue instanceof Number ) {
+          return ((Number) newValue).longValue();
+        }
+        // Will throw runtime exception.
+        return (long) newValue;
+      `
     }
   ]
 });

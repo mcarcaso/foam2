@@ -5,30 +5,23 @@ foam.CLASS({
   flags: ['android'],
   properties: [
     {
-      class: 'StringProperty',
-      name: 'androidNumberObjType',
-      value: 'Integer'
-    },
-    {
-      class: 'StringProperty',
-      name: 'androidNumberToValueMethod',
-      value: 'intValue'
-    },
-    {
-      class: 'StringProperty',
       name: 'androidAdapt',
-      expression: function(androidType, androidNumberObjType, androidNumberToValueMethod) {
-        return `
-          if ( newValue instanceof ${androidNumberObjType} ) {
-            return (${androidType}) newValue;
-          }
-          if ( newValue instanceof Number ) {
-            return ((Number) newValue).${androidNumberToValueMethod}();
-          }
-          // Will throw runtime exception.
-          return (${androidType}) newValue;
-        `
-      }
+      value: `
+        if ( newValue instanceof Integer ) {
+          return (int) newValue;
+        }
+        if ( newValue instanceof Number ) {
+          return (int) Math.max(
+            Integer.MIN_VALUE,
+            Math.min(
+              ((Number) newValue).longValue(),
+              Integer.MAX_VALUE
+            )
+          );
+        }
+        // Will throw runtime exception.
+        return (int) newValue;
+      `
     }
   ]
 });
