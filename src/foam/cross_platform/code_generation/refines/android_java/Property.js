@@ -428,7 +428,7 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
             ${!this.help ? '' : `
             ${this.crossPlatformPrivateAxiom}.setI18nHelp(x.getLocalizedString("${this.forClass_.replace(/\./g, '_')}_${this.name}_Help"));
             `}
-            ${this.androidCloneProperty ? `${this.crossPlatformPrivateAxiom}.setCloneProperty(${this.androidCloneProperty});` : ''}
+            ${this.androidCloneProperty ? `${this.crossPlatformPrivateAxiom}.setCpCloneProperty(${this.androidCloneProperty});` : ''}
             ${expressionData.join('\n')}
           }
           return ${this.crossPlatformPrivateAxiom};

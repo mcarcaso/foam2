@@ -481,8 +481,8 @@ foam.CLASS({
         for ( FObject a : getCls_().getAxiomsByClass(foam.core.Property.CLS_()) ) {
           foam.core.Property p = (foam.core.Property) a;
           if ( ! hasPropertySet(p.getName()) ) continue;
-          if ( p.getCloneProperty() == null ) continue;
-          p.getCloneProperty().executeFunction(new Object[] {this, clone});
+          if ( p.getCpCloneProperty() == null ) continue;
+          p.getCpCloneProperty().executeFunction(new Object[] {this, clone});
         }
         return clone;
       `,
@@ -491,8 +491,8 @@ foam.CLASS({
         for a in getCls_()!.getAxiomsByClass(foam_core_Property.CLS_())! {
           let p = a as! foam_core_Property;
           if ( !hasPropertySet(p.getName()) ) { continue; }
-          if ( p.getCloneProperty() == nil ) { continue; }
-          _ = p.getCloneProperty()!.executeFunction([self, clone]);
+          if ( p.getCpCloneProperty() == nil ) { continue; }
+          _ = p.getCpCloneProperty()!.executeFunction([self, clone]);
         }
         return clone;
       `

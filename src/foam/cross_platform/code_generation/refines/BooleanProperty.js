@@ -7,8 +7,10 @@ foam.CLASS({
   ],
   properties: [
     {
-      name: 'viewClass',
-      value: 'foam.cross_platform.ui.widget.ToggleSwitch'
+      name: 'cpView',
+      crossPlatformFactoryValue: {
+        class: 'foam.cross_platform.ui.widget.ToggleSwitch'
+      }
     },
   ]
 });

@@ -112,10 +112,10 @@ foam.CLASS({
         { type: 'Context', name: 'x' },
       ],
       androidCode: `
-        return (foam.cross_platform.ui.AxiomView) getViewClass().createBuilder(x).builderBuild();
+        return (foam.cross_platform.ui.AxiomView) foam.cross_platform.deserialize.JSON.parse(getCpView(), null, x);
       `,
       swiftCode: `
-        return getViewClass()?.createBuilder(x)?.builderBuild() as? foam_cross_platform_ui_AxiomView;
+        return foam_cross_platform_deserialize_JSON.parse(getCpView(), nil, x) as? foam_cross_platform_ui_AxiomView;
       `,
     },
     {

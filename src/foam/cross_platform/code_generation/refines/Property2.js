@@ -30,9 +30,11 @@ foam.CLASS({
       }
     },
     {
-      class: 'ClassProperty',
-      name: 'viewClass',
-      value: 'foam.cross_platform.ui.widget.Label'
+      class: 'MapProperty',
+      name: 'cpView',
+      crossPlatformFactoryValue: {
+        class: 'foam.cross_platform.ui.widget.Label'
+      }
     },
     {
       class: 'FObjectProperty',
@@ -42,7 +44,7 @@ foam.CLASS({
     },
     {
       class: 'FunctionProperty',
-      name: 'cloneProperty',
+      name: 'cpCloneProperty',
       androidValue: `
         (foam.cross_platform.GenericFunction) args -> {
           foam.cross_platform.FObject from = (foam.cross_platform.FObject) args[0];
@@ -61,16 +63,7 @@ foam.CLASS({
             return nil;
           })
           .build()
-      `,
-      value: function(
-        /* any // The value to clone */         value,
-        /* object // Add values to this map to
-           have them installed on the clone. */ cloneMap
-        ) {
-          /** Override to provide special deep cloning behavior. */
-          cloneMap[this.name] = ( value && value.clone ) ? value.clone() :
-            foam.util.clone(value);
-      }
+      `
     },
   ],
   methods: [

@@ -7,8 +7,12 @@ foam.CLASS({
   ],
   properties: [
     {
-      name: 'viewClass',
-      value: 'foam.cross_platform.ui.widget.LongField'
+      name: 'cpView',
+      crossPlatformFactoryValue: {
+        class: 'foam.cross_platform.ui.widget.LongField',
+        max: 2147483647,
+        min: -2147483648
+      }
     },
   ]
 });

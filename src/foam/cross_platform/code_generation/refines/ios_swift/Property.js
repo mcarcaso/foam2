@@ -470,7 +470,7 @@ ${postSetName}(oldValue, castedValue, hasOldValue);
               ${foam.swift.asSwiftValue(this.help)},
               comment: ${foam.swift.asSwiftValue(this.i18nHelpDescription)}));
             `}
-            ${this.swiftCloneProperty ? `${this.crossPlatformPrivateAxiom}!.setCloneProperty(${this.swiftCloneProperty});` : ''}
+            ${this.swiftCloneProperty ? `${this.crossPlatformPrivateAxiom}!.setCpCloneProperty(${this.swiftCloneProperty});` : ''}
             ${expressionData.join('\n')}
           }
           return ${this.crossPlatformPrivateAxiom}!;

@@ -18,11 +18,6 @@ foam.CLASS({
       }
     },
     {
-      class: 'ClassProperty',
-      name: 'crossPlatformView',
-      value: 'foam.cross_platform.ui.widget.ActionButton'
-    },
-    {
       class: 'StringProperty',
       name: 'crossPlatformFnVarName',
       expression: function(name) {
@@ -44,11 +39,6 @@ foam.CLASS({
     {
       class: 'FunctionProperty',
       name: 'isAvailableSlotInitializer'
-    },
-    {
-      class: 'ClassProperty',
-      name: 'viewClass',
-      value: 'foam.cross_platform.ui.widget.ActionButton'
     },
     {
       class: 'StringProperty',
@@ -77,19 +67,6 @@ foam.CLASS({
     },
   ],
   methods: [
-    {
-      name: 'createView',
-      type: 'foam.cross_platform.ui.AxiomView',
-      args: [
-        { type: 'Context', name: 'x' },
-      ],
-      androidCode: `
-        return (foam.cross_platform.ui.AxiomView) getViewClass().createBuilder(x).builderBuild();
-      `,
-      swiftCode: `
-        return getViewClass()?.createBuilder(x)?.builderBuild() as? foam_cross_platform_ui_AxiomView;
-      `,
-    },
     {
       name: 'createIsEnabledSlot',
       type: 'foam.core.Slot',
