@@ -1,6 +1,6 @@
 foam.CLASS({
   package: 'foam.cross_platform.ui.widget',
-  name: 'IntField',
+  name: 'LongField',
   extends: 'foam.cross_platform.ui.widget.TextField',
   properties: [
     {
@@ -26,7 +26,8 @@ foam.CLASS({
         catch ( Exception e ) { return oldValue; }
       `,
       androidPreSet: `
-        return Math.max(getMin(), Math.min(((Number) newValue).longValue(), getMax()));
+        long l = (long) newValue;
+        return getMin() < l && l < getMax() ? l : oldValue;
       `,
       swiftAdapt: `
         if newValue == nil { return 0 }
@@ -36,7 +37,8 @@ foam.CLASS({
         return Int(str) ?? oldValue;
       `,
       swiftPreSet: `
-        return max(getMin(), min(newValue as! Int, getMax()));
+        let l = newValue as! Int;
+        return getMin() < l && l < getMax() ? l : oldValue;
       `
     }
   ],

@@ -3,12 +3,12 @@ foam.CLASS({
   name: 'IntPropertyJavaRefinement',
   refines: 'foam.core.IntProperty',
   requires: [
-    'foam.cross_platform.ui.widget.IntField'
+    'foam.cross_platform.ui.widget.LongField'
   ],
   properties: [
     {
       name: 'viewClass',
-      value: 'foam.cross_platform.ui.widget.IntField'
+      value: 'foam.cross_platform.ui.widget.LongField'
     },
   ]
 });

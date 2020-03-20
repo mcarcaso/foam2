@@ -86,15 +86,23 @@ foam.CLASS({
     {
       type: 'Boolean',
       name: 'isDifferent',
+      documentation: `
+        Checks that it's the same object if it's an FObject, otherwise uses
+        the Lib to compare so primitives are properly handled.
+      `,
       args: [
         { type: 'Any', name: 'o1' },
         { type: 'Any', name: 'o2' },
       ],
       androidCode: `
-        return o1 != o2;
+        foam.cross_platform.type.FObjectType ft = foam.cross_platform.type.FObjectType.INSTANCE();
+        if ( ft.isInstance(o1) ) return o1 != o2;
+        return ! foam.cross_platform.Lib.equals(o1, o2);
       `,
       swiftCode: `
-        return (o1 as AnyObject) !== (o2 as AnyObject);
+        let ft = foam_cross_platform_type_FObjectType.INSTANCE();
+        if ( ft.isInstance(o1) ) { return (o1 as AnyObject) !== (o2 as AnyObject); }
+        return !foam_cross_platform_Lib.equals(o1, o2);
       `
     },
     {

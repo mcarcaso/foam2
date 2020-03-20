@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		10053C8E2423E5CE006A7A09 /* foam_cross_platform_ui_widget_IntField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10053C8D2423E5CE006A7A09 /* foam_cross_platform_ui_widget_IntField.swift */; };
+		101EF24E24245EAB007D9D90 /* foam_cross_platform_ui_widget_LongField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101EF24D24245EAB007D9D90 /* foam_cross_platform_ui_widget_LongField.swift */; };
 		1054E8DA24185403006F91E8 /* foam_mlang_predicate_False.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1054E7C424185403006F91E8 /* foam_mlang_predicate_False.swift */; };
 		1054E8DB24185403006F91E8 /* foam_core_AnonymousAxiom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1054E7C524185403006F91E8 /* foam_core_AnonymousAxiom.swift */; };
 		1054E8DC24185403006F91E8 /* foam_dao_GUIDDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1054E7C624185403006F91E8 /* foam_dao_GUIDDAO.swift */; };
@@ -318,7 +318,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		10053C8D2423E5CE006A7A09 /* foam_cross_platform_ui_widget_IntField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_ui_widget_IntField.swift; sourceTree = "<group>"; };
+		101EF24D24245EAB007D9D90 /* foam_cross_platform_ui_widget_LongField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_ui_widget_LongField.swift; sourceTree = "<group>"; };
 		1054E7C424185403006F91E8 /* foam_mlang_predicate_False.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_mlang_predicate_False.swift; sourceTree = "<group>"; };
 		1054E7C524185403006F91E8 /* foam_core_AnonymousAxiom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_AnonymousAxiom.swift; sourceTree = "<group>"; };
 		1054E7C624185403006F91E8 /* foam_dao_GUIDDAO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_dao_GUIDDAO.swift; sourceTree = "<group>"; };
@@ -818,8 +818,8 @@
 				1054E8A724185403006F91E8 /* foam_cross_platform_ui_widget_DefaultCitationView.swift */,
 				1054E7E124185403006F91E8 /* foam_cross_platform_ui_widget_DetailPropertyView.swift */,
 				1054E87124185403006F91E8 /* foam_cross_platform_ui_widget_DetailView.swift */,
-				10053C8D2423E5CE006A7A09 /* foam_cross_platform_ui_widget_IntField.swift */,
 				1054E8A924185403006F91E8 /* foam_cross_platform_ui_widget_Label.swift */,
+				101EF24D24245EAB007D9D90 /* foam_cross_platform_ui_widget_LongField.swift */,
 				1054E81424185403006F91E8 /* foam_cross_platform_ui_widget_TextField.swift */,
 				1054E80424185403006F91E8 /* foam_cross_platform_ui_widget_ToggleSwitch.swift */,
 				1054E80B24185403006F91E8 /* foam_cross_platform_ZeroFunction.swift */,
@@ -1234,6 +1234,7 @@
 				1054E9C824185403006F91E8 /* foam_dao_InternalException.swift in Sources */,
 				1054E8DA24185403006F91E8 /* foam_mlang_predicate_False.swift in Sources */,
 				1054E93C24185403006F91E8 /* foam_intent_DAOCreateIntent.swift in Sources */,
+				101EF24E24245EAB007D9D90 /* foam_cross_platform_ui_widget_LongField.swift in Sources */,
 				1054E8ED24185403006F91E8 /* foam_cross_platform_ui_DisplayModeTrait.swift in Sources */,
 				1054E9E424185403006F91E8 /* foam_core_ExceptionClass.swift in Sources */,
 				1054E95E24185403006F91E8 /* foam_u2_DisplayMode.swift in Sources */,
@@ -1316,7 +1317,6 @@
 				1054E9AB24185403006F91E8 /* foam_mlang_predicate_And.swift in Sources */,
 				1054E95624185403006F91E8 /* foam_core_Export.swift in Sources */,
 				1054E92D24185403006F91E8 /* foam_cross_platform_ui_AxiomViewClass.swift in Sources */,
-				10053C8E2423E5CE006A7A09 /* foam_cross_platform_ui_widget_IntField.swift in Sources */,
 				1054E95D24185403006F91E8 /* foam_dao_ResetListener.swift in Sources */,
 				1054E9A324185403006F91E8 /* foam_core_ProxiedMethod.swift in Sources */,
 				1054E9B924185403006F91E8 /* foam_java_JavaImplements.swift in Sources */,

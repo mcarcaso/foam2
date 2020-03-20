@@ -89,13 +89,21 @@ foam.CLASS({
         return v;
       `,
       androidPostSet: `
-        detachWatcher(oldValue);
-        attachWatcher(newValue);
+        if ( oldValue instanceof com.google.android.material.textfield.TextInputEditText ) {
+          ((com.google.android.material.textfield.TextInputEditText) oldValue)
+            .removeTextChangedListener(getTextWatcher());
+        }
+        ((com.google.android.material.textfield.TextInputEditText) newValue)
+          .addTextChangedListener(getTextWatcher());
       `,
       swiftPostSet: `
-        detachWatcher(oldValue);
-        attachWatcher(newValue);
+        (oldValue as? UITextView)?.delegate = nil;
+        (newValue as? UITextView)?.delegate = getTextWatcher();
       `
+    },
+    {
+      class: 'StringProperty',
+      name: 'lastDataSet'
     }
   ],
   reactions: [
@@ -128,47 +136,6 @@ foam.CLASS({
           ])
           .build();
       `,
-    },
-    {
-      name: 'attachWatcher',
-      args: [{ type: 'Any', name: 'v' }],
-      androidCode: `
-        if ( v instanceof com.google.android.material.textfield.TextInputEditText == false ) return;
-        ((com.google.android.material.textfield.TextInputEditText) v)
-          .addTextChangedListener(getTextWatcher());
-      `,
-      swiftCode: `
-        let v = v as? UITextView;
-        v?.delegate = getTextWatcher();
-      `
-    },
-    {
-      name: 'detachWatcher',
-      args: [{ type: 'Any', name: 'v' }],
-      androidCode: `
-        if ( v instanceof com.google.android.material.textfield.TextInputEditText == false ) return;
-        ((com.google.android.material.textfield.TextInputEditText) v)
-          .removeTextChangedListener(getTextWatcher());
-      `,
-      swiftCode: `
-        let v = v as? UITextView;
-        v?.delegate = nil;
-      `
-    },
-    {
-      name: 'setViewData',
-      args: [{type: 'String', name: 'data'}],
-      androidCode: `
-        detachWatcher(getView());
-        getView().setText(data);
-        getView().setSelection(data.length());
-        attachWatcher(getView());
-      `,
-      swiftCode: `
-        detachWatcher(getView());
-        (getView() as! UITextView).text = data;
-        attachWatcher(getView());
-      `
     },
     {
       type: 'String',
@@ -208,8 +175,11 @@ foam.CLASS({
     },
     {
       name: 'viewToData',
+      isFramed: true,
       androidCode: `
-        setData(getView().getText().toString());
+        String str = getView().getText().toString();
+        if ( str.equals(getLastDataSet()) ) setLastDataSet(null);
+        else setData(str);
       `,
       swiftCode: `
         setData((getView() as! UITextView).text!);
@@ -217,15 +187,19 @@ foam.CLASS({
     },
     {
       name: 'dataToView',
+      isFramed: true,
       androidCode: `
         String str = dataToString(getData());
         if (str.equals(getView().getText().toString())) return;
-        setViewData(str);
+        setLastDataSet(str);
+        getView().setText(str);
+        getView().setSelection(str.length());
       `,
       swiftCode: `
         let str = dataToString(getData())!;
         if str == (getView() as! UITextView).text! { return }
-        setViewData(str);
+        setLastDataSet(str);
+        (getView() as! UITextView).text = str;
       `
     }
   ]

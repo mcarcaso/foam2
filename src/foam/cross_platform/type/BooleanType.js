@@ -9,6 +9,15 @@ foam.CLASS({
   name: 'BooleanType',
   implements: ['foam.cross_platform.type.Type'],
   axioms: [ { class: 'foam.pattern.Singleton' } ],
+  constants: [
+    {
+      type: 'foam.cross_platform.type.BooleanType',
+      name: 'INSTANCE',
+      factory: function () {
+        return foam.cross_platform.type.BooleanType.create();
+      }
+    }
+  ],
   properties: [
     { class: 'IntProperty', name: 'ordinal', value: 7 },
   ],

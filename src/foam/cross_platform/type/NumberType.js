@@ -9,6 +9,15 @@ foam.CLASS({
   name: 'NumberType',
   implements: ['foam.cross_platform.type.Type'],
   axioms: [ { class: 'foam.pattern.Singleton' } ],
+  constants: [
+    {
+      type: 'foam.cross_platform.type.NumberType',
+      name: 'INSTANCE',
+      factory: function () {
+        return foam.cross_platform.type.NumberType.create();
+      }
+    }
+  ],
   properties: [
     { class: 'IntProperty', name: 'ordinal', value: 6 },
   ],
