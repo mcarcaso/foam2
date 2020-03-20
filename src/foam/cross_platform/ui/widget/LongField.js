@@ -22,24 +22,22 @@ foam.CLASS({
         if ( newValue instanceof Number ) return newValue;
         String str = newValue.toString();
         if ( str.equals("") ) return 0;
-        try { return Long.parseLong(str); }
+        try {
+          long l = Long.parseLong(str);
+          return getMin() < l && l < getMax() ? l : oldValue;
+        }
         catch ( Exception e ) { return oldValue; }
-      `,
-      androidPreSet: `
-        long l = (long) newValue;
-        return getMin() < l && l < getMax() ? l : oldValue;
       `,
       swiftAdapt: `
         if newValue == nil { return 0 }
         if newValue is Int { return newValue }
         let str = newValue as? String ?? String(describing: newValue!);
         if str == "" { return 0 }
-        return Int(str) ?? oldValue;
+        if let l = Int(str) {
+          return getMin() < l && l < getMax() ? l : oldValue;
+        }
+        return oldValue;
       `,
-      swiftPreSet: `
-        let l = newValue as! Int;
-        return getMin() < l && l < getMax() ? l : oldValue;
-      `
     }
   ],
   reactions: [
