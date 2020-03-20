@@ -161,6 +161,20 @@ foam.CLASS({
         return (o as! foam_cross_platform_FObject?)?.getProperty(getName());
       `
     },
+    {
+      type: 'Any',
+      name: 'fromJson',
+      args: [
+        { type: 'Any', name: 'o' },
+        { type: 'Context', name: 'x' },
+      ],
+      androidCode: `
+        return foam.cross_platform.deserialize.JSON.parse(o, null, x);
+      `,
+      swiftCode: `
+        return foam_cross_platform_deserialize_JSON.parse(o, nil, x);
+      `,
+    },
     function getMessages(flagFilter, map) {
       var id = `${ this.forClass_}.${this.name}`;
       var lid = `${id}.Label`;

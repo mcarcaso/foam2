@@ -19,6 +19,15 @@ foam.CLASS({
     'foam.cross_platform.type.UnknownType',
   ],
   axioms: [ { class: 'foam.pattern.Singleton' } ],
+  constants: [
+    {
+      type: 'foam.cross_platform.type.Util',
+      name: 'INSTANCE',
+      factory: function () {
+        return foam.cross_platform.type.Util.create();
+      }
+    }
+  ],
   properties: [
     {
       class: 'FObjectProperty',
@@ -26,6 +35,7 @@ foam.CLASS({
       name: 'fObjectType',
       androidFactory: 'return FObjectType_create().build();',
       swiftFactory: 'return FObjectType_create().build();',
+      swiftOptional: false,
     },
     {
       class: 'FObjectProperty',
@@ -33,6 +43,7 @@ foam.CLASS({
       name: 'unknownType',
       androidFactory: 'return UnknownType_create().build();',
       swiftFactory: 'return UnknownType_create().build();',
+      swiftOptional: false,
     },
     {
       class: 'FObjectProperty',
@@ -40,6 +51,7 @@ foam.CLASS({
       name: 'dateType',
       androidFactory: 'return DateType_create().build();',
       swiftFactory: 'return DateType_create().build();',
+      swiftOptional: false,
     },
     {
       class: 'FObjectProperty',
@@ -47,6 +59,7 @@ foam.CLASS({
       name: 'arrayType',
       androidFactory: 'return ArrayType_create().build();',
       swiftFactory: 'return ArrayType_create().build();',
+      swiftOptional: false,
     },
     {
       class: 'FObjectProperty',
@@ -54,6 +67,7 @@ foam.CLASS({
       name: 'stringType',
       androidFactory: 'return StringType_create().build();',
       swiftFactory: 'return StringType_create().build();',
+      swiftOptional: false,
     },
     {
       class: 'FObjectProperty',
@@ -61,6 +75,7 @@ foam.CLASS({
       name: 'numberType',
       androidFactory: 'return NumberType_create().build();',
       swiftFactory: 'return NumberType_create().build();',
+      swiftOptional: false,
     },
     {
       class: 'FObjectProperty',
@@ -68,6 +83,7 @@ foam.CLASS({
       name: 'booleanType',
       androidFactory: 'return BooleanType_create().build();',
       swiftFactory: 'return BooleanType_create().build();',
+      swiftOptional: false,
     },
     {
       class: 'FObjectProperty',
@@ -75,6 +91,7 @@ foam.CLASS({
       name: 'nullType',
       androidFactory: 'return NullType_create().build();',
       swiftFactory: 'return NullType_create().build();',
+      swiftOptional: false,
     },
     {
       class: 'FObjectProperty',
@@ -82,6 +99,7 @@ foam.CLASS({
       name: 'mapType',
       androidFactory: 'return MapType_create().build();',
       swiftFactory: 'return MapType_create().build();',
+      swiftOptional: false,
     },
   ],
   methods: [
@@ -102,15 +120,16 @@ foam.CLASS({
         if ( getMapType().isInstance(o) ) return getMapType();
         return getUnknownType();
       `,
+      swiftOptional: false,
       swiftCode: `
-        if getNullType()!.isInstance(o) { return getNullType() }
-        if getBooleanType()!.isInstance(o) { return getBooleanType() }
-        if getStringType()!.isInstance(o) { return getStringType() }
-        if getNumberType()!.isInstance(o) { return getNumberType() }
-        if getArrayType()!.isInstance(o) { return getArrayType() }
-        if getDateType()!.isInstance(o) { return getDateType() }
-        if getFObjectType()!.isInstance(o) { return getFObjectType() }
-        if getMapType()!.isInstance(o) { return getMapType() }
+        if getNullType().isInstance(o) { return getNullType() }
+        if getBooleanType().isInstance(o) { return getBooleanType() }
+        if getStringType().isInstance(o) { return getStringType() }
+        if getNumberType().isInstance(o) { return getNumberType() }
+        if getArrayType().isInstance(o) { return getArrayType() }
+        if getDateType().isInstance(o) { return getDateType() }
+        if getFObjectType().isInstance(o) { return getFObjectType() }
+        if getMapType().isInstance(o) { return getMapType() }
         return getUnknownType()
       `,
     },
@@ -128,8 +147,8 @@ foam.CLASS({
             aType.getOrdinal() < bType.getOrdinal() ? -1 : aType.compare(a, b);
       `,
       swiftCode: `
-        let aType = typeOf(a)!
-        let bType = typeOf(b)!
+        let aType = typeOf(a)
+        let bType = typeOf(b)
         return aType.getOrdinal() > bType.getOrdinal() ? 1 :
             aType.getOrdinal() < bType.getOrdinal() ? -1 : aType.compare(a, b);
       `,

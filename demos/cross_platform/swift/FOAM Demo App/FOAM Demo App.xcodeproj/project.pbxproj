@@ -298,6 +298,8 @@
 		108EBE7523FEE79B005F9760 /* test_demo_SlotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108EBE6C23FEE79B005F9760 /* test_demo_SlotTests.swift */; };
 		10C17495241D018700680D0E /* foam_cross_platform_ui_stack_DAOCRUView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10C17493241D018600680D0E /* foam_cross_platform_ui_stack_DAOCRUView.swift */; };
 		10C17496241D018700680D0E /* foam_dao_ListenerSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10C17494241D018600680D0E /* foam_dao_ListenerSink.swift */; };
+		10CBBDDB242509590067A088 /* foam_core_DateProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CBBDD9242509590067A088 /* foam_core_DateProperty.swift */; };
+		10CBBDDC242509590067A088 /* foam_cross_platform_deserialize_JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CBBDDA242509590067A088 /* foam_cross_platform_deserialize_JSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -615,6 +617,8 @@
 		108EBE6C23FEE79B005F9760 /* test_demo_SlotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test_demo_SlotTests.swift; sourceTree = "<group>"; };
 		10C17493241D018600680D0E /* foam_cross_platform_ui_stack_DAOCRUView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_ui_stack_DAOCRUView.swift; sourceTree = "<group>"; };
 		10C17494241D018600680D0E /* foam_dao_ListenerSink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_dao_ListenerSink.swift; sourceTree = "<group>"; };
+		10CBBDD9242509590067A088 /* foam_core_DateProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_core_DateProperty.swift; sourceTree = "<group>"; };
+		10CBBDDA242509590067A088 /* foam_cross_platform_deserialize_JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_deserialize_JSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -673,6 +677,7 @@
 				1054E84424185403006F91E8 /* foam_core_ColorProperty.swift */,
 				1054E89C24185403006F91E8 /* foam_core_Constant.swift */,
 				1054E83024185403006F91E8 /* foam_core_ConstantSlot.swift */,
+				10CBBDD9242509590067A088 /* foam_core_DateProperty.swift */,
 				1054E8C624185403006F91E8 /* foam_core_Detachable.swift */,
 				1054E84524185403006F91E8 /* foam_core_DetachableClass.swift */,
 				1054E86224185403006F91E8 /* foam_core_Enum.swift */,
@@ -752,6 +757,7 @@
 				1054E82A24185403006F91E8 /* foam_cross_platform_deserialize_json_StringParser.swift */,
 				1054E82424185403006F91E8 /* foam_cross_platform_deserialize_json_UnknownPropertyParser.swift */,
 				1054E89624185403006F91E8 /* foam_cross_platform_deserialize_json_Whitespace.swift */,
+				10CBBDDA242509590067A088 /* foam_cross_platform_deserialize_JSON.swift */,
 				1054E83E24185403006F91E8 /* foam_cross_platform_deserialize_Literal.swift */,
 				1054E7D124185403006F91E8 /* foam_cross_platform_deserialize_NotChars.swift */,
 				1054E85824185403006F91E8 /* foam_cross_platform_deserialize_Optional.swift */,
@@ -1162,6 +1168,7 @@
 				1054E95524185403006F91E8 /* foam_cross_platform_deserialize_Repeat.swift in Sources */,
 				1054E9A124185403006F91E8 /* foam_dao_AbstractSink.swift in Sources */,
 				1054E9D924185403006F91E8 /* foam_intent_Intent.swift in Sources */,
+				10CBBDDB242509590067A088 /* foam_core_DateProperty.swift in Sources */,
 				1054E98E24185403006F91E8 /* foam_cross_platform_deserialize_json_AnyKeyParser.swift in Sources */,
 				1054E97024185403006F91E8 /* foam_swift_SwiftTypeProperty.swift in Sources */,
 				1054E96F24185403006F91E8 /* foam_cross_platform_type_TypeClass.swift in Sources */,
@@ -1189,6 +1196,7 @@
 				1054E99124185403006F91E8 /* foam_dao_ProxyDAO.swift in Sources */,
 				1054E97824185403006F91E8 /* foam_core_Enum.swift in Sources */,
 				1054E93624185403006F91E8 /* foam_dao_SQLStatementClass.swift in Sources */,
+				10CBBDDC242509590067A088 /* foam_cross_platform_deserialize_JSON.swift in Sources */,
 				1054E9B024185403006F91E8 /* foam_cross_platform_deserialize_json_BooleanParser.swift in Sources */,
 				1054E99F24185403006F91E8 /* foam_core_SerializableClass.swift in Sources */,
 				1054E9EB24185403006F91E8 /* foam_cross_platform_deserialize_Seq2.swift in Sources */,

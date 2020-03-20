@@ -120,30 +120,30 @@ foam.CLASS({
             .key("name")!
             .s((data as! foam_core_Property).getName())!
             .end();
-        } else if ( u.getStringType()!.isInstance(data) ) {
+        } else if ( u.getStringType().isInstance(data) ) {
           _ = out.s(data as? String);
-        } else if ( u.getBooleanType()!.isInstance(data) ) {
+        } else if ( u.getBooleanType().isInstance(data) ) {
           _ = out.b(data as! Bool);
-        } else if ( u.getNumberType()!.isInstance(data) ) {
+        } else if ( u.getNumberType().isInstance(data) ) {
           _ = out.n(data as! NSNumber);
-        } else if ( u.getArrayType()!.isInstance(data) ) {
+        } else if ( u.getArrayType().isInstance(data) ) {
           _ = out.array();
-          for d in u.getArrayType()!.toObjectArray(data)! {
+          for d in u.getArrayType().toObjectArray(data)! {
             output(out, d);
           }
           _ = out.end();
-        } else if ( u.getMapType()!.isInstance(data) ) {
+        } else if ( u.getMapType().isInstance(data) ) {
           _ = out.obj();
           for d in (data as! [String:Any?]).keys {
             _ = out.key(d);
             output(out, (data as! [String:Any?])[d]!);
           };
           _ = out.end();
-        } else if ( u.getDateType()!.isInstance(data) ) {
+        } else if ( u.getDateType().isInstance(data) ) {
           _ = out.n(NSNumber(value: (data as! Date).timeIntervalSince1970));
-        } else if ( u.getFObjectType()!.isInstance(data) ) {
+        } else if ( u.getFObjectType().isInstance(data) ) {
           outputFObject(out, data as? foam_cross_platform_FObject);
-        } else if ( u.getNullType()!.isInstance(data) ) {
+        } else if ( u.getNullType().isInstance(data) ) {
           _ = out.nul();
         } else {
           print("Unable to output " + String(describing: data));
