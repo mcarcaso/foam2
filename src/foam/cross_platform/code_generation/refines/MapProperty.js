@@ -4,6 +4,10 @@ foam.CLASS({
   refines: 'foam.core.MapProperty',
   properties: [
     {
+      name: 'crossPlatformFactoryValue',
+      value: {}
+    },
+    {
       name: 'swiftFactory',
       expression: function (crossPlatformFactoryValue, crossPlatformFactory, swiftType) {
         return foam.Undefined.isInstance(crossPlatformFactoryValue) ? crossPlatformFactory :

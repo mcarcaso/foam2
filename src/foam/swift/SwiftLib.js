@@ -50,7 +50,7 @@ foam.LIB({
           }
           return `
 [
-${Object.keys(o).map(k => `
+${Object.keys(o).length == 0 ? ':' : Object.keys(o).map(k => `
   ${foam.swift.asSwiftValue(k, null, x)}: ${foam.swift.asSwiftValue(o[k], null, x)}
 `).join(',\n')}
 ] as NSMutableDictionary

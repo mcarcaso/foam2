@@ -4,7 +4,6 @@ foam.CLASS({
   refines: 'foam.core.MapProperty',
   flags: ['swift'],
   properties: [
-    ['swiftFactory', 'return [:];'],
     {
       name: 'swiftAdapt',
       value: `
