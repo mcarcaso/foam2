@@ -272,20 +272,53 @@ foam.CLASS({
   ],
 
   methods: [
-    function put() {
-      return this.putFn && this.putFn.apply(this, arguments);
+    {
+      name: 'put',
+      code: function() {
+        return this.putFn && this.putFn.apply(this, arguments);
+      },
+      androidCode: `
+        if ( getPutFn() != null ) getPutFn().executeFunction(new Object[] {obj, sub});
+      `,
+      swiftCode: `
+        _ = getPutFn()?.executeFunction([obj, sub]);
+      `
     },
-
-    function remove() {
-      return this.removeFn && this.removeFn.apply(this, arguments);
+    {
+      name: 'remove',
+      code: function() {
+        return this.removeFn && this.removeFn.apply(this, arguments);
+      },
+      androidCode: `
+        if ( getRemoveFn() != null ) getRemoveFn().executeFunction(new Object[] {obj, sub});
+      `,
+      swiftCode: `
+        _ = getRemoveFn()?.executeFunction([obj, sub]);
+      `
     },
-
-    function eof() {
-      return this.eofFn && this.eofFn.apply(this, arguments);
+    {
+      name: 'eof',
+      code: function () {
+        return this.eofFn && this.eofFn.apply(this, arguments);
+      },
+      androidCode: `
+        if ( getEofFn() != null ) getEofFn().executeFunction(null);
+      `,
+      swiftCode: `
+        _ = getEofFn()?.executeFunction(nil);
+      `
     },
-
-    function reset() {
-      return this.resetFn && this.resetFn.apply(this, arguments);
+    {
+      name: 'reset',
+      code: function () {
+        return this.resetFn && this.resetFn.apply(this, arguments);
+      },
+      androidCode: `
+        if ( getResetFn() != null ) getResetFn().executeFunction(new Object[] {sub});
+      `,
+      swiftCode: `
+        _ = getResetFn()?.executeFunction([sub]);
+      `
     }
   ]
 });
