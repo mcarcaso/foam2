@@ -68,7 +68,7 @@ foam.CLASS({
       `,
       swiftFactory: `
         if getParent() == nil { return getOwnAxiomMap_(); }
-        let m = getOwnAxiomMap_()!;
+        let m = NSMutableDictionary(dictionary: getOwnAxiomMap_()!);
         for k in getParent()!.getAxiomMap_()!.allKeys {
           if m[k] == nil { m[k] = getParent()!.getAxiomMap_()![k]; }
         }
