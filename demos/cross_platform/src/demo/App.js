@@ -8,6 +8,7 @@ foam.CLASS({
     'foam.cross_platform.Application',
     'foam.cross_platform.ui.Theme',
     'foam.intent.DAOBrowseIntent',
+    'foam.dao.journal.EasyJournalEntryDAO',
   ],
   messages: [
     {
@@ -52,8 +53,12 @@ foam.CLASS({
       crossPlatformFactoryValue: {
         class: 'foam.dao.GUIDDAO',
         delegate: {
-          class: 'foam.dao.ArrayDAO',
-          of: 'demo.AllTypes'
+          class: 'foam.dao.journal.EasyJournalEntryDAO',
+          journalFile: 'allTypesDAO',
+          destinationDAO: {
+            class: 'foam.dao.ArrayDAO',
+            of: 'demo.AllTypes'
+          }
         }
       }
     }
