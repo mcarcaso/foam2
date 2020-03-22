@@ -3043,15 +3043,18 @@ foam.CLASS({
           this.value = this.arg1.f(obj);
         }
       },
-      swiftCode_DELETE: `
-        let arg1 = self.arg1!
-        if !hasOwnProperty("value") || FOAM_utils.compare(value, arg1.f(obj)) < 0 {
-          value = arg1.f(obj);
+      androidCode: `
+        foam.mlang.Expr arg1 = getArg1();
+        if ( ! hasPropertySet("value") || foam.cross_platform.Lib.compare(getValue(), arg1.f(obj)) < 0 ) {
+          setValue(arg1.f(obj));
         }
-`,
-      javaCode: 'if ( getValue() == null || ((Comparable)getArg1().f(obj)).compareTo(getValue()) > 0 ) {\n' +
-      '      setValue(getArg1().f(obj));\n' +
-      '    }'
+      `,
+      swiftCode: `
+        let arg1 = getArg1()!
+        if !hasPropertySet("value") || foam_cross_platform_Lib.compare(getValue(), arg1.f(obj)) < 0 {
+          setValue(arg1.f(obj));
+        }
+      `
     },
   ]
 });
