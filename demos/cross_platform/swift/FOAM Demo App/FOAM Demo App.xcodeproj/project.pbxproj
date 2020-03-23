@@ -311,6 +311,8 @@
 		108EBE7323FEE79B005F9760 /* test_demo_MethodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108EBE6A23FEE79B005F9760 /* test_demo_MethodTests.swift */; };
 		108EBE7423FEE79B005F9760 /* test_demo_JsonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108EBE6B23FEE79B005F9760 /* test_demo_JsonTests.swift */; };
 		108EBE7523FEE79B005F9760 /* test_demo_SlotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108EBE6C23FEE79B005F9760 /* test_demo_SlotTests.swift */; };
+		10B4648124280BB300665E72 /* foam_cross_platform_deserialize_json_ASCIIEscapeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B4648024280BB300665E72 /* foam_cross_platform_deserialize_json_ASCIIEscapeParser.swift */; };
+		10B46485242811BC00665E72 /* foam_cross_platform_deserialize_AnyChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B46484242811BC00665E72 /* foam_cross_platform_deserialize_AnyChar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -641,6 +643,8 @@
 		108EBE6A23FEE79B005F9760 /* test_demo_MethodTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test_demo_MethodTests.swift; sourceTree = "<group>"; };
 		108EBE6B23FEE79B005F9760 /* test_demo_JsonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test_demo_JsonTests.swift; sourceTree = "<group>"; };
 		108EBE6C23FEE79B005F9760 /* test_demo_SlotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test_demo_SlotTests.swift; sourceTree = "<group>"; };
+		10B4648024280BB300665E72 /* foam_cross_platform_deserialize_json_ASCIIEscapeParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_deserialize_json_ASCIIEscapeParser.swift; sourceTree = "<group>"; };
+		10B46484242811BC00665E72 /* foam_cross_platform_deserialize_AnyChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = foam_cross_platform_deserialize_AnyChar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -770,9 +774,11 @@
 				106A7DC72427B60B007E6E13 /* foam_cross_platform_code_generation_Resource.swift */,
 				106A7E302427B60B007E6E13 /* foam_cross_platform_Context.swift */,
 				106A7E4A2427B60B007E6E13 /* foam_cross_platform_deserialize_Alt.swift */,
+				10B46484242811BC00665E72 /* foam_cross_platform_deserialize_AnyChar.swift */,
 				106A7E762427B60B007E6E13 /* foam_cross_platform_deserialize_json_AnyKeyParser.swift */,
 				106A7E722427B60B007E6E13 /* foam_cross_platform_deserialize_json_AnyParser.swift */,
 				106A7E5F2427B60B007E6E13 /* foam_cross_platform_deserialize_json_ArrayParser.swift */,
+				10B4648024280BB300665E72 /* foam_cross_platform_deserialize_json_ASCIIEscapeParser.swift */,
 				106A7E9A2427B60B007E6E13 /* foam_cross_platform_deserialize_json_BooleanParser.swift */,
 				106A7DD52427B60B007E6E13 /* foam_cross_platform_deserialize_json_FloatParser.swift */,
 				106A7DF52427B60B007E6E13 /* foam_cross_platform_deserialize_json_FObjectParser_.swift */,
@@ -1186,6 +1192,7 @@
 				106A7F922427B60B007E6E13 /* foam_core_IntProperty.swift in Sources */,
 				108A0D6C236FB42100D687D1 /* AppDelegate.swift in Sources */,
 				106A7F472427B60B007E6E13 /* foam_core_internal_Errors.swift in Sources */,
+				10B46485242811BC00665E72 /* foam_cross_platform_deserialize_AnyChar.swift in Sources */,
 				106A7F2E2427B60B007E6E13 /* foam_cross_platform_ListenerClass.swift in Sources */,
 				106A7FD62427B60B007E6E13 /* foam_dao_journal_PutJournalEntry.swift in Sources */,
 				106A7FD22427B60B007E6E13 /* foam_mlang_ExprClass.swift in Sources */,
@@ -1433,6 +1440,7 @@
 				106A7F092427B60B007E6E13 /* foam_cross_platform_serialize_json_internal_OutputterState.swift in Sources */,
 				106A7EFE2427B60B007E6E13 /* foam_cross_platform_deserialize_json_KeyValueParser0.swift in Sources */,
 				106A7EE82427B60B007E6E13 /* foam_cross_platform_ListenerList.swift in Sources */,
+				10B4648124280BB300665E72 /* foam_cross_platform_deserialize_json_ASCIIEscapeParser.swift in Sources */,
 				106A7F9A2427B60B007E6E13 /* foam_core_EventProxy.swift in Sources */,
 				106A7F432427B60B007E6E13 /* foam_cross_platform_deserialize_json_StringParser.swift in Sources */,
 				106A7FAE2427B60B007E6E13 /* foam_mlang_order_ComparatorClass.swift in Sources */,

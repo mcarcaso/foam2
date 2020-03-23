@@ -25,7 +25,10 @@ foam.CLASS({
           false
         ],
         mapProperty: {
-          one: "two",
+          one: `
+            one
+            two
+          `,
           b: false,
           n: 123
         },

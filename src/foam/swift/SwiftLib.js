@@ -12,12 +12,7 @@ foam.LIB({
       name: 'asSwiftValue',
       code: foam.mmethod({
         String: function(s) {
-          return '"' + s.
-            replace(/\\/g, "\\\\").
-            replace(/"/g, '\\"').
-            replace(/\t/g, "\\t").
-            replace(/\r/g, "\\r").
-            replace(/\n/g, "\\n") + '"';
+          return JSON.stringify(s);
         },
         Boolean: function(b) {
           return b ? "true" : "false";
