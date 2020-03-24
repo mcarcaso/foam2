@@ -33,12 +33,22 @@ foam.CLASS({
       name: 'fragmentManager'
     },
     {
-      swiftType: 'NavigationController',
+      swiftType: 'NavigationControllerDelegate',
+      flags: ['swift'],
+      name: 'navControllerDelegate',
+      swiftFactory: `
+        let d = NavigationControllerDelegate();
+        d.this = self;
+        return d;
+      `
+    },
+    {
+      swiftType: 'UINavigationController',
       flags: ['swift'],
       name: 'navController',
       swiftFactory: `
-        let navVc = NavigationController();
-        navVc.this = self;
+        let navVc = UINavigationController();
+        navVc.delegate = getNavControllerDelegate();
         navVc.navigationBar.barTintColor = getTheme()!.getPrimary();
         navVc.navigationBar.tintColor = getTheme()!.getOnPrimary();
         navVc.navigationBar.isTranslucent = false;
@@ -82,14 +92,13 @@ foam.CLASS({
         }
       `,
       swiftCode: `
-        public class NavigationController: UINavigationController {
+        public class NavigationControllerDelegate: NSObject, UINavigationControllerDelegate {
           weak var this: foam_cross_platform_ui_stack_Stack? = nil;
-          override public func popViewController(animated: Bool) -> UIViewController? {
-            this?.pop();
-            return nil;
-          }
-          func popViewController_() {
-            super.popViewController(animated: true)
+          public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+            let s = this!.getStack()!
+            while s.count > navigationController.viewControllers.count {
+              s.removeLastObject();
+            }
           }
         }
       `
@@ -115,7 +124,7 @@ foam.CLASS({
         let o = getStack()?.lastObject as? foam_cross_platform_FObject;
         getStack()!.removeLastObject();
         o?.detach()
-        getNavController().popViewController_();
+        getNavController().popViewController(animated: true);
       `
     },
     {
