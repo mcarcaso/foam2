@@ -18,15 +18,15 @@ foam.CLASS({
         index: 2,
         parsers: [
           { class: 'foam.cross_platform.deserialize.json.Whitespace' },
-          { class: 'foam.cross_platform.deserialize.Literal', value: '\\\\' },
+          { class: 'foam.cross_platform.deserialize.Literal', string: '\\\\' },
           {
             class: 'foam.cross_platform.deserialize.Alt',
             parsers: [
-              { class: 'foam.cross_platform.deserialize.Literal', value: 'n' },
-              { class: 'foam.cross_platform.deserialize.Literal', value: 't' },
-              { class: 'foam.cross_platform.deserialize.Literal', value: 'r' },
-              { class: 'foam.cross_platform.deserialize.Literal', value: 'f' },
-              { class: 'foam.cross_platform.deserialize.Literal', value: 'b' },
+              { class: 'foam.cross_platform.deserialize.Literal', string: 'n' },
+              { class: 'foam.cross_platform.deserialize.Literal', string: 't' },
+              { class: 'foam.cross_platform.deserialize.Literal', string: 'r' },
+              { class: 'foam.cross_platform.deserialize.Literal', string: 'f' },
+              { class: 'foam.cross_platform.deserialize.Literal', string: 'b' },
             ]
           },
         ]
@@ -52,7 +52,7 @@ foam.CLASS({
             default:
               break;
           }
-          return ps.tail().setValue(c);
+          return ps.setValue(c);
         }
         return ps;
 
@@ -73,7 +73,7 @@ foam.CLASS({
             default:
               break;
           }
-          return ps!.tail()!.setValue(c);
+          return ps!.setValue(c);
         }
         return ps;
       `
