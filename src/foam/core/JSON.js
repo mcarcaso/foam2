@@ -61,6 +61,7 @@ foam.CLASS({
       installInClass: function(c) {
         var oldCreate = c.create;
         c.create = function(args, X) {
+          X = X || foam;
           var clsName = args.forClass_;
           var name = args.name;
 
