@@ -7,6 +7,7 @@ foam.CLASS({
   ],
   requires: [
     'foam.cross_platform.deserialize.json.ASCIIEscapeParser',
+    'foam.cross_platform.deserialize.json.UnicodeParser',
     'foam.cross_platform.deserialize.AnyChar',
   ],
   properties: [
@@ -17,12 +18,13 @@ foam.CLASS({
       crossPlatformFactoryValue: {
         class: 'foam.cross_platform.deserialize.Alt',
         parsers: [
+          { class: 'foam.cross_platform.deserialize.json.UnicodeParser' },
           { class: 'foam.cross_platform.deserialize.json.ASCIIEscapeParser' },
           {
             class: 'foam.cross_platform.deserialize.Seq1',
             index: 1,
             parsers: [
-              { class: 'foam.cross_platform.deserialize.Literal', value: '\\\\' },
+              { class: 'foam.cross_platform.deserialize.Literal', string: '\\\\' },
               { class: 'foam.cross_platform.deserialize.AnyChar' },
             ]
           },
@@ -49,9 +51,8 @@ foam.CLASS({
             break;
           } else {
             sb.append(c);
+            ps = ps.tail();
           }
-          ps = ps.tail();
-
         }
         return ps.tail().setValue(sb.toString());
       `,
@@ -71,8 +72,8 @@ foam.CLASS({
             break;
           } else {
             sb.append(c);
+            ps = ps.tail()!;
           }
-          ps = ps.tail()!;
         }
         return ps.tail()!.setValue(sb);
       `,
