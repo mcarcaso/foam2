@@ -4,10 +4,20 @@ foam.CLASS({
   implements: [
     'foam.cross_platform.deserialize.PStream',
   ],
+  requires: [
+    'foam.cross_platform.deserialize.ProxyPStream',
+  ],
   properties: [
     {
-      class: 'StringProperty',
+      androidType: 'String',
+      swiftType: '[Character]',
       name: 'str',
+      swiftAdapt: `
+        if newValue is String {
+          return Array(newValue as! String)
+        }
+        return newValue as! [Character]
+      `
     },
     {
       name: 'value_',
@@ -29,8 +39,7 @@ foam.CLASS({
         return getStr().charAt(getPos());
       `,
       swiftCode: `
-        let s = foam_cross_platform_type_StringType.INSTANCE();
-        return s.charAt(getStr(), getPos());
+        return getStr()[getPos()];
       `
     },
     {
@@ -39,7 +48,7 @@ foam.CLASS({
         return getPos() < getStr().length();
       `,
       swiftCode: `
-        return getPos() < getStr()!.count;
+        return getPos() < getStr().count;
       `
     },
     {
@@ -67,12 +76,19 @@ foam.CLASS({
     {
       name: 'substring',
       androidCode: `
+        while ( end instanceof foam.cross_platform.deserialize.ProxyPStream ) {
+          end = ((foam.cross_platform.deserialize.ProxyPStream) end).getDelegate();
+        }
         return getStr().substring(getPos(), ((StringPStream) end).getPos());
       `,
       swiftCode: `
-        let s = foam_cross_platform_type_StringType.INSTANCE();
-        let end = end as! foam_cross_platform_deserialize_StringPStream;
-        return s.substring(getStr(), getPos(), end.getPos());
+        var end = end
+        while end is foam_cross_platform_deserialize_ProxyPStream {
+          end = (end as! foam_cross_platform_deserialize_ProxyPStream).getDelegate()
+        }
+        let endStr = end as! foam_cross_platform_deserialize_StringPStream;
+        let chars = (end as! foam_cross_platform_deserialize_StringPStream).getStr();
+        return String(chars.dropFirst(getPos()).dropLast(chars.count - endStr.getPos()))
       `
     },
     {
