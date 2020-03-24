@@ -98,14 +98,23 @@ foam.CLASS({
 
         let r = try! FileHandle(forReadingFrom: getFile()!);
         let parser = FObjectParser_create().build();
+        var chunk: [Character] = []
+        var chunkOffset = 0;
         while ( !sub.getIsDetached() ) {
           var line: String? = nil;
           while ( true ) {
-            let charString = String(data: r.readData(ofLength: 1), encoding: .utf8)
-            if charString == nil || charString!.count == 0 { break }
+            if chunk.count == chunkOffset {
+              let chunkStr = String(data: r.readData(ofLength: 1024), encoding: .utf8)
+              if chunkStr == nil { break }
+              chunk = Array(chunkStr!)
+              chunkOffset = 0;
+            }
+            if chunk.count == 0 { break }
+            let charString = chunk[chunkOffset]
+            chunkOffset+=1
             if line == nil { line = "" }
             if charString == "\\\\n" { break }
-            line!.append(charString!)
+            line!.append(charString)
           }
           if line == nil { break }
           decorated?.put(parser.parseString(line, x), sub);
