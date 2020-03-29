@@ -5,6 +5,17 @@ foam.CLASS({
   flags: ['swift'],
   properties: [
     {
+      name: 'swiftAdapt',
+      expression: function (required) {
+        return `
+          if newValue is String {
+            return getX().lookup(newValue as? String)${required ? '!' : ''}
+          }
+          return newValue as${required ? '!' : '?'} foam_cross_platform_FoamClass;
+        `
+      }
+    },
+    {
       name: 'swiftType',
       expression: function(required) {
         return foam.core.type.toType('foam.cross_platform.FoamClass').toSwiftType(!required);

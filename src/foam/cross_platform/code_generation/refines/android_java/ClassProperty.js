@@ -5,6 +5,15 @@ foam.CLASS({
   flags: ['android'],
   properties: [
     {
+      name: 'androidAdapt',
+      value: `
+        if ( newValue instanceof String ) {
+          return getX().lookup((String) newValue);
+        }
+        return (foam.cross_platform.FoamClass) newValue;
+      `
+    },
+    {
       name: 'androidType',
       value: 'foam.cross_platform.FoamClass'
     },
