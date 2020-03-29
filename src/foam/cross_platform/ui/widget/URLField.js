@@ -11,6 +11,10 @@ foam.CLASS({
   requires: [
     'foam.cross_platform.ui.widget.ActionButton',
     'foam.cross_platform.ui.widget.TextField',
+    {
+      path: 'foam.cross_platform.ui.ios.VerticalLinearLayout',
+      flags: ['swift']
+    }
   ],
   imports: [
     {
@@ -22,42 +26,6 @@ foam.CLASS({
       key: 'androidContext',
       androidType: 'android.content.Context',
       flags: ['android']
-    }
-  ],
-  axioms: [
-    {
-      class: 'foam.cross_platform.code_generation.Extras',
-      swiftCode: `
-        class View: UIView {
-          let textField: UIView;
-          let button: UIView;
-          init(_ textField: UIView, _ button: UIView) {
-            self.textField = textField;
-            self.button = button;
-            super.init(frame: CGRect.zero)
-            addSubview(textField)
-            addSubview(button)
-          }
-          required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-          }
-          override func layoutSubviews() {
-            super.layoutSubviews();
-            let h = frame.height;
-            let btnSize = button.sizeThatFits(frame.size);
-            let tvSize = CGSize(width: frame.width, height: h - btnSize.height);
-            textField.frame = CGRect(origin: CGPoint.zero, size: tvSize);
-            button.frame = CGRect(origin: CGPoint(x: 0, y: tvSize.height), size: btnSize);
-          }
-          override func sizeThatFits(_ size: CGSize) -> CGSize {
-            let tvSize = textField.sizeThatFits(size);
-            let btnSize = button.sizeThatFits(size);
-            return CGSize(
-              width: max(tvSize.width, btnSize.width),
-              height: tvSize.height + btnSize.height);
-          }
-        }
-      `
     }
   ],
   properties: [
@@ -111,9 +79,10 @@ foam.CLASS({
 
       `,
       swiftFactory: `
-        let v = Self.View(
+        let v = foam_cross_platform_ui_ios_VerticalLinearLayout.View([
           getTextField()!.getView()!,
-          getActionButton()!.getView()!);
+          getActionButton()!.getView()!
+        ]);
         return v;
       `,
     }
@@ -136,6 +105,7 @@ foam.CLASS({
       swiftCode: `
         let url = Foundation.URL(string: getData()!)!
         let vc = SFSafariViewController(url: url)
+        vc.modalPresentationStyle = .pageSheet
         getStack()?.getNavController().present(vc, animated: true, completion: nil)
       `
     }
