@@ -5,6 +5,7 @@ foam.CLASS({
   requires: [
     'foam.core.ExpressionSlot',
     'foam.cross_platform.Lib',
+    'foam.cross_platform.deserialize.JSON',
   ],
   ids: [
     'forClass_',
