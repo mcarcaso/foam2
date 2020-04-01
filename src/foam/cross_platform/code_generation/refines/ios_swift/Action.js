@@ -34,13 +34,6 @@ foam.CLASS({
       if ( superAxiom === this ) return;
       var override = this.swiftIsOverride(parentCls);
 
-      cls.method({
-        override: override,
-        visibility: 'public',
-        name: this.name,
-        body: foam.cpTemplate(this.swiftCode, 'swift')
-      });
-
       if ( ! superAxiom ) {
         cls.field({
           visibility: 'private',
@@ -57,7 +50,7 @@ foam.CLASS({
               ${this.crossPlatformFnVarName} = AnonymousGenericFunction_create()
                 .setFn({[weak self] (_fnArgs_: [Any?]?) -> Any? in
                   if self == nil { return nil }
-                  self!.\`${this.name}\`();
+                  self!.\`${this.name}\`(_fnArgs_?[0] as? foam_cross_platform_Context);
                   return nil;
                 })
                 .build();
@@ -67,61 +60,105 @@ foam.CLASS({
         });
       }
 
-      var expressionData = [
-          'isEnabled',
-          'isAvailable'
-        ]
-        .map(name => {
-          var Name = foam.String.capitalize(name);
-          if ( ! this['swift' + Name] ) return;
-          var args = this[name + 'ExpressionArgs'].map(a => {
-            a = a.split('$').filter(a => a);
-            return {
-              type: a.length == 1 ?
-                parentCls.getAxiomByName(a).swiftType : 'Any?',
-              localName: a.join('$')
-            }
-          });
-          cls.method({
-            visibility: 'public',
-            override: override,
-            type: 'Bool',
-            name: this.name + '_' + name,
-            args: args,
-            body: foam.cpTemplate(`
-              ${this['swift' + Name]}
-            `, 'swift')
-          });
+      var isEnabledsAxiomSetter = '';
+      var actionCode = this.swiftCode;
+      if ( this.swiftIsEnabled ) {
+        var args = this.isEnabledExpressionArgs.map(a => {
+          a = a.split('$').filter(a => a);
           return {
-            axiomSetter: `
-            ${this.crossPlatformPrivateAxiom}!.set${Name}SlotInitializer(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
-              .setFn({(args: [Any?]?) -> Any? in
-                let o = args?[0] as? ${parentCls.model_.swiftName};
-                return foam_core_ExpressionSlot.foam_core_ExpressionSlotBuilder(nil)
-                  .setObj(o)
-                  .setCode(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
-                    .setFn({(args2: [Any?]?) -> Any? in
-                      return o?.${this.name}_${name}(
-                        ${args.map((a, i) => `args2![${i}] as! ${a.type}`).join(',')}
-                      );
-                    })
-                    .build()
-                  )
-                  .setArgs([${args.map(a => `o?.getSlot("${a.localName}")`).join(',')}])
-                  .build();
-              })
-              .build());
-            `,
-            actionPreBody: `
-              if !${this.name}_${name}(${args.map(a => `
-                getSlot("${a.localName}").slotGet() as! ${a.type}
-              `).join(',')}) {
-                return;
-              }
-            `
+            type: a.length == 1 ?
+              parentCls.getAxiomByName(a).swiftType : 'Any?',
+            localName: a.join('$')
           }
-        })
-        .filter(o => o);
+        });
+        cls.method({
+          visibility: 'public',
+          override: override,
+          type: 'Bool',
+          name: this.name + '_isEnabled',
+          args: args,
+          body: foam.cpTemplate(this.swiftIsEnabled, 'swift')
+        });
+        isEnabledsAxiomSetter = `
+          ${this.crossPlatformPrivateAxiom}!.setIsEnabledSlotInitializer(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
+            .setFn({(args: [Any?]?) -> Any? in
+              let o = args?[0] as? ${parentCls.model_.swiftName};
+              return foam_core_ExpressionSlot.foam_core_ExpressionSlotBuilder(nil)
+                .setObj(o)
+                .setCode(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
+                  .setFn({(args2: [Any?]?) -> Any? in
+                    return o?.${this.name}_isEnabled(
+                      ${args.map((a, i) => `args2![${i}] as! ${a.type}`).join(',')}
+                    );
+                  })
+                  .build()
+                )
+                .setArgs([${args.map(a => `o?.getSlot("${a.localName}")`).join(',')}])
+                .build();
+            })
+            .build());
+        `;
+
+        actionCode = `
+          if !${this.name}_isEnabled(${args.map(a => `
+            getSlot("${a.localName}")!.slotGet() as! ${a.type}
+          `).join(',')}) {
+            return;
+          }
+          ${actionCode}
+        `;
+      }
+
+      cls.method({
+        override: override,
+        visibility: 'public',
+        name: this.name,
+        args: [{ type: 'foam_cross_platform_Context?', localName: 'x' }],
+        body: foam.cpTemplate(actionCode, 'swift')
+      });
+
+      var isAvailableAxiomSetter = '';
+      if ( this.swiftIsAvailable ) {
+        var args = this.isAvailableExpressionArgs.map(a => {
+          a = a.split('$').filter(a => a);
+          return {
+            type: a.length == 1 ?
+              parentCls.getAxiomByName(a).swiftType : 'Any?',
+            localName: a.join('$')
+          }
+        });
+        cls.method({
+          visibility: 'public',
+          override: override,
+          type: 'Bool',
+          name: this.name + '_isAvailable',
+          args: args.concat({
+            localName: 'controllerMode', type: 'foam_u2_ControllerMode?'
+          }),
+          body: foam.cpTemplate(this.swiftIsAvailable, 'swift')
+        });
+        isAvailableAxiomSetter = `
+          ${this.crossPlatformPrivateAxiom}!.setIsAvailableSlotInitializer(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
+            .setFn({(args: [Any?]?) -> Any? in
+              let x = args?[0] as? foam_cross_platform_Context;
+              let o = args?[1] as? ${parentCls.model_.swiftName};
+              return foam_core_ExpressionSlot.foam_core_ExpressionSlotBuilder(nil)
+                .setObj(o)
+                .setCode(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
+                  .setFn({(args2: [Any?]?) -> Any? in
+                    return o?.${this.name}_isAvailable(
+                      ${args.map((a, i) => `args2![${i}] as! ${a.type}`).join(',')}${args.length ? ',' : ''}
+                      args2![${args.length}] as? foam_u2_ControllerMode
+                    );
+                  })
+                  .build()
+                )
+                .setArgs([${args.map(a => `o?.getSlot("${a.localName}")`).join(',')}${args.length ? ', ' : ''}x?.getXSlot("controllerMode")])
+                .build();
+            })
+            .build());
+        `;
+      }
 
       cls.field({
         visibility: 'private',
@@ -138,7 +175,8 @@ foam.CLASS({
         body: `
           if ${this.crossPlatformPrivateAxiom} == nil {
             ${this.crossPlatformPrivateAxiom} = ${foam.core.FObject.getAxiomByName('asSwiftValue').code.call(this)};
-            ${expressionData.map(d => d.axiomSetter).join('\n')}
+            ${isAvailableAxiomSetter}
+            ${isEnabledsAxiomSetter}
             ${this.crossPlatformPrivateAxiom}!.setI18nLabel(NSLocalizedString(
               ${foam.swift.asSwiftValue(this.label)},
               comment: ${foam.swift.asSwiftValue(this.i18nLabelDescription)}));

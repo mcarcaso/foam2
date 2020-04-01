@@ -167,7 +167,7 @@ foam.CLASS({
         };
         setData(fn);
 
-        foam.core.Slot isAvailable = action.createIsAvailableSlot(data);
+        foam.core.Slot isAvailable = action.createIsAvailableSlot(getX(), data);
         foam.core.Slot isEnabled = action.createIsEnabledSlot(data);
 
         final ActionButton self = this;
@@ -194,7 +194,7 @@ foam.CLASS({
         \`)%>;
         setData(fn);
 
-        let isAvailable = action.createIsAvailableSlot(data);
+        let isAvailable = action.createIsAvailableSlot(getX(), data);
         let isEnabled = action.createIsEnabledSlot(data);
 
         return ArrayDetachable_create()

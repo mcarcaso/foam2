@@ -41,10 +41,10 @@ foam_swift_AnonymousListener.foam_swift_AnonymousListenerBuilder(nil)
   .build()
               `;
             },
-            fn: function(code) {
+            fn: function(code, argsName) {
               return `
 foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
-  .setFn({[weak self] (args: [Any?]?) -> Any? in
+  .setFn({[weak self] (${argsName || 'args'}: [Any?]?) -> Any? in
     if self == nil { return nil }
     ${code}
   })
@@ -86,10 +86,10 @@ new foam.cross_platform.Listener() {
 }
               `;
             },
-            fn: function(code) {
+            fn: function(code, argsName) {
               return `
 new foam.cross_platform.GenericFunction() {
-  public Object executeFunction(Object[] args) {
+  public Object executeFunction(Object[] ${argsName || 'args'}) {
     ${code}
   }
 }

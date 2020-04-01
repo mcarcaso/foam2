@@ -85,14 +85,15 @@ foam.CLASS({
       name: 'createIsAvailableSlot',
       type: 'foam.core.Slot',
       args: [
+        { type: 'Context', name: 'x' },
         { type: 'FObject', name: 'o' },
       ],
       androidCode: `
         return (foam.core.Slot) getIsAvailableSlotInitializer()
-          .executeFunction(new Object[] {o});
+          .executeFunction(new Object[] {x, o});
       `,
       swiftCode: `
-        return getIsAvailableSlotInitializer()!.executeFunction([o]) as? foam_core_Slot
+        return getIsAvailableSlotInitializer()!.executeFunction([x, o]) as? foam_core_Slot
       `,
     },
     {
