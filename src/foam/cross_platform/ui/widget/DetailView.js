@@ -76,7 +76,7 @@ foam.CLASS({
             return !p.getHidden();
           })
           .sorted(by: { (a, b) -> Bool in
-            return a.getOrder() > b.getOrder();
+            return a.getOrder() < b.getOrder();
           });
       `
     },
