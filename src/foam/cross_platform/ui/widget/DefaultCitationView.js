@@ -112,11 +112,23 @@ foam.CLASS({
       androidCode: `
         java.util.List subs = new java.util.ArrayList();
 
-        java.util.List<foam.core.Property> props = java.util.Arrays.stream(data.getCls_()
-          .getAxiomsByClass(foam.core.Property.CLS_()))
-          .map(foam.core.Property.class::cast)
-          .filter(p -> !p.getHidden())
-          .collect(java.util.stream.Collectors.toList());
+        java.util.List<foam.core.Property> props = null;
+        Object[] configs = data.getCls_().getAxiomsByClass(foam.cross_platform.ui.widget.DefaultCitationViewExprs.CLS_());
+        foam.cross_platform.ui.widget.DefaultCitationViewExprs config = configs.length > 0 ?
+          (foam.cross_platform.ui.widget.DefaultCitationViewExprs) configs[0] : null;
+        if ( config != null ) {
+          props = new java.util.ArrayList<foam.core.Property>() {{
+            add((foam.core.Property) data.getCls_().getAxiomByName(config.getTitle()));
+            add((foam.core.Property) data.getCls_().getAxiomByName(config.getSubtitle()));
+            add((foam.core.Property) data.getCls_().getAxiomByName(config.getTime()));
+          }};
+        } else {
+          props = java.util.Arrays.stream(data.getCls_()
+            .getAxiomsByClass(foam.core.Property.CLS_()))
+            .map(foam.core.Property.class::cast)
+            .filter(p -> !p.getHidden())
+            .collect(java.util.stream.Collectors.toList());
+        }
 
         foam.core.SlotInterface titleSlot = null;
         if ( props.size() > 0 ) {
@@ -150,16 +162,27 @@ foam.CLASS({
         let data = data!
         var subs: [foam_core_Detachable?] = [];
 
-        var props = data.getCls_()!
-          .getAxiomsByClass(foam_core_Property.CLS_())!
-          .map({ (a) -> foam_core_Property in return a as! foam_core_Property })
-          .filter({ (p) -> Bool in return !p.getHidden() })
+        var props: [foam_core_Property?]! = nil;
+        let configs = data.getCls_()!.getAxiomsByClass(foam_cross_platform_ui_widget_DefaultCitationViewExprs.CLS_())!
+        let config = (configs.count > 0 ? configs[0] : nil) as? foam_cross_platform_ui_widget_DefaultCitationViewExprs
+        if config != nil {
+          props = [
+            data.getCls_()?.getAxiomByName(config!.getTitle()) as? foam_core_Property,
+            data.getCls_()?.getAxiomByName(config!.getSubtitle()) as? foam_core_Property,
+            data.getCls_()?.getAxiomByName(config!.getTime()) as? foam_core_Property
+          ];
+        } else {
+          props = data.getCls_()!
+            .getAxiomsByClass(foam_core_Property.CLS_())!
+            .map({ (a) -> foam_core_Property in return a as! foam_core_Property })
+            .filter({ (p) -> Bool in return !p.getHidden() })
+        }
 
         var titleSlot: foam_core_SlotInterface? = nil;
         if props.count > 0 {
           let p = props.first!;
           props.remove(at: 0);
-          titleSlot = data.getSlot(p.getName());
+          titleSlot = data.getSlot(p?.getName());
         }
         if titleSlot != nil { subs.append(getTitle$().follow(titleSlot)); }
 
@@ -167,7 +190,7 @@ foam.CLASS({
         if props.count > 0 {
           let p = props.first!;
           props.remove(at: 0);
-          subtitleSlot = data.getSlot(p.getName());
+          subtitleSlot = data.getSlot(p?.getName());
         }
         if subtitleSlot != nil { subs.append(getSubtitle$().follow(subtitleSlot)); }
 
@@ -175,7 +198,7 @@ foam.CLASS({
         if props.count > 0 {
           let p = props.first!;
           props.remove(at: 0);
-          timeSlot = data.getSlot(p.getName());
+          timeSlot = data.getSlot(p?.getName());
         }
         if timeSlot != nil { subs.append(getTime$().follow(timeSlot)); }
 
