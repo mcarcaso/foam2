@@ -86,6 +86,20 @@ foam.CLASS({
         d.setColor(getTheme().getSecondary());
         b.setBackground(d);
 
+        b.setOnTouchListener(new android.view.View.OnTouchListener() {
+          public boolean onTouch(android.view.View v, android.view.MotionEvent event) {
+            if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+              v.getBackground().setColorFilter(0x70000000, android.graphics.PorterDuff.Mode.DARKEN);
+              v.invalidate();
+            }
+            else if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
+              v.getBackground().clearColorFilter();
+              v.invalidate();
+            }
+            return false;
+          }
+        });
+
         return b;
       `,
       androidPostSet: `
@@ -104,6 +118,7 @@ foam.CLASS({
         let b = UIButton()
         b.backgroundColor = getTheme()!.getSecondary()
         b.setTitleColor(getTheme()!.getOnSecondary(), for: .normal);
+        b.showsTouchWhenHighlighted = true;
         let i = CGFloat(Self.PADDING());
         b.contentEdgeInsets = UIEdgeInsets(top: i, left: i, bottom: i, right: i);
         b.layer.cornerRadius = CGFloat(Self.CORNER_RADIUS());
@@ -222,6 +237,7 @@ foam.CLASS({
         if ( getView() == null ) return;
         getView().setVisibility(getAndroidVisibility());
         getView().setEnabled(getIsEnabled());
+        getView().setAlpha(getIsEnabled() ? 1 : 0.5f);
         if ( getView() instanceof android.widget.Button) {
           ((android.widget.Button) getView()).setText(getLabel());
         }
@@ -231,6 +247,7 @@ foam.CLASS({
         let b = getView() as? UIButton;
         b?.isHidden = !getIsAvailable();
         b?.isEnabled = getIsEnabled();
+        b?.alpha = getIsEnabled() ? 1 : 0.5
         b?.setTitle(getLabel(), for: .normal)
       `
     }
