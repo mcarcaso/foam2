@@ -119,6 +119,9 @@ foam.CLASS({
       androidCode: `
         // Touch the TextToSpeech to initialize it.
         getTextToSpeech();
+        onDetach(<%=detachable(\`
+          setIsActive(false);
+        \`)%>);
       `,
       swiftCode: `
         // Set isReady async because the AudioSession needs some time for the
@@ -127,6 +130,9 @@ foam.CLASS({
         DispatchQueue.main.async {
           self.setIsReady(true);
         };
+        onDetach(<%=detachable(\`
+          self?.setIsActive(false);
+        \`)%>);
       `,
     }
   ],
