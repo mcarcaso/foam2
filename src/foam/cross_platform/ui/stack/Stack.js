@@ -97,6 +97,7 @@ foam.CLASS({
           public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
             let s = this!.getStack()!
             while s.count > navigationController.viewControllers.count {
+              (s.lastObject as? foam_core_Detachable)?.detach();
               s.removeLastObject();
             }
           }
