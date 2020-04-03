@@ -62,8 +62,9 @@ foam.LIB({
       var genAxioms = this.getOwnAxioms()
         .filter(flagFilter);
 
+      var override = cls.extends != 'NSObject';
       cls.method({
-        override: !! cls.extends,
+        override: override,
         visibility: 'public',
         type: 'Void',
         name: 'clearProperty',
@@ -85,14 +86,14 @@ genAxioms
           default:
             break;
         }
-${cls.extends ? `
+${override ? `
         super.clearProperty(name);
 ` : ''}
         `
       });
 
       cls.method({
-        override: !! cls.extends,
+        override: override,
         visibility: 'public',
         type: 'Any?',
         name: 'getProperty',
@@ -113,12 +114,12 @@ genAxioms
             default:
               break;
           }
-          return ${cls.extends ? 'super.getProperty(name)' : 'nil'};
+          return ${override ? 'super.getProperty(name)' : 'nil'};
         `
       });
 
       cls.method({
-        override: !! cls.extends,
+        override: override,
         visibility: 'public',
         type: foam.core.SlotInterface.model_.swiftName + '?',
         name: 'getSlot',
@@ -148,12 +149,12 @@ genAxioms
             default:
               break;
           }
-          return ${cls.extends ? 'super.getSlot(name)' : 'nil'};
+          return ${override ? 'super.getSlot(name)' : 'nil'};
         `
       });
 
       cls.method({
-        override: !! cls.extends,
+        override: override,
         visibility: 'public',
         type: 'Bool',
         name: 'hasPropertySet',
@@ -174,7 +175,7 @@ genAxioms
             default:
               break;
           }
-${cls.extends ? `
+${override ? `
           return super.hasPropertySet(name);
 ` : `
           return false;
@@ -183,7 +184,7 @@ ${cls.extends ? `
       });
 
       cls.method({
-        override: !! cls.extends,
+        override: override,
         visibility: 'public',
         type: 'Void',
         name: 'setProperty',
@@ -206,14 +207,14 @@ genAxioms
             default:
               break;
           }
-${cls.extends ? `
+${override ? `
           super.setProperty(name, value);
 ` : ''}
         `
       });
 
       cls.method({
-        override: !! cls.extends,
+        override: override,
         visibility: 'public',
         type: foam.cross_platform.FoamClass.model_.swiftName + '?',
         name: 'getCls_',
@@ -227,8 +228,9 @@ ${cls.extends ? `
     function addSwiftStaticClassInfo(cls) {
       var flagFilter = foam.util.flagFilter(['swift']);
       var cInfo = this.toCrossPlatformClass(flagFilter);
+      var override = cls.extends && cls.extends != 'NSObject';
       cls.method({
-        override: !! cls.extends,
+        override: override,
         visibility: 'public',
         class: true,
         type: foam.cross_platform.FoamClass.model_.swiftName,
