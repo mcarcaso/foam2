@@ -1,109 +1,149 @@
-/**
- * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 foam.CLASS({
   package: 'foam.audio',
   name: 'Speak',
-
-  documentation: 'Speak text.',
-
-  imports: [
-    'window'
+  androidImplements: [
+    'android.speech.tts.TextToSpeech.OnInitListener'
   ],
-
+  swiftImplements: [
+    'AVSpeechSynthesizerDelegate'
+  ],
+  swiftImports: [
+    'AVFoundation'
+  ],
+  imports: [
+    {
+      name: 'androidContext',
+      androidType: 'android.content.Context',
+      flags: ['android']
+    }
+  ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      androidCode: `
+        public void onInit(int status) {
+          setIsReady(status == 0);
+        }
+      `,
+      swiftCode: `
+        public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+          if synthesizer.isSpeaking { return }
+          setNumActivePlays(getNumActivePlays()-1);
+        }
+      `
+    }
+  ],
   properties: [
     {
       class: 'StringProperty',
       name: 'text',
-      width: 60
     },
     {
-      class: 'FloatProperty',
-      name: 'volume',
-      value: 0.5,
-      view: {
-        class: 'foam.u2.view.DualView',
-        viewa: { class: 'foam.u2.FloatView' },
-        viewb: { class: 'foam.u2.RangeView', onKey: true, maxValue: 1, step: 0.01 }
-      }
+      class: 'BooleanProperty',
+      name: 'isReady'
     },
     {
-      class: 'FloatProperty',
-      name: 'rate',
-      value: 1,
-      preSet: function(_, rate) {
-        return Math.max(0.1, Math.min(rate, 10));
-      },
-      view: {
-        class: 'foam.u2.view.DualView',
-        viewa: { class: 'foam.u2.FloatView' },
-        viewb: { class: 'foam.u2.RangeView', onKey: true, maxValue: 10, step: 0.01 }
-      }
+      class: 'BooleanProperty',
+      name: 'isActive'
     },
     {
-      class: 'FloatProperty',
-      name: 'pitch',
-      value: 1,
-      preSet: function(_, rate) {
-        return Math.max(0, Math.min(rate, 2));
-      },
-      view: {
-        class: 'foam.u2.view.DualView',
-        viewa: { class: 'foam.u2.FloatView' },
-        viewb: { class: 'foam.u2.RangeView', onKey: true, maxValue: 2, step: 0.01 }
-      }
+      class: 'IntProperty',
+      name: 'numActivePlays'
     },
-    {
-      name: 'voice',
-      view: function(_, X) {
-        var synth = X.window.speechSynthesis;
-        var view  = foam.u2.view.ChoiceView.create({
-          choices: []
-        }, X);
 
-        function updateChoices() {
-          var firstChoice;
-          view.choices = synth.getVoices().map(function(v) {
-            var choice = [v, v.name];
-            if ( ! view.data && v.lang === 'en-US' ) firstChoice = choice;
-            return choice;
-          });
-          if ( firstChoice ) view.choice = firstChoice;
+    // Swift
+
+    {
+      swiftType: 'AVAudioSession',
+      name: 'audioSession',
+      flags: ['swift'],
+      swiftFactory: `
+        let avs = AVAudioSession.sharedInstance()
+        try? avs.setCategory(.playback, options: .duckOthers)
+        return avs;
+      `
+    },
+    {
+      swiftType: 'AVSpeechSynthesizer',
+      flags: ['swift'],
+      name: 'synthesizer',
+      swiftFactory: `
+        let s = AVSpeechSynthesizer();
+        s.delegate = self;
+        return s;
+      `
+    },
+
+    // Android
+    {
+      androidType: 'android.speech.tts.TextToSpeech',
+      name: 'textToSpeech',
+      flags: ['android'],
+      androidFactory: `
+        android.speech.tts.TextToSpeech speech = new android.speech.tts.TextToSpeech(getAndroidContext(), this);
+        speech.setOnUtteranceProgressListener(new android.speech.tts.UtteranceProgressListener() {
+          public void onStart(String utteranceId) {}
+          public void onError(String utteranceId) {}
+          public void onDone(String utteranceId) {
+            setNumActivePlays(getNumActivePlays()-1);
+          }
+        });
+        return speech;
+      `
+    },
+  ],
+  reactions: [
+    ['', 'propertyChange.isActive', 'manageSessionState'],
+    ['', 'propertyChange.numActivePlays', 'manageSessionState']
+  ],
+  listeners: [
+    {
+      name: 'manageSessionState',
+      isFramed: true,
+      androidCode: `
+        // Duck currently playing audio?
+      `,
+      swiftCode: `
+        if ( getIsActive() ) {
+          try? getAudioSession().setActive(true);
+        } else if ( getNumActivePlays() == 0 ) {
+          try? getAudioSession().setActive(false);
         }
-
-        updateChoices();
-        synth.addEventListener('voiceschanged', updateChoices);
-
-        return view;
-      }
+      `
     }
   ],
-
+  methods: [
+    {
+      name: 'init',
+      code: function() {},
+      androidCode: `
+        // Touch the TextToSpeech to initialize it.
+        getTextToSpeech();
+      `,
+      swiftCode: `
+        // Set isReady async because the AudioSession needs some time for the
+        // category to get respected the first time for some reason.
+        _ = getAudioSession()
+        DispatchQueue.main.async {
+          self.setIsReady(true);
+        };
+      `,
+    }
+  ],
   actions: [
-    function play() {
-      var synth = this.window.speechSynthesis;
-      var u     = new SpeechSynthesisUtterance(this.text);
-
-      u.voice  = this.voice;
-      u.volume = this.volume;
-      u.rate   = this.rate;
-      u.pitch  = this.pitch;
-
-      synth.speak(u);
+    {
+      name: 'play',
+      isEnabledExpressionArgs: ['isReady'],
+      androidIsEnabled: 'return isReady;',
+      swiftIsEnabled: 'return isReady;',
+      androidCode: `
+        setNumActivePlays(getNumActivePlays()+1);
+        getTextToSpeech().speak(getText(), android.speech.tts.TextToSpeech.QUEUE_FLUSH, null, null);
+      `,
+      swiftCode: `
+        setNumActivePlays(getNumActivePlays()+1);
+        getSynthesizer().speak(AVSpeechUtterance(string: getText()!));
+      `
     }
   ]
 });
