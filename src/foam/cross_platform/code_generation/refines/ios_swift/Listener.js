@@ -8,7 +8,8 @@ foam.CLASS({
       if ( ! parentCls.hasOwnAxiom(this.name) ) return;
       this.SUPER(cls, parentCls);
 
-      if ( this.isFramed ) {
+      if ( this.isFramed || this.isMerged ) {
+        var t = this.isFramed ? '16' : this.mergeDelay;
         cls.field({
           type: '[Any?]?',
           name: this.name + '_framedArgs',
@@ -18,12 +19,12 @@ foam.CLASS({
         framedMethod.body = `
           if ( ${this.name}_framedArgs == nil ) {
             ${this.name}_framedArgs = [sub, args];
-            DispatchQueue.main.async {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(${t}), execute: {
               let s = self.${this.name}_framedArgs![0] as? foam_core_Detachable;
               let a = self.${this.name}_framedArgs![1] as? [Any?];
               self.${this.name}_framedArgs = nil;
               self.${this.name}_private(s, a);
-            }
+            });
           } else {
             ${this.name}_framedArgs![0] = sub;
             ${this.name}_framedArgs![1] = args;

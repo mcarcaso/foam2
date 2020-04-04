@@ -8,7 +8,8 @@ foam.CLASS({
       if ( ! parentCls.hasOwnAxiom(this.name) ) return;
       this.SUPER(cls, parentCls);
 
-      if ( this.isFramed ) {
+      if (this.isFramed || this.isMerged) {
+        var t = this.isFramed ? '16' : this.mergeDelay;
         cls.field({
           type: 'Object[]',
           name: this.name + '_framedArgs',
@@ -18,12 +19,12 @@ foam.CLASS({
         framedMethod.body = `
           if ( ${this.name}_framedArgs == null ) {
             ${this.name}_framedArgs = new Object[] { sub, args };
-            new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
               foam.core.Detachable s = (foam.core.Detachable) ${this.name}_framedArgs[0];
               Object[] a = (Object[]) ${this.name}_framedArgs[1];
               ${this.name}_framedArgs = null;
               ${this.name}_private(s, a);
-            });
+            }, ${t});
           } else {
             ${this.name}_framedArgs[0] = sub;
             ${this.name}_framedArgs[1] = args;
