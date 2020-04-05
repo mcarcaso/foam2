@@ -143,41 +143,44 @@ foam.CLASS({
       name: 'bindData',
       androidCode: `
         java.util.List<foam.core.Detachable> subs = new java.util.ArrayList();
-        foam.core.Property prop = (foam.core.Property) axiom;
 
         // Data
-        setDataView(prop.createView(getSubX()));
+        if ( axiom instanceof foam.core.Property ) {
+          foam.core.Property prop = (foam.core.Property) axiom;
+          setDataView(prop.createView(getSubX()));
+          foam.core.SlotInterface validationSlot = prop.createValidationSlot(data);
+          if ( validationSlot != null ) {
+            subs.add(getValidationView().getData$().follow(validationSlot));
+          }
+        } else if ( axiom instanceof foam.core.Action ) {
+          setDataView(((foam.core.Action) axiom).createView(getSubX()));
+        }
         onDetach((foam.core.Detachable) getDataView());
-        subs.add(getDataView().bindData(data, prop));
+        subs.add(getDataView().bindData(data, axiom));
         subs.add(getData$().follow(((foam.cross_platform.FObject) getDataView()).getSlot("data")));
 
         // Label
         if ( ! foam.cross_platform.ui.LabelledViewClass.CLS_().isInstance(getDataView()) ) {
           getLabelView().getView().setVisibility(android.view.View.VISIBLE);
-          subs.add(getLabelView().getData$().follow(prop.getI18nLabel$()));
+          subs.add(getLabelView().getData$().follow(axiom.getSlot("i18nLabel")));
         } else {
           getLabelView().getView().setVisibility(android.view.View.GONE);
         }
 
         // Help
-        if ( ! foam.cross_platform.type.StringType.INSTANCE().isEmpty(prop.getI18nHelp()) ) {
+        String help = (String) axiom.getProperty("i18nHelp");
+        if ( ! foam.cross_platform.type.StringType.INSTANCE().isEmpty(help) ) {
           getHelpView().setAndroidVisibility(android.view.View.VISIBLE);
           getHelpView().setData(<%=fn(\`
             foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
             com.google.android.material.snackbar.Snackbar.make(
               (android.view.View) x.getXProp("onClickView"),
-              prop.getI18nHelp(),
+              help,
               com.google.android.material.snackbar.Snackbar.LENGTH_LONG).show();
             return null;
           \`)%>);
         } else {
           getHelpView().setAndroidVisibility(android.view.View.INVISIBLE);
-        }
-
-        // Validation
-        foam.core.SlotInterface validationSlot = prop.createValidationSlot(data);
-        if ( validationSlot != null ) {
-          subs.add(getValidationView().getData$().follow(validationSlot));
         }
 
         addViews();
@@ -190,29 +193,36 @@ foam.CLASS({
       `,
       swiftCode: `
         var subs: [foam_core_Detachable?] = [];
-        let prop = axiom as! foam_core_Property;
 
         // Data
-        setDataView(prop.createView(getSubX()));
+        if let prop = axiom as? foam_core_Property {
+          setDataView(prop.createView(getSubX()));
+          let validationSlot = prop.createValidationSlot(data);
+          if ( validationSlot != nil ) {
+            subs.append(getValidationView()?.getData$().follow(validationSlot));
+          }
+        } else if let action = axiom as? foam_core_Action {
+          setDataView(action.createView(getSubX()));
+        }
         onDetach(getDataView() as? foam_core_Detachable);
-        subs.append(getDataView()!.bindData(data, prop));
+        subs.append(getDataView()!.bindData(data, axiom));
         subs.append(getData$().follow((getDataView() as? foam_cross_platform_FObject)?.getSlot("data")));
 
         // Label
         if ( !foam_cross_platform_ui_LabelledViewClass.CLS_().isInstance(getDataView()) ) {
           getLabelView()!.getView()?.isHidden = false;
-          subs.append(getLabelView()?.getData$().follow(prop.getI18nLabel$()));
+          subs.append(getLabelView()?.getData$().follow(axiom?.getSlot("i18nLabel")));
         } else {
           getLabelView()!.getView()?.isHidden = true;
         }
 
         // Help
-        if ( !foam_cross_platform_type_StringType.INSTANCE().isEmpty(prop.getI18nHelp()) ) {
+        let help = axiom?.getProperty("i18nHelp") as? String;
+        if ( !foam_cross_platform_type_StringType.INSTANCE().isEmpty(help) ) {
           getHelpView()!.getView()?.isHidden = false;
           getHelpView()!.setData(<%=fn(\`
             let x = args![0] as! foam_cross_platform_Context;
-            let alertController = UIAlertController(
-              title: "", message: prop.getI18nHelp(), preferredStyle: .alert)
+            let alertController = UIAlertController(title: "", message: help, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             (x.getXProp("stack") as? foam_cross_platform_ui_stack_Stack)?.getNavController()
               .present(alertController, animated: true, completion: nil)
@@ -220,12 +230,6 @@ foam.CLASS({
           \`)%>);
         } else {
           getHelpView()!.getView()?.isHidden = true;
-        }
-
-        // Validation
-        let validationSlot = prop.createValidationSlot(data);
-        if ( validationSlot != nil ) {
-          subs.append(getValidationView()?.getData$().follow(validationSlot));
         }
 
         addViews();

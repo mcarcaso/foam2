@@ -204,22 +204,28 @@ foam.CLASS({
         }
 
         for ( int i = 0 ; i < getActions().length ; i++ ) {
-          foam.cross_platform.ui.widget.ActionButton ab = ActionButton_create().build();
-          android.widget.Button b = (android.widget.Button) ab.getView();
-          android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-          params.setMargins(
+          final foam.cross_platform.ui.widget.DetailPropertyView dpv = DetailPropertyView_create(x)
+            .build();
+          final foam.core.SlotInterface isAvailableSlot = getActions()[i].createIsAvailableSlot(x, getData());
+          foam.cross_platform.Listener l = (s, a) -> {
+            dpv.getView().setVisibility(foam.cross_platform.Lib.equals(isAvailableSlot.slotGet(), false) ?
+              android.view.View.GONE : android.view.View.VISIBLE);
+          };
+          subs[getProps().length + i] = ArrayDetachable_create()
+            .setArray(new foam.core.Detachable[] {
+              isAvailableSlot.slotSub(l),
+              dpv.bindData(getData(), getActions()[i]),
+              dpv,
+            })
+            .build();
+          l.executeListener(null, null);
+          dpv.getView().setPadding(
             ITEM_HORIZONTAL_PADDING(),
+            ITEM_VERTICAL_PADDING(),
             ITEM_HORIZONTAL_PADDING(),
-            ITEM_HORIZONTAL_PADDING(),
-            ITEM_HORIZONTAL_PADDING());
-          params.gravity = android.view.Gravity.CENTER;
-          b.setLayoutParams(params);
-
-          subs[getProps().length + i] = ab.bindData(getData(), getActions()[i]);
-          getView().addView(ab.getView());
-          views[getProps().length + i] = ab;
+            ITEM_VERTICAL_PADDING());
+          getView().addView(dpv.getView());
+          views[getProps().length + i] = dpv;
         }
         setViews_(views);
         setSub_(ArrayDetachable_create().setArray(subs).build());
@@ -253,10 +259,18 @@ foam.CLASS({
         }
 
         for i in 0..<getActions()!.count {
-          let ab = ActionButton_create().build();
-          subs.append(ab.bindData(getData(), getActions()![i])!);
-          subs.append(ab);
-          view.addAb(ab.getView()!);
+          let dpv = DetailPropertyView_create()
+            .build();
+          let isAvailableSlot = getActions()![i].createIsAvailableSlot(x, getData());
+          let l = <%=listener(\`
+            dpv.getView()?.isHidden = foam_cross_platform_Lib.equals(isAvailableSlot?.slotGet(), false);
+            self?.setNeedsLayout(nil, nil);
+          \`)%>
+          subs.append(isAvailableSlot!.slotSub(l));
+          subs.append(dpv.bindData(getData(), getActions()![i])!);
+          subs.append(dpv);
+          l.executeListener(nil, nil);
+          view.addDpv(dpv.getView()!);
         }
         subs.append(getData()!.sub(nil, <%=listener(\`
           self?.setNeedsLayout(nil, nil);

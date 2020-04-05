@@ -38,7 +38,7 @@ foam.CLASS({
         return s == null || s.trim().isEmpty();
       `,
       swiftCode: `
-        return s?.isEmpty ?? false;
+        return s?.isEmpty ?? true;
       `
     },
     {

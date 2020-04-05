@@ -1,10 +1,7 @@
 foam.CLASS({
   package: 'foam.cross_platform.code_generation.refines',
-  name: 'ActionRefine',
-  refines: 'foam.core.Action2',
-  requires: [
-    'foam.cross_platform.ui.widget.ActionButton'
-  ],
+  name: 'ActionRefine2',
+  refines: 'foam.core.Action',
   properties: [
     {
       class: 'MapProperty',

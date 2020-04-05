@@ -19,6 +19,17 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
+      name: 'i18nHelp',
+    },
+    {
+      class: 'StringProperty',
+      name: 'i18nHelpDescription',
+      expression: function (forClass_, name) {
+        return `Help text for the ${forClass_}.${name} action`;
+      }
+    },
+    {
+      class: 'StringProperty',
       name: 'crossPlatformFnVarName',
       expression: function(name) {
         return `${name}_fn_`;

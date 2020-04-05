@@ -6,7 +6,8 @@ foam.CLASS({
     'foam.core.ExpressionSlot',
   ],
   implements: [
-    'foam.cross_platform.ui.AxiomView'
+    'foam.cross_platform.ui.AxiomView',
+    'foam.cross_platform.ui.LabelledView',
   ],
   swiftImports: [
     'UIKit'
