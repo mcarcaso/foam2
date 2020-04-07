@@ -5,6 +5,9 @@ foam.CLASS({
   exports: [
     'as stack'
   ],
+  topics: [
+    'onPop'
+  ],
   imports: [
     {
       name: 'theme',
@@ -30,7 +33,14 @@ foam.CLASS({
     {
       androidType: 'androidx.fragment.app.FragmentManager',
       flags: ['android'],
-      name: 'fragmentManager'
+      name: 'fragmentManager',
+      androidPostSet: `
+        newValue.popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        for ( Object o : getStack() ) {
+          pushFragment(((foam.cross_platform.ui.Stackable) o).toStackableView());
+        }
+        newValue.executePendingTransactions();
+      `
     },
     {
       swiftType: 'NavigationControllerDelegate',
@@ -94,11 +104,15 @@ foam.CLASS({
       swiftCode: `
         public class NavigationControllerDelegate: NSObject, UINavigationControllerDelegate {
           weak var this: foam_cross_platform_ui_stack_Stack? = nil;
-          public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+          public func navigationController(
+              _ navigationController: UINavigationController,
+              didShow viewController: UIViewController,
+              animated: Bool) {
             let s = this!.getStack()!
             while s.count > navigationController.viewControllers.count {
               (s.lastObject as? foam_core_Detachable)?.detach();
               s.removeLastObject();
+              onPop().pub(nil);
             }
           }
         }
@@ -112,33 +126,14 @@ foam.CLASS({
       androidCode: `
         foam.cross_platform.FObject o = (foam.cross_platform.FObject) getStack().remove(getStack().size() - 1);
         o.detach();
+        onPop().pub(null);
       `,
     },
     {
-      name: 'pop',
+      name: 'pushFragment',
+      args: [{ androidType: 'androidx.fragment.app.Fragment', name: 'f' }],
+      flags: ['android'],
       androidCode: `
-        foam.cross_platform.FObject o = (foam.cross_platform.FObject) getStack().remove(getStack().size() - 1);
-        o.detach();
-        getFragmentManager().popBackStack();
-      `,
-      swiftCode: `
-        let o = getStack()?.lastObject as? foam_cross_platform_FObject;
-        getStack()!.removeLastObject();
-        o?.detach()
-        getNavController().popViewController(animated: true);
-      `
-    },
-    {
-      name: 'push',
-      args: [
-        {
-          type: 'foam.cross_platform.ui.Stackable',
-          name: 'v'
-        }
-      ],
-      androidCode: `
-        getStack().add(v);
-        androidx.fragment.app.Fragment f = v.toStackableView();
         androidx.fragment.app.FragmentTransaction ft = getFragmentManager()
           .beginTransaction()
           .setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -154,6 +149,35 @@ foam.CLASS({
           }
         }
         ft.commit();
+      `,
+    },
+    {
+      name: 'pop',
+      androidCode: `
+        foam.cross_platform.FObject o = (foam.cross_platform.FObject) getStack().remove(getStack().size() - 1);
+        o.detach();
+        getFragmentManager().popBackStack();
+        onPop().pub(null);
+      `,
+      swiftCode: `
+        let o = getStack()?.lastObject as? foam_cross_platform_FObject;
+        getStack()!.removeLastObject();
+        o?.detach()
+        getNavController().popViewController(animated: true);
+        onPop().pub(nil);
+      `
+    },
+    {
+      name: 'push',
+      args: [
+        {
+          type: 'foam.cross_platform.ui.Stackable',
+          name: 'v'
+        }
+      ],
+      androidCode: `
+        getStack().add(v);
+        pushFragment(v.toStackableView());
       `,
       swiftCode: `
         getStack()?.add(v!);

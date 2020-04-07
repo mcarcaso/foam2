@@ -63,13 +63,22 @@ foam.CLASS({
               return null;
           }
         `
-      })
+      });
+      cls.method({
+        visibility: 'public',
+        name: 'GlobalContext',
+        type: '',
+        body: `
+          super();
+          getSlotMap_().put("androidContext", foam.core.SimpleSlot.SimpleSlotBuilder(null).build());
+        `
+      });
       cls.method({
         visibility: 'public',
         name: 'setAndroidContext',
         args: [{type: 'android.content.Context', name: 'ctx'}],
         body: `
-          getSlotMap_().put("androidContext", ConstantSlot_create().setValue(ctx).build());
+          getXSlot("androidContext").slotSet(ctx);
         `
       });
       resources.sources.push(cls);
