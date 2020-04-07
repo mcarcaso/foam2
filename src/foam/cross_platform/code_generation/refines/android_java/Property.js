@@ -250,7 +250,7 @@ foam.CLASS({
 
             onDetach(${subName}.slotSub(new foam.cross_platform.Listener() {
               public void executeListener(foam.core.Detachable sub, Object[] args) {
-                if ( foam.cross_platform.Lib.compare(${subName}.slotGet(), obj.${this.crossPlatformPrivateVarName}) != 0 ) {
+                if ( ${subName}.isDifferent(${subName}.slotGet(), obj.${this.crossPlatformPrivateVarName}) ) {
                   obj.${this.crossPlatformPrivateVarName} = (${this.androidType}) ${subName}.slotGet();
                   obj.pub(new Object[] { "propertyChange", "${this.name}", obj.${this.crossPlatformPrivateVarName} });
                 }

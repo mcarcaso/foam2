@@ -117,8 +117,14 @@ foam.CLASS({
       name: 'init',
       code: function() {},
       androidCode: `
-        // Touch the TextToSpeech to initialize it.
+        // Touch the TextToSpeech to initialize it. androidContext can change for various
+        // reasons (orientation change being one) so be sure to create a new one and shut
+        // down the previous one when it changes.
         getTextToSpeech();
+        onDetach(getAndroidContext$().slotSub((sub, args) -> {
+          getTextToSpeech().shutdown();
+          clearProperty("textToSpeech");
+        }));
         onDetach(<%=detachable(\`
           setIsActive(false);
         \`)%>);

@@ -51,6 +51,17 @@ ${self.VALUES.map(v => `
                 return null;
               `,
             });
+            cls.field({
+              visibility: 'public',
+              static: true,
+              type: `${self.id}[]`,
+              name: 'VALUES',
+              initializer: `
+                new ${self.id}[] {
+                  ${self.VALUES.map(v => v.name).join(', ')}
+                }
+              `
+            });
           }
           return cls
         };

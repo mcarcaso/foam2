@@ -10,8 +10,15 @@ foam.CLASS({
     'intentManager',
     'stack',
     'theme',
+    'displayWidth',
   ],
   properties: [
+    {
+      class: 'Enum',
+      of: 'foam.u2.layout.DisplayWidth',
+      name: 'displayWidth',
+      value: 'XXS'
+    },
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ui.Theme',

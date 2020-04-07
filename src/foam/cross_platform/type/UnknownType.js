@@ -24,9 +24,13 @@ foam.CLASS({
         if ( o1 instanceof Comparable ) {
           return ((Comparable) o1).compareTo(o2);
         }
-        return 0;
+        int diff = o1.hashCode() - o2.hashCode();
+        return diff > 0 ? 1 : diff < 0 ? -1 : 0;
       `,
-      swiftCode: `return 0`,
+      swiftCode: `
+        fatalError("Why am I here?");
+        return 0
+      `,
     },
   ],
 });

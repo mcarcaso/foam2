@@ -54,6 +54,13 @@ foam.CLASS({
               `,
               returnType: self.model_.swiftName,
             }));
+            cls.field({
+              visibility: 'public',
+              static: true,
+              type: `[${self.id}]`,
+              name: 'VALUES',
+              defaultValue: `[${self.VALUES.map(v => v.name).join(', ')}]`
+            });
           }
           return cls
         };
