@@ -48,6 +48,13 @@ ${self.VALUES.map(v => `
                 return nil;
               `,
             });
+            cls.field({
+              visibility: 'public',
+              static: true,
+              type: `[${self.model_.swiftName}]`,
+              name: 'VALUES',
+              defaultValue: `[${self.VALUES.map(v => v.name).join(', ')}]`
+            });
           }
           return cls
         };

@@ -28,8 +28,7 @@ foam.CLASS({
         return diff > 0 ? 1 : diff < 0 ? -1 : 0;
       `,
       swiftCode: `
-        fatalError("Why am I here?");
-        return 0
+        return ((o1 as AnyObject).hash ?? 0) - ((o2 as AnyObject).hash ?? 0)
       `,
     },
   ],

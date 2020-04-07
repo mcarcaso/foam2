@@ -112,7 +112,7 @@ foam.CLASS({
             while s.count > navigationController.viewControllers.count {
               (s.lastObject as? foam_core_Detachable)?.detach();
               s.removeLastObject();
-              onPop().pub(nil);
+              _ = this!.onPop().pub(nil);
             }
           }
         }
@@ -164,7 +164,7 @@ foam.CLASS({
         getStack()!.removeLastObject();
         o?.detach()
         getNavController().popViewController(animated: true);
-        onPop().pub(nil);
+        _ = onPop().pub(nil);
       `
     },
     {
