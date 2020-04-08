@@ -86,6 +86,7 @@ foam.CLASS({
   documentation: 'Axiom to Import a Context Value.',
 
   properties: [
+    'flags',
     {
       class: 'StringProperty',
       name: 'name',

@@ -8,7 +8,7 @@ foam.CLASS({
     {
       flags: ['android'],
       name: 'androidContext',
-      type: 'android.content.Context',
+      androidType: 'android.content.Context',
       required: false
     }
   ],
