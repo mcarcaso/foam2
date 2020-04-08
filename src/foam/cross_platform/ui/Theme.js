@@ -14,7 +14,8 @@ foam.CLASS({
     },
     {
       class: 'ColorProperty',
-      name: 'onPrimary'
+      name: 'onPrimary',
+      swiftValue: 'UIColor.label'
     },
     {
       class: 'ColorProperty',
@@ -22,23 +23,28 @@ foam.CLASS({
     },
     {
       class: 'ColorProperty',
-      name: 'onSecondary'
+      name: 'onSecondary',
+      swiftValue: 'UIColor.label'
     },
     {
       class: 'ColorProperty',
-      name: 'background'
+      name: 'background',
+      swiftValue: 'UIColor.systemBackground'
     },
     {
       class: 'ColorProperty',
-      name: 'onBackground'
+      name: 'onBackground',
+      swiftValue: 'UIColor.label'
     },
     {
       class: 'ColorProperty',
-      name: 'surface'
+      name: 'surface',
+      swiftValue: 'UIColor.systemGroupedBackground',
     },
     {
       class: 'ColorProperty',
-      name: 'onSurface'
+      name: 'onSurface',
+      swiftValue: 'UIColor.label'
     },
     {
       class: 'ColorProperty',
