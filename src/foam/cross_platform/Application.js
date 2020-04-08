@@ -19,6 +19,9 @@ foam.CLASS({
       flags: ['android']
     }
   ],
+  swiftImports: [
+    'UIKit'
+  ],
   properties: [
     {
       class: 'Enum',
@@ -49,12 +52,11 @@ foam.CLASS({
   ],
   methods: [
     {
-      flags: ['android'],
-      type: 'foam.core.Detachable',
-      name: 'bindToActivity',
-      args: [
-        { androidType: 'androidx.appcompat.app.AppCompatActivity', name: 'a' },
-        { type: 'Integer', name: 'contentId' },
+      androidType: 'foam.core.Detachable',
+      name: 'bindToPlatform',
+      androidArgs: [
+        { type: 'androidx.appcompat.app.AppCompatActivity', name: 'a' },
+        { type: 'int', name: 'contentId' },
       ],
       androidCode: `
         if ( getAndroidContext() == null ) {
@@ -76,6 +78,17 @@ foam.CLASS({
         return getStack().onPop().sub(null, (sub, args) -> {
           if ( getStack().getStack().size() == 0 ) a.finish();
         });
+      `,
+      swiftCode: `
+        NotificationCenter.default.addObserver(self, selector: #selector(Self.onRotation), name: UIDevice.orientationDidChangeNotification, object: nil)
+      `
+    },
+    {
+      name: 'onRotation',
+      swiftAnnotations: ['@objc'],
+      flags: ['swift'],
+      swiftCode: `
+        setDisplayWidth(foam_u2_layout_DisplayWidth.valueForWidth(Int(UIScreen.main.bounds.width)))
       `
     }
   ]
