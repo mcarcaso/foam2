@@ -64,7 +64,7 @@ foam.CLASS({
           .sorted((a, b) -> {
             foam.core.Property pa = (foam.core.Property) a;
             foam.core.Property pb = (foam.core.Property) b;
-            return Math.toIntExact(pa.getOrder() - pb.getOrder());
+            return Long.compare(pa.getOrder(), pb.getOrder());
           })
           .toArray(foam.core.Property[]::new);
       `,
