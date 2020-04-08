@@ -22,7 +22,7 @@ foam.CLASS({
       var superAxiom = parentCls.getSuperAxiomByName(this.name);
       if ( superAxiom === this ) return;
 
-      cls.extras = cls.extras.concat(this.swiftCode);
+      cls.extras = cls.extras.concat(foam.cpTemplate(this.swiftCode, 'swift'));
     },
     function buildAndroidClass(cls, parentCls) {
       if ( ! this.androidCode ) return;

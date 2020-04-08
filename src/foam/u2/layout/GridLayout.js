@@ -19,7 +19,7 @@ foam.CLASS({
     {
       type: 'Integer',
       name: 'COLS',
-      value: 8
+      value: 12
     }
   ],
   properties: [
@@ -35,6 +35,11 @@ foam.CLASS({
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
         return v;
       `,
+      swiftFactory: `
+        let v = View();
+        v.this = self;
+        return v;
+      `
     },
     {
       class: 'ListProperty',
@@ -58,7 +63,10 @@ foam.CLASS({
       code: function() {},
       androidCode: `
         onDetach(getDisplayWidth$().slotSub(updateView_listener()));
-      `
+      `,
+      swiftCode: `
+        onDetach(getDisplayWidth$()?.slotSub(updateView_listener()));
+      `,
     },
     {
       name: 'addView',
@@ -67,6 +75,7 @@ foam.CLASS({
         { type: 'foam.u2.layout.GridColumns', name: 'gridColumns' },
       ],
       androidCode: `
+        gridColumns = gridColumns != null ? gridColumns : foam.u2.layout.GridColumns.DEFAULT();
         getViews_().add(view);
         getGridColumns_().add(gridColumns);
         foam.core.SlotInterface isHiddenSlot = ((foam.cross_platform.FObject) view).getSlot("isHidden");
@@ -74,7 +83,21 @@ foam.CLASS({
           getSubs_().add(isHiddenSlot.slotSub(updateView_listener()));
         }
         updateView(null, null);
-      `
+      `,
+      swiftCode: `
+        let gridColumns = gridColumns ?? foam_u2_layout_GridColumns.DEFAULT();
+        getViews_()?.add(view!);
+        getGridColumns_()?.add(gridColumns);
+        let isHiddenSlot = (view as! foam_cross_platform_FObject).getSlot("isHidden");
+        if ( isHiddenSlot != nil ) {
+          getSubs_()?.add(isHiddenSlot!.slotSub(updateView_listener())!);
+        }
+        updateView(nil, nil);
+
+        let v = view!.getView()!;
+        v.removeFromSuperview();
+        getView()?.addSubview(v);
+      `,
     },
     {
       name: 'removeAllViews',
@@ -83,6 +106,60 @@ foam.CLASS({
         getGridColumns_().clear();
         for ( Object o : getSubs_() ) ((foam.core.Detachable) o).detach();
         updateView(null, null);
+      `,
+      swiftCode: `
+        for fo in getViews_()! {
+          let v = (fo as! foam_cross_platform_ui_View).getView();
+          v?.removeFromSuperview();
+        }
+
+        getViews_()?.removeAllObjects();
+        getGridColumns_()?.removeAllObjects();
+        for o in getSubs_()! { (o as! foam_core_Detachable).detach(); }
+        updateView(nil, nil);
+      `
+    },
+    {
+      swiftType: '[CGRect?]',
+      swiftArgs: [
+        { localName: 'w', type: 'CGFloat' }
+      ],
+      name: 'getFrames',
+      swiftCode: `
+        let views = getViews_()!;
+        let gridColumns = getGridColumns_()!;
+        var frames: [CGRect?] = [];
+
+        var curViewIndex = 0;
+        var curRowY: CGFloat = 0;
+        repeat {
+          var curRowCols = 0;
+          var curRowX: CGFloat = 0;
+          var curRowHeight: CGFloat = 0;
+          while curViewIndex < views.count && curRowCols < Self.COLS() {
+            let fo = views[curViewIndex] as! foam_cross_platform_FObject
+            let isHidden = fo.getProperty("isHidden");
+            if isHidden != nil && (isHidden as! Bool) {
+              frames.append(nil);
+              curViewIndex += 1;
+              continue;
+            }
+            let v = fo.getProperty("view") as! UIView;
+            let gridCols = gridColumns[curViewIndex] as! foam_u2_layout_GridColumns;
+            let cols = gridCols.getProperty(getDisplayWidth()?.getName()?.lowercased()) as! Int
+            if ( curRowCols + cols > Self.COLS() ) { break; }
+            let vw = w * CGFloat(cols) / CGFloat(Self.COLS());
+            let vh = v.sizeThatFits(CGSize(width: vw, height: .greatestFiniteMagnitude)).height;
+            let frame = CGRect(x: curRowX, y: curRowY, width: vw, height: vh);
+            frames.append(frame);
+            curRowHeight = max(curRowHeight, vh);
+            curRowX = frame.maxX;
+            curViewIndex += 1;
+            curRowCols += cols;
+          }
+          curRowY += curRowHeight;
+        } while curViewIndex < views.count;
+        return frames;
       `
     }
   ],
@@ -114,7 +191,7 @@ foam.CLASS({
             }
             android.view.View v = (android.view.View) fo.getProperty("view");
             foam.u2.layout.GridColumns gridCols = (foam.u2.layout.GridColumns) getGridColumns_().get(curViewIndex);
-            int cols = gridCols == null ? COLS() : (int) gridCols.getProperty(getDisplayWidth().getName().toLowerCase());
+            int cols = (int) gridCols.getProperty(getDisplayWidth().getName().toLowerCase());
             if ( curRowCols + cols > COLS() ) break;
             v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
               0,
@@ -134,7 +211,51 @@ foam.CLASS({
           }
           getView().addView(curRow);
         } while ( curViewIndex < getViews_().size() );
+      `,
+      swiftCode: `
+        getView()?.setNeedsLayout();
       `
     }
   ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      swiftCode: `
+        class View: UIView {
+          weak var this: foam_u2_layout_GridLayout?;
+          override func layoutSubviews() {
+            super.layoutSubviews();
+            guard let this = this else { return }
+            let frames = this.getFrames(frame.width);
+            let views = this.getViews_()!;
+            for i in 0..<views.count {
+              let v = (views[i] as! foam_cross_platform_ui_View).getView()!;
+              let f = frames[i];
+              if f == nil {
+                v.isHidden = true;
+              } else {
+                v.isHidden = false;
+                v.frame = f!;
+              }
+            }
+          }
+          override func sizeThatFits(_ size: CGSize) -> CGSize {
+            guard let this = this else {
+              return CGSize(width: size.width, height: 0);
+            }
+            let frames = this.getFrames(size.width);
+            var height: CGFloat = 0;
+            for i in stride(from: frames.count-1, through: 0, by: -1) {
+              let f = frames[i];
+              if f != nil {
+                height = f!.maxY;
+                break;
+              }
+            }
+            return CGSize(width: size.width, height: height);
+          }
+        }
+      `
+    }
+  ]
 });

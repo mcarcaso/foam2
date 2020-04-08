@@ -30,6 +30,12 @@ foam.CLASS({
       }
     },
     {
+      name: 'swiftArgs',
+      expression: function (args) {
+        return args.map(a => a.toSwiftArg());
+      }
+    },
+    {
       class: 'StringProperty',
       name: 'swiftGetProperty',
       expression: function(forClass_, name, crossPlatformFnGetterName, crossPlatformIsStatic) {
@@ -50,7 +56,7 @@ foam.CLASS({
         static: this.crossPlatformIsStatic,
         type: this.swiftType,
         name: this.name,
-        args: this.args.map(a => a.toSwiftArg()),
+        args: this.swiftArgs,
         annotations: this.swiftAnnotations,
         body: foam.cpTemplate(this.swiftCode, 'swift')
       });
@@ -64,7 +70,7 @@ foam.CLASS({
           name: this.crossPlatformFnVarName,
         });
         var methodCall =
-          `self!.\`${this.name}\`(${this.args.map(a => a.name).join(', ')})`;
+          `self!.\`${this.name}\`(${this.swiftArgs.map(a => a.localName).join(', ')})`;
         cls.method({
           override: this.swiftIsOverride(parentCls),
           visibility: 'public',
@@ -75,8 +81,8 @@ foam.CLASS({
               ${this.crossPlatformFnVarName} = AnonymousGenericFunction_create()
                 .setFn({[weak self] (_fnArgs_: [Any?]?) -> Any? in
                   if self == nil { return nil }
-                  ${this.args.map((a, i) => `
-                  let ${a.name} = _fnArgs_![${i}]${a.swiftType != 'Any?' ? ` as! ${a.swiftType}` : ''};
+                  ${this.swiftArgs.map((a, i) => `
+                  let ${a.localName} = _fnArgs_![${i}]${a.type != 'Any?' ? ` as! ${a.type}` : ''};
                   `).join('\n')}
                   ${this.swiftType == 'Void' ? `
                   ${methodCall};
@@ -104,7 +110,7 @@ foam.CLASS({
       var hasSameSignature = parentMethod => {
         return parentMethod &&
           parentMethod.swiftType == this.swiftType &&
-          foam.util.compare(parentMethod.args, this.args) == 0 &&
+          foam.util.compare(parentMethod.swiftArgs, this.swiftArgs) == 0 &&
           parentMethod.crossPlatformIsStatic == this.crossPlatformIsStatic;
       };
 
@@ -191,7 +197,7 @@ foam.CLASS({
           static: this.crossPlatformIsStatic,
           type: this.swiftType,
           name: this.name,
-          args: this.args.map(a => a.toSwiftArg()),
+          args: this.swiftArgs,
           body: 'fatalError()'
         });
       }

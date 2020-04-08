@@ -7,11 +7,18 @@
 foam.CLASS({
   package: 'foam.u2.layout',
   name: 'GridColumns',
+  constants: [
+    {
+      type: 'foam.u2.layout.GridColumns',
+      name: 'DEFAULT',
+      factory: function () { return foam.u2.layout.GridColumns.create() }
+    }
+  ],
   properties: [
     {
       class: 'IntProperty',
       name: 'xxs',
-      value: 8
+      value: 12
     },
     {
       class: 'IntProperty',

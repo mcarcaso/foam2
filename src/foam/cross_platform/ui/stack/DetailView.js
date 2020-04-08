@@ -87,30 +87,40 @@ foam.CLASS({
             dv.detach();
             sub?.detach();
           }
+          func bindToData() {
+            sub?.detach();
+            var subs: [foam_core_Detachable?] = [];
+
+            subs.append(data$.slotSub(<%=listener(\`
+              self?.bindToData();
+            \`)%>));
+
+            let d = data$.slotGet() as? foam_cross_platform_FObject;
+            dv.setData(d);
+            subs.append(d?.sub(nil, <%=listener(\`
+              self?.updateSize();
+            \`)%>));
+            updateSize();
+
+            sub = foam_util_ArrayDetachable
+              .foam_util_ArrayDetachableBuilder(nil)
+              .setArray(subs)
+              .build();
+          }
           override func viewDidLayoutSubviews() {
             updateSize();
             super.viewDidLayoutSubviews();
           }
           func updateSize() {
             let dvv = dv.getView()!
-            dvv.frame.size.width = view.frame.width;
-            dvv.layoutSubviews();
+            let size = dvv.sizeThatFits(CGSize(width: view.frame.width, height: .greatestFiniteMagnitude));
+            dvv.frame.size = size;
             let sv = view as! UIScrollView;
-            sv.contentSize = dvv.frame.size
+            sv.contentSize = size;
           }
           override func viewWillAppear(_ animated: Bool) {
             sub?.detach();
-            sub = foam_util_ArrayDetachable
-              .foam_util_ArrayDetachableBuilder(nil)
-              .setArray([
-                dv.getData$().follow(data$),
-                dv.getData()?.sub(nil, dv.AnonymousListener_create()
-                  .setFn({ [weak self] (_: foam_core_Detachable?, args: [Any?]?) -> Void in
-                    self?.updateSize();
-                  })
-                  .build())
-              ])
-              .build();
+            bindToData();
             super.viewWillAppear(animated)
             NotificationCenter.default.addObserver(
               self,

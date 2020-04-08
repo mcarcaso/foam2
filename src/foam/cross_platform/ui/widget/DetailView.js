@@ -68,6 +68,7 @@ foam.CLASS({
           })
           .toArray(foam.core.Property[]::new);
       `,
+      swiftOptional: false,
       swiftFactory: null,
       swiftExpression: `
         if of == nil { return [] }
@@ -97,6 +98,7 @@ foam.CLASS({
           })
           .toArray(foam.core.Action[]::new);
       `,
+      swiftOptional: false,
       swiftFactory: null,
       swiftExpression: `
         if of == nil { return [] }
@@ -108,13 +110,10 @@ foam.CLASS({
       `
     },
     {
-      class: 'ArrayProperty',
-      name: 'views_'
-    },
-    {
       class: 'FObjectProperty',
       of: 'foam.u2.layout.GridLayout',
       name: 'layout_',
+      swiftOptional: false,
       crossPlatformFactoryValue: { class: 'foam.u2.layout.GridLayout' }
     },
     {
@@ -125,8 +124,7 @@ foam.CLASS({
         return getLayout_().getView();
       `,
       swiftFactory: `
-        let v = View();
-        return v;
+        return getLayout_().getView();
       `
     },
     {
@@ -168,7 +166,6 @@ foam.CLASS({
           getSub_().detach();
           setSub_(null);
         }
-        if ( getView() == null ) return;
         getLayout_().removeAllViews();
         if ( getData() == null ) return;
         foam.core.Detachable[] subs = new foam.core.Detachable[getProps().length + getActions().length];
@@ -209,48 +206,40 @@ foam.CLASS({
           getLayout_().addView(dpv, a.getGridColumns());
         }
         setSub_(ArrayDetachable_create().setArray(subs).build());
+        onDetach(getSub_());
       `,
       swiftCode: `
         if getSub_() != nil {
           getSub_()!.detach();
           setSub_(nil);
         }
-        if ( getView() == nil ) { return; }
-        let view = getView() as! View;
-        view.clearViews();
+        getLayout_().removeAllViews();
         if getData() == nil { return; }
         var subs = [] as [foam_core_Detachable?];
         let x = getSubX();
-        for i in 0..<getProps()!.count {
-          let p = getProps()![i]
+        let padding = UIEdgeInsets(
+          top: CGFloat(Self.ITEM_VERTICAL_PADDING()),
+          left: CGFloat(Self.ITEM_HORIZONTAL_PADDING()),
+          bottom: CGFloat(Self.ITEM_VERTICAL_PADDING()),
+          right: CGFloat(Self.ITEM_HORIZONTAL_PADDING()));
+        for i in 0..<getProps().count {
+          let p = getProps()[i]
           let dpv = DetailPropertyView_create(x)
             .build();
-          dpv.getView()!.backgroundColor = getTheme()!.getSurface();
-          let visibility = p.createVisibilitySlot(getData());
-          let l = <%=listener(\`
-            dpv.getView()?.isHidden = foam_cross_platform_Lib.equals(visibility?.slotGet(), foam_u2_Visibility.HIDDEN);
-            self?.setNeedsLayout(nil, nil);
-          \`)%>
-          subs.append(visibility!.slotSub(l));
+          (dpv.getView() as! foam_cross_platform_ui_widget_DetailPropertyView.View).padding = padding;
           subs.append(dpv.bindData(getData(), p));
           subs.append(dpv);
-          l.executeListener(nil, nil);
-          view.addDpv(dpv.getView()!)
+          getLayout_().addView(dpv, p.getGridColumns());
         }
 
-        for i in 0..<getActions()!.count {
+        for i in 0..<getActions().count {
+          let a = getActions()[i];
           let dpv = DetailPropertyView_create()
             .build();
-          let isAvailableSlot = getActions()![i].createIsAvailableSlot(x, getData());
-          let l = <%=listener(\`
-            dpv.getView()?.isHidden = foam_cross_platform_Lib.equals(isAvailableSlot?.slotGet(), false);
-            self?.setNeedsLayout(nil, nil);
-          \`)%>
-          subs.append(isAvailableSlot!.slotSub(l));
-          subs.append(dpv.bindData(getData(), getActions()![i])!);
+          (dpv.getView() as! foam_cross_platform_ui_widget_DetailPropertyView.View).padding = padding;
+          subs.append(dpv.bindData(getData(), a)!);
           subs.append(dpv);
-          l.executeListener(nil, nil);
-          view.addDpv(dpv.getView()!);
+          getLayout_().addView(dpv, a.getGridColumns());
         }
         subs.append(getData()!.sub(nil, <%=listener(\`
           self?.setNeedsLayout(nil, nil);
@@ -259,61 +248,5 @@ foam.CLASS({
         onDetach(getSub_());
       `,
     }
-  ],
-  axioms: [
-    {
-      class: 'foam.cross_platform.code_generation.Extras',
-      swiftCode: `
-        class View: UIView {
-          var dpvs: [foam_cross_platform_ui_widget_DetailPropertyView.View] = [];
-          var abs: [UIView] = [];
-          func clearViews() {
-            for v in subviews {
-              v.removeFromSuperview();
-            }
-            dpvs = [];
-            abs = [];
-          }
-          func addDpv(_ v: UIView) {
-            dpvs.append(v as! foam_cross_platform_ui_widget_DetailPropertyView.View);
-            addSubview(v);
-          }
-          func addAb(_ v: UIView) {
-            abs.append(v);
-            addSubview(v);
-          }
-          override func layoutSubviews() {
-            super.layoutSubviews();
-            let hp = CGFloat(foam_cross_platform_ui_widget_DetailView.ITEM_HORIZONTAL_PADDING());
-            let vp = CGFloat(foam_cross_platform_ui_widget_DetailView.ITEM_VERTICAL_PADDING());
-            let padding = UIEdgeInsets(top: vp, left: hp, bottom: vp, right: hp)
-            for v in dpvs {
-              v.padding = padding;
-              v.frame.size.width = frame.width;
-              v.layoutSubviews();
-            }
-            for v in abs {
-              v.frame.size = v.sizeThatFits(CGSize(
-                width: frame.width - 2 * hp,
-                height: CGFloat.greatestFiniteMagnitude
-              ))
-              v.frame.origin.x = (frame.width - v.frame.width) / 2
-            }
-            var y: CGFloat = 0;
-            for v in dpvs {
-              if v.isHidden { continue }
-              v.frame.origin.y = y;
-              y = v.frame.maxY + 1;
-            }
-            for v in abs {
-              if v.isHidden { continue }
-              v.frame.origin.y = y + vp;
-              y = v.frame.maxY;
-            }
-            frame.size.height = y
-          }
-        }
-      `
-    }
-  ],
+  ]
 });

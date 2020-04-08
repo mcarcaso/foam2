@@ -211,12 +211,21 @@ foam.CLASS({
         // Data
         if let prop = axiom as? foam_core_Property {
           setDataView(prop.createView(getSubX()));
+
           let validationSlot = prop.createValidationSlot(data);
           if ( validationSlot != nil ) {
             subs.append(getValidationView()?.getData$().follow(validationSlot));
           }
+
+          subs.append(getIsHidden$().follow(prop.createVisibilitySlot(data)!.map(<%=fn(\`
+            return foam_cross_platform_Lib.equals(args![0], foam_u2_Visibility.HIDDEN)
+          \`)%>)))
         } else if let action = axiom as? foam_core_Action {
           setDataView(action.createView(getSubX()));
+
+          subs.append(getIsHidden$().follow(action.createIsAvailableSlot(getSubX(), data)!.map(<%=fn(\`
+            return !(args![0] as! Bool);
+          \`)%>)))
         }
         onDetach(getDataView() as? foam_core_Detachable);
         subs.append(getDataView()!.bindData(data, axiom));
@@ -233,7 +242,7 @@ foam.CLASS({
         // Help
         let help = axiom?.getProperty("i18nHelp") as? String;
         if ( !foam_cross_platform_type_StringType.INSTANCE().isEmpty(help) ) {
-          getHelpView()!.getView()?.isHidden = false;
+          getHelpView()!.setIsAvailable(true);
           getHelpView()!.setData(<%=fn(\`
             let x = args![0] as! foam_cross_platform_Context;
             let alertController = UIAlertController(title: "", message: help, preferredStyle: .alert)
@@ -243,7 +252,7 @@ foam.CLASS({
             return nil;
           \`)%>);
         } else {
-          getHelpView()!.getView()?.isHidden = true;
+          getHelpView()!.setIsAvailable(false);
         }
 
         addViews();
@@ -346,45 +355,70 @@ foam.CLASS({
        class View: UIView {
           weak var dpv: foam_cross_platform_ui_widget_DetailPropertyView! = nil;
           var padding: UIEdgeInsets = UIEdgeInsets.zero;
-          override func layoutSubviews() {
+          func getFrames(_ width: CGFloat) -> [String:CGRect] {
             super.layoutSubviews();
             let p: CGFloat = 12;
-            let w = frame.width - padding.left - padding.right;
+            let w = width - padding.left - padding.right;
             let helpView = dpv.getHelpView()!.getView()!
-            helpView.frame.size = helpView.sizeThatFits(CGSize(
+            var helpViewFrame = CGRect();
+            helpViewFrame.size = helpView.sizeThatFits(CGSize(
               width: w,
               height: CGFloat.greatestFiniteMagnitude
             ));
-            helpView.frame.origin.x = frame.maxX - padding.left - helpView.frame.width
-            helpView.frame.origin.y = padding.top
-            let leftWidth = helpView.frame.origin.x - padding.right - p
+            helpViewFrame.origin.x = width - padding.left - helpViewFrame.width
+            helpViewFrame.origin.y = padding.top
+            let leftWidth = helpViewFrame.origin.x - padding.right - p
 
             let labelView = dpv.getLabelView()!.getView()!;
-            labelView.frame.size = !labelView.isHidden ? labelView.sizeThatFits(CGSize(
+            var labelViewFrame = CGRect();
+            labelViewFrame.size = !labelView.isHidden ? labelView.sizeThatFits(CGSize(
               width: leftWidth,
               height: CGFloat.greatestFiniteMagnitude
             )) : CGSize.zero;
-            labelView.frame.origin.x = padding.left
-            labelView.frame.origin.y = padding.top
+            labelViewFrame.origin.x = padding.left
+            labelViewFrame.origin.y = padding.top
 
             let dataView = dpv.getDataView()!.getView()!;
-            dataView.frame.size.height = dataView.sizeThatFits(CGSize(
+            var dataViewFrame = CGRect();
+            dataViewFrame.size.height = dataView.sizeThatFits(CGSize(
               width: leftWidth,
               height: CGFloat.greatestFiniteMagnitude
               )).height;
-            dataView.frame.size.width = leftWidth;
-            dataView.frame.origin.y = labelView.isHidden ? padding.top : labelView.frame.maxY + p;
-            dataView.frame.origin.x = padding.left
+            dataViewFrame.size.width = leftWidth;
+            dataViewFrame.origin.y = labelView.isHidden ? padding.top : labelViewFrame.maxY + p;
+            dataViewFrame.origin.x = padding.left
 
             let validationView = dpv.getValidationView()!.getView()!;
-            validationView.frame.size = !validationView.isHidden ? validationView.sizeThatFits(CGSize(
+            var validationViewFrame = CGRect();
+            validationViewFrame.size = !validationView.isHidden ? validationView.sizeThatFits(CGSize(
               width: leftWidth,
               height: CGFloat.greatestFiniteMagnitude
             )) : CGSize.zero;
-            validationView.frame.origin.y = dataView.frame.maxY + (validationView.isHidden ? 0 : p);
-            validationView.frame.origin.x = padding.left
+            validationViewFrame.origin.y = dataViewFrame.maxY + (validationView.isHidden ? 0 : p);
+            validationViewFrame.origin.x = padding.left
 
-            frame.size.height = validationView.frame.maxY + padding.bottom;
+            return [
+              "helpView": helpViewFrame,
+              "labelView": labelViewFrame,
+              "dataView": dataViewFrame,
+              "validationView": validationViewFrame
+            ];
+          }
+          override func layoutSubviews() {
+            super.layoutSubviews();
+            let frames = getFrames(frame.width);
+            dpv.getHelpView()?.getView()?.frame = frames["helpView"]!;
+            dpv.getLabelView()?.getView()?.frame = frames["labelView"]!;
+            dpv.getDataView()?.getView()?.frame = frames["dataView"]!;
+            dpv.getValidationView()?.getView()?.frame = frames["validationView"]!;
+          }
+          override func sizeThatFits(_ size: CGSize) -> CGSize {
+            let frames = getFrames(size.width);
+            var h: CGFloat = 0;
+            for f in frames.values {
+              h = max(h, f.maxY)
+            }
+            return CGSize(width: size.width, height: h + padding.bottom);
           }
         }
       `
