@@ -114,6 +114,7 @@ foam.CLASS({
           func updateSize() {
             let dvv = dv.getView()!
             let size = dvv.sizeThatFits(CGSize(width: view.frame.width, height: .greatestFiniteMagnitude));
+            if size == dvv.frame.size { return }
             dvv.frame.size = size;
             let sv = view as! UIScrollView;
             sv.contentSize = size;
