@@ -8,6 +8,7 @@ foam.CLASS({
     'foam.util.ArrayDetachable',
     'foam.cross_platform.ui.widget.DetailPropertyView',
     'foam.cross_platform.ui.widget.ActionButton',
+    'foam.u2.layout.GridLayout',
   ],
   swiftImports: [
     'UIKit'
@@ -111,18 +112,17 @@ foam.CLASS({
       name: 'views_'
     },
     {
+      class: 'FObjectProperty',
+      of: 'foam.u2.layout.GridLayout',
+      name: 'layout_',
+      crossPlatformFactoryValue: { class: 'foam.u2.layout.GridLayout' }
+    },
+    {
       androidType: 'android.widget.LinearLayout',
       swiftType: 'UIView?',
       name: 'view',
       androidFactory: `
-        android.widget.LinearLayout v = new android.widget.LinearLayout(getAndroidContext());
-        v.setOrientation(android.widget.LinearLayout.VERTICAL);
-        v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-        v.setShowDividers(android.widget.LinearLayout.SHOW_DIVIDER_MIDDLE);
-        v.setDividerDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-        return v;
+        return getLayout_().getView();
       `,
       swiftFactory: `
         let v = View();
@@ -169,65 +169,45 @@ foam.CLASS({
           setSub_(null);
         }
         if ( getView() == null ) return;
-        getView().removeAllViews();
+        getLayout_().removeAllViews();
         if ( getData() == null ) return;
         foam.core.Detachable[] subs = new foam.core.Detachable[getProps().length + getActions().length];
-        Object[] views = new Object[getProps().length + getActions().length];
-        foam.cross_platform.Context x = getSubX().createSubContext(new java.util.HashMap() {{
-          put("parentView", getView());
-          put("androidContext", getView().getContext());
-        }});
+        foam.cross_platform.Context x = getSubX();
         for ( int i = 0 ; i < getProps().length ; i++ ) {
-          foam.core.Property p = (foam.core.Property) getProps()[i];
+          foam.core.Property p = getProps()[i];
           final foam.cross_platform.ui.widget.DetailPropertyView dpv = DetailPropertyView_create(x)
             .build();
-          dpv.getView().setBackgroundColor(getTheme().getSurface());
-          final foam.core.SlotInterface visibility = p.createVisibilitySlot(getData());
-          foam.cross_platform.Listener l = (s, a) -> {
-            dpv.getView().setVisibility(visibility.slotGet() == foam.u2.Visibility.HIDDEN ?
-              android.view.View.GONE : android.view.View.VISIBLE);
-          };
           subs[i] = ArrayDetachable_create()
             .setArray(new foam.core.Detachable[] {
-              visibility.slotSub(l),
+              dpv,
               dpv.bindData(getData(), p)
             })
             .build();
-          l.executeListener(null, null);
           dpv.getView().setPadding(
             ITEM_HORIZONTAL_PADDING(),
             ITEM_VERTICAL_PADDING(),
             ITEM_HORIZONTAL_PADDING(),
             ITEM_VERTICAL_PADDING());
-          getView().addView(dpv.getView());
-          views[i] = dpv;
+          getLayout_().addView(dpv, p.getGridColumns());
         }
 
         for ( int i = 0 ; i < getActions().length ; i++ ) {
+          foam.core.Action a = getActions()[i];
           final foam.cross_platform.ui.widget.DetailPropertyView dpv = DetailPropertyView_create(x)
             .build();
-          final foam.core.SlotInterface isAvailableSlot = getActions()[i].createIsAvailableSlot(x, getData());
-          foam.cross_platform.Listener l = (s, a) -> {
-            dpv.getView().setVisibility(foam.cross_platform.Lib.equals(isAvailableSlot.slotGet(), false) ?
-              android.view.View.GONE : android.view.View.VISIBLE);
-          };
           subs[getProps().length + i] = ArrayDetachable_create()
             .setArray(new foam.core.Detachable[] {
-              isAvailableSlot.slotSub(l),
-              dpv.bindData(getData(), getActions()[i]),
+              dpv.bindData(getData(), a),
               dpv,
             })
             .build();
-          l.executeListener(null, null);
           dpv.getView().setPadding(
             ITEM_HORIZONTAL_PADDING(),
             ITEM_VERTICAL_PADDING(),
             ITEM_HORIZONTAL_PADDING(),
             ITEM_VERTICAL_PADDING());
-          getView().addView(dpv.getView());
-          views[getProps().length + i] = dpv;
+          getLayout_().addView(dpv, a.getGridColumns());
         }
-        setViews_(views);
         setSub_(ArrayDetachable_create().setArray(subs).build());
       `,
       swiftCode: `

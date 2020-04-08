@@ -7,79 +7,51 @@
 foam.CLASS({
   package: 'foam.u2.layout',
   name: 'GridColumns',
-  extends: 'foam.u2.Element',
-  documentation: `
-    A model for the sizes of grid columns
-  `,
-
   properties: [
     {
       class: 'IntProperty',
-      name: 'columns',
-      documentation: `
-        Sets up a standard default column width across all display types
-      `,
-      value: 12
+      name: 'xxs',
+      value: 8
     },
     {
       class: 'IntProperty',
-      name: 'xxsColumns',
-      documentation: `
-        The column width for the smaller end of smartphone devices and smartphone portrait screens using an 8 column grid
-      `,
-      expression: function(columns) {
-        return Math.min(8, columns);
-      }
+      name: 'xs',
+      expressionArgs: ['xxs'],
+      expression: function (xxs) { return xxs },
+      androidExpression: 'return xxs;',
+      swiftExpression: 'return xxs;',
     },
     {
       class: 'IntProperty',
-      name: 'xsColumns',
-      documentation: `
-        The column width for the regular end of smartphone devices using an 8 column grid
-      `,
-      expression: function(columns) {
-        return Math.min(8, columns);
-      }
+      name: 'sm',
+      expressionArgs: ['xs'],
+      expression: function (xs) { return xs },
+      androidExpression: 'return xs;',
+      swiftExpression: 'return xs;',
     },
     {
       class: 'IntProperty',
-      name: 'smColumns',
-      documentation: `
-        The column width for the larger end of smartphone devices and landscape smartphone screens using a 12 column grid
-      `,
-      expression: function(columns) {
-        return columns;
-      }
+      name: 'md',
+      expressionArgs: ['sm'],
+      expression: function (sm) { return sm },
+      androidExpression: 'return sm;',
+      swiftExpression: 'return sm;',
     },
     {
       class: 'IntProperty',
-      name: 'mdColumns',
-      documentation: `
-        The column width for most tablet screens and portrait tablet screens using a 12 column grid
-      `,
-      expression: function(columns) {
-        return columns;
-      }
+      name: 'lg',
+      expressionArgs: ['md'],
+      expression: function (md) { return md },
+      androidExpression: 'return md;',
+      swiftExpression: 'return md;',
     },
     {
       class: 'IntProperty',
-      name: 'lgColumns',
-      documentation: `
-        The column width for the smaller end of desktop screens using a 12 column grid
-      `,
-      expression: function(columns) {
-        return columns;
-      }
-    },
-    {
-      class: 'IntProperty',
-      name: 'xlColumns',
-      documentation: `
-        The column width for the majority of desktop screens using a 12 column grid
-      `,
-      expression: function(columns) {
-        return columns;
-      }
+      name: 'xl',
+      expressionArgs: ['lg'],
+      expression: function (lg) { return lg },
+      androidExpression: 'return lg;',
+      swiftExpression: 'return lg;',
     }
   ],
 });
@@ -90,7 +62,32 @@ foam.CLASS({
   refines: 'foam.core.Property',
   properties: [
     {
-      name: 'gridColumns'
+      class: 'FObjectProperty',
+      of: 'foam.u2.layout.GridColumns',
+      name: 'gridColumns',
+      adapt: function(_, v) {
+        if ( foam.Number.isInstance(v) ) v = { xxs: v };
+        if ( foam.Object.isInstance(v) ) v = foam.u2.layout.GridColumns.create(v);
+        return v;
+      },
     }
   ]
-})
+});
+
+foam.CLASS({
+  package: 'foam.u2.layout',
+  name: 'ActionGridRefinement',
+  refines: 'foam.core.Action',
+  properties: [
+    {
+      class: 'FObjectProperty',
+      of: 'foam.u2.layout.GridColumns',
+      name: 'gridColumns',
+      adapt: function (_, v) {
+        if (foam.Number.isInstance(v)) v = { xxs: v };
+        if (foam.Object.isInstance(v)) v = foam.u2.layout.GridColumns.create(v);
+        return v;
+      }
+    }
+  ]
+});

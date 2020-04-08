@@ -133,6 +133,10 @@ foam.CLASS({
         return v;
       `
     },
+    {
+      class: 'BooleanProperty',
+      name: 'isHidden'
+    }
   ],
   reactions: [
     ['validationView', 'propertyChange.data', 'updateValidationView'],
@@ -148,12 +152,22 @@ foam.CLASS({
         if ( axiom instanceof foam.core.Property ) {
           foam.core.Property prop = (foam.core.Property) axiom;
           setDataView(prop.createView(getSubX()));
+
           foam.core.SlotInterface validationSlot = prop.createValidationSlot(data);
           if ( validationSlot != null ) {
             subs.add(getValidationView().getData$().follow(validationSlot));
           }
+
+          subs.add(getIsHidden$().follow(prop.createVisibilitySlot(data).map((o) -> {
+            return o[0] == foam.u2.Visibility.HIDDEN;
+          })));
         } else if ( axiom instanceof foam.core.Action ) {
-          setDataView(((foam.core.Action) axiom).createView(getSubX()));
+          foam.core.Action a = (foam.core.Action) axiom;
+          setDataView(a.createView(getSubX()));
+
+          subs.add(getIsHidden$().follow(a.createIsAvailableSlot(getSubX(), data).map((o) -> {
+            return !((boolean) o[0]);
+          })));
         }
         onDetach((foam.core.Detachable) getDataView());
         subs.add(getDataView().bindData(data, axiom));

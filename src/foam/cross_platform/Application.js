@@ -63,7 +63,7 @@ foam.CLASS({
 
         android.util.DisplayMetrics dm = new android.util.DisplayMetrics();
         a.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        setDisplayWidth(foam.u2.layout.DisplayWidth.valueForWidth(dm.widthPixels));
+        setDisplayWidth(foam.u2.layout.DisplayWidth.valueForWidth((int)(dm.widthPixels / dm.density)));
 
         getStack().setContentId(contentId);
         getStack().setFragmentManager(a.getSupportFragmentManager());

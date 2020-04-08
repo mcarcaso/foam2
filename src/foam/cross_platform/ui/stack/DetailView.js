@@ -46,7 +46,9 @@ foam.CLASS({
               android.view.ViewGroup container,
               android.os.Bundle savedInstanceState) {
             android.widget.ScrollView sv = new android.widget.ScrollView(dv.getAndroidContext());
-            dv.clearProperty("view");
+            if ( dv.getView().getParent() != null ) {
+              ((android.widget.ScrollView) dv.getView().getParent()).removeAllViews();
+            }
             sv.addView(dv.getView());
             android.widget.LinearLayout v = (android.widget.LinearLayout)
               super.onCreateView(inflater, container, savedInstanceState);
