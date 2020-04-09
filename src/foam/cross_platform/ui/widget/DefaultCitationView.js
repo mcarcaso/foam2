@@ -9,7 +9,7 @@ foam.CLASS({
     'foam.cross_platform.ui.widget.Label',
   ],
   swiftImports: [
-    'UIKit'
+    'SwiftUI'
   ],
   imports: [
     {
@@ -20,6 +20,78 @@ foam.CLASS({
       name: 'androidContext',
       androidType: 'android.content.Context',
       flags: ['android']
+    }
+  ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Resource',
+      androidPath: 'layout/default_citation_view.xml',
+      androidCode: `
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <android.widget.TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title" />
+
+        <android.widget.TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Subtitle" />
+    </LinearLayout>
+
+    <android.widget.TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time" />
+</LinearLayout>
+      `.trim()
+    },
+    {
+      class: 'foam.cross_platform.code_generation.CodeSource',
+      flags: ['swift'],
+      path: 'DefaultCitationViewSwiftUI.swift',
+      body: `
+import SwiftUI
+
+public struct DefaultCitationViewSwiftUI: View {
+  @ObservedObject var o = DefaultCitationViewObservable()
+  public var body: some View {
+    HStack {
+      Circle().frame(width: 88, height: 88)
+      VStack(alignment: .leading) {
+        Text(o.title)
+        Text(o.subtitle)
+      }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+      Text(o.time)
+    }
+  }
+}
+
+public class DefaultCitationViewObservable: ObservableObject {
+  @Published var title = "Title"
+  @Published var subtitle = "Sub"
+  @Published var time = "Time"
+}
+
+struct SwiftUIView_Previews: PreviewProvider {
+  static var previews: some View {
+    DefaultCitationViewSwiftUI(o: DefaultCitationViewObservable())
+  }
+}
+      `
     }
   ],
   properties: [
@@ -36,75 +108,57 @@ foam.CLASS({
       name: 'time',
     },
     {
-      androidType: 'android.widget.LinearLayout',
+      androidType: 'android.view.View',
       swiftType: 'UIView?',
       name: 'view',
       androidFactory: `
-        android.widget.LinearLayout v = new android.widget.LinearLayout(getAndroidContext());
-        v.setOrientation(android.widget.LinearLayout.HORIZONTAL);
-        v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+        int id = getAndroidContext().getResources().getIdentifier("default_citation_view", "layout", getAndroidContext().getPackageName());
+        android.view.View v = android.view.LayoutInflater.from(getAndroidContext()).inflate(id, null);        v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-        v.setBackgroundColor(getTheme().getSurface());
-
-        foam.cross_platform.ui.widget.Label titleView = Label_create().build();
-        onDetach(titleView);
-        onDetach(titleView.getData$().follow(getTitle$()));
-
-        foam.cross_platform.ui.widget.Label subtitleView = Label_create().build();
-        onDetach(subtitleView);
-        onDetach(subtitleView.getData$().follow(getSubtitle$()));
-
-        foam.cross_platform.ui.widget.Label timeView = Label_create().build();
-        onDetach(timeView);
-        onDetach(timeView.getData$().follow(getTime$()));
-
-        android.widget.LinearLayout mid = new android.widget.LinearLayout(getAndroidContext());
-        mid.setOrientation(android.widget.LinearLayout.VERTICAL);
-        mid.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-        mid.addView(titleView.getView());
-        mid.addView(subtitleView.getView());
-        v.addView(mid);
-
-        timeView.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-        v.addView(timeView.getView());
-
         return v;
+
       `,
       swiftFactory: `
-        let v = UIStackView();
-        v.axis = .horizontal
-
-        let titleView = Label_create().setView(UILabel()).build();
-        onDetach(titleView);
-        onDetach(titleView.getData$().follow(getTitle$()));
-
-        let subtitleView = Label_create().setView(UILabel()).build();
-        onDetach(subtitleView);
-        onDetach(subtitleView.getData$().follow(getSubtitle$()));
-
-        let timeView = Label_create().setView(UILabel()).build();
-        onDetach(timeView);
-        onDetach(timeView.getData$().follow(getTime$()));
-
-        let mid = UIStackView()
-        mid.axis = .vertical
-        mid.addArrangedSubview(titleView.getView()!);
-        mid.addArrangedSubview(subtitleView.getView()!);
-        mid.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        v.addArrangedSubview(mid)
-        v.distribution = .fill
-
-        timeView.getView()!.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        v.addArrangedSubview(timeView.getView()!);
-
-        return v;
+        return getSwiftUiVc().view;
       `
     },
+    {
+      flags: ['swift'],
+      swiftType: 'UIHostingController<DefaultCitationViewSwiftUI>',
+      name: 'swiftUiVc',
+      swiftFactory: `
+        return UIHostingController(rootView: DefaultCitationViewSwiftUI(o: DefaultCitationViewObservable()));
+      `
+    }
+  ],
+  reactions: [
+    ['', 'propertyChange.title', 'updateView'],
+    ['', 'propertyChange.subtitle', 'updateView'],
+    ['', 'propertyChange.time', 'updateView'],
+  ],
+  listeners: [
+    {
+      name: 'updateView',
+      isFramed: true,
+      androidCode: `
+        int titleId = getAndroidContext().getResources().getIdentifier("title", "id", getAndroidContext().getPackageName());
+        ((android.widget.TextView) getView().findViewById(titleId)).setText(getTitle());
+        int subtitleId = getAndroidContext().getResources().getIdentifier("subtitle", "id", getAndroidContext().getPackageName());
+        ((android.widget.TextView) getView().findViewById(subtitleId)).setText(getSubtitle());
+        int timeId = getAndroidContext().getResources().getIdentifier("time", "id", getAndroidContext().getPackageName());
+        ((android.widget.TextView) getView().findViewById(timeId)).setText(getTime());
+
+
+
+      `,
+      swiftCode: `
+        let v = getSwiftUiVc().rootView.o;
+        v.title = getTitle()!;
+        v.subtitle = getSubtitle()!;
+        v.time = getTime()!;
+      `
+    }
   ],
   methods: [
     {
