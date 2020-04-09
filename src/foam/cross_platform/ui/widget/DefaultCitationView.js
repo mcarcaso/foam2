@@ -5,10 +5,10 @@ foam.CLASS({
     'foam.cross_platform.ui.AxiomView'
   ],
   requires: [
-    'foam.util.ArrayDetachable',
-    'foam.cross_platform.ui.widget.Label',
+    'foam.util.ArrayDetachable'
   ],
   swiftImports: [
+    'UIKit',
     'SwiftUI'
   ],
   imports: [
@@ -148,9 +148,6 @@ struct SwiftUIView_Previews: PreviewProvider {
         ((android.widget.TextView) getView().findViewById(subtitleId)).setText(getSubtitle());
         int timeId = getAndroidContext().getResources().getIdentifier("time", "id", getAndroidContext().getPackageName());
         ((android.widget.TextView) getView().findViewById(timeId)).setText(getTime());
-
-
-
       `,
       swiftCode: `
         let v = getSwiftUiVc().rootView.o;

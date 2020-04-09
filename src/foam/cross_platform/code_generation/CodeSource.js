@@ -4,7 +4,7 @@ foam.CLASS({
   properties: [
     {
       name: 'name',
-      expression: function(path) { return path }
+      factory: function() { return this.path }
     },
     'flags',
     'body',
