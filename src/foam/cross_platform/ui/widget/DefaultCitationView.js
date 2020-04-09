@@ -8,7 +8,6 @@ foam.CLASS({
     'foam.util.ArrayDetachable'
   ],
   swiftImports: [
-    'UIKit',
     'SwiftUI'
   ],
   imports: [
