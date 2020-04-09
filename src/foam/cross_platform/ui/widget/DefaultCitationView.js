@@ -28,11 +28,12 @@ foam.CLASS({
       androidCode: `
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
@@ -41,20 +42,21 @@ foam.CLASS({
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title" />
+            android:lines="1"
+            tools:text="This is where the title goes" />
 
         <android.widget.TextView
             android:id="@+id/subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Subtitle" />
+            tools:text="This is where the subtitle goes" />
     </LinearLayout>
 
     <android.widget.TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time" />
+        tools:text="Time 0:00" />
 </LinearLayout>
       `.trim()
     },
