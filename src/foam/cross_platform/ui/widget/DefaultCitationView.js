@@ -71,7 +71,7 @@ public struct DefaultCitationViewSwiftUI: View {
     HStack {
       Circle().frame(width: 88, height: 88)
       VStack(alignment: .leading) {
-        Text(o.title)
+        Text(o.title).lineLimit(1)
         Text(o.subtitle)
       }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
       Text(o.time)
@@ -80,17 +80,26 @@ public struct DefaultCitationViewSwiftUI: View {
 }
 
 public class DefaultCitationViewObservable: ObservableObject {
-  @Published var title = "Title"
-  @Published var subtitle = "Sub"
-  @Published var time = "Time"
+  @Published var title = ""
+  @Published var subtitle = ""
+  @Published var time = ""
+  init() {}
+  init(title: String, subtitle: String, time: String) {
+    self.title = title;
+    self.subtitle = subtitle;
+    self.time = time;
+  }
 }
 
 struct SwiftUIView_Previews: PreviewProvider {
   static var previews: some View {
-    DefaultCitationViewSwiftUI(o: DefaultCitationViewObservable())
+    DefaultCitationViewSwiftUI(o: DefaultCitationViewObservable(
+      title: "Hey\\n\\n\\n\\nThere",
+      subtitle: "Sup",
+      time: "nooo"))
   }
 }
-      `
+      `.trim()
     }
   ],
   properties: [

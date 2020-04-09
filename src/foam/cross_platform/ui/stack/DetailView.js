@@ -29,23 +29,23 @@ foam.CLASS({
         public static class Fragment extends foam.cross_platform.ui.stack.Stack.ToolbarFragment {
           public foam.core.Detachable sub;
           public foam.core.SlotInterface data$;
-          public foam.cross_platform.ui.widget.DetailView dv;
+          public foam.cross_platform.ui.View dv;
           public Fragment(
               foam.core.SlotInterface data$,
-              foam.cross_platform.ui.widget.DetailView dv,
+              foam.cross_platform.ui.View dv,
               foam.cross_platform.Context x) {
             super(x);
             this.data$ = data$;
             this.dv = dv;
           }
           public void finalize() {
-            dv.detach();
+            ((foam.cross_platform.FObject) dv).detach();
           }
           public android.view.View onCreateView(
               android.view.LayoutInflater inflater,
               android.view.ViewGroup container,
               android.os.Bundle savedInstanceState) {
-            android.widget.ScrollView sv = new android.widget.ScrollView(dv.getAndroidContext());
+            android.widget.ScrollView sv = new android.widget.ScrollView(getContext());
             if ( dv.getView().getParent() != null ) {
               ((android.widget.ScrollView) dv.getView().getParent()).removeAllViews();
             }
@@ -57,7 +57,7 @@ foam.CLASS({
           }
           public void onResume() {
             super.onResume();
-            sub = dv.getData$().follow(data$);
+            sub = ((foam.cross_platform.FObject) dv).getSlot("data").follow(data$);
           }
           public void onPause() {
             super.onPause();
@@ -67,10 +67,10 @@ foam.CLASS({
       `,
       swiftCode: `
         class ViewController: UIViewController {
-          let dv: foam_cross_platform_ui_widget_DetailView;
+          let dv: foam_cross_platform_ui_View;
           let data$: foam_core_SlotInterface;
           var sub: foam_core_Detachable?;
-          init(_ dv: foam_cross_platform_ui_widget_DetailView,
+          init(_ dv: foam_cross_platform_ui_View,
                _ data$: foam_core_SlotInterface) {
             self.dv = dv;
             self.data$ = data$;
@@ -78,50 +78,26 @@ foam.CLASS({
             let sv = UIScrollView(frame: view.frame);
             sv.keyboardDismissMode = .onDrag
             view = sv
-            sv.addSubview(dv.getView()!)
+            let v = dv.getView()!;
+            sv.addSubview(v)
+
+            v.translatesAutoresizingMaskIntoConstraints = false;
+            v.topAnchor.constraint(equalTo: sv.topAnchor, constant: 0).isActive = true
+            v.leadingAnchor.constraint(equalTo: sv.leadingAnchor, constant: 0).isActive = true
+            v.trailingAnchor.constraint(equalTo: sv.trailingAnchor, constant: 0).isActive = true
+            v.bottomAnchor.constraint(equalTo: sv.bottomAnchor, constant: 0).isActive = true
+            v.widthAnchor.constraint(equalTo: sv.widthAnchor, constant: 0).isActive = true
           }
           required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
           }
           deinit {
-            dv.detach();
+            (dv as? foam_cross_platform_FObject)?.detach();
             sub?.detach();
-          }
-          func bindToData() {
-            sub?.detach();
-            var subs: [foam_core_Detachable?] = [];
-
-            subs.append(data$.slotSub(<%=listener(\`
-              self?.bindToData();
-            \`)%>));
-
-            let d = data$.slotGet() as? foam_cross_platform_FObject;
-            dv.setData(d);
-            subs.append(d?.sub(nil, <%=listener(\`
-              self?.updateSize();
-            \`)%>));
-            updateSize();
-
-            sub = foam_util_ArrayDetachable
-              .foam_util_ArrayDetachableBuilder(nil)
-              .setArray(subs)
-              .build();
-          }
-          override func viewDidLayoutSubviews() {
-            updateSize();
-            super.viewDidLayoutSubviews();
-          }
-          func updateSize() {
-            let dvv = dv.getView()!
-            let size = dvv.sizeThatFits(CGSize(width: view.frame.width, height: .greatestFiniteMagnitude));
-            if size == dvv.frame.size { return }
-            dvv.frame.size = size;
-            let sv = view as! UIScrollView;
-            sv.contentSize = size;
           }
           override func viewWillAppear(_ animated: Bool) {
             sub?.detach();
-            bindToData();
+            sub = (dv as? foam_cross_platform_FObject)?.getSlot("data")?.follow(data$);
             super.viewWillAppear(animated)
             NotificationCenter.default.addObserver(
               self,
@@ -175,7 +151,6 @@ foam.CLASS({
       name: 'toStackableView',
       androidCode: `
         Fragment f = new Fragment(getData$(), DetailView_create().build(), getSubX());
-        android.content.Context x = f.dv.getAndroidContext();
         f.getToolbar().setTitle(getTitle());
         f.backgroundColor = getTheme().getBackground();
         return f;

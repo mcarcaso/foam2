@@ -223,9 +223,19 @@ foam.CLASS({
       swiftCode: `
         class View: UIView {
           weak var this: foam_u2_layout_GridLayout?;
+          var heightConstraint: NSLayoutConstraint! = nil;
+          override init(frame: CGRect) {
+            super.init(frame: frame);
+            heightConstraint = heightAnchor.constraint(equalToConstant: 0);
+            heightConstraint.isActive = true;
+          }
+          required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+          }
           override func layoutSubviews() {
             super.layoutSubviews();
             guard let this = this else { return }
+            var height: CGFloat = 0;
             let frames = this.getFrames(frame.width);
             let views = this.getViews_()!;
             for i in 0..<views.count {
@@ -236,8 +246,10 @@ foam.CLASS({
               } else {
                 v.isHidden = false;
                 v.frame = f!;
+                height = max(height, f!.maxY);
               }
             }
+            heightConstraint.constant = height;
           }
           override func sizeThatFits(_ size: CGSize) -> CGSize {
             guard let this = this else {
