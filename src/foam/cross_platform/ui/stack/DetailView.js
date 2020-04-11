@@ -53,14 +53,14 @@ foam.CLASS({
             android.widget.LinearLayout v = (android.widget.LinearLayout)
               super.onCreateView(inflater, container, savedInstanceState);
             v.addView(sv);
+            int vp = foam.cross_platform.ui.widget.DetailView.ITEM_VERTICAL_PADDING();
+            int hp = foam.cross_platform.ui.widget.DetailView.ITEM_HORIZONTAL_PADDING();
+            dv.getView().setPadding(hp, vp, hp, vp);
+            sub = ((foam.cross_platform.FObject) dv).getSlot("data").linkFrom(data$);
             return v;
           }
-          public void onResume() {
-            super.onResume();
-            sub = ((foam.cross_platform.FObject) dv).getSlot("data").follow(data$);
-          }
-          public void onPause() {
-            super.onPause();
+          public void onDestroy() {
+            super.onDestroy();
             sub.detach();
           }
         }
@@ -81,12 +81,14 @@ foam.CLASS({
             let v = dv.getView()!;
             sv.addSubview(v)
 
+            let vp = CGFloat(foam_cross_platform_ui_widget_DetailView.ITEM_VERTICAL_PADDING());
+            let hp = CGFloat(foam_cross_platform_ui_widget_DetailView.ITEM_HORIZONTAL_PADDING());
             v.translatesAutoresizingMaskIntoConstraints = false;
-            v.topAnchor.constraint(equalTo: sv.topAnchor, constant: 0).isActive = true
-            v.leadingAnchor.constraint(equalTo: sv.leadingAnchor, constant: 0).isActive = true
+            v.topAnchor.constraint(equalTo: sv.topAnchor, constant: vp).isActive = true
+            v.leadingAnchor.constraint(equalTo: sv.leadingAnchor, constant: hp).isActive = true
             v.trailingAnchor.constraint(equalTo: sv.trailingAnchor, constant: 0).isActive = true
-            v.bottomAnchor.constraint(equalTo: sv.bottomAnchor, constant: 0).isActive = true
-            v.widthAnchor.constraint(equalTo: sv.widthAnchor, constant: 0).isActive = true
+            v.bottomAnchor.constraint(equalTo: sv.bottomAnchor, constant: -vp).isActive = true
+            v.widthAnchor.constraint(equalTo: sv.widthAnchor, constant: -2*hp).isActive = true
           }
           required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
@@ -95,9 +97,12 @@ foam.CLASS({
             (dv as? foam_cross_platform_FObject)?.detach();
             sub?.detach();
           }
-          override func viewWillAppear(_ animated: Bool) {
+          override func viewDidLoad() {
+            super.viewDidLoad()
             sub?.detach();
-            sub = (dv as? foam_cross_platform_FObject)?.getSlot("data")?.follow(data$);
+            sub = (dv as? foam_cross_platform_FObject)?.getSlot("data")?.linkFrom(data$);
+          }
+          override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
             NotificationCenter.default.addObserver(
               self,
@@ -111,7 +116,6 @@ foam.CLASS({
               object: nil)
           }
           override func viewWillDisappear(_ animated: Bool) {
-            sub?.detach();
             NotificationCenter.default.removeObserver(self)
             super.viewWillAppear(animated)
           }
@@ -144,19 +148,34 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'title'
-    }
+    },
+    {
+      class: 'FObjectProperty',
+      of: 'foam.cross_platform.BuilderFactory',
+      name: 'viewBuilder',
+      crossPlatformFactoryValue: {
+        class: '__Class__',
+        forClass_: 'foam.cross_platform.ui.widget.DetailView'
+      }
+    },
   ],
   methods: [
     {
       name: 'toStackableView',
       androidCode: `
-        Fragment f = new Fragment(getData$(), DetailView_create().build(), getSubX());
+        foam.cross_platform.ui.View v = (foam.cross_platform.ui.View) getViewBuilder()
+          .createBuilder(getSubX())
+          .builderBuild();
+        Fragment f = new Fragment(getData$(), v, getSubX());
         f.getToolbar().setTitle(getTitle());
         f.backgroundColor = getTheme().getBackground();
         return f;
       `,
       swiftCode: `
-        let vc = ViewController(DetailView_create().build(), getData$());
+        let v = getViewBuilder()!
+          .createBuilder(getSubX())!
+          .builderBuild() as! foam_cross_platform_ui_View;
+        let vc = ViewController(v, getData$());
         vc.title = getTitle();
         vc.view.backgroundColor = getTheme()!.getBackground();
         return vc;

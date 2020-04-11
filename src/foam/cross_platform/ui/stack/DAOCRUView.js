@@ -96,17 +96,42 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ui.stack.DetailView',
       name: 'dv',
-      androidFactory: `
+      expressionArgs: ['controllerMode', 'dao$of'],
+      androidExpression: `
         foam.cross_platform.ui.stack.DetailView dv = DetailView_create().build();
         onDetach(dv.getTitle$().follow(getTitle$()));
-        onDetach(dv.getData$().follow(getData$()));
+        onDetach(dv.getData$().linkFrom(getData$()));
+        foam.cross_platform.ui.stack.dao.DAOCRUViewOverrideAxiom[] override = java.util.Arrays.stream(((foam.cross_platform.FoamClass) dao$of)
+          .getAxiomsByClass(foam.cross_platform.ui.stack.dao.DAOCRUViewOverrideAxiom.CLS_()))
+          .map((a) -> {
+            return (foam.cross_platform.ui.stack.dao.DAOCRUViewOverrideAxiom) a;
+          })
+          .filter((a) -> {
+            return a.getControllerMode() == controllerMode;
+          })
+          .toArray(foam.cross_platform.ui.stack.dao.DAOCRUViewOverrideAxiom[]::new);
+
+        if ( override.length > 0 ) {
+          dv.setViewBuilder(override[0].getViewBuilder());
+        }
+
         return dv;
       `,
       swiftOptional: false,
-      swiftFactory: `
+      swiftExpression: `
         let dv = DetailView_create().build();
         onDetach(dv.getTitle$().follow(getTitle$()));
-        onDetach(dv.getData$().follow(getData$()));
+        onDetach(dv.getData$().linkFrom(getData$()));
+        let override = (dao$of as? foam_cross_platform_FoamClass)?.getAxiomsByClass(foam_cross_platform_ui_stack_dao_DAOCRUViewOverrideAxiom.CLS_())?
+          .map({ (a) -> foam_cross_platform_ui_stack_dao_DAOCRUViewOverrideAxiom in
+            return a as! foam_cross_platform_ui_stack_dao_DAOCRUViewOverrideAxiom
+          })
+          .filter({ (a) -> Bool in
+            return a.getControllerMode() === controllerMode
+          })
+        if override != nil && override!.count > 0 {
+          dv.setViewBuilder(override![0].getViewBuilder())
+        }
         return dv;
       `,
     },

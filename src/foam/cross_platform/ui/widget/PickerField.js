@@ -11,10 +11,6 @@ foam.CLASS({
     'foam.cross_platform.ui.stack.DAOListView',
     'foam.cross_platform.ui.widget.ActionButton',
     'foam.cross_platform.ui.widget.Label',
-    {
-      path: 'foam.cross_platform.ui.ios.VerticalLinearLayout',
-      flags: ['swift']
-    }
   ],
   imports: [
     {
@@ -81,10 +77,14 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        let v = foam_cross_platform_ui_ios_VerticalLinearLayout.View([
-          getLabel()!.getView()!,
-          getActionButton()!.getView()!
-        ]);
+        let lv = getLabel()!.getView()!;
+        let bv = getActionButton()!.getView()!
+        let v = UIStackView(arrangedSubviews: [lv, bv])
+        v.axis = .vertical
+        lv.translatesAutoresizingMaskIntoConstraints = false;
+        bv.translatesAutoresizingMaskIntoConstraints = false;
+        lv.widthAnchor.constraint(equalTo: v.widthAnchor, multiplier: 1).isActive = true;
+        bv.widthAnchor.constraint(equalTo: v.widthAnchor, multiplier: 1).isActive = true;
         return v;
       `,
     },
@@ -98,6 +98,7 @@ foam.CLASS({
           .setData(dao)
           .build();
         onDetach(sv.onRowSelected().sub(null, onRowSelected_listener()));
+        onDetach(sv);
         return sv;
       `,
       swiftOptional: false,
@@ -106,6 +107,7 @@ foam.CLASS({
           .setData(dao)
           .build();
         onDetach(dlv.onRowSelected().sub(nil, onRowSelected_listener()));
+        onDetach(dlv);
         return dlv;
       `,
     }
@@ -129,10 +131,12 @@ foam.CLASS({
       androidCode: `
         setData(args.length > 0 ? args[args.length-1] : null);
         getStack().pop();
+        clearProperty("daoList");
       `,
       swiftCode: `
         setData(args?.last ?? nil);
         getStack()?.getNavController().dismiss(animated: true, completion: nil);
+        clearProperty("daoList");
       `
     }
   ],

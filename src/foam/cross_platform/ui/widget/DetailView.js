@@ -114,7 +114,15 @@ foam.CLASS({
       of: 'foam.u2.layout.GridLayout',
       name: 'layout_',
       swiftOptional: false,
-      crossPlatformFactoryValue: { class: 'foam.u2.layout.GridLayout' }
+      crossPlatformFactoryValue: { class: 'foam.u2.layout.GridLayout' },
+      androidPostSet: `
+        newValue.setHorizontalSpacing(ITEM_HORIZONTAL_PADDING());
+        newValue.setVerticalSpacing(ITEM_VERTICAL_PADDING());
+      `,
+      swiftPostSet: `
+        newValue.setHorizontalSpacing(Self.ITEM_HORIZONTAL_PADDING());
+        newValue.setVerticalSpacing(Self.ITEM_VERTICAL_PADDING());
+      `
     },
     {
       androidType: 'android.widget.LinearLayout',
@@ -198,11 +206,6 @@ foam.CLASS({
               dpv,
             })
             .build();
-          dpv.getView().setPadding(
-            ITEM_HORIZONTAL_PADDING(),
-            ITEM_VERTICAL_PADDING(),
-            ITEM_HORIZONTAL_PADDING(),
-            ITEM_VERTICAL_PADDING());
           getLayout_().addView(dpv, a.getGridColumns());
         }
         setSub_(ArrayDetachable_create().setArray(subs).build());
@@ -217,16 +220,10 @@ foam.CLASS({
         if getData() == nil { return; }
         var subs = [] as [foam_core_Detachable?];
         let x = getSubX();
-        let padding = UIEdgeInsets(
-          top: CGFloat(Self.ITEM_VERTICAL_PADDING()),
-          left: CGFloat(Self.ITEM_HORIZONTAL_PADDING()),
-          bottom: CGFloat(Self.ITEM_VERTICAL_PADDING()),
-          right: CGFloat(Self.ITEM_HORIZONTAL_PADDING()));
         for i in 0..<getProps().count {
           let p = getProps()[i]
           let dpv = DetailPropertyView_create(x)
             .build();
-          (dpv.getView() as! foam_cross_platform_ui_widget_DetailPropertyView.View).padding = padding;
           subs.append(dpv.bindData(getData(), p));
           subs.append(dpv);
           getLayout_().addView(dpv, p.getGridColumns());
@@ -236,7 +233,6 @@ foam.CLASS({
           let a = getActions()[i];
           let dpv = DetailPropertyView_create()
             .build();
-          (dpv.getView() as! foam_cross_platform_ui_widget_DetailPropertyView.View).padding = padding;
           subs.append(dpv.bindData(getData(), a)!);
           subs.append(dpv);
           getLayout_().addView(dpv, a.getGridColumns());

@@ -128,9 +128,7 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        let v = View();
-        v.dpv = self;
-        return v;
+        return UIView();
       `
     },
     {
@@ -140,7 +138,6 @@ foam.CLASS({
   ],
   reactions: [
     ['validationView', 'propertyChange.data', 'updateValidationView'],
-    ['', 'propertyChange.data', 'setNeedsLayout', ['swift']],
   ],
   methods: [
     {
@@ -303,20 +300,43 @@ foam.CLASS({
         v.subviews.forEach { sv in
           sv.removeFromSuperview();
         }
-        v.addSubview(getLabelView()!.getView()!);
-        v.addSubview(getDataView()!.getView()!);
-        v.addSubview(getValidationView()!.getView()!);
-        v.addSubview(getHelpView()!.getView()!);
+        let l = getLabelView()!.getView()!;
+        let d = getDataView()!.getView()!;
+        let val = getValidationView()!.getView()!;
+        let h = getHelpView()!.getView()!;
+
+        v.addSubview(l);
+        v.addSubview(d);
+        v.addSubview(val);
+        v.addSubview(h);
+
+        v.translatesAutoresizingMaskIntoConstraints = false;
+        l.translatesAutoresizingMaskIntoConstraints = false;
+        d.translatesAutoresizingMaskIntoConstraints = false;
+        val.translatesAutoresizingMaskIntoConstraints = false;
+        h.translatesAutoresizingMaskIntoConstraints = false;
+
+        let p: CGFloat = 12;
+
+        l.topAnchor.constraint(equalTo: v.topAnchor).isActive = true;
+        l.leadingAnchor.constraint(equalTo: v.leadingAnchor).isActive = true;
+        l.trailingAnchor.constraint(equalTo: h.leadingAnchor, constant: -p).isActive = true;
+
+        h.trailingAnchor.constraint(equalTo: v.trailingAnchor).isActive = true;
+        h.topAnchor.constraint(equalTo: v.topAnchor).isActive = true;
+
+        d.topAnchor.constraint(equalTo: l.bottomAnchor, constant: l.isHidden ? 0 : p).isActive = true;
+        d.leadingAnchor.constraint(equalTo: v.leadingAnchor).isActive = true;
+        d.trailingAnchor.constraint(equalTo: h.leadingAnchor, constant: -p).isActive = true;
+
+        val.topAnchor.constraint(equalTo: d.bottomAnchor, constant: p).isActive = true;
+        val.leadingAnchor.constraint(equalTo: v.leadingAnchor).isActive = true;
+        val.trailingAnchor.constraint(equalTo: h.leadingAnchor, constant: -p).isActive = true;
+        val.bottomAnchor.constraint(equalTo: v.bottomAnchor).isActive = true;
       `,
     }
   ],
   listeners: [
-    {
-      name: 'setNeedsLayout',
-      isFramed: true,
-      flags: ['swift'],
-      swiftCode: `getView()?.setNeedsLayout()`
-    },
     {
       name: 'updateValidationView',
       androidCode: `
@@ -349,79 +369,5 @@ foam.CLASS({
 </vector>
       `
     },
-    {
-      class: 'foam.cross_platform.code_generation.Extras',
-      swiftCode: `
-       class View: UIView {
-          weak var dpv: foam_cross_platform_ui_widget_DetailPropertyView! = nil;
-          var padding: UIEdgeInsets = UIEdgeInsets.zero;
-          func getFrames(_ width: CGFloat) -> [String:CGRect] {
-            super.layoutSubviews();
-            let p: CGFloat = 12;
-            let w = width - padding.left - padding.right;
-            let helpView = dpv.getHelpView()!.getView()!
-            var helpViewFrame = CGRect();
-            helpViewFrame.size = helpView.sizeThatFits(CGSize(
-              width: w,
-              height: CGFloat.greatestFiniteMagnitude
-            ));
-            helpViewFrame.origin.x = width - padding.left - helpViewFrame.width
-            helpViewFrame.origin.y = padding.top
-            let leftWidth = helpViewFrame.origin.x - padding.right - p
-
-            let labelView = dpv.getLabelView()!.getView()!;
-            var labelViewFrame = CGRect();
-            labelViewFrame.size = !labelView.isHidden ? labelView.sizeThatFits(CGSize(
-              width: leftWidth,
-              height: CGFloat.greatestFiniteMagnitude
-            )) : CGSize.zero;
-            labelViewFrame.origin.x = padding.left
-            labelViewFrame.origin.y = padding.top
-
-            let dataView = dpv.getDataView()!.getView()!;
-            var dataViewFrame = CGRect();
-            dataViewFrame.size.height = dataView.sizeThatFits(CGSize(
-              width: leftWidth,
-              height: CGFloat.greatestFiniteMagnitude
-              )).height;
-            dataViewFrame.size.width = leftWidth;
-            dataViewFrame.origin.y = labelView.isHidden ? padding.top : labelViewFrame.maxY + p;
-            dataViewFrame.origin.x = padding.left
-
-            let validationView = dpv.getValidationView()!.getView()!;
-            var validationViewFrame = CGRect();
-            validationViewFrame.size = !validationView.isHidden ? validationView.sizeThatFits(CGSize(
-              width: leftWidth,
-              height: CGFloat.greatestFiniteMagnitude
-            )) : CGSize.zero;
-            validationViewFrame.origin.y = dataViewFrame.maxY + (validationView.isHidden ? 0 : p);
-            validationViewFrame.origin.x = padding.left
-
-            return [
-              "helpView": helpViewFrame,
-              "labelView": labelViewFrame,
-              "dataView": dataViewFrame,
-              "validationView": validationViewFrame
-            ];
-          }
-          override func layoutSubviews() {
-            super.layoutSubviews();
-            let frames = getFrames(frame.width);
-            dpv.getHelpView()?.getView()?.frame = frames["helpView"]!;
-            dpv.getLabelView()?.getView()?.frame = frames["labelView"]!;
-            dpv.getDataView()?.getView()?.frame = frames["dataView"]!;
-            dpv.getValidationView()?.getView()?.frame = frames["validationView"]!;
-          }
-          override func sizeThatFits(_ size: CGSize) -> CGSize {
-            let frames = getFrames(size.width);
-            var h: CGFloat = 0;
-            for f in frames.values {
-              h = max(h, f.maxY)
-            }
-            return CGSize(width: size.width, height: h + padding.bottom);
-          }
-        }
-      `
-    }
-  ],
+  ]
 });

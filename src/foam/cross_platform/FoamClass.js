@@ -4,6 +4,9 @@ foam.CLASS({
   requires: [
     'foam.cross_platform.type.ArrayType'
   ],
+  implements: [
+    'foam.cross_platform.BuilderFactory'
+  ],
   properties: [
     {
       class: 'StringProperty',
@@ -107,11 +110,7 @@ foam.CLASS({
   ],
   methods: [
     {
-      type: 'foam.cross_platform.Builder',
       name: 'createBuilder',
-      args: [
-        { type: 'Context', name: 'x' }
-      ],
       androidCode: `
         return (foam.cross_platform.Builder) getBuilderFactory_().executeFunction(new Object[] {x});
       `,
@@ -214,6 +213,11 @@ foam.CLASS({
       swiftCode: `
         return getAxiomMap_()![name!] as? foam_cross_platform_FObject;
       `,
+    },
+    {
+      name: 'toString',
+      androidCode: 'return getI18nLabel();',
+      swiftCode: 'return getI18nLabel();',
     }
   ]
 });

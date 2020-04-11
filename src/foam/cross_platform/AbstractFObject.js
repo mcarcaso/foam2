@@ -178,6 +178,7 @@ foam.CLASS({
         deinit {
           detach();
         }
+        public override var description: String { return toString() ?? "" }
       `,
       androidCode: `
         public void finalize() {

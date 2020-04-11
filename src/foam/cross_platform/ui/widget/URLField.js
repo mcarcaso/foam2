@@ -11,10 +11,6 @@ foam.CLASS({
   requires: [
     'foam.cross_platform.ui.widget.ActionButton',
     'foam.cross_platform.ui.widget.TextField',
-    {
-      path: 'foam.cross_platform.ui.ios.VerticalLinearLayout',
-      flags: ['swift']
-    }
   ],
   imports: [
     {
@@ -79,10 +75,14 @@ foam.CLASS({
 
       `,
       swiftFactory: `
-        let v = foam_cross_platform_ui_ios_VerticalLinearLayout.View([
-          getTextField()!.getView()!,
-          getActionButton()!.getView()!
-        ]);
+        let lv = getTextField()!.getView()!;
+        let bv = getActionButton()!.getView()!
+        let v = UIStackView(arrangedSubviews: [lv, bv])
+        v.axis = .vertical
+        lv.translatesAutoresizingMaskIntoConstraints = false;
+        bv.translatesAutoresizingMaskIntoConstraints = false;
+        lv.widthAnchor.constraint(equalTo: v.widthAnchor, multiplier: 1).isActive = true;
+        bv.widthAnchor.constraint(equalTo: v.widthAnchor, multiplier: 1).isActive = true;
         return v;
       `,
     }

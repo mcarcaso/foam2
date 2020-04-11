@@ -36,10 +36,19 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        let v = View();
-        v.this = self;
+        let v = UIStackView();
+        v.axis = .vertical;
+        v.distribution = .equalSpacing;
         return v;
       `
+    },
+    {
+      class: 'IntProperty',
+      name: 'horizontalSpacing'
+    },
+    {
+      class: 'IntProperty',
+      name: 'verticalSpacing'
     },
     {
       class: 'ListProperty',
@@ -55,7 +64,9 @@ foam.CLASS({
     },
   ],
   reactions: [
-    ['', 'propertyChange.view', 'updateView']
+    ['', 'propertyChange.view', 'updateView'],
+    ['', 'propertyChange.horizontalSpacing', 'updateView'],
+    ['', 'propertyChange.verticalSpacing', 'updateView'],
   ],
   methods: [
     {
@@ -93,10 +104,6 @@ foam.CLASS({
           getSubs_()?.add(isHiddenSlot!.slotSub(updateView_listener())!);
         }
         updateView(nil, nil);
-
-        let v = view!.getView()!;
-        v.removeFromSuperview();
-        getView()?.addSubview(v);
       `,
     },
     {
@@ -119,56 +126,13 @@ foam.CLASS({
         updateView(nil, nil);
       `
     },
-    {
-      swiftType: '[CGRect?]',
-      swiftArgs: [
-        { localName: 'w', type: 'CGFloat' }
-      ],
-      name: 'getFrames',
-      swiftCode: `
-        let views = getViews_()!;
-        let gridColumns = getGridColumns_()!;
-        var frames: [CGRect?] = [];
-
-        var curViewIndex = 0;
-        var curRowY: CGFloat = 0;
-        repeat {
-          var curRowCols = 0;
-          var curRowX: CGFloat = 0;
-          var curRowHeight: CGFloat = 0;
-          while curViewIndex < views.count && curRowCols < Self.COLS() {
-            let fo = views[curViewIndex] as! foam_cross_platform_FObject
-            let isHidden = fo.getProperty("isHidden");
-            if isHidden != nil && (isHidden as! Bool) {
-              frames.append(nil);
-              curViewIndex += 1;
-              continue;
-            }
-            let v = fo.getProperty("view") as! UIView;
-            let gridCols = gridColumns[curViewIndex] as! foam_u2_layout_GridColumns;
-            let cols = gridCols.getProperty(getDisplayWidth()?.getName()?.lowercased()) as! Int
-            if ( curRowCols + cols > Self.COLS() ) { break; }
-            let vw = w * CGFloat(cols) / CGFloat(Self.COLS());
-            let vh = v.sizeThatFits(CGSize(width: vw, height: .greatestFiniteMagnitude)).height;
-            let frame = CGRect(x: curRowX, y: curRowY, width: vw, height: vh);
-            frames.append(frame);
-            curRowHeight = max(curRowHeight, vh);
-            curRowX = frame.maxX;
-            curViewIndex += 1;
-            curRowCols += cols;
-          }
-          curRowY += curRowHeight;
-        } while curViewIndex < views.count;
-        return frames;
-      `
-    }
   ],
   listeners: [
     {
       name: 'updateView',
       isFramed: true,
       androidCode: `
-        for ( int i = 0 ; i < getView().getChildCount() ; i++ ) {
+        for ( int i = 0 ; i < getView().getChildCount() ; i+=2 ) { // +2 to account for spacer.
           android.widget.LinearLayout v = (android.widget.LinearLayout) getView().getChildAt(i);
           v.removeAllViews();
         }
@@ -178,6 +142,13 @@ foam.CLASS({
         do {
           int curRowCols = 0;
           android.widget.LinearLayout curRow = new android.widget.LinearLayout(getAndroidContext());
+          if ( curViewIndex != 0 ) {
+            android.widget.Space space = new android.widget.Space(getAndroidContext());
+            space.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                getVerticalSpacing()));
+            getView().addView(space);
+          }
           curRow.setOrientation(android.widget.LinearLayout.HORIZONTAL);
           curRow.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
               android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
@@ -193,6 +164,13 @@ foam.CLASS({
             foam.u2.layout.GridColumns gridCols = (foam.u2.layout.GridColumns) getGridColumns_().get(curViewIndex);
             int cols = (int) gridCols.getProperty(getDisplayWidth().getName().toLowerCase());
             if ( curRowCols + cols > COLS() ) break;
+            if ( curRowCols != 0 ) {
+              android.widget.Space space = new android.widget.Space(getAndroidContext());
+              space.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+                  getHorizontalSpacing(),
+                  android.widget.LinearLayout.LayoutParams.MATCH_PARENT));
+              curRow.addView(space);
+            }
             v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
               0,
               android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -213,61 +191,55 @@ foam.CLASS({
         } while ( curViewIndex < getViews_().size() );
       `,
       swiftCode: `
-        getView()?.setNeedsLayout();
+        let parent = getView() as! UIStackView
+        for v in parent.arrangedSubviews {
+          parent.removeArrangedSubview(v);
+        }
+        parent.spacing = CGFloat(getVerticalSpacing())
+        let hp = CGFloat(getHorizontalSpacing());
+
+        let views = getViews_()!;
+        let gridColumns = getGridColumns_()!;
+
+        var curViewIndex = 0;
+        repeat {
+          var curRowCols = 0;
+          var rowViews: [UIView] = []
+          var rowViewCols: [CGFloat] = []
+          while curViewIndex < views.count && curRowCols < Self.COLS() {
+            let fo = views[curViewIndex] as! foam_cross_platform_FObject
+            let isHidden = fo.getProperty("isHidden");
+            if isHidden != nil && (isHidden as! Bool) {
+              curViewIndex += 1;
+              continue;
+            }
+            let v = fo.getProperty("view") as! UIView;
+            let gridCols = gridColumns[curViewIndex] as! foam_u2_layout_GridColumns;
+            let cols = gridCols.getProperty(getDisplayWidth()?.getName()?.lowercased()) as! Int
+            if ( curRowCols + cols > Self.COLS() ) { break; }
+            v.removeFromSuperview();
+            rowViews.append(v);
+            rowViewCols.append(CGFloat(cols) / CGFloat(Self.COLS()));
+            curViewIndex += 1;
+            curRowCols += cols;
+          }
+          let rowView = UIView();
+          let totalPadding = CGFloat(rowViews.count - 1) * hp / 2
+          for i in 0..<rowViews.count {
+            let v = rowViews[i];
+            rowView.addSubview(v);
+            rowView.heightAnchor.constraint(greaterThanOrEqualTo: v.heightAnchor).isActive = true;
+            v.topAnchor.constraint(equalTo: rowView.topAnchor).isActive = true;
+            v.widthAnchor.constraint(equalTo: rowView.widthAnchor, multiplier: rowViewCols[i], constant: -totalPadding).isActive = true;
+            if i == 0 {
+              v.leadingAnchor.constraint(equalTo: rowView.leadingAnchor).isActive = true;
+            } else {
+              v.leadingAnchor.constraint(equalTo: rowViews[i-1].trailingAnchor, constant: hp).isActive = true;
+            }
+          }
+          parent.addArrangedSubview(rowView);
+        } while curViewIndex < views.count;
       `
     }
   ],
-  axioms: [
-    {
-      class: 'foam.cross_platform.code_generation.Extras',
-      swiftCode: `
-        class View: UIView {
-          weak var this: foam_u2_layout_GridLayout?;
-          var heightConstraint: NSLayoutConstraint! = nil;
-          override init(frame: CGRect) {
-            super.init(frame: frame);
-            heightConstraint = heightAnchor.constraint(equalToConstant: 0);
-            heightConstraint.isActive = true;
-          }
-          required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-          }
-          override func layoutSubviews() {
-            super.layoutSubviews();
-            guard let this = this else { return }
-            var height: CGFloat = 0;
-            let frames = this.getFrames(frame.width);
-            let views = this.getViews_()!;
-            for i in 0..<views.count {
-              let v = (views[i] as! foam_cross_platform_ui_View).getView()!;
-              let f = frames[i];
-              if f == nil {
-                v.isHidden = true;
-              } else {
-                v.isHidden = false;
-                v.frame = f!;
-                height = max(height, f!.maxY);
-              }
-            }
-            heightConstraint.constant = height;
-          }
-          override func sizeThatFits(_ size: CGSize) -> CGSize {
-            guard let this = this else {
-              return CGSize(width: size.width, height: 0);
-            }
-            let frames = this.getFrames(size.width);
-            var height: CGFloat = 0;
-            for i in stride(from: frames.count-1, through: 0, by: -1) {
-              let f = frames[i];
-              if f != nil {
-                height = f!.maxY;
-                break;
-              }
-            }
-            return CGSize(width: size.width, height: height);
-          }
-        }
-      `
-    }
-  ]
 });
