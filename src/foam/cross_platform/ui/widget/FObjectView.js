@@ -7,7 +7,7 @@ foam.CLASS({
   requires: [
     'foam.cross_platform.ui.widget.DetailView',
     'foam.cross_platform.ui.widget.DetailPropertyView',
-    'foam.cross_platform.ui.widget.PickerField',
+    'foam.cross_platform.ui.widget.DAOChoiceView',
     'foam.dao.ArrayDAO',
   ],
   imports: [
@@ -73,7 +73,7 @@ foam.CLASS({
       class: 'ClassProperty',
       name: 'type',
       cpView: {
-        class: 'foam.cross_platform.ui.widget.PickerField'
+        class: 'foam.cross_platform.ui.widget.DAOChoiceView'
       },
       expressionArgs: ['data'],
       androidExpression: `
@@ -113,7 +113,7 @@ foam.CLASS({
         foam.cross_platform.ui.widget.DetailPropertyView dpv = DetailPropertyView_create()
           .build();
         onDetach(dpv.bindData(this, TYPE()));
-        foam.cross_platform.ui.widget.PickerField v = (foam.cross_platform.ui.widget.PickerField) dpv.getDataView();
+        foam.cross_platform.ui.widget.DAOChoiceView v = (foam.cross_platform.ui.widget.DAOChoiceView) dpv.getDataView();
         v.setDao(ArrayDAO_create()
           .setArray(classes)
           .build());

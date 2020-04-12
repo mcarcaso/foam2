@@ -1,6 +1,6 @@
 foam.CLASS({
   package: 'foam.cross_platform.ui.widget',
-  name: 'PickerField',
+  name: 'DAOChoiceView',
   implements: [
     'foam.cross_platform.ui.AxiomView',
   ],
