@@ -6,7 +6,6 @@ foam.CLASS({
   ],
   requires: [
     'foam.cross_platform.ui.widget.DetailView',
-    'foam.intent.DAOUpdateIntent',
   ],
   imports: [
     {

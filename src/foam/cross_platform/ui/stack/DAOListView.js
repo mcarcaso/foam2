@@ -12,8 +12,6 @@ foam.CLASS({
     'foam.cross_platform.ui.widget.DefaultCitationView',
     'foam.dao.ArraySink',
     'foam.dao.ListenerSink',
-    'foam.intent.DAOCreateIntent',
-    'foam.intent.DAOReadIntent',
     'foam.mlang.sink.Count',
     {
       path: 'foam.cross_platform.ui.android.RowActionSwipeHelper',
