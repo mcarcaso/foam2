@@ -197,6 +197,7 @@ FOAM_FILES([
   { name: "foam/cross_platform/code_generation/refines/Constant" },
   { name: "foam/cross_platform/code_generation/refines/android_java/Constant" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/Constant" },
+  { name: "foam/cross_platform/code_generation/refines/InnerClass" },
   { name: "foam/cross_platform/code_generation/refines/android_java/InnerClass" },
   { name: "foam/cross_platform/code_generation/refines/ios_swift/InnerClass" },
   { name: "foam/cross_platform/code_generation/refines/Slot" },

@@ -10,9 +10,6 @@ foam.CLASS({
     }
   ],
   methods: [
-    function getDeps(flagFilter, deps) {
-      this.model.buildClass().getDeps(flagFilter, deps);
-    },
     function buildSwiftClass(cls, parentCls) {
       if ( ! parentCls.hasOwnAxiom(this.name) ) return;
       var innerClass = this.model.buildClass().buildSwiftClass();
@@ -28,4 +25,3 @@ foam.CLASS({
     }
   ]
 });
-
