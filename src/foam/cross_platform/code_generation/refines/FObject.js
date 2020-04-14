@@ -1,6 +1,5 @@
 foam.LIB({
   name: 'foam.core.FObject',
-  flags: ['android'],
   methods: [
     function toCrossPlatformClass(flagFilter) {
       return foam.cross_platform.FoamClass.create({
