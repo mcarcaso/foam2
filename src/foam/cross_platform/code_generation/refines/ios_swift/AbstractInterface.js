@@ -34,9 +34,26 @@ foam.CLASS({
             'Foundation',
             this.model_.swiftImports
           );
-
           return protocol;
         };
+
+        cls.swiftBuilderString = function (cls) {
+          var facet = this.getAxiomsByClass(foam.cross_platform.code_generation.Faceted)[0];
+          if ( !facet ) return '';
+          return `
+            initClassInfo_!.setBuilderFactory_(foam_swift_AnonymousGenericFunction
+              .foam_swift_AnonymousGenericFunctionBuilder(nil)
+              .setFn({(args: [Any?]?) -> Any? in
+                return foam_cross_platform_FacetedBuilder
+                  .foam_cross_platform_FacetedBuilderBuilder(args?[0] as? foam_cross_platform_Context)
+                  .setName("${this.model_.name}")
+                  .setOfProperty("${facet.property}")
+                  .setDefaultImpl("${facet.defaultImpl}")
+                  .build();
+              })
+              .build());
+          `;
+        }
       }
     }
   ]

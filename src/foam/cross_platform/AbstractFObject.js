@@ -498,6 +498,67 @@ foam.CLASS({
         }
         return clone;
       `
+    },
+    {
+      name: 'copyFrom',
+      androidCode: `
+        if ( o instanceof java.util.Map ) {
+          java.util.Map m = (java.util.Map) o;
+          for ( Object k : m.keySet() ) {
+            setProperty((String) k, m.get(k));
+          }
+        }
+
+        if ( o instanceof foam.cross_platform.FObject ) {
+          foam.cross_platform.FObject fobj = (foam.cross_platform.FObject) o;
+          Object[] props = getCls_().getAxiomsByClass(foam.core.Property.CLS_());
+          if ( fobj.getCls_().isSubClass(getCls_()) ) {
+            for ( Object a : props ) {
+              foam.core.Property p = (foam.core.Property) a;
+              if ( fobj.hasPropertySet(p.getName()) ) {
+                setProperty(p.getName(), fobj.getProperty(p.getName()));
+              }
+            }
+          } else {
+            for ( Object a : props ) {
+              foam.core.Property p = (foam.core.Property) a;
+              Object oa = fobj.getCls_().getAxiomByName(p.getName());
+              if ( foam.core.Property.CLS_().isInstance(oa) ) {
+                setProperty(p.getName(), fobj.getProperty(p.getName()));
+              }
+            }
+          }
+        }
+      `,
+      swiftCode: `
+        if o is NSDictionary {
+          let d = o as! NSDictionary
+          for k in d.allKeys {
+            setProperty(k as? String, d[k]);
+          }
+        }
+
+        if o is foam_cross_platform_FObject {
+          let fobj = o as! foam_cross_platform_FObject;
+          let props = getCls_()!.getAxiomsByClass(foam_core_Property.CLS_())!;
+          if fobj.getCls_()!.isSubClass(getCls_()) {
+            for a in props {
+              let p = a as! foam_core_Property;
+              if fobj.hasPropertySet(p.getName()) {
+                setProperty(p.getName(), fobj.getProperty(p.getName()));
+              }
+            }
+          } else {
+            for a in props {
+              let p = a as! foam_core_Property;
+              let oa = fobj.getCls_()?.getAxiomByName(p.getName())
+              if foam_core_Property.CLS_().isInstance(oa) {
+                setProperty(p.getName(), fobj.getProperty(p.getName()));
+              }
+            }
+          }
+        }
+      `
     }
   ]
 });

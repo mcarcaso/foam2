@@ -71,17 +71,11 @@ foam.CLASS({
     },
     {
       class: 'ClassProperty',
-      name: 'type',
+      name: 'of',
+      label: 'Type',
       cpView: {
         class: 'foam.cross_platform.ui.widget.DAOChoiceView'
       },
-      expressionArgs: ['data'],
-      androidExpression: `
-        return data == null ? null : data.getCls_();
-      `,
-      swiftExpression: `
-        return data?.getCls_();
-      `
     },
     {
       class: 'FObjectProperty',
@@ -112,7 +106,7 @@ foam.CLASS({
       androidExpression: `
         foam.cross_platform.ui.widget.DetailPropertyView dpv = DetailPropertyView_create()
           .build();
-        onDetach(dpv.bindData(this, TYPE()));
+        onDetach(dpv.bindData(this, OF()));
         foam.cross_platform.ui.widget.DAOChoiceView v = (foam.cross_platform.ui.widget.DAOChoiceView) dpv.getDataView();
         v.setDao(ArrayDAO_create()
           .setArray(classes)
@@ -122,8 +116,8 @@ foam.CLASS({
       swiftExpression: `
         let dpv = DetailPropertyView_create()
           .build();
-        onDetach(dpv.bindData(self, Self.TYPE()))
-        let v = dpv.getDataView() as? foam_cross_platform_ui_widget_PickerField;
+        onDetach(dpv.bindData(self, Self.OF()))
+        let v = dpv.getDataView() as? foam_cross_platform_ui_widget_DAOChoiceView;
         v?.setDao(ArrayDAO_create()
           .setArray(classes)
           .build());
@@ -172,32 +166,36 @@ foam.CLASS({
     },
   ],
   reactions: [
-    ['picker', 'propertyChange.data', 'onPickerUpdate'],
+    ['', 'propertyChange.of', 'onOfUpdate'],
     ['', 'propertyChange.data', 'onDataUpdate'],
   ],
   listeners: [
     {
-      name: 'onPickerUpdate',
+      name: 'onOfUpdate',
       androidCode: `
-        Object cls = getPicker().getData();
+        foam.cross_platform.FoamClass cls = getOf();
         if ( cls == null ) return;
-        if ( foam.cross_platform.Lib.equals(cls, getData().getCls_()) ) return;
-        setData(((foam.cross_platform.FoamClass) cls).createBuilder(getSubX()).builderBuild());
+        if ( foam.cross_platform.Lib.equals(cls, getData() == null ? null : getData().getCls_()) ) return;
+        foam.cross_platform.FObject data = cls.createBuilder(getSubX()).builderBuild();
+        data.copyFrom(getData());
+        setData(data);
       `,
       swiftCode: `
-        let cls = getPicker()?.getData();
+        let cls = getOf();
         if cls == nil { return }
         if foam_cross_platform_Lib.equals(cls, getData()?.getCls_()) { return }
-        setData((cls as? foam_cross_platform_FoamClass)?.createBuilder(getSubX())?.builderBuild());
+        let data = cls?.createBuilder(getSubX())?.builderBuild();
+        data?.copyFrom(getData());
+        setData(data);
       `
     },
     {
       name: 'onDataUpdate',
       androidCode: `
-        getPicker().setData(getData().getCls_());
+        setOf(getData() == null ? null : getData().getCls_());
       `,
       swiftCode: `
-        getPicker()?.setData(getData()?.getCls_());
+        setOf(getData()?.getCls_());
       `
     }
   ]

@@ -38,12 +38,12 @@ foam.CLASS({
       name: 'label',
       androidFactory: `
         foam.cross_platform.ui.widget.Label tf = Label_create().build();
-        onDetach(getData$().linkFrom(tf.getData$()));
+        onDetach(tf.getData$().follow(getData$()));
         return tf;
       `,
       swiftFactory: `
         let tf = Label_create().build();
-        onDetach(getData$().linkFrom(tf.getData$()));
+        onDetach(tf.getData$().follow(getData$()));
         return tf;
       `
     },
@@ -115,6 +115,9 @@ foam.CLASS({
   actions: [
     {
       name: 'select',
+      isAvailableArgs: ['controllerMode'],
+      androidIsAvailable: 'return controllerMode != foam.u2.ControllerMode.VIEW;',
+      swiftIsAvailable: 'return controllerMode !== foam_u2_ControllerMode.VIEW;',
       androidCode: `
         getStack().push(getDaoList());
       `,
@@ -144,10 +147,12 @@ foam.CLASS({
     {
       name: 'bindData',
       androidCode: `
-        return getLabel().bindData(data, axiom);
+        foam.core.Property p = (foam.core.Property) axiom;
+        return getData$().linkFrom(data.getSlot(p.getName()));
       `,
       swiftCode: `
-        return getLabel()?.bindData(data, axiom);
+        let p = axiom as! foam_core_Property;
+        return getData$().linkFrom(data?.getSlot(p.getName()));
       `,
     },
   ]

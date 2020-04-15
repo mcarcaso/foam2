@@ -34,6 +34,23 @@ foam.CLASS({
 
           return javaInterface;
         };
+
+        cls.androidBuilderString = function(cls) {
+          var facet = this.getAxiomsByClass(foam.cross_platform.code_generation.Faceted)[0];
+          if ( ! facet ) return '';
+          return `
+            initClassInfo_.setBuilderFactory_(new foam.cross_platform.GenericFunction() {
+              public Object executeFunction(Object[] args) {
+                return foam.cross_platform.FacetedBuilder
+                  .FacetedBuilderBuilder((foam.cross_platform.Context) args[0])
+                  .setName("${this.model_.name}")
+                  .setOfProperty("${facet.property}")
+                  .setDefaultImpl("${facet.defaultImpl}")
+                  .build();
+              }
+            });
+          `;
+        }
       }
     }
   ]

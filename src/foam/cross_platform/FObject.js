@@ -116,5 +116,11 @@ foam.INTERFACE({
         { type: 'Context', name: 'x' }
       ]
     },
+    {
+      name: 'copyFrom',
+      args: [
+        { type: 'Any', name: 'o' }
+      ]
+    },
   ]
 });

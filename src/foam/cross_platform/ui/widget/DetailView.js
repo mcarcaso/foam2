@@ -2,7 +2,7 @@ foam.CLASS({
   package: 'foam.cross_platform.ui.widget',
   name: 'DetailView',
   implements: [
-    'foam.cross_platform.ui.AxiomView'
+    'foam.cross_platform.ui.widget.DetailViewInterface'
   ],
   requires: [
     'foam.util.ArrayDetachable',
@@ -146,19 +146,6 @@ foam.CLASS({
     ['', 'propertyChange.props', 'updateView'],
     ['', 'propertyChange.actions', 'updateView'],
     ['', 'propertyChange.view', 'updateView'],
-  ],
-  methods: [
-    {
-      name: 'bindData',
-      androidCode: `
-        // TODO: For FObjectPropertyView?
-        return null;
-      `,
-      swiftCode: `
-        // TODO: For FObjectPropertyView?
-        return nil;
-      `,
-    },
   ],
   listeners: [
     {

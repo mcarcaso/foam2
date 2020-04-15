@@ -13,6 +13,7 @@ foam.CLASS({
     'foam.mlang.predicate.Eq',
     'foam.mlang.Constant',
     'foam.dao.ListenerSink',
+    'foam.cross_platform.FObjectBuilder',
   ],
   imports: [
     {
@@ -96,42 +97,28 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ui.stack.DetailView',
       name: 'dv',
-      expressionArgs: ['controllerMode', 'dao$of'],
+      expressionArgs: ['dao$of'],
       androidExpression: `
-        foam.cross_platform.ui.stack.DetailView dv = DetailView_create().build();
+        foam.cross_platform.ui.stack.DetailView dv = DetailView_create()
+          .setViewBuilder(FObjectBuilder_create()
+            .setCls(foam.cross_platform.ui.widget.DetailViewInterfaceClass.CLS_())
+            .setArgs(new java.util.HashMap() {{ put("of", dao$of); }})
+            .build())
+          .build();
         onDetach(dv.getTitle$().follow(getTitle$()));
         onDetach(dv.getData$().linkFrom(getData$()));
-        foam.cross_platform.ui.stack.dao.DAOCRUViewOverrideAxiom[] override = java.util.Arrays.stream(((foam.cross_platform.FoamClass) dao$of)
-          .getAxiomsByClass(foam.cross_platform.ui.stack.dao.DAOCRUViewOverrideAxiom.CLS_()))
-          .map((a) -> {
-            return (foam.cross_platform.ui.stack.dao.DAOCRUViewOverrideAxiom) a;
-          })
-          .filter((a) -> {
-            return a.getControllerMode() == controllerMode;
-          })
-          .toArray(foam.cross_platform.ui.stack.dao.DAOCRUViewOverrideAxiom[]::new);
-
-        if ( override.length > 0 ) {
-          dv.setViewBuilder(override[0].getViewBuilder());
-        }
-
         return dv;
       `,
       swiftOptional: false,
       swiftExpression: `
-        let dv = DetailView_create().build();
+        let dv = DetailView_create()
+          .setViewBuilder(FObjectBuilder_create()
+            .setCls(foam_cross_platform_ui_widget_DetailViewInterfaceClass.CLS_())
+            .setArgs(["of": dao$of])
+            .build())
+          .build();
         onDetach(dv.getTitle$().follow(getTitle$()));
         onDetach(dv.getData$().linkFrom(getData$()));
-        let override = (dao$of as? foam_cross_platform_FoamClass)?.getAxiomsByClass(foam_cross_platform_ui_stack_dao_DAOCRUViewOverrideAxiom.CLS_())?
-          .map({ (a) -> foam_cross_platform_ui_stack_dao_DAOCRUViewOverrideAxiom in
-            return a as! foam_cross_platform_ui_stack_dao_DAOCRUViewOverrideAxiom
-          })
-          .filter({ (a) -> Bool in
-            return a.getControllerMode() === controllerMode
-          })
-        if override != nil && override!.count > 0 {
-          dv.setViewBuilder(override![0].getViewBuilder())
-        }
         return dv;
       `,
     },

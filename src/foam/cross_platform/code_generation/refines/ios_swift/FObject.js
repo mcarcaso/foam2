@@ -225,6 +225,16 @@ ${override ? `
 
       return cls;
     },
+    function swiftBuilderString(cls) {
+      return this.model_.abstract ? '' : `
+        initClassInfo_!.setBuilderFactory_(foam_swift_AnonymousGenericFunction  .foam_swift_AnonymousGenericFunctionBuilder(nil)
+          .setFn({(args: [Any?]?) -> Any? in
+            return ${cls.name}Builder_.getInstance(args![0] as? foam_cross_platform_Context);
+          })
+          .build()
+        );
+      `
+    },
     function addSwiftStaticClassInfo(cls) {
       var flagFilter = foam.util.flagFilter(['swift']);
       var cInfo = this.toCrossPlatformClass(flagFilter);
@@ -248,14 +258,7 @@ ${override ? `
               ${foam.swift.asSwiftValue(this.model_.plural)},
               comment: ${foam.swift.asSwiftValue(this.model_.i18nPluralDescription)}
             ))
-            ${this.model_.abstract || foam.core.AbstractInterface.isSubClass(this) ? '' : `
-            initClassInfo_!.setBuilderFactory_(foam_swift_AnonymousGenericFunction  .foam_swift_AnonymousGenericFunctionBuilder(nil)
-              .setFn({(args: [Any?]?) -> Any? in
-                return ${cls.name}Builder_.getInstance(args![0] as? foam_cross_platform_Context);
-              })
-              .build()
-            );
-            `}
+            ${this.swiftBuilderString(cls)}
             ${cInfo.cls_.getAxiomsByClass(foam.core.Property)
                 .filter(flagFilter)
                 .filter(p => cInfo.hasOwnProperty(p.name))

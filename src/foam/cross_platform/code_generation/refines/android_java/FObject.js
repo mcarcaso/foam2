@@ -205,6 +205,15 @@ ${cls.extends ? `
 
       return cls;
     },
+    function androidBuilderString(cls) {
+      return this.model_.abstract ? '' : `
+        initClassInfo_.setBuilderFactory_(new foam.cross_platform.GenericFunction() {
+          public Object executeFunction(Object[] args) {
+            return ${cls.name}Builder_.getInstance((foam.cross_platform.Context) args[0]);
+          }
+        });
+      `;
+    },
     function addAndroidStaticClassInfo(cls) {
       var flagFilter = foam.util.flagFilter(['android']);
       var cInfo = this.toCrossPlatformClass(flagFilter);
@@ -221,13 +230,7 @@ ${cls.extends ? `
             foam.cross_platform.Context x = foam.cross_platform.Context.GLOBAL();
             initClassInfo_.setI18nLabel(x.getLocalizedString("${this.id.replace(/\./g, '_')}_Label"));
             initClassInfo_.setI18nPlural(x.getLocalizedString("${this.id.replace(/\./g, '_')}_Plural"));
-            ${this.model_.abstract || foam.core.AbstractInterface.isSubClass(this) ? '' : `
-            initClassInfo_.setBuilderFactory_(new foam.cross_platform.GenericFunction() {
-              public Object executeFunction(Object[] args) {
-                return ${cls.name}Builder_.getInstance((foam.cross_platform.Context) args[0]);
-              }
-            });
-            `}
+            ${this.androidBuilderString(cls)}
             ${cInfo.cls_.getAxiomsByClass(foam.core.Property)
                 .filter(flagFilter)
                 .filter(p => cInfo.hasOwnProperty(p.name))
