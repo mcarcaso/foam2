@@ -60,9 +60,9 @@ foam.CLASS({
             v.addView(sv);
             return v;
           }
-          public void onDestroy() {
-            super.onDestroy();
-            sub.detach();
+          public void onDestroyView() {
+            super.onDestroyView();
+            if ( sub != null ) sub.detach();
           }
         }
       `,
