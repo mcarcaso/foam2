@@ -117,9 +117,12 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'androidSetProperty',
-      expression: function(crossPlatformSetterName) {
-        return `${crossPlatformSetterName}(value);`
+      name: 'androidSetPropertyMap',
+      expression: function(name, crossPlatformSetterName, crossPlatformSlotSetterName) {
+        var m = {};
+        m[name] = `${crossPlatformSetterName}(value);`;
+        m[name + '$'] = `onDetach(${crossPlatformSlotSetterName}(value));`;
+        return m;
       }
     },
     {
@@ -182,6 +185,15 @@ foam.CLASS({
               .build();
           }
           return ${this.crossPlatformSlotVarName};
+        `
+      });
+      cls.method({
+        visibility: 'public',
+        type: 'foam.core.Detachable',
+        name: this.crossPlatformSlotSetterName,
+        args: [{type: 'Object', name: 'slot'}],
+        body: `
+          return ${this.crossPlatformSlotGetterName}().linkFrom((foam.core.SlotInterface) slot);
         `
       });
 

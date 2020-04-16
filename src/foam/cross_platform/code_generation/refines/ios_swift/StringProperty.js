@@ -9,10 +9,12 @@ foam.CLASS({
   properties: [
     {
       name: 'swiftAdapt',
-      value: `
-        if newValue is String? { return newValue as? String }
-        return String(describing: newValue!);
-      `
+      expression: function(swiftOptional) {
+        return `
+          if newValue is String? { return newValue as${swiftOptional ? '?' : '!'} String }
+          return String(describing: newValue!);
+        `
+      }
     }
   ]
 });

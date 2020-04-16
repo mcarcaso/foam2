@@ -1,11 +1,11 @@
 foam.CLASS({
   package: 'foam.cross_platform.ui.stack',
-  name: 'DetailView',
+  name: 'ScrollingWidgetView',
+  topics: [
+    'onInvalidate'
+  ],
   implements: [
     'foam.cross_platform.ui.Stackable'
-  ],
-  requires: [
-    'foam.cross_platform.ui.widget.DetailView',
   ],
   imports: [
     {
@@ -27,35 +27,37 @@ foam.CLASS({
       androidCode: `
         public static class Fragment extends foam.cross_platform.ui.stack.Stack.ToolbarFragment {
           public foam.core.Detachable sub;
-          public foam.core.SlotInterface data$;
-          public foam.cross_platform.ui.View dv;
+          public ScrollingWidgetView self;
+          public foam.cross_platform.FObject v;
           public Fragment(
-              foam.core.SlotInterface data$,
-              foam.cross_platform.ui.View dv,
-              foam.cross_platform.Context x) {
-            super(x);
-            this.data$ = data$;
-            this.dv = dv;
-          }
-          public void finalize() {
-            ((foam.cross_platform.FObject) dv).detach();
+              ScrollingWidgetView self) {
+            super(self.getX());
+            this.self = self;
           }
           public android.view.View onCreateView(
               android.view.LayoutInflater inflater,
               android.view.ViewGroup container,
               android.os.Bundle savedInstanceState) {
             android.widget.ScrollView sv = new android.widget.ScrollView(getContext());
-            if ( dv.getView().getParent() != null ) {
-              ((android.widget.ScrollView) dv.getView().getParent()).removeAllViews();
-            }
-            sv.addView(dv.getView());
+
+            foam.cross_platform.Listener l = (sub, args) -> {
+              if ( this.v != null ) this.v.detach();
+              this.v = null;
+              sv.removeAllViews();
+              if ( self.getViewBuilder() == null ) return;
+              v = self.getViewBuilder().createBuilder(self.getX()).builderBuild();
+              android.view.View view = (android.view.View) v.getProperty("view");
+              int vp = self.getVerticalPadding();
+              int hp = self.getHorizontalPadding();
+              view.setPadding(hp, vp, hp, vp);
+              sv.addView(view);
+            };
+            sub = self.onInvalidate().sub(null, l);
+            l.executeListener(null, null);
+
             android.widget.LinearLayout v = (android.widget.LinearLayout)
               super.onCreateView(inflater, container, savedInstanceState);
             v.addView(sv);
-            int vp = foam.cross_platform.ui.widget.DetailView.ITEM_VERTICAL_PADDING();
-            int hp = foam.cross_platform.ui.widget.DetailView.ITEM_HORIZONTAL_PADDING();
-            dv.getView().setPadding(hp, vp, hp, vp);
-            sub = ((foam.cross_platform.FObject) dv).getSlot("data").linkFrom(data$);
             return v;
           }
           public void onDestroy() {
@@ -66,40 +68,44 @@ foam.CLASS({
       `,
       swiftCode: `
         class ViewController: UIViewController {
-          let dv: foam_cross_platform_ui_View;
-          let data$: foam_core_SlotInterface;
-          var sub: foam_core_Detachable?;
-          init(_ dv: foam_cross_platform_ui_View,
-               _ data$: foam_core_SlotInterface) {
-            self.dv = dv;
-            self.data$ = data$;
+          var sub: foam_core_Detachable? = nil;
+          var this: foam_cross_platform_ui_stack_ScrollingWidgetView;
+          var v: foam_cross_platform_FObject? = nil;
+          var child: UIView? = nil;
+          init(_ this: foam_cross_platform_ui_stack_ScrollingWidgetView) {
+            self.this = this;
             super.init(nibName: nil, bundle: nil);
             let sv = UIScrollView(frame: view.frame);
             sv.keyboardDismissMode = .onDrag
             view = sv
-            let v = dv.getView()!;
-            sv.addSubview(v)
 
-            let vp = CGFloat(foam_cross_platform_ui_widget_DetailView.ITEM_VERTICAL_PADDING());
-            let hp = CGFloat(foam_cross_platform_ui_widget_DetailView.ITEM_HORIZONTAL_PADDING());
-            v.translatesAutoresizingMaskIntoConstraints = false;
-            v.topAnchor.constraint(equalTo: sv.topAnchor, constant: vp).isActive = true
-            v.leadingAnchor.constraint(equalTo: sv.leadingAnchor, constant: hp).isActive = true
-            v.trailingAnchor.constraint(equalTo: sv.trailingAnchor, constant: 0).isActive = true
-            v.bottomAnchor.constraint(equalTo: sv.bottomAnchor, constant: -vp).isActive = true
-            v.widthAnchor.constraint(equalTo: sv.widthAnchor, constant: -2*hp).isActive = true
+            let l = <%=listener(\`
+              let this = self!.this;
+              self!.v?.detach();
+              self!.v = nil;
+              self!.child?.removeFromSuperview();
+              self!.child = nil;
+              if ( this.getViewBuilder() == nil ) { return }
+              self!.v = this.getViewBuilder()!.createBuilder(this.getX())?.builderBuild();
+              self!.child = self!.v!.getProperty("view") as? UIView;
+              sv.addSubview(self!.child!);
+              let vp = CGFloat(this.getVerticalPadding());
+              let hp = CGFloat(this.getHorizontalPadding());
+              self!.child!.translatesAutoresizingMaskIntoConstraints = false;
+              self!.child!.topAnchor.constraint(equalTo: sv.topAnchor, constant: vp).isActive = true
+              self!.child!.leadingAnchor.constraint(equalTo: sv.leadingAnchor, constant: hp).isActive = true
+              self!.child!.trailingAnchor.constraint(equalTo: sv.trailingAnchor, constant: 0).isActive = true
+              self!.child!.bottomAnchor.constraint(equalTo: sv.bottomAnchor, constant: -vp).isActive = true
+              self!.child!.widthAnchor.constraint(equalTo: sv.widthAnchor, constant: -2*hp).isActive = true
+            \`)%>
+            sub = this.onInvalidate().sub(nil, l);
+            l.executeListener(nil, nil);
           }
           required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
           }
           deinit {
-            (dv as? foam_cross_platform_FObject)?.detach();
             sub?.detach();
-          }
-          override func viewDidLoad() {
-            super.viewDidLoad()
-            sub?.detach();
-            sub = (dv as? foam_cross_platform_FObject)?.getSlot("data")?.linkFrom(data$);
           }
           override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
@@ -141,43 +147,54 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'FObjectProperty',
-      name: 'data'
-    },
-    {
       class: 'StringProperty',
       name: 'title'
+    },
+    {
+      class: 'IntProperty',
+      name: 'horizontalPadding'
+    },
+    {
+      class: 'IntProperty',
+      name: 'verticalPadding'
     },
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.BuilderFactory',
       name: 'viewBuilder',
-      crossPlatformFactoryValue: {
-        class: '__Class__',
-        forClass_: 'foam.cross_platform.ui.widget.DetailView'
-      }
     },
   ],
   methods: [
     {
       name: 'toStackableView',
       androidCode: `
-        foam.cross_platform.ui.View v = (foam.cross_platform.ui.View) getViewBuilder()
-          .createBuilder(getSubX())
-          .builderBuild();
-        Fragment f = new Fragment(getData$(), v, getSubX());
-        f.getToolbar().setTitle(getTitle());
+        Fragment f = new Fragment(this);
+        onDetach(f.getToolbar().getTitle$().follow(getTitle$()));
         f.backgroundColor = getTheme().getBackground();
         return f;
       `,
       swiftCode: `
-        let v = getViewBuilder()!
-          .createBuilder(getSubX())!
-          .builderBuild() as! foam_cross_platform_ui_View;
-        let vc = ViewController(v, getData$());
+        let vc = ViewController(self);
         vc.title = getTitle();
         vc.view.backgroundColor = getTheme()!.getBackground();
         return vc;
+      `
+    }
+  ],
+  reactions: [
+    ['', 'propertyChange.horizontalPadding', 'invalidate'],
+    ['', 'propertyChange.verticalPadding', 'invalidate'],
+    ['', 'propertyChange.viewBuilder', 'invalidate'],
+  ],
+  listeners: [
+    {
+      name: 'invalidate',
+      isFramed: true,
+      androidCode: `
+        onInvalidate().pub(null);
+      `,
+      swiftCode: `
+        _ = onInvalidate().pub(nil);
       `
     }
   ]

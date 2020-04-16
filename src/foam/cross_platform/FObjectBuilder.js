@@ -27,7 +27,7 @@ foam.CLASS({
       swiftCode: `
         let builder = getCls()?.createBuilder(x);
         for k in getArgs()?.allKeys ?? [] {
-          _ = builder?.setBuilderProperty(k as? String, getArgs()![k])
+          _ = builder?.setBuilderProperty(k as! String, getArgs()![k])
         }
         return builder;
       `

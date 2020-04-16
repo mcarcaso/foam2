@@ -172,12 +172,13 @@ ${cls.extends ? `
           switch(name) {
 ${
 genAxioms
-  .filter(a => a.androidSetProperty)
-  .map(a => `
-          case "${a.name}":
-            ${a.androidSetProperty}
+  .filter(a => a.androidSetPropertyMap)
+  .map(a => Object.keys(a.androidSetPropertyMap).map(k => `
+          case "${k}":
+            ${a.androidSetPropertyMap[k]}
             return;
-  `)
+  `))
+  .flat()
   .join('\n')
 }
           }

@@ -196,12 +196,13 @@ ${override ? `
           switch name {
 ${
 genAxioms
-  .filter(a => a.swiftSetProperty)
-  .map(a => `
-          case "${a.name}":
-            ${a.swiftSetProperty}
+  .filter(a => a.swiftSetPropertyMap)
+  .map(a => Object.keys(a.swiftSetPropertyMap).map(k => `
+          case "${k}":
+            ${a.swiftSetPropertyMap[k]}
             return;
-  `)
+  `))
+  .flat()
   .join('\n')
 }
             default:

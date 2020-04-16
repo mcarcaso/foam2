@@ -103,6 +103,12 @@ foam.CLASS({
   methods: [
     function buildBuilderClass(cls) {
       cls.implements.push('foam.cross_platform.Builder');
+      cls.field({
+        visibility: 'private',
+        type: 'java.util.Map',
+        name: 'args_',
+        initializer: 'new java.util.HashMap()'
+      })
       cls.method({
         visibility: 'public',
         type: 'foam.cross_platform.Builder',
@@ -112,13 +118,7 @@ foam.CLASS({
           { type: 'Object', name: 'value' },
         ],
         body: `
-          switch(name) {
-          ${cls.properties.map(p => `
-            case "${p.name}":
-              ${p.crossPlatformSetterName}(value);
-              break;
-          `).join('\n')}
-          }
+          args_.put(name, value);
           return this;
         `
       });
@@ -149,17 +149,6 @@ foam.CLASS({
         initializer: 'null'
       });
       cls.properties.forEach(p => {
-        cls.field({
-          visibility: 'private',
-          type: 'boolean',
-          name: p.crossPlatformIsSetVarName,
-          initializer: 'false'
-        });
-        cls.field({
-          visibility: 'private',
-          type: 'Object',
-          name: p.crossPlatformPrivateVarName
-        });
         cls.method({
           visibility: 'public',
           type: cls.name,
@@ -168,8 +157,19 @@ foam.CLASS({
             { type: 'Object', name: 'value' }
           ],
           body: `
-            ${p.crossPlatformIsSetVarName} = true;
-            ${p.crossPlatformPrivateVarName} = value;
+            args_.put("${p.name}", value);
+            return this;
+          `
+        });
+        cls.method({
+          visibility: 'public',
+          type: cls.name,
+          name: p.crossPlatformSlotSetterName,
+          args: [
+            { type: 'Object', name: 'value' }
+          ],
+          body: `
+            args_.put("${p.name}$", value);
             return this;
           `
         });
@@ -192,11 +192,7 @@ foam.CLASS({
           o.setX(_x_);
         `,
         objPropInit: `
-${cls.properties.map(p => `
-          if ( ${p.crossPlatformIsSetVarName} ) {
-            o.${p.crossPlatformSetterName}(${p.crossPlatformPrivateVarName});
-          }
-`).join('')}
+          o.copyFrom(args_);
         `,
         objReturn: `
           o.init();

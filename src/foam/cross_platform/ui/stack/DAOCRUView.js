@@ -8,7 +8,7 @@ foam.CLASS({
     'foam.cross_platform.ui.Stackable'
   ],
   requires: [
-    'foam.cross_platform.ui.stack.DetailView',
+    'foam.cross_platform.ui.stack.ScrollingWidgetView',
     'foam.intent.DAOUpdateIntent',
     'foam.mlang.predicate.Eq',
     'foam.mlang.Constant',
@@ -95,30 +95,23 @@ foam.CLASS({
     },
     {
       class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.stack.DetailView',
+      of: 'foam.cross_platform.ui.stack.ScrollingWidgetView',
       name: 'dv',
-      expressionArgs: ['dao$of'],
-      androidExpression: `
-        foam.cross_platform.ui.stack.DetailView dv = DetailView_create()
-          .setViewBuilder(FObjectBuilder_create()
-            .setCls(foam.cross_platform.ui.widget.DetailViewInterfaceClass.CLS_())
-            .setArgs(new java.util.HashMap() {{ put("of", dao$of); }})
-            .build())
+      androidFactory: `
+        foam.cross_platform.ui.stack.ScrollingWidgetView dv = ScrollingWidgetView_create()
+          .setHorizontalPadding(foam.cross_platform.ui.widget.DefaultDetailView.ITEM_HORIZONTAL_PADDING())
+          .setVerticalPadding(foam.cross_platform.ui.widget.DefaultDetailView.ITEM_VERTICAL_PADDING())
           .build();
         onDetach(dv.getTitle$().follow(getTitle$()));
-        onDetach(dv.getData$().linkFrom(getData$()));
         return dv;
       `,
       swiftOptional: false,
       swiftExpression: `
-        let dv = DetailView_create()
-          .setViewBuilder(FObjectBuilder_create()
-            .setCls(foam_cross_platform_ui_widget_DetailViewInterfaceClass.CLS_())
-            .setArgs(["of": dao$of])
-            .build())
+        let dv = ScrollingWidgetView_create()
+          .setHorizontalPadding(foam_cross_platform_ui_widget_DefaultDetailView.ITEM_HORIZONTAL_PADDING())
+          .setVerticalPadding(foam_cross_platform_ui_widget_DefaultDetailView.ITEM_VERTICAL_PADDING())
           .build();
         onDetach(dv.getTitle$().follow(getTitle$()));
-        onDetach(dv.getData$().linkFrom(getData$()));
         return dv;
       `,
     },
@@ -138,11 +131,33 @@ foam.CLASS({
     ['', 'propertyChange.controllerMode', 'updateData'],
     ['', 'propertyChange.dao', 'updateData'],
     ['', 'propertyChange.id', 'updateData'],
+
+    ['', 'propertyChange.data', 'updateView'],
   ],
   listeners: [
     {
+      name: 'updateView',
+      androidCode: `
+        getDv().setViewBuilder(getData() == null ? null : FObjectBuilder_create()
+          .setCls(foam.cross_platform.ui.widget.DetailViewClass.CLS_())
+          .setArgs(new java.util.HashMap() {{
+            put("of", getData().getCls_());
+            put("data$", getData$());
+          }})
+          .build());
+      `,
+      swiftCode: `
+        getDv().setViewBuilder(getData() == nil ? nil : FObjectBuilder_create()
+          .setCls(foam_cross_platform_ui_widget_DetailViewClass.CLS_())
+          .setArgs([
+            "of": getData()!.getCls_()!,
+            "data$": getData$(),
+          ])
+          .build());
+      `
+    },
+    {
       name: 'refreshData',
-      isFramed: true,
       androidCode: `
         Object id = getId();
         foam.dao.DAO dao = getDao();
@@ -172,9 +187,9 @@ foam.CLASS({
     },
     {
       name: 'updateData',
-      isFramed: true,
       androidCode: `
         if ( getDaoSub_() != null ) getDaoSub_().detach();
+        if ( getDao() == null ) return;
         refreshData(null, null);
         if ( getControllerMode() != foam.u2.ControllerMode.VIEW ) return;
         setDaoSub_(getDao()
@@ -187,6 +202,7 @@ foam.CLASS({
       `,
       swiftCode: `
         getDaoSub_()?.detach();
+        if ( getDao() == nil ) { return; }
         refreshData(nil, nil);
         if !foam_cross_platform_Lib.equals(getControllerMode(), foam_u2_ControllerMode.VIEW) { return }
         setDaoSub_(getDao()!

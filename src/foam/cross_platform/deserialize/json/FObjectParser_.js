@@ -90,7 +90,7 @@ foam.CLASS({
         if ( ps != nil ) {
           let b = c!.createBuilder(x?.pxGet("X") as? foam_cross_platform_Context);
           for k in args.allKeys {
-            _ = b?.setBuilderProperty(k as? String, args[k]);
+            _ = b?.setBuilderProperty(k as! String, args[k]);
           }
           return ps?.setValue(b?.builderBuild());
         }

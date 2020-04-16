@@ -12,9 +12,11 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'swiftSetProperty',
-      expression: function(crossPlatformSetterName) {
-        return `${crossPlatformSetterName}(value);`
+      name: 'swiftSetPropertyMap',
+      expression: function(name, crossPlatformSetterName) {
+        var m = {};
+        m[name] = `${crossPlatformSetterName}(value);`;
+        return m;
       }
     },
     {

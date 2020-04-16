@@ -6,12 +6,14 @@ foam.CLASS({
   properties: [
     {
       name: 'swiftAdapt',
-      value: `
-        if let newValue = newValue as? [AnyHashable:Any] {
-          return NSMutableDictionary(dictionary: newValue);
-        }
-        return newValue as? NSMutableDictionary;
-      `
+      expression: function(swiftOptional) {
+       return `
+          if let newValue = newValue as? [AnyHashable:Any] {
+            return NSMutableDictionary(dictionary: newValue);
+          }
+          return newValue as${swiftOptional ? '?' : '!'} NSMutableDictionary;
+        `
+      }
     }
   ]
 });

@@ -7,9 +7,11 @@ foam.CLASS({
     { class: 'foam.android.tools.AndroidType' },
     {
       class: 'StringProperty',
-      name: 'androidSetProperty',
-      expression: function(crossPlatformSetterName) {
-        return `${crossPlatformSetterName}(value);`
+      name: 'androidSetPropertyMap',
+      expression: function(name, crossPlatformSetterName) {
+        var m = {};
+        m[name] = `${crossPlatformSetterName}(value);`;
+        return m;
       }
     },
     {

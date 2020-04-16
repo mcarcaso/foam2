@@ -158,9 +158,14 @@ foam.CLASS({
     },
     {
       class: 'foam.swift.SwiftTypeProperty',
-      expression: function(type) {
-        return foam.swift.toSwiftType(type, true);
+      expression: function(type, swiftOptional) {
+        return foam.swift.toSwiftType(type, swiftOptional);
       }
+    },
+    {
+      class: 'BooleanProperty',
+      name: 'swiftOptional',
+      value: true
     }
   ],
   methods: [

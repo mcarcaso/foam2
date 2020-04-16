@@ -5,7 +5,7 @@ foam.CLASS({
     'foam.cross_platform.ui.View'
   ],
   requires: [
-    'foam.cross_platform.ui.widget.DetailView',
+    'foam.cross_platform.ui.widget.DefaultDetailView',
     'foam.cross_platform.ui.widget.DetailPropertyView',
     'foam.cross_platform.ui.widget.DAOChoiceView',
     'foam.dao.ArrayDAO',
@@ -83,16 +83,16 @@ foam.CLASS({
     },
     {
       class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.widget.DetailView',
+      of: 'foam.cross_platform.ui.widget.DefaultDetailView',
       name: 'detailView',
       androidFactory: `
-        foam.cross_platform.ui.widget.DetailView dv = DetailView_create()
+        foam.cross_platform.ui.widget.DefaultDetailView dv = DefaultDetailView_create()
           .build();
         onDetach(dv.getData$().follow(getData$()));
         return dv;
       `,
       swiftFactory: `
-        let dv = DetailView_create()
+        let dv = DefaultDetailView_create()
           .build();
         onDetach(dv.getData$().follow(getData$()));
         return dv;

@@ -67,6 +67,13 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
+      name: 'crossPlatformSlotSetterName',
+      expression: function (crossPlatformSetterName) {
+        return crossPlatformSetterName + '$';
+      }
+    },
+    {
+      class: 'StringProperty',
       name: 'crossPlatformFactory'
     },
     {

@@ -11,7 +11,8 @@ foam.CLASS({
     },
     {
       class: 'StringProperty',
-      name: 'ofProperty'
+      name: 'ofProperty',
+      swiftOptional: false
     },
     {
       class: 'ClassProperty',
@@ -19,7 +20,8 @@ foam.CLASS({
     },
     {
       class: 'MapProperty',
-      name: 'propMap_'
+      name: 'propMap_',
+      swiftOptional: false
     },
   ],
   methods: [
@@ -30,7 +32,7 @@ foam.CLASS({
         return this;
       `,
       swiftCode: `
-        getPropMap_()?[name!] = value;
+        getPropMap_()[name] = value;
         return self;
       `
     },
@@ -38,9 +40,12 @@ foam.CLASS({
       name: 'builderBuild',
       androidCode: `
         foam.cross_platform.FoamClass cls = null;
-        foam.cross_platform.FoamClass of = getPropMap_().get(getOfProperty()) instanceof String ?
-            getX().lookup((String) getPropMap_().get(getOfProperty())) :
-            (foam.cross_platform.FoamClass) getPropMap_().get(getOfProperty());
+        Object rawOf = getPropMap_().containsKey(getOfProperty() + "$") ?
+            ((foam.core.SlotInterface) getPropMap_().get(getOfProperty() + "$")).slotGet() :
+            getPropMap_().get(getOfProperty());
+        foam.cross_platform.FoamClass of = rawOf instanceof String ?
+            getX().lookup((String) rawOf) :
+            (foam.cross_platform.FoamClass) rawOf;
         while ( of != null && cls == null ) {
           cls = getX().lookup(of.getId() + getName());
           of = of.getParent();
@@ -54,17 +59,19 @@ foam.CLASS({
       `,
       swiftCode: `
         var cls: foam_cross_platform_FoamClass? = nil;
-        var of: foam_cross_platform_FoamClass? = getPropMap_()?[getOfProperty()!] is String ?
-            getX().lookup(getPropMap_()?[getOfProperty()!] as? String) :
-            getPropMap_()?[getOfProperty()!] as? foam_cross_platform_FoamClass;
+        let rawOf = (getPropMap_()[getOfProperty() + "$"] as? foam_core_SlotInterface)?.slotGet() ??
+          getPropMap_()[getOfProperty()];
+        var of: foam_cross_platform_FoamClass? = rawOf is String ?
+            getX().lookup(rawOf as? String) :
+            rawOf as? foam_cross_platform_FoamClass;
         while ( of != nil && cls == nil ) {
           cls = getX().lookup(of!.getId()! + getName()!);
           of = of!.getParent();
         }
         if ( cls == nil ) { cls = getDefaultImpl(); }
         let b = cls!.createBuilder(getSubX());
-        for k in getPropMap_()!.allKeys {
-          _ = b!.setBuilderProperty(k as? String, getPropMap_()![k]!);
+        for k in getPropMap_().allKeys {
+          _ = b!.setBuilderProperty(k as! String, getPropMap_()[k]!);
         }
         return b!.builderBuild();
       `,
