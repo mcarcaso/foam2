@@ -257,12 +257,10 @@ foam.CLASS({
     {
       name: 'toString',
       androidCode: `
-        // TODO: JSONify
         return super.toString();
       `,
       swiftCode: `
-        // TODO: JSONify
-        return String(describing: self)
+        return getCls_()!.getI18nLabel()! + " " + String(hashValue)
       `
     },
     {
