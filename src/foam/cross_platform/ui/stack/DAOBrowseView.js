@@ -6,11 +6,8 @@ foam.CLASS({
   ],
   requires: [
     'foam.cross_platform.ui.widget.DefaultCitationView',
-    'foam.dao.ArraySink',
-    'foam.dao.ListenerSink',
     'foam.intent.DAOCreateIntent',
     'foam.intent.DAOReadIntent',
-    'foam.mlang.sink.Count',
     'foam.cross_platform.ui.stack.dao.DAODeleteRowAction',
     'foam.cross_platform.ui.stack.DAOListView',
   ],
@@ -68,6 +65,16 @@ foam.CLASS({
   ],
   properties: [
     {
+      class: 'BooleanProperty',
+      name: 'isCreateEnabled',
+      value: true
+    },
+    {
+      class: 'BooleanProperty',
+      name: 'isDeleteEnabled',
+      value: true
+    },
+    {
       class: 'foam.dao.DAOProperty',
       name: 'data',
     },
@@ -75,28 +82,32 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ui.stack.DAOListView',
       name: 'daoListView',
-      expressionArgs: ['data'],
+      expressionArgs: ['data', 'isDeleteEnabled'],
       androidExpression: `
         foam.cross_platform.ui.stack.DAOListView sv = DAOListView_create()
           .setData(data)
-          .setActions(new Object[] {
+          .build();
+        if ( isDeleteEnabled ) {
+          sv.setActions(new Object[] {
             DAODeleteRowAction_create()
               .setDao(data)
               .build()
-          })
-          .build();
+          });
+        }
         onDetach(sv.onRowSelected().sub(null, onRowSelected_listener()));
         return sv;
       `,
       swiftExpression: `
         let sv = DAOListView_create()
           .setData(data)
-          .setActions([
+          .build();
+        if ( isDeleteEnabled ) {
+          sv.setActions([
             DAODeleteRowAction_create()
               .setDao(data)
               .build()
           ])
-          .build();
+        }
         onDetach(sv.onRowSelected().sub(nil, onRowSelected_listener()))
         return sv;
       `
@@ -154,23 +165,27 @@ foam.CLASS({
         foam.cross_platform.ui.stack.Stack.ToolbarFragment f =
           (foam.cross_platform.ui.stack.Stack.ToolbarFragment) getDaoListView().toStackableView();
         f.getToolbar().setTitle(getTitle());
-        f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
-          onCreatePressed();
-          return null;
-        });
-        f.getToolbar().setActionButtonIcon(getAndroidContext().getResources().getIdentifier(
-          "dv_create",
-          "drawable",
-          getAndroidContext().getPackageName()));
+        if ( getIsCreateEnabled() ) {
+          f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
+            onCreatePressed();
+            return null;
+          });
+          f.getToolbar().setActionButtonIcon(getAndroidContext().getResources().getIdentifier(
+            "dv_create",
+            "drawable",
+            getAndroidContext().getPackageName()));
+        }
         return f;
       `,
       swiftCode: `
         let vc = getDaoListView()!.toStackableView();
         vc.title = getTitle();
-        vc.navigationItem.rightBarButtonItem = UIBarButtonItem(
-          barButtonSystemItem: .add,
-          target: self,
-          action: #selector(onCreatePressed));
+        if ( getIsCreateEnabled() ) {
+          vc.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(onCreatePressed));
+        }
         return vc;
       `
     }

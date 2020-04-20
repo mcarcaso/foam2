@@ -18,6 +18,16 @@ foam.CLASS({
       class: 'foam.dao.DAOProperty',
       name: 'dao'
     },
+    {
+      class: 'BooleanProperty',
+      name: 'isCreateEnabled',
+      value: true
+    },
+    {
+      class: 'BooleanProperty',
+      name: 'isDeleteEnabled',
+      value: true
+    }
   ],
   methods: [
     {
@@ -25,12 +35,16 @@ foam.CLASS({
       androidCode: `
         getStack().push(DAOBrowseView_create()
           .setData(getDao())
+          .setIsCreateEnabled(getIsCreateEnabled())
+          .setIsDeleteEnabled(getIsDeleteEnabled())
           .build());
         return true;
       `,
       swiftCode: `
         getStack()!.push(DAOBrowseView_create()
           .setData(getDao())
+          .setIsCreateEnabled(getIsCreateEnabled())
+          .setIsDeleteEnabled(getIsDeleteEnabled())
           .build());
         return true;
       `

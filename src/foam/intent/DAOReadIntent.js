@@ -21,6 +21,11 @@ foam.CLASS({
     {
       name: 'id'
     },
+    {
+      class: 'BooleanProperty',
+      name: 'isUpdateEnabled',
+      value: true
+    }
   ],
   methods: [
     {
@@ -30,6 +35,7 @@ foam.CLASS({
           .setControllerMode(foam.u2.ControllerMode.VIEW)
           .setDao(getDao())
           .setId(getId())
+          .setIsUpdateEnabled(getIsUpdateEnabled())
           .build());
         return true;
       `,
@@ -38,6 +44,7 @@ foam.CLASS({
           .setControllerMode(foam_u2_ControllerMode.VIEW)
           .setDao(getDao())
           .setId(getId())
+          .setIsUpdateEnabled(getIsUpdateEnabled())
           .build());
         return true;
       `,
