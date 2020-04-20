@@ -230,6 +230,13 @@ foam.CLASS({
         getter.body = this.swiftGetter;
       } else if ( this.swiftFactory ) {
         var factoryName = this.name + '_factory_';
+        var fipName = this.name + '_factory_in_progress_';
+        cls.field({
+          visibility: 'private',
+          type: 'Bool',
+          name: fipName,
+          defaultValue: 'false'
+        });
         cls.method({
           visibility: 'private',
           type: this.swiftType,
@@ -238,7 +245,9 @@ foam.CLASS({
         });
         getter.body = `
           if !${this.crossPlatformIsSetVarName} {
+            ${fipName} = true;
             setProperty("${this.name}", ${factoryName}());
+            ${fipName} = false;
           }
           return ${this.crossPlatformPrivateVarName};
         `;
@@ -378,11 +387,15 @@ castedValue = ${preSetName}(oldValue, castedValue, hasOldValue);
         setter.body += `
 ${this.crossPlatformIsSetVarName} = true;
 ${this.crossPlatformPrivateVarName} = castedValue;
+${this.swiftFactory ? `
+if ( !${fipName} ) {
+`: ''}
 var args: [Any?] = ["propertyChange", "${this.name}", nil];
 if hasListeners(args) {
   args[2] = ${this.crossPlatformSlotGetterName}();
   _ = pub(args);
 }
+${this.swiftFactory ? '}' : ''}
         `;
 
         if ( this.swiftPostSet ) {

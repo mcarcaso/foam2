@@ -206,6 +206,13 @@ foam.CLASS({
         getter.body = this.androidGetter;
       } else if ( this.androidFactory ) {
         var factoryName = this.name + '_factory_';
+        var fipName = this.name + '_factory_in_progress_';
+        cls.field({
+          visibility: 'private',
+          type: 'boolean',
+          name: fipName,
+          initializer: 'false'
+        });
         cls.method({
           visibility: 'protected',
           type: this.androidType,
@@ -214,7 +221,9 @@ foam.CLASS({
         });
         getter.body = `
           if ( ! ${this.crossPlatformIsSetVarName} ) {
+            ${fipName} = true;
             setProperty("${this.name}", ${factoryName}());
+            ${fipName} = false;
           }
           return ${this.crossPlatformPrivateVarName};
         `;
@@ -345,11 +354,15 @@ castedValue = ${preSetName}(oldValue, castedValue, hasOldValue);
         setter.body += `
 ${this.crossPlatformIsSetVarName} = true;
 ${this.crossPlatformPrivateVarName} = castedValue;
+${this.androidFactory ? `
+if ( !${fipName} ) {
+`: ''}
 Object[] args = new Object[] { "propertyChange", "${this.name}", null };
 if ( hasListeners(args) ) {
   args[2] = ${this.crossPlatformSlotGetterName}();
   pub(args);
 }
+${this.androidFactory ? '}' : ''}
         `;
 
         if ( this.androidPostSet ) {
