@@ -79,6 +79,11 @@ foam.CLASS({
       name: 'id'
     },
     {
+      class: 'BooleanProperty',
+      name: 'isUpdateEnabled',
+      value: true
+    },
+    {
       class: 'FObjectProperty',
       of: 'foam.core.Detachable',
       name: 'daoSub_'
@@ -101,15 +106,27 @@ foam.CLASS({
         foam.cross_platform.ui.stack.ScrollingWidgetView dv = ScrollingWidgetView_create()
           .setHorizontalPadding(foam.cross_platform.ui.widget.DefaultDetailView.ITEM_HORIZONTAL_PADDING())
           .setVerticalPadding(foam.cross_platform.ui.widget.DefaultDetailView.ITEM_VERTICAL_PADDING())
+          .setViewBuilder(FObjectBuilder_create()
+            .setCls(foam.cross_platform.ui.widget.DynamicDetailView.CLS_())
+            .setArgs(new java.util.HashMap() {{
+              put("data$", getData$());
+            }})
+            .build())
           .build();
         onDetach(dv.getTitle$().follow(getTitle$()));
         return dv;
       `,
       swiftOptional: false,
-      swiftExpression: `
+      swiftFactory: `
         let dv = ScrollingWidgetView_create()
           .setHorizontalPadding(foam_cross_platform_ui_widget_DefaultDetailView.ITEM_HORIZONTAL_PADDING())
           .setVerticalPadding(foam_cross_platform_ui_widget_DefaultDetailView.ITEM_VERTICAL_PADDING())
+          .setViewBuilder(FObjectBuilder_create()
+            .setCls(foam_cross_platform_ui_widget_DynamicDetailView.CLS_())
+            .setArgs([
+              "data$": getData$()
+            ])
+            .build())
           .build();
         onDetach(dv.getTitle$().follow(getTitle$()));
         return dv;
@@ -131,31 +148,8 @@ foam.CLASS({
     ['', 'propertyChange.controllerMode', 'updateData'],
     ['', 'propertyChange.dao', 'updateData'],
     ['', 'propertyChange.id', 'updateData'],
-
-    ['', 'propertyChange.data', 'updateView'],
   ],
   listeners: [
-    {
-      name: 'updateView',
-      androidCode: `
-        getDv().setViewBuilder(getData() == null ? null : FObjectBuilder_create()
-          .setCls(foam.cross_platform.ui.widget.DetailViewClass.CLS_())
-          .setArgs(new java.util.HashMap() {{
-            put("of", getData().getCls_());
-            put("data$", getData$());
-          }})
-          .build());
-      `,
-      swiftCode: `
-        getDv().setViewBuilder(getData() == nil ? nil : FObjectBuilder_create()
-          .setCls(foam_cross_platform_ui_widget_DetailViewClass.CLS_())
-          .setArgs([
-            "of": getData()!.getCls_()!,
-            "data$": getData$(),
-          ])
-          .build());
-      `
-    },
     {
       name: 'refreshData',
       androidCode: `
@@ -249,14 +243,16 @@ foam.CLASS({
       androidCode: `
         foam.cross_platform.ui.stack.Stack.ToolbarFragment f = (foam.cross_platform.ui.stack.Stack.ToolbarFragment) getDv().toStackableView();
         if ( getControllerMode() == foam.u2.ControllerMode.VIEW ) {
-          f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
-            onUpdatePressed();
-            return null;
-          });
-          f.getToolbar().setActionButtonIcon(getAndroidContext().getResources().getIdentifier(
-            "dv_edit",
-            "drawable",
-            getAndroidContext().getPackageName()));
+          if ( getIsUpdateEnabled() ) {
+            f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
+              onUpdatePressed();
+              return null;
+            });
+            f.getToolbar().setActionButtonIcon(getAndroidContext().getResources().getIdentifier(
+              "dv_edit",
+              "drawable",
+              getAndroidContext().getPackageName()));
+          }
         } else {
           f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
             onSavePressed();
@@ -272,10 +268,12 @@ foam.CLASS({
       swiftCode: `
         let vc = getDv().toStackableView();
         if foam_cross_platform_Lib.equals(getControllerMode(), foam_u2_ControllerMode.VIEW) {
-          vc.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .edit,
-            target: self,
-            action: #selector(onUpdatePressed))
+          if ( getIsUpdateEnabled() ) {
+            vc.navigationItem.rightBarButtonItem = UIBarButtonItem(
+              barButtonSystemItem: .edit,
+              target: self,
+              action: #selector(onUpdatePressed))
+          }
         } else {
           vc.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .save,
