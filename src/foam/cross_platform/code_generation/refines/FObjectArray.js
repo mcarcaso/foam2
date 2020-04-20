@@ -2,6 +2,17 @@ foam.CLASS({
   package: 'foam.cross_platform.code_generation.refines',
   name: 'ArrayPropertyRefinement',
   refines: 'foam.core.FObjectArray',
+  requires: [
+    'foam.cross_platform.ui.widget.FObjectArrayView'
+  ],
+  properties: [
+    {
+      name: 'cpView',
+      crossPlatformFactoryValue: {
+        class: 'foam.cross_platform.ui.widget.FObjectArrayView'
+      }
+    },
+  ],
   methods: [
     {
       name: 'getDeps',
