@@ -97,12 +97,6 @@ foam.CLASS({
   methods: [
     function buildBuilderClass(cls) {
       cls.implements.push('foam_cross_platform_Builder');
-      cls.field({
-        visibility: 'private',
-        type: 'NSMutableDictionary',
-        name: 'args_',
-        initializer: '[:]'
-      })
       cls.method({
         visibility: 'public',
         type: 'foam_cross_platform_Builder?',
@@ -112,7 +106,18 @@ foam.CLASS({
           { type: 'Any?', localName: 'value' },
         ],
         body: `
-          args_[name] = value;
+          switch(name) {
+          ${cls.properties.map(p => `
+            case "${p.name}":
+              _ = ${p.crossPlatformSetterName}(value);
+              break;
+            case "${p.name}$":
+              _ = ${p.crossPlatformSetterName}$(value);
+              break;
+          `).join('\n')}
+            default:
+              break;
+          }
           return self;
         `
       });
@@ -143,6 +148,22 @@ foam.CLASS({
         defaultValue: 'nil'
       });
       cls.properties.forEach(p => {
+        cls.field({
+          visibility: 'private',
+          type: 'Bool',
+          name: p.crossPlatformIsSetVarName,
+          defaultValue: 'false'
+        });
+        cls.field({
+          visibility: 'private',
+          type: 'Any?',
+          name: p.crossPlatformPrivateVarName
+        });
+        cls.field({
+          visibility: 'private',
+          type: 'Any?',
+          name: p.crossPlatformPrivateVarName + '_slot'
+        });
         cls.method({
           visibility: 'public',
           type: cls.name,
@@ -151,7 +172,8 @@ foam.CLASS({
             { type: 'Any?', localName: 'value' }
           ],
           body: `
-            args_["${p.name}"] = value;
+            ${p.crossPlatformIsSetVarName} = true;
+            ${p.crossPlatformPrivateVarName} = value;
             return self;
           `
         });
@@ -163,7 +185,7 @@ foam.CLASS({
             { type: 'Any?', localName: 'value' }
           ],
           body: `
-            args_["${p.name}$"] = value;
+            ${p.crossPlatformPrivateVarName}_slot = value;
             return self;
           `
         });
@@ -183,7 +205,14 @@ foam.CLASS({
           o.setX(_x_);
         `,
         objPropInit: `
-          o.copyFrom(args_);
+          ${cls.properties.map(p => `
+          if ${p.crossPlatformIsSetVarName} {
+            o.${p.crossPlatformSetterName}(${p.crossPlatformPrivateVarName});
+          }
+          if ${p.crossPlatformPrivateVarName}_slot != nil {
+            o.onDetach(o.${p.crossPlatformSetterName}$(${p.crossPlatformPrivateVarName}_slot));
+          }
+          `).join('')}
         `,
         objReturn: `
           o.\`init\`();
