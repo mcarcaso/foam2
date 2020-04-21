@@ -30,6 +30,10 @@ foam.CLASS({
       name: 'intentManager',
       type: 'foam.intent.IntentManager',
     },
+    {
+      name: 'stack',
+      type: 'foam.cross_platform.ui.stack.Stack',
+    },
   ],
   axioms: [
     {
@@ -188,6 +192,15 @@ foam.CLASS({
         }
         return vc;
       `
+    },
+    {
+      name: 'onBackPressed',
+      androidCode: `
+        getStack().pop();
+      `,
+      swiftCode: `
+        getStack()?.pop();
+      `,
     }
   ]
 });

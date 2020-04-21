@@ -28,6 +28,10 @@ foam.CLASS({
       name: 'theme',
       type: 'foam.cross_platform.ui.Theme',
     },
+    {
+      name: 'stack',
+      type: 'foam.cross_platform.ui.stack.Stack',
+    },
   ],
   axioms: [
     {
@@ -318,6 +322,15 @@ foam.CLASS({
         let vc = TableViewController(self, style: .plain);
         vc.title = getTitle();
         return vc;
+      `
+    },
+    {
+      name: 'onBackPressed',
+      androidCode: `
+        getStack().pop();
+      `,
+      swiftCode: `
+        getStack()?.pop();
       `
     }
   ]

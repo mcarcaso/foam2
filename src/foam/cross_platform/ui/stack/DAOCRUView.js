@@ -38,6 +38,20 @@ foam.CLASS({
   exports: [
     'controllerMode',
   ],
+  messages: [
+    {
+      name: 'CONFIRM_BACK',
+      message: 'You have unsaved changes that will be lost. Are you sure you want to go back?'
+    },
+    {
+      name: 'CONFIRM_POSITIVE',
+      message: 'Yes'
+    },
+    {
+      name: 'CONFIRM_NEGATIVE',
+      message: 'No'
+    },
+  ],
   axioms: [
     {
       class: 'foam.cross_platform.code_generation.Resource',
@@ -82,6 +96,10 @@ foam.CLASS({
       class: 'BooleanProperty',
       name: 'isUpdateEnabled',
       value: true
+    },
+    {
+      class: 'BooleanProperty',
+      name: 'isSaveEnabled',
     },
     {
       class: 'FObjectProperty',
@@ -148,8 +166,24 @@ foam.CLASS({
     ['', 'propertyChange.controllerMode', 'updateData'],
     ['', 'propertyChange.dao', 'updateData'],
     ['', 'propertyChange.id', 'updateData'],
+
+    ['', 'propertyChange.id', 'updateIsSaveEnabled'],
+    ['data', 'propertyChange', 'updateIsSaveEnabled'],
   ],
   listeners: [
+    {
+      name: 'updateIsSaveEnabled',
+      isMerged: true,
+      mergeDelay: 300,
+      androidCode: `
+        foam.cross_platform.FObject o = getId() == null ? null : getDao().find(getId());
+        setIsSaveEnabled(!foam.cross_platform.Lib.equals(o, getData()));
+      `,
+      swiftCode: `
+        let o = getId() == nil ? nil : getDao()?.find(getId());
+        setIsSaveEnabled(!foam_cross_platform_Lib.equals(o, getData()));
+      `,
+    },
     {
       name: 'refreshData',
       androidCode: `
@@ -157,10 +191,12 @@ foam.CLASS({
         foam.dao.DAO dao = getDao();
         foam.cross_platform.FObject fobj = id == null ?
           dao.getOf().createBuilder(getSubX()).builderBuild() :
-          dao.find(id).clone(getSubX());
+          dao.find(id);
         if ( fobj == null ) {
           System.out.println("Warning! Object deleted");
           return;
+        } else if ( id != null ){
+          fobj = fobj.clone(getSubX());
         }
         onDetach(fobj);
         setData(fobj);
@@ -282,6 +318,36 @@ foam.CLASS({
         }
         return vc;
       `
+    },
+    {
+      name: 'onBackPressed',
+      androidCode: `
+        if ( getIsSaveEnabled() ) {
+          DAOCRUView self = this;
+          new androidx.appcompat.app.AlertDialog
+            .Builder(getAndroidContext())
+            .setMessage(CONFIRM_BACK)
+            .setPositiveButton(CONFIRM_NEGATIVE, null)
+            .setNegativeButton(CONFIRM_POSITIVE, (dialog, id) -> {
+              self.getStack().pop();
+            })
+            .create()
+            .show();
+        } else {
+          getStack().pop();
+        }
+      `,
+      swiftCode: `
+        if ( getIsSaveEnabled() ) {
+          let alertController = UIAlertController(title: Self.CONFIRM_BACK, message: "", preferredStyle: .alert)
+          alertController.addAction(UIAlertAction(title: Self.CONFIRM_NEGATIVE, style: .default, handler: nil))
+          alertController.addAction(UIAlertAction(title: Self.CONFIRM_POSITIVE, style: .default, handler: { _ in
+            self.getStack()?.pop();
+          }))
+          getStack()?.getNavController().present(alertController, animated: true, completion: nil)
+        } else {
+          getStack()?.pop();
+        }      `
     }
   ]
 });

@@ -179,6 +179,15 @@ foam.CLASS({
         vc.view.backgroundColor = getTheme()!.getBackground();
         return vc;
       `
+    },
+    {
+      name: 'onBackPressed',
+      androidCode: `
+        getStack().pop();
+      `,
+      swiftCode: `
+        getStack()?.pop();
+      `,
     }
   ],
   reactions: [
