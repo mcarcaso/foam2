@@ -95,10 +95,12 @@ foam.CLASS({
         }
         ((com.google.android.material.textfield.TextInputEditText) newValue)
           .addTextChangedListener(getTextWatcher());
+        updateView(null, null);
       `,
       swiftPostSet: `
         (oldValue as? UITextView)?.delegate = nil;
         (newValue as? UITextView)?.delegate = getTextWatcher();
+        updateView(nil, nil);
       `
     },
     {
@@ -110,7 +112,6 @@ foam.CLASS({
     ['', 'propertyChange.view', 'dataToView'],
     ['', 'propertyChange.data', 'dataToView'],
 
-    ['', 'propertyChange.view', 'updateView'],
     ['', 'propertyChange.mode', 'updateView'],
   ],
   methods: [
