@@ -147,7 +147,6 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'StringProperty',
       name: 'title'
     },
     {
@@ -175,7 +174,12 @@ foam.CLASS({
       `,
       swiftCode: `
         let vc = ViewController(self);
-        vc.title = getTitle();
+        let l = <%=listener(\`
+          vc.title = self?.getTitle() as? String ?? "";
+          // TODO: If title is view, do something diff
+        \`)%>;
+        onDetach(getTitle$().slotSub(l));
+        l.executeListener(nil, nil);
         vc.view.backgroundColor = getTheme()!.getBackground();
         return vc;
       `

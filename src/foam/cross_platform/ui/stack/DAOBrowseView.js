@@ -90,6 +90,7 @@ foam.CLASS({
       androidExpression: `
         foam.cross_platform.ui.stack.DAOListView sv = DAOListView_create()
           .setData(data)
+          .setTitle$(getTitle$())
           .build();
         if ( isDeleteEnabled ) {
           sv.setActions(new Object[] {
@@ -104,6 +105,7 @@ foam.CLASS({
       swiftExpression: `
         let sv = DAOListView_create()
           .setData(data)
+          .setTitle$(getTitle$())
           .build();
         if ( isDeleteEnabled ) {
           sv.setActions([
@@ -114,6 +116,16 @@ foam.CLASS({
         }
         onDetach(sv.onRowSelected().sub(nil, onRowSelected_listener()))
         return sv;
+      `
+    },
+    {
+      name: 'title',
+      expressionArgs: ['data'],
+      androidExpression: `
+        return BROWSE + " " + data.getOf().getI18nPlural();
+      `,
+      swiftExpression: `
+        return Self.BROWSE + " " + data!.getOf().getI18nPlural()!;
       `
     },
   ],
@@ -154,21 +166,10 @@ foam.CLASS({
       `
     },
     {
-      type: 'String',
-      name: 'getTitle',
-      androidCode: `
-        return BROWSE + " " + getData().getOf().getI18nPlural();
-      `,
-      swiftCode: `
-        return Self.BROWSE + " " + getData()!.getOf().getI18nPlural()!;
-      `
-    },
-    {
       name: 'toStackableView',
       androidCode: `
         foam.cross_platform.ui.stack.Stack.ToolbarFragment f =
           (foam.cross_platform.ui.stack.Stack.ToolbarFragment) getDaoListView().toStackableView();
-        f.getToolbar().setTitle(getTitle());
         if ( getIsCreateEnabled() ) {
           f.getToolbar().setActionButtonFn((foam.cross_platform.GenericFunction) args -> {
             onCreatePressed();
@@ -183,7 +184,6 @@ foam.CLASS({
       `,
       swiftCode: `
         let vc = getDaoListView()!.toStackableView();
-        vc.title = getTitle();
         if ( getIsCreateEnabled() ) {
           vc.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,

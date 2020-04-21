@@ -153,12 +153,12 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'title',
-      expressionArgs: ['controllerMode', 'dao$of'],
+      expressionArgs: ['controllerMode', 'data'],
       androidExpression: `
-        return controllerMode.getI18nLabel() + " " + ((foam.cross_platform.FoamClass)dao$of).getI18nLabel();
+        return data == null ? null : controllerMode.getI18nLabel() + " " + data.getCls_().getI18nLabel();
       `,
       swiftExpression: `
-        return controllerMode!.getI18nLabel()! + " " + (dao$of as! foam_cross_platform_FoamClass).getI18nLabel()!;
+        return data == nil ? nil : controllerMode!.getI18nLabel()! + " " + data!.getCls_()!.getI18nLabel()!;
       `
     }
   ],

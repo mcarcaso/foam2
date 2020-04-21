@@ -33,7 +33,6 @@ foam.CLASS({
       name: 'view'
     },
     {
-      class: 'StringProperty',
       name: 'title'
     },
     {
@@ -60,9 +59,14 @@ foam.CLASS({
         getView().removeAllViews();
         getView().setBackgroundColor(getTheme().getPrimary());
         getView().setTitleTextColor(getTheme().getOnPrimary());
-        
-        getView().setTitle(getTitle());
-        
+
+        if ( getTitle() instanceof String ) {
+          getView().setTitle((String) getTitle());
+        } else {
+          // TODO: If title is a view, plop it in.
+          getView().setTitle("");
+        }
+
         android.content.Context x = getView().getContext();
         if ( hasPropertySet("backButtonFn") ) {
           getView().setNavigationIcon(x.getResources().getIdentifier(

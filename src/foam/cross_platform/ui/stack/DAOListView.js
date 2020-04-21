@@ -289,7 +289,6 @@ foam.CLASS({
       swiftFactory: `return TableSource(self)`
     },
     {
-      class: 'StringProperty',
       name: 'title'
     },
     {
@@ -315,12 +314,17 @@ foam.CLASS({
       name: 'toStackableView',
       androidCode: `
         Fragment f = new Fragment(this, getSubX());
-        f.getToolbar().setTitle(getTitle());
+        onDetach(f.getToolbar().setTitle$(getTitle$()));
         return f;
       `,
       swiftCode: `
         let vc = TableViewController(self, style: .plain);
-        vc.title = getTitle();
+        let l = <%=listener(\`
+          vc.title = self?.getTitle() as? String ?? "";
+          // TODO: If title a view, plop it in.
+        \`)%>
+        onDetach(getTitle$().slotSub(l));
+        l.executeListener(nil, nil);
         return vc;
       `
     },
