@@ -128,8 +128,43 @@ foam.CLASS({
         return Self.BROWSE + " " + data!.getOf().getI18nPlural()!;
       `
     },
+    {
+      type: 'foam.core.Detachable',
+      name: 'titleSub_'
+    }
+  ],
+  reactions: [
+    ['', 'propertyChange.data', 'updateCustomTitle']
   ],
   listeners: [
+    {
+      name: 'updateCustomTitle',
+      androidCode: `
+        if ( getTitleSub_() != null ) getTitleSub_().detach();
+        setTitleSub_(null);
+        if ( getData() == null ) return;
+        foam.cross_platform.FoamClass cls = getData().getOf();
+        Object[] axioms = cls.getAxiomsByClass(foam.cross_platform.ui.stack.dao.CustomBrowseTitleAxiom.CLS_());
+        if ( axioms.length == 0 ) return;
+        foam.cross_platform.ui.stack.dao.CustomBrowseTitleAxiom a =
+          (foam.cross_platform.ui.stack.dao.CustomBrowseTitleAxiom) axioms[0];
+        foam.core.Detachable s = getTitle$().follow(a.createTitleSlot(getX()));
+        onDetach(s);
+        setTitleSub_(s);
+      `,
+      swiftCode: `
+        getTitleSub_()?.detach();
+        setTitleSub_(nil);
+        if ( getData() == nil ) { return; }
+        let cls = getData()!.getOf();
+        let axioms = cls.getAxiomsByClass(foam_cross_platform_ui_stack_dao_CustomBrowseTitleAxiom.CLS_())!;
+        if ( axioms.count == 0 ) { return; }
+        let a = axioms[0] as! foam_cross_platform_ui_stack_dao_CustomBrowseTitleAxiom
+        let s = getTitle$().follow(a.createTitleSlot(getX()));
+        onDetach(s);
+        setTitleSub_(s);
+      `
+    },
     {
       name: 'onRowSelected',
       androidCode: `
