@@ -251,7 +251,7 @@ struct SwiftUIView_Previews: PreviewProvider {
         if ( props.size() > 0 ) {
           foam.core.Property p = props.get(0);
           props.remove(0);
-          titleSlot = data.getSlot(p.getName());
+          if ( p != null ) titleSlot = data.getSlot(p.getName());
         }
         if ( titleSlot != null ) subs.add(getTitle$().follow(titleSlot));
 
@@ -259,7 +259,7 @@ struct SwiftUIView_Previews: PreviewProvider {
         if ( props.size() > 0 ) {
           foam.core.Property p = props.get(0);
           props.remove(0);
-          subtitleSlot = data.getSlot(p.getName());
+          if ( p != null ) subtitleSlot = data.getSlot(p.getName());
         }
         if ( subtitleSlot != null ) subs.add(getSubtitle$().follow(subtitleSlot));
 
@@ -267,7 +267,7 @@ struct SwiftUIView_Previews: PreviewProvider {
         if ( props.size() > 0 ) {
           foam.core.Property p = props.get(0);
           props.remove(0);
-          timeSlot = data.getSlot(p.getName());
+          if ( p != null ) timeSlot = data.getSlot(p.getName());
         }
         if ( timeSlot != null ) subs.add(getTime$().follow(timeSlot));
 
