@@ -230,6 +230,9 @@ ${cls.extends ? `
               .build();
             foam.cross_platform.Context x = foam.cross_platform.Context.GLOBAL();
             initClassInfo_.setI18nLabel(x.getLocalizedString("${this.id.replace(/\./g, '_')}_Label"));
+            ${this.model_.description ? `
+            initClassInfo_.setI18nDescription(x.getLocalizedString("${this.id.replace(/\./g, '_')}_Description"));
+            ` : ''}
             initClassInfo_.setI18nPlural(x.getLocalizedString("${this.id.replace(/\./g, '_')}_Plural"));
             ${this.androidBuilderString(cls)}
             ${cInfo.cls_.getAxiomsByClass(foam.core.Property)

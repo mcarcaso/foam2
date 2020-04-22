@@ -255,6 +255,12 @@ ${override ? `
               ${foam.swift.asSwiftValue(this.model_.label)},
               comment: ${foam.swift.asSwiftValue(this.model_.i18nLabelDescription)}
             ))
+            ${this.model_.description ? `
+            initClassInfo_!.setI18nDescription(NSLocalizedString(
+              ${foam.swift.asSwiftValue(this.model_.description)},
+              comment: ${foam.swift.asSwiftValue(this.model_.i18nDescriptionDescription)}
+            ))
+            ` : ''}
             initClassInfo_!.setI18nPlural(NSLocalizedString(
               ${foam.swift.asSwiftValue(this.model_.plural)},
               comment: ${foam.swift.asSwiftValue(this.model_.i18nPluralDescription)}

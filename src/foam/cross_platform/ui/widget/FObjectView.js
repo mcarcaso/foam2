@@ -109,6 +109,7 @@ foam.CLASS({
         onDetach(dpv.bindData(this, OF()));
         foam.cross_platform.ui.widget.DAOChoiceView v = (foam.cross_platform.ui.widget.DAOChoiceView) dpv.getDataView();
         v.setDao(ArrayDAO_create()
+          .setOf(foam.cross_platform.FoamClass.CLS_())
           .setArray(classes)
           .build());
         return dpv;
@@ -119,6 +120,7 @@ foam.CLASS({
         onDetach(dpv.bindData(self, Self.OF()))
         let v = dpv.getDataView() as? foam_cross_platform_ui_widget_DAOChoiceView;
         v?.setDao(ArrayDAO_create()
+          .setOf(foam_cross_platform_FoamClass.CLS_())
           .setArray(classes)
           .build());
         return dpv;

@@ -167,19 +167,13 @@ foam.CLASS({
           init(citationView: foam_cross_platform_ui_AxiomView, style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
             self.citationView = citationView
             super.init(style: style, reuseIdentifier: reuseIdentifier)
-            citationView.getView()!.frame = frame;
-            separatorInset = UIEdgeInsets.zero;
-            addSubview(citationView.getView()!)
-          }
-          override func layoutSubviews() {
-            super.layoutSubviews();
-            let size = citationView.getView()!.sizeThatFits(CGSize(width: frame.width, height: CGFloat.greatestFiniteMagnitude))
-            citationView.getView()!.frame = CGRect(
-              x: frame.minX,
-              y: (frame.height - size.height) / 2,
-              width: frame.width,
-              height: size.height
-            );
+            let v = citationView.getView()!
+            addSubview(v)
+            v.translatesAutoresizingMaskIntoConstraints = false;
+            v.topAnchor.constraint(equalTo: topAnchor).isActive = true;
+            v.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true;
+            v.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true;
+            v.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true;
           }
           func setData(data: foam_cross_platform_FObject) {
             sub?.detach();
@@ -237,7 +231,6 @@ foam.CLASS({
             let a = daoView.ArraySink_create().build();
             _ = daoView.getData()?.skip(indexPath.row)?.limit(1)?.select(a);
             cell?.setData(data: a.getArray()[0] as! foam_cross_platform_FObject)
-            cell?.citationView.getView()?.setNeedsLayout()
             return cell!;
           }
         }
@@ -277,7 +270,7 @@ foam.CLASS({
     {
       class: 'IntProperty',
       name: 'rowHeight',
-      value: 88
+      value: 100
     },
     {
       swiftType: 'TableViewDelegate',

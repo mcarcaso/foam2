@@ -7,6 +7,13 @@ foam.CLASS({
   implements: [
     'foam.cross_platform.BuilderFactory'
   ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.ui.widget.DefaultCitationViewExprs',
+      title: 'i18nLabel',
+      subtitle: 'i18nDescription'
+    }
+  ],
   properties: [
     {
       class: 'StringProperty',
@@ -19,6 +26,10 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'i18nPlural'
+    },
+    {
+      class: 'StringProperty',
+      name: 'i18nDescription'
     },
     {
       class: 'ClassProperty',

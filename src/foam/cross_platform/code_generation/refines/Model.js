@@ -34,6 +34,13 @@ foam.CLASS({
         return `Pluralized label for the ${id} model`;
       }
     },
+    {
+      class: 'StringProperty',
+      name: 'i18nDescriptionDescription',
+      expression: function (id) {
+        return `The description of the ${id} model`;
+      }
+    },
 
   ],
   methods: [
@@ -53,6 +60,12 @@ foam.CLASS({
           id: pid,
           description: this.i18nPluralDescription,
           translations: { en: this.plural }
+        });
+        var did = `${id}.Description`;
+        map[did] = foam.i18n.Message.create({
+          id: did,
+          description: this.i18nDescriptionDescription,
+          translations: { en: this.description }
         });
         return map;
       },

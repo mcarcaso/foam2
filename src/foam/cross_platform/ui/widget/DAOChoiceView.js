@@ -89,6 +89,14 @@ foam.CLASS({
       `,
     },
     {
+      class: 'StringProperty',
+      name: 'selectionTitle',
+      expressionArgs: ['dao'],
+      androidExpression: `
+        return dao.getOf().getI18nPlural();
+      `
+    },
+    {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ui.stack.DAOListView',
       name: 'daoList',
@@ -96,6 +104,7 @@ foam.CLASS({
       androidExpression: `
         foam.cross_platform.ui.stack.DAOListView sv = DAOListView_create()
           .setData(dao)
+          .setTitle$(getSelectionTitle$())
           .build();
         onDetach(sv.onRowSelected().sub(null, onRowSelected_listener()));
         onDetach(sv);
@@ -105,6 +114,7 @@ foam.CLASS({
       swiftExpression: `
         let dlv = DAOListView_create()
           .setData(dao)
+          .setTitle$(getSelectionTitle$())
           .build();
         onDetach(dlv.onRowSelected().sub(nil, onRowSelected_listener()));
         onDetach(dlv);
@@ -148,10 +158,12 @@ foam.CLASS({
       name: 'bindData',
       androidCode: `
         foam.core.Property p = (foam.core.Property) axiom;
+        setSelectionTitle(p.getI18nLabel());
         return getData$().linkFrom(data.getSlot(p.getName()));
       `,
       swiftCode: `
         let p = axiom as! foam_core_Property;
+        setSelectionTitle(p.getI18nLabel());
         return getData$().linkFrom(data?.getSlot(p.getName()));
       `,
     },

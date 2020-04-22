@@ -96,6 +96,7 @@ public struct DefaultCitationViewSwiftUI: View {
           .font(.system(size: 18, weight: .bold, design: .default))
         if ( !o.subtitle.isEmpty ) {
           Text(o.subtitle)
+            .lineLimit(2)
             .font(.system(size: 16, weight: .regular, design: .default))
             .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
         }

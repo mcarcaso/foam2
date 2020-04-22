@@ -737,6 +737,10 @@ foam.CLASS({
       gridColumns: 6,
       expression: function(name) { return foam.String.labelize(name); }
     },
+    {
+      class: 'StringProperty',
+      name: 'description'
+    },
   ]
 });
 
