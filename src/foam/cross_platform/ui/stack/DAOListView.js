@@ -116,6 +116,9 @@ foam.CLASS({
             foam.cross_platform.ui.AxiomView citationView = (foam.cross_platform.ui.AxiomView) o.getCitationView()
               .createBuilder(o.getSubX())
               .builderBuild();
+            citationView.getView().setLayoutParams(new android.widget.TableRow.LayoutParams(
+              android.widget.TableRow.LayoutParams.MATCH_PARENT,
+              (int) (o.getRowHeight() * o.getAndroidContext().getResources().getDisplayMetrics().density)));
             ViewHolder vh = new ViewHolder(citationView);
             citationView.getView().setOnClickListener(view -> {
               o.onRowSelected().pub(new Object[]{vh.data});

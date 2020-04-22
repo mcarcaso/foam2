@@ -29,7 +29,10 @@ foam.CLASS({
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:gravity="center"
     android:layout_width="match_parent"
+    android:padding="12dp"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -43,12 +46,16 @@ foam.CLASS({
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"
+            android:textSize="18dp"
+            android:textStyle="bold"
             tools:text="This is where the title goes" />
 
         <android.widget.TextView
             android:id="@+id/subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:paddingTop="8dp"
             tools:text="This is where the subtitle goes" />
     </LinearLayout>
 
@@ -68,16 +75,35 @@ foam.CLASS({
 import SwiftUI
 
 public struct DefaultCitationViewSwiftUI: View {
+  let circleSize: CGFloat = 60
   @ObservedObject var o = DefaultCitationViewObservable()
   public var body: some View {
     HStack {
-      Circle().frame(width: 88, height: 88)
+      if !o.initials.isEmpty {
+        ZStack {
+          Circle()
+            .frame(width: circleSize, height: circleSize)
+            .foregroundColor(Color(o.initialsBackgroundColor))
+          Text(o.initials)
+            .foregroundColor(Color(o.initialsTextColor))
+        }
+      } else if !o.imageUrl.isEmpty {
+        Circle().frame(width: circleSize, height: circleSize)
+      }
       VStack(alignment: .leading) {
-        Text(o.title).lineLimit(1)
-        Text(o.subtitle)
+        Text(o.title)
+          .lineLimit(1)
+          .font(.system(size: 18, weight: .bold, design: .default))
+        if ( !o.subtitle.isEmpty ) {
+          Text(o.subtitle)
+            .font(.system(size: 16, weight: .regular, design: .default))
+            .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
+        }
       }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
       Text(o.time)
     }
+    .background(Color.clear)
+    .padding(12)
   }
 }
 
@@ -85,20 +111,42 @@ public class DefaultCitationViewObservable: ObservableObject {
   @Published var title = ""
   @Published var subtitle = ""
   @Published var time = ""
+  @Published var initials = ""
+  @Published var initialsBackgroundColor = UIColor.label
+  @Published var initialsTextColor = UIColor.systemBackground
+  @Published var imageUrl = ""
   init() {}
-  init(title: String, subtitle: String, time: String) {
-    self.title = title;
-    self.subtitle = subtitle;
-    self.time = time;
-  }
 }
 
 struct SwiftUIView_Previews: PreviewProvider {
+  static let noCircle: DefaultCitationViewObservable = {
+    let o = DefaultCitationViewObservable();
+    o.title = "This is a title";
+    o.subtitle = "This is a subtitle!";
+    o.time = "6:26"
+    return o;
+  }()
+  static let withInitials: DefaultCitationViewObservable = {
+    let o = DefaultCitationViewObservable();
+    o.initials = "ACB"
+    o.title = "This is a title";
+    o.subtitle = "This is a subtitle!";
+    o.time = "6:26"
+    return o;
+  }()
   static var previews: some View {
-    DefaultCitationViewSwiftUI(o: DefaultCitationViewObservable(
-      title: "Hey\\n\\n\\n\\nThere",
-      subtitle: "Sup",
-      time: "nooo"))
+    Group {
+      DefaultCitationViewSwiftUI(o: noCircle)
+        .previewLayout(PreviewLayout.fixed(width: 400, height: 100))
+      DefaultCitationViewSwiftUI(o: noCircle)
+        .previewLayout(PreviewLayout.fixed(width: 400, height: 100))
+        .colorScheme(.dark)
+      DefaultCitationViewSwiftUI(o: withInitials)
+        .previewLayout(PreviewLayout.fixed(width: 400, height: 100))
+      DefaultCitationViewSwiftUI(o: withInitials)
+        .previewLayout(PreviewLayout.fixed(width: 400, height: 100))
+        .colorScheme(.dark)
+    }
   }
 }
       `.trim()
@@ -123,7 +171,8 @@ struct SwiftUIView_Previews: PreviewProvider {
       name: 'view',
       androidFactory: `
         int id = getAndroidContext().getResources().getIdentifier("default_citation_view", "layout", getAndroidContext().getPackageName());
-        android.view.View v = android.view.LayoutInflater.from(getAndroidContext()).inflate(id, null);        v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+        android.view.View v = android.view.LayoutInflater.from(getAndroidContext()).inflate(id, null);
+        v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
         return v;
@@ -138,7 +187,9 @@ struct SwiftUIView_Previews: PreviewProvider {
       swiftType: 'UIHostingController<DefaultCitationViewSwiftUI>',
       name: 'swiftUiVc',
       swiftFactory: `
-        return UIHostingController(rootView: DefaultCitationViewSwiftUI(o: DefaultCitationViewObservable()));
+        let vc = UIHostingController(rootView: DefaultCitationViewSwiftUI(o: DefaultCitationViewObservable()));
+        vc.view.backgroundColor = UIColor.clear;
+        return vc;
       `
     }
   ],
@@ -155,7 +206,12 @@ struct SwiftUIView_Previews: PreviewProvider {
         int titleId = getAndroidContext().getResources().getIdentifier("title", "id", getAndroidContext().getPackageName());
         ((android.widget.TextView) getView().findViewById(titleId)).setText(getTitle());
         int subtitleId = getAndroidContext().getResources().getIdentifier("subtitle", "id", getAndroidContext().getPackageName());
-        ((android.widget.TextView) getView().findViewById(subtitleId)).setText(getSubtitle());
+        android.widget.TextView subtitle = (android.widget.TextView) getView().findViewById(subtitleId);
+        if ( getSubtitle().isEmpty() ) {
+          subtitle.setVisibility(android.view.View.GONE);
+        } else {
+          subtitle.setText(getSubtitle());
+        }
         int timeId = getAndroidContext().getResources().getIdentifier("time", "id", getAndroidContext().getPackageName());
         ((android.widget.TextView) getView().findViewById(timeId)).setText(getTime());
       `,
