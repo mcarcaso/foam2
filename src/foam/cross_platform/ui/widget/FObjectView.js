@@ -175,7 +175,7 @@ foam.CLASS({
     {
       name: 'onOfUpdate',
       androidCode: `
-        foam.cross_platform.FoamClass cls = getOf();
+        foam.cross_platform.FoamClass cls = getClasses()[0];
         if ( cls == null ) return;
         if ( foam.cross_platform.Lib.equals(cls, getData() == null ? null : getData().getCls_()) ) return;
         foam.cross_platform.FObject data = cls.createBuilder(getSubX()).builderBuild();
@@ -183,7 +183,7 @@ foam.CLASS({
         setData(data);
       `,
       swiftCode: `
-        let cls = getOf();
+        let cls = getClasses()[0];
         if cls == nil { return }
         if foam_cross_platform_Lib.equals(cls, getData()?.getCls_()) { return }
         let data = cls?.createBuilder(getSubX())?.builderBuild();
