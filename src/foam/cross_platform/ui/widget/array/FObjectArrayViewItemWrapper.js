@@ -2,13 +2,17 @@ foam.CLASS({
   package: 'foam.cross_platform.ui.widget.array',
   name: 'FObjectArrayViewItemWrapper',
   requires: [
-    'foam.cross_platform.ui.widget.array.FObjectArrayViewItemWrapperDetailView'
+    'foam.cross_platform.ui.widget.array.FObjectArrayViewItemWrapperDetailView',
+    'foam.core.ConstantSlot',
+  ],
+  implements: [
+    'foam.cross_platform.ui.TitleSlotCreator'
   ],
   imports: [
     {
       name: 'fobjArrayViewOf',
       type: 'foam.cross_platform.FoamClass'
-    }
+    },
   ],
   axioms: [
     {
@@ -40,4 +44,31 @@ foam.CLASS({
       `,
     },
   ],
+  methods: [
+    {
+      name: 'createTitleSlot',
+      androidCode: `
+        if ( getValue() instanceof foam.cross_platform.ui.TitleSlotCreator ) {
+          return ((foam.cross_platform.ui.TitleSlotCreator) getValue()).createTitleSlot(x);
+        }
+        foam.u2.ControllerMode cm = x.hasXProp("controllerMode") ?
+          (foam.u2.ControllerMode) x.getXProp("controllerMode") :
+          foam.u2.ControllerMode.VIEW;
+        return ConstantSlot_create()
+          .setValue(cm.getI18nLabel() + " " + getValue().getCls_().getI18nLabel())
+          .build();
+      `,
+      swiftCode: `
+        if ( getValue() is foam_cross_platform_ui_TitleSlotCreator ) {
+          return (getValue() as! foam_cross_platform_ui_TitleSlotCreator).createTitleSlot(x);
+        }
+        let cm = x!.hasXProp("controllerMode") ?
+          x!.getXProp("controllerMode") as! foam_u2_ControllerMode :
+          foam_u2_ControllerMode.VIEW;
+        return ConstantSlot_create()
+          .setValue(cm.getI18nLabel()! + " " + getValue()!.getCls_()!.getI18nLabel()!)
+          .build();
+      `,
+    }
+  ]
 });

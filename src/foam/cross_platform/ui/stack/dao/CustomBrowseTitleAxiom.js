@@ -1,6 +1,9 @@
 foam.CLASS({
   package: 'foam.cross_platform.ui.stack.dao',
   name: 'CustomBrowseTitleAxiom',
+  implements: [
+    'foam.cross_platform.ui.TitleSlotCreator'
+  ],
   properties: [
     {
       class: 'StringProperty',
@@ -93,11 +96,7 @@ foam.CLASS({
       return this.sourceCls_.model_.swiftName + '.' + this.crossPlatformAxiomName + '()';
     },
     {
-      type: 'foam.core.SlotInterface',
       name: 'createTitleSlot',
-      args: [
-        { type: 'Context', name: 'x' }
-      ],
       androidCode: `
         Object o = getFn_().executeFunction(new Object[] {x});
         if ( o instanceof foam.core.SlotInterface ) {

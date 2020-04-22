@@ -160,6 +160,10 @@ foam.CLASS({
       swiftExpression: `
         return data == nil ? nil : controllerMode!.getI18nLabel()! + " " + data!.getCls_()!.getI18nLabel()!;
       `
+    },
+    {
+      type: 'foam.core.Detachable',
+      name: 'titleSub_'
     }
   ],
   reactions: [
@@ -169,8 +173,35 @@ foam.CLASS({
 
     ['', 'propertyChange.id', 'updateIsSaveEnabled'],
     ['data', 'propertyChange', 'updateIsSaveEnabled'],
+
+    ['', 'propertyChange.data', 'updateTitle'],
   ],
   listeners: [
+    {
+      name: 'updateTitle',
+      androidCode: `
+        if ( getTitleSub_() != null ) getTitleSub_().detach();
+        setTitleSub_(null);
+
+        if ( hasPropertySet("title") ) clearProperty("title");
+
+        if ( getData() instanceof foam.cross_platform.ui.TitleSlotCreator ) {
+          setTitleSub_(setTitle$(((foam.cross_platform.ui.TitleSlotCreator) getData()).createTitleSlot(getSubX())));
+          onDetach(getTitleSub_());
+        }
+      `,
+      swiftCode: `
+        getTitleSub_()?.detach();
+        setTitleSub_(nil);
+
+        if ( hasPropertySet("title") ) { clearProperty("title"); }
+
+        if ( getData() is foam_cross_platform_ui_TitleSlotCreator ) {
+          setTitleSub_(setTitle$((getData() as! foam_cross_platform_ui_TitleSlotCreator).createTitleSlot(getSubX())));
+          onDetach(getTitleSub_());
+        }
+      `,
+    },
     {
       name: 'updateIsSaveEnabled',
       isMerged: true,
