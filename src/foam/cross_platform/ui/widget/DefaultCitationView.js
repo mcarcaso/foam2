@@ -105,6 +105,7 @@ public struct DefaultCitationViewSwiftUI: View {
       Text(o.time)
     }
     .background(Color.clear)
+    .frame(minHeight: 80, alignment: .center)
   }
 }
 
