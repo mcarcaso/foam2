@@ -3,6 +3,7 @@ foam.CLASS({
   name: 'FObjectArrayViewItemWrapper',
   requires: [
     'foam.cross_platform.ui.widget.array.FObjectArrayViewItemWrapperDetailView',
+    'foam.cross_platform.ui.widget.array.FObjectArrayViewItemWrapperCitationView',
     'foam.core.ConstantSlot',
   ],
   implements: [
@@ -37,10 +38,18 @@ foam.CLASS({
       class: 'FObjectProperty',
       name: 'value',
       androidFactory: `
-        return getFobjArrayViewOf().createBuilder(getX()).builderBuild();
+        foam.cross_platform.FoamClass cls = getFobjArrayViewOf();
+        Object[] axioms = cls.getAxiomsByClass(foam.cross_platform.ui.stack.dao.CustomCreateAxiom.CLS_());
+        foam.cross_platform.BuilderFactory b = axioms.length == 0 ? cls :
+          (foam.cross_platform.BuilderFactory) axioms[0];
+        return b.createBuilder(getX()).builderBuild();
       `,
       swiftFactory: `
-        return getFobjArrayViewOf()?.createBuilder(getX())?.builderBuild();
+        let cls = getFobjArrayViewOf()!;
+        let axioms = cls.getAxiomsByClass(foam_cross_platform_ui_stack_dao_CustomCreateAxiom.CLS_())!;
+        let b: foam_cross_platform_BuilderFactory = axioms.count == 0 ? cls :
+          axioms[0] as! foam_cross_platform_BuilderFactory;
+        return b.createBuilder(getX())?.builderBuild();
       `,
     },
   ],

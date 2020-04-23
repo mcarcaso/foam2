@@ -2,7 +2,7 @@ foam.CLASS({
   package: 'foam.cross_platform.ui.widget',
   name: 'DefaultCitationView',
   implements: [
-    'foam.cross_platform.ui.AxiomView'
+    'foam.cross_platform.ui.widget.CitationView'
   ],
   requires: [
     'foam.util.ArrayDetachable'
@@ -325,5 +325,14 @@ struct SwiftUIView_Previews: PreviewProvider {
           .build();
       `,
     },
+    {
+      name: 'getOf',
+      androidCode: `
+        return foam.cross_platform.FObjectClass.CLS_();
+      `,
+      swiftCode: `
+        return foam_cross_platform_FObjectClass.CLS_();
+      `
+    }
   ],
 });

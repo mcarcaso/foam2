@@ -115,6 +115,7 @@ foam.CLASS({
           public ViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
             foam.cross_platform.ui.AxiomView citationView = (foam.cross_platform.ui.AxiomView) o.getCitationView()
               .createBuilder(o.getSubX())
+              .setBuilderProperty("of", o.getData().getOf())
               .builderBuild();
             citationView.getView().setLayoutParams(new android.widget.TableRow.LayoutParams(
               android.widget.TableRow.LayoutParams.MATCH_PARENT,
@@ -225,6 +226,7 @@ foam.CLASS({
             if cell == nil {
               let citationView = daoView.getCitationView()!
                 .createBuilder(daoView.getSubX())!
+                .setBuilderProperty("of", self.daoView.getData()?.getOf())!
                 .builderBuild() as! foam_cross_platform_ui_AxiomView
               cell = RowView(citationView: citationView, style: .default, reuseIdentifier: reusableId);
             }
@@ -259,7 +261,7 @@ foam.CLASS({
     {
       class: 'ClassProperty',
       name: 'citationView',
-      value: 'foam.cross_platform.ui.widget.DefaultCitationView'
+      value: 'foam.cross_platform.ui.widget.CitationView'
     },
     {
       class: 'FObjectProperty',

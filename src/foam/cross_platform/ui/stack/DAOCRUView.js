@@ -162,6 +162,24 @@ foam.CLASS({
       `
     },
     {
+      class: 'FObjectProperty',
+      of: 'foam.cross_platform.BuilderFactory',
+      name: 'createBuilder',
+      androidFactory: `
+        foam.cross_platform.FoamClass cls = getDao().getOf();
+        Object[] axioms = cls.getAxiomsByClass(foam.cross_platform.ui.stack.dao.CustomCreateAxiom.CLS_());
+        if ( axioms.length == 0 ) return cls;
+        return (foam.cross_platform.ui.stack.dao.CustomCreateAxiom) axioms[0];
+      `,
+      swiftOptional: false,
+      swiftFactory: `
+        let cls = getDao()!.getOf();
+        let axioms = cls.getAxiomsByClass(foam_cross_platform_ui_stack_dao_CustomCreateAxiom.CLS_())!;
+        if ( axioms.count == 0 ) { return cls; }
+        return axioms[0] as! foam_cross_platform_ui_stack_dao_CustomCreateAxiom;
+      `
+    },
+    {
       type: 'foam.core.Detachable',
       name: 'titleSub_'
     }
@@ -221,7 +239,7 @@ foam.CLASS({
         Object id = getId();
         foam.dao.DAO dao = getDao();
         foam.cross_platform.FObject fobj = id == null ?
-          dao.getOf().createBuilder(getSubX()).builderBuild() :
+          getCreateBuilder().createBuilder(getSubX()).builderBuild() :
           dao.find(id);
         if ( fobj == null ) {
           System.out.println("Warning! Object deleted");
@@ -236,7 +254,7 @@ foam.CLASS({
         let id = getId();
         let dao = getDao()!;
         let fobj = id == nil ?
-          dao.getOf().createBuilder(getSubX())?.builderBuild() :
+          getCreateBuilder().createBuilder(getSubX())?.builderBuild() :
           dao.find(id)?.clone(getSubX());
         if ( fobj == nil ) {
           print("Warning! Object deleted");
