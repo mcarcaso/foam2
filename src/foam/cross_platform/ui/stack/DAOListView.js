@@ -261,7 +261,7 @@ foam.CLASS({
     {
       class: 'ClassProperty',
       name: 'citationView',
-      value: 'foam.cross_platform.ui.widget.CitationView'
+      value: 'foam.cross_platform.ui.widget.DynamicCitationView'
     },
     {
       class: 'FObjectProperty',

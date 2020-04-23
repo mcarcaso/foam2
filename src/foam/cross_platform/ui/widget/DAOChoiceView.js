@@ -10,7 +10,7 @@ foam.CLASS({
   requires: [
     'foam.cross_platform.ui.stack.DAOListView',
     'foam.cross_platform.ui.widget.ActionButton',
-    'foam.cross_platform.ui.widget.Label',
+    'foam.cross_platform.ui.widget.DynamicCitationView',
   ],
   imports: [
     {
@@ -34,15 +34,15 @@ foam.CLASS({
     },
     {
       class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.widget.Label',
+      of: 'foam.cross_platform.ui.widget.DynamicCitationView',
       name: 'label',
       androidFactory: `
-        foam.cross_platform.ui.widget.Label tf = Label_create().build();
+        foam.cross_platform.ui.widget.DynamicCitationView tf = DynamicCitationView_create().build();
         onDetach(tf.getData$().follow(getData$()));
         return tf;
       `,
       swiftFactory: `
-        let tf = Label_create().build();
+        let tf = DynamicCitationView_create().build();
         onDetach(tf.getData$().follow(getData$()));
         return tf;
       `

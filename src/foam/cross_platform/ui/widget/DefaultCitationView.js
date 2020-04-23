@@ -105,6 +105,7 @@ public struct DefaultCitationViewSwiftUI: View {
     }
     .background(Color.clear)
     .padding(12)
+    .frame(minHeight: 100, alignment: .center)
   }
 }
 
