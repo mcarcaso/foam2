@@ -1,6 +1,9 @@
 foam.CLASS({
   package: 'foam.cross_platform.ui.widget.array',
   name: 'FObjectArrayViewItemWrapperCitationView',
+  requires: [
+    'foam.cross_platform.ui.widget.DynamicCitationView'
+  ],
   implements: [
     'foam.cross_platform.ui.widget.CitationView',
   ],
@@ -16,23 +19,17 @@ foam.CLASS({
   properties: [
     {
       class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.widget.CitationView',
+      of: 'foam.cross_platform.ui.widget.DynamicCitationView',
       name: 'dv',
       androidFactory: `
-        foam.cross_platform.FObject dv = foam.cross_platform.ui.widget.CitationViewClass.CLS_()
-          .createBuilder(getSubX())
-          .setBuilderProperty("of", getFobjArrayViewOf())
-          .builderBuild();
+        foam.cross_platform.ui.widget.DynamicCitationView dv = DynamicCitationView_create().build();
         onDetach(dv);
-        return (foam.cross_platform.ui.widget.CitationView) dv;
+        return dv;
       `,
       swiftFactory: `
-        let dv = foam_cross_platform_ui_widget_CitationViewClass.CLS_()
-          .createBuilder(getSubX())?
-          .setBuilderProperty("of", getFobjArrayViewOf())?
-          .builderBuild();
+        let dv = DynamicCitationView_create().build();
         onDetach(dv);
-        return dv as? foam_cross_platform_ui_widget_CitationView;
+        return dv;
       `,
     },
     {

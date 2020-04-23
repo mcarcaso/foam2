@@ -31,8 +31,8 @@ foam.CLASS({
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:gravity="center"
+    android:layout_gravity="center"
     android:layout_width="match_parent"
-    android:padding="12dp"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -100,12 +100,11 @@ public struct DefaultCitationViewSwiftUI: View {
             .font(.system(size: 16, weight: .regular, design: .default))
             .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
         }
-      }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+      }
+      Spacer()
       Text(o.time)
     }
     .background(Color.clear)
-    .padding(12)
-    .frame(minHeight: 100, alignment: .center)
   }
 }
 
@@ -124,7 +123,7 @@ struct SwiftUIView_Previews: PreviewProvider {
   static let noCircle: DefaultCitationViewObservable = {
     let o = DefaultCitationViewObservable();
     o.title = "This is a title";
-    o.subtitle = "This is a subtitle!";
+    o.subtitle = "This is a subtitle! It is long enough to go down to two lines! How about that eh?";
     o.time = "6:26"
     return o;
   }()

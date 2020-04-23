@@ -18,6 +18,13 @@ foam.CLASS({
       flags: ['android']
     }
   ],
+  constants: [
+    {
+      type: 'Integer',
+      name: 'HORIZONTAL_PADDING',
+      value: 18
+    }
+  ],
   imports: [
     {
       name: 'androidContext',
@@ -93,8 +100,8 @@ foam.CLASS({
           foam.core.Detachable sub = null;
           public foam.cross_platform.FObject data = null;
           public foam.cross_platform.ui.android.SwipeHelper.UnderlayButton[] actions = null;
-          public ViewHolder(foam.cross_platform.ui.AxiomView citationView) {
-            super(citationView.getView());
+          public ViewHolder(android.view.View v, foam.cross_platform.ui.AxiomView citationView) {
+            super(v);
             this.citationView = citationView;
           }
           public void setData(foam.cross_platform.FObject data) {
@@ -113,15 +120,24 @@ foam.CLASS({
             \`)%>));
           }
           public ViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
+            float f = o.getAndroidContext().getResources().getDisplayMetrics().density;
+            int hp = (int) (f * DAOListView.HORIZONTAL_PADDING());
+
             foam.cross_platform.ui.AxiomView citationView = (foam.cross_platform.ui.AxiomView) o.getCitationView()
               .createBuilder(o.getSubX())
               .setBuilderProperty("of", o.getData().getOf())
               .builderBuild();
-            citationView.getView().setLayoutParams(new android.widget.TableRow.LayoutParams(
+
+            android.widget.LinearLayout wrapper = new android.widget.LinearLayout(citationView.getView().getContext());
+            wrapper.setLayoutParams(new android.widget.TableRow.LayoutParams(
               android.widget.TableRow.LayoutParams.MATCH_PARENT,
-              (int) (o.getRowHeight() * o.getAndroidContext().getResources().getDisplayMetrics().density)));
-            ViewHolder vh = new ViewHolder(citationView);
-            citationView.getView().setOnClickListener(view -> {
+              (int) (o.getRowHeight() * f)));
+            wrapper.addView(citationView.getView());
+            wrapper.setGravity(android.view.Gravity.CENTER);
+            wrapper.setPadding(hp, 0, hp, 0);
+
+            ViewHolder vh = new ViewHolder(wrapper, citationView);
+            wrapper.setOnClickListener(view -> {
               o.onRowSelected().pub(new Object[]{vh.data});
             });
             return vh;
@@ -170,11 +186,12 @@ foam.CLASS({
             super.init(style: style, reuseIdentifier: reuseIdentifier)
             let v = citationView.getView()!
             addSubview(v)
+            let p = CGFloat(foam_cross_platform_ui_stack_DAOListView.HORIZONTAL_PADDING());
             v.translatesAutoresizingMaskIntoConstraints = false;
             v.topAnchor.constraint(equalTo: topAnchor).isActive = true;
-            v.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true;
+            v.leadingAnchor.constraint(equalTo: leadingAnchor, constant: p).isActive = true;
             v.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true;
-            v.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true;
+            v.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -p).isActive = true;
           }
           func setData(data: foam_cross_platform_FObject) {
             sub?.detach();
