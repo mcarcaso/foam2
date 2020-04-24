@@ -77,14 +77,16 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        let lv = getLabel()!.getView()!;
-        let bv = getActionButton()!.getView()!
-        let v = UIStackView(arrangedSubviews: [lv, bv])
+        let views = [
+          getLabel()!.getView()!,
+          getActionButton()!.getView()!
+        ]
+        let v = UIStackView(arrangedSubviews: views)
         v.axis = .vertical
-        lv.translatesAutoresizingMaskIntoConstraints = false;
-        bv.translatesAutoresizingMaskIntoConstraints = false;
-        lv.widthAnchor.constraint(equalTo: v.widthAnchor, multiplier: 1).isActive = true;
-        bv.widthAnchor.constraint(equalTo: v.widthAnchor, multiplier: 1).isActive = true;
+        for sv in views {
+          sv.translatesAutoresizingMaskIntoConstraints = false;
+          sv.widthAnchor.constraint(equalTo: v.widthAnchor, multiplier: 1).isActive = true;
+        }
         return v;
       `,
     },

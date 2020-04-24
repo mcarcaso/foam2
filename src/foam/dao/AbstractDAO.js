@@ -342,23 +342,26 @@ return on().sub(null, <%=listener(\`
       `,
       swiftCode: `
 let mySink = decorateListener_(sink, predicate);
-return on().sub(nil, <%=listener(\`
-  if args!.count <= 1 || !(args![1] is String) { return; }
-  let topic = args![1] as! String;
-  switch(topic) {
-    case "put":
-      mySink?.put(args![args!.count - 1], sub);
-      break;
-    case "remove":
-      mySink?.remove(args![args!.count - 1], sub);
-      break;
-    case "reset":
-      mySink?.reset(sub);
-      break;
-    default:
-      break;
-  }
-\`)%>);
+return on().sub(nil, foam_swift_AnonymousListener
+  .foam_swift_AnonymousListenerBuilder(nil)
+  .setFn({[weak mySink] (sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+    if args!.count <= 1 || !(args![1] is String) { return; }
+    let topic = args![1] as! String;
+    switch(topic) {
+      case "put":
+        mySink?.put(args![args!.count - 1], sub);
+        break;
+      case "remove":
+        mySink?.remove(args![args!.count - 1], sub);
+        break;
+      case "reset":
+        mySink?.reset(sub);
+        break;
+      default:
+        break;
+    }
+  })
+  .build());
       `,
       javaCode: `
 sink = decorateListener_(sink, predicate);

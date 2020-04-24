@@ -145,7 +145,7 @@ foam.CLASS({
               return foam_core_ExpressionSlot.foam_core_ExpressionSlotBuilder(nil)
                 .setObj(o)
                 .setCode(foam_swift_AnonymousGenericFunction.foam_swift_AnonymousGenericFunctionBuilder(nil)
-                  .setFn({(args2: [Any?]?) -> Any? in
+                  .setFn({ [weak o] (args2: [Any?]?) -> Any? in
                     return o?.${this.name}_isAvailable(
                       ${args.map((a, i) => `args2![${i}]${a.type == 'Any?' ? '' : `as! ${a.type}`}`).join(',')}${args.length ? ',' : ''}
                       args2![${args.length}] as? foam_u2_ControllerMode

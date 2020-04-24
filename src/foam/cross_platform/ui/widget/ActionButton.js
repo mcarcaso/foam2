@@ -205,9 +205,12 @@ foam.CLASS({
       `,
       swiftCode: `
         let action = axiom as! foam_core_Action;
-        let fn = <%=fn(\`
-          return action.call(data, args);
-        \`)%>;
+        let fn = foam_swift_AnonymousGenericFunction
+          .foam_swift_AnonymousGenericFunctionBuilder(nil)
+          .setFn({[weak data] (args: [Any?]?) -> Any? in
+            return action.call(data, args);
+          })
+          .build();
         setData(fn);
 
         let isAvailable = action.createIsAvailableSlot(getX(), data);

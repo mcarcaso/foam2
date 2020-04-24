@@ -69,7 +69,7 @@ foam.CLASS({
       swiftCode: `
         class ViewController: UIViewController {
           var sub: foam_core_Detachable? = nil;
-          var this: foam_cross_platform_ui_stack_ScrollingWidgetView;
+          weak var this: foam_cross_platform_ui_stack_ScrollingWidgetView?;
           var v: foam_cross_platform_FObject? = nil;
           var child: UIView? = nil;
           init(_ this: foam_cross_platform_ui_stack_ScrollingWidgetView) {
@@ -80,7 +80,8 @@ foam.CLASS({
             view = sv
 
             let l = <%=listener(\`
-              let this = self!.this;
+              if ( self?.this == nil ) { return }
+              let this = self!.this!;
               self!.v?.detach();
               self!.v = nil;
               self!.child?.removeFromSuperview();

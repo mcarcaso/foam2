@@ -136,6 +136,7 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.core.Detachable',
+      weak: true,
       name: 'innerSub',
       postSet: function(_, s) {
         if (s) this.onDetach(s);
@@ -146,6 +147,7 @@ foam.CLASS({
     {
       class: 'foam.dao.DAOProperty',
       name: 'dao',
+      weak: true,
       androidPostSet: `
         if ( getInnerSub() != null ) getInnerSub().detach();
         setInnerSub(newValue.listen_(getX(), this, getPredicate()));

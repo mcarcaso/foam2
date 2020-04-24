@@ -425,6 +425,7 @@ foam.CLASS({
   properties: [
     {
       class: 'FObjectProperty',
+      weak: true,
       name: 'obj'
     },
     {
@@ -473,7 +474,7 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.core.Detachable',
-      name: 'cleanup_', 
+      name: 'cleanup_',
       documentation: 'Detachable to cleanup old subs when obj changes'
     }
   ],

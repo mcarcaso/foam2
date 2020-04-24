@@ -6,6 +6,7 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       name: 'parent',
+      weak: true
     }
   ],
   static: [
@@ -62,6 +63,7 @@ foam.CLASS({
         }
       ],
       androidCode: `
+        if ( getParent() == null ) return 0;
         Object[] args2;
         if ( args != null ) {
           args2 = new Object[args.length + 1];
@@ -75,6 +77,7 @@ foam.CLASS({
         return getParent().pub(args2);
       `,
       swiftCode: `
+        if ( getParent() == nil ) { return 0 }
         var args2: [Any?]? = nil;
         if args != nil {
           args2 = [Any?](repeating: nil, count: args!.count + 1);
@@ -102,6 +105,7 @@ foam.CLASS({
         }
       ],
       androidCode: `
+        if ( getParent() == null ) return null;
         String[] args2;
         if ( topics != null ) {
           args2 = new String[topics.length + 1];
@@ -115,6 +119,7 @@ foam.CLASS({
         return getParent().sub(args2, listener);
       `,
       swiftCode: `
+        if getParent() == nil { return nil }
         var args2: [String]? = nil;
         if topics != nil {
           args2 = [String](repeating: "", count: topics!.count + 1);
@@ -130,4 +135,3 @@ foam.CLASS({
     }
   ]
 });
-
