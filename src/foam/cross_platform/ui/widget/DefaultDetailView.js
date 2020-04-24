@@ -149,12 +149,6 @@ foam.CLASS({
   ],
   listeners: [
     {
-      name: 'setNeedsLayout',
-      isFramed: true,
-      flags: ['swift'],
-      swiftCode: `getView()?.setNeedsLayout()`
-    },
-    {
       name: 'updateView',
       androidCode: `
         if ( getSub_() != null ) {
@@ -224,9 +218,6 @@ foam.CLASS({
           subs.append(dpv);
           getLayout_().addView(dpv, a.getGridColumns());
         }
-        subs.append(getData()!.sub(nil, <%=listener(\`
-          self?.setNeedsLayout(nil, nil);
-        \`)%>)!);
         setSub_(ArrayDetachable_create().setArray(subs).build());
         onDetach(getSub_());
       `,
