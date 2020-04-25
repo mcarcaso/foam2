@@ -176,7 +176,6 @@ foam.CLASS({
     },
     {
       name: 'viewToData',
-      isFramed: true,
       androidCode: `
         String str = getView().getText().toString();
         if ( str.equals(getLastDataSet()) ) setLastDataSet(null);
@@ -188,7 +187,6 @@ foam.CLASS({
     },
     {
       name: 'dataToView',
-      isFramed: true,
       androidCode: `
         String str = dataToString(getData());
         if (str.equals(getView().getText().toString())) return;
