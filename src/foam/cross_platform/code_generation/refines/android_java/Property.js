@@ -154,6 +154,14 @@ foam.CLASS({
   methods: [
     function buildAndroidClass(cls, parentCls) {
       if ( ! parentCls.hasOwnAxiom(this.name) ) return;
+      var superAxiom = parentCls.getSuperClass().getAxiomByName(this.name);
+      if (superAxiom && superAxiom.forClass_ == 'foam.core.FObject') {
+        // All generated classes extend foam.cross_platform.AbstractFObject so
+        // if an axiom comes from foam.core.FObject, don't consider it an
+        // override unless it's in the extended class.
+        superAxiom = parentCls == foam.cross_platform.AbstractFObject ?
+          null : foam.cross_platform.AbstractFObject.getAxiomByName(this.name);
+      }
 
       cls.field({
         visibility: 'private',
@@ -213,12 +221,14 @@ foam.CLASS({
           name: fipName,
           initializer: 'false'
         });
-        cls.method({
-          visibility: 'protected',
-          type: this.androidType,
-          name: factoryName,
-          body: foam.cpTemplate(this.androidFactory, 'android')
-        });
+        if ( ! superAxiom || superAxiom.androidFactory != this.androidFactory ) {
+          cls.method({
+            visibility: 'protected',
+            type: this.androidType,
+            name: factoryName,
+            body: foam.cpTemplate(this.androidFactory, 'android')
+          });
+        }
         getter.body = `
           if ( ! ${this.crossPlatformIsSetVarName} ) {
             ${fipName} = true;

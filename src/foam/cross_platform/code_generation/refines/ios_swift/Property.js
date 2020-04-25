@@ -237,12 +237,14 @@ foam.CLASS({
           name: fipName,
           defaultValue: 'false'
         });
-        cls.method({
-          visibility: 'private',
-          type: this.swiftType,
-          name: factoryName,
-          body: foam.cpTemplate(this.swiftFactory, 'swift')
-        });
+        if ( ! superAxiom || superAxiom.swiftFactory != this.swiftFactory ) {
+          cls.method({
+            override: override && superAxiom.swiftFactory,
+            type: this.swiftType,
+            name: factoryName,
+            body: foam.cpTemplate(this.swiftFactory, 'swift')
+          });
+        }
         getter.body = `
           if !${this.crossPlatformIsSetVarName} {
             ${fipName} = true;

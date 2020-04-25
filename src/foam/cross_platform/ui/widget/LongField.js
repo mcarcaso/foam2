@@ -38,19 +38,18 @@ foam.CLASS({
         }
         return oldValue;
       `,
-    }
-  ],
-  reactions: [
-    ['', 'propertyChange.view', 'updateKeyboard']
-  ],
-  listeners: [
+    },
     {
-      name: 'updateKeyboard',
-      androidCode: `
-        getView().setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+      name: 'view',
+      androidFactory: `
+        com.google.android.material.textfield.TextInputEditText v = (com.google.android.material.textfield.TextInputEditText) super.view_factory_();
+        v.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        return v;
       `,
-      swiftCode: `
-        (getView() as? UITextView)?.keyboardType = .numberPad;
+      swiftFactory: `
+        let v = super.view_factory_() as? UITextView;
+        v?.keyboardType = .numberPad;
+        return v;
       `
     }
   ]
