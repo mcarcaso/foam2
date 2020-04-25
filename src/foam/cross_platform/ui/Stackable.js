@@ -9,7 +9,8 @@ foam.INTERFACE({
       swiftType: 'UIViewController',
     },
     {
-      name: 'onBackPressed'
+      type: 'Boolean',
+      name: 'backRequested',
     },
   ]
 });

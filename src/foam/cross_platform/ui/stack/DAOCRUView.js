@@ -348,7 +348,7 @@ foam.CLASS({
       `
     },
     {
-      name: 'onBackPressed',
+      name: 'backRequested',
       androidCode: `
         foam.cross_platform.FObject o = getId() == null ? null : getDao().find(getId());
         boolean hasDiff = !foam.cross_platform.Lib.equals(o, getData());
@@ -364,9 +364,9 @@ foam.CLASS({
             })
             .create()
             .show();
-        } else {
-          getStack().pop();
+          return false;
         }
+        return true;
       `,
       swiftCode: `
         let o = getId() == nil ? nil : getDao()?.find(getId());
@@ -379,9 +379,10 @@ foam.CLASS({
             self.getStack()?.pop();
           }))
           getStack()?.getNavController().present(alertController, animated: true, completion: nil)
-        } else {
-          getStack()?.pop();
-        }      `
+          return false;
+        }
+        return true;
+      `
     }
   ]
 });

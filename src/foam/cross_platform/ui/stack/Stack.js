@@ -102,19 +102,23 @@ foam.CLASS({
         }
       `,
       swiftCode: `
-        public class NavigationControllerDelegate: NSObject, UINavigationControllerDelegate {
+        public class NavigationControllerDelegate: NSObject, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
           weak var this: foam_cross_platform_ui_stack_Stack? = nil;
+          public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+            return (this?.getStack()?.lastObject as? foam_cross_platform_ui_Stackable)?.backRequested() ?? true;
+          }
           public func navigationController(
               _ navigationController: UINavigationController,
               didShow viewController: UIViewController,
               animated: Bool) {
+            navigationController.interactivePopGestureRecognizer?.delegate = self;
+            navigationController.interactivePopGestureRecognizer?.isEnabled = true;
             let s = this!.getStack()!
             while s.count > navigationController.viewControllers.count {
               // This is to get the ViewController's stack in sync with the
-              // stack's stack.
-              // s.removeLastObject();
-              // _ = this!.onPop().pub(nil);
-              fatalError("Why am I here?");
+              // stack's stack. This can happen when the user swipes to go back.
+               s.removeLastObject();
+               _ = this!.onPop().pub(nil);
             }
           }
         }
@@ -128,10 +132,12 @@ foam.CLASS({
       androidCode: `
         foam.cross_platform.ui.Stackable o = (foam.cross_platform.ui.Stackable)
           getStack().get(getStack().size() - 1);
-        o.onBackPressed();
+        if ( o.backRequested() ) pop();
       `,
       swiftCode: `
-        (getStack()?.lastObject as? foam_cross_platform_ui_Stackable)?.onBackPressed();
+        if ( (getStack()?.lastObject as? foam_cross_platform_ui_Stackable)?.backRequested() ?? true) {
+          pop();
+        }
       `
     },
     {
@@ -149,7 +155,7 @@ foam.CLASS({
           if ( f instanceof ToolbarFragment ) {
             foam.cross_platform.ui.android.Toolbar toolbar = ((ToolbarFragment) f).getToolbar();
             toolbar.setBackButtonFn((foam.cross_platform.GenericFunction) args -> {
-              s.onBackPressed();
+              if ( s.backRequested() ) pop();
               return null;
             });
           }
@@ -192,7 +198,8 @@ foam.CLASS({
           let vc = v!.toStackableView();
           vc.navigationItem.setLeftBarButton(
             UIBarButtonItem(
-              barButtonSystemItem: .rewind,
+              image: UIImage(named: "toolbar_back")!,
+              style: .plain,
               target: self,
               action: #selector(Self.onBackPressed)),
             animated: true)

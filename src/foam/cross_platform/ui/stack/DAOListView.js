@@ -344,13 +344,9 @@ foam.CLASS({
       `
     },
     {
-      name: 'onBackPressed',
-      androidCode: `
-        getStack().pop();
-      `,
-      swiftCode: `
-        getStack()?.pop();
-      `
+      name: 'backRequested',
+      androidCode: `return true;`,
+      swiftCode: 'return true;',
     }
   ]
 });
