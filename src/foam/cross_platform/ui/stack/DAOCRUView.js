@@ -98,10 +98,6 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'BooleanProperty',
-      name: 'isSaveEnabled',
-    },
-    {
       class: 'FObjectProperty',
       of: 'foam.core.Detachable',
       name: 'daoSub_'
@@ -188,10 +184,6 @@ foam.CLASS({
     ['', 'propertyChange.controllerMode', 'updateData'],
     ['', 'propertyChange.dao', 'updateData'],
     ['', 'propertyChange.id', 'updateData'],
-
-    ['', 'propertyChange.id', 'updateIsSaveEnabled'],
-    ['data', 'propertyChange', 'updateIsSaveEnabled'],
-
     ['', 'propertyChange.data', 'updateTitle'],
   ],
   listeners: [
@@ -218,19 +210,6 @@ foam.CLASS({
           setTitleSub_(setTitle$((getData() as! foam_cross_platform_ui_TitleSlotCreator).createTitleSlot(getSubX())));
           onDetach(getTitleSub_());
         }
-      `,
-    },
-    {
-      name: 'updateIsSaveEnabled',
-      isMerged: true,
-      mergeDelay: 300,
-      androidCode: `
-        foam.cross_platform.FObject o = getId() == null ? null : getDao().find(getId());
-        setIsSaveEnabled(!foam.cross_platform.Lib.equals(o, getData()));
-      `,
-      swiftCode: `
-        let o = getId() == nil ? nil : getDao()?.find(getId());
-        setIsSaveEnabled(!foam_cross_platform_Lib.equals(o, getData()));
       `,
     },
     {
@@ -371,7 +350,10 @@ foam.CLASS({
     {
       name: 'onBackPressed',
       androidCode: `
-        if ( getIsSaveEnabled() ) {
+        foam.cross_platform.FObject o = getId() == null ? null : getDao().find(getId());
+        boolean hasDiff = !foam.cross_platform.Lib.equals(o, getData());
+
+        if ( hasDiff ) {
           DAOCRUView self = this;
           new androidx.appcompat.app.AlertDialog
             .Builder(getAndroidContext())
@@ -387,7 +369,10 @@ foam.CLASS({
         }
       `,
       swiftCode: `
-        if ( getIsSaveEnabled() ) {
+        let o = getId() == nil ? nil : getDao()?.find(getId());
+        let hasDiff = !foam_cross_platform_Lib.equals(o, getData());
+
+        if ( hasDiff ) {
           let alertController = UIAlertController(title: Self.CONFIRM_BACK, message: "", preferredStyle: .alert)
           alertController.addAction(UIAlertAction(title: Self.CONFIRM_NEGATIVE, style: .default, handler: nil))
           alertController.addAction(UIAlertAction(title: Self.CONFIRM_POSITIVE, style: .default, handler: { _ in

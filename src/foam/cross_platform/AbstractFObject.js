@@ -176,6 +176,10 @@ foam.CLASS({
       class: 'foam.cross_platform.code_generation.Extras',
       swiftCode: `
         deinit {
+          let s = getCls_()!.getI18nLabel()!
+          if s != "Listener List" {
+            print("Deinit " + s);
+          }
           detach();
         }
         public override var description: String { return toString() ?? "" }
@@ -202,8 +206,8 @@ foam.CLASS({
       androidCode: `
         final foam.core.Detachable d = detachable;
         sub(new String[] {"detach"}, <%=listener(\`
-          sub.detach();
-          d.detach();
+          if ( sub != null ) sub.detach();
+          if ( d != null ) d.detach();
         \`)%>);
       `,
       swiftCode: `
@@ -482,7 +486,7 @@ foam.CLASS({
           foam.core.Property p = (foam.core.Property) a;
           if ( ! hasPropertySet(p.getName()) ) continue;
           if ( p.getCpCloneProperty() == null ) continue;
-          p.getCpCloneProperty().executeFunction(new Object[] {this, clone});
+          p.getCpCloneProperty().executeFunction(new Object[] {this, clone, x});
         }
         return clone;
       `,
@@ -492,7 +496,7 @@ foam.CLASS({
           let p = a as! foam_core_Property;
           if ( !hasPropertySet(p.getName()) ) { continue; }
           if ( p.getCpCloneProperty() == nil ) { continue; }
-          _ = p.getCpCloneProperty()!.executeFunction([self, clone]);
+          _ = p.getCpCloneProperty()!.executeFunction([self, clone, x]);
         }
         return clone;
       `
