@@ -80,11 +80,9 @@ foam.CLASS({
       swiftFactory: `
         let v = UITextView();
         v.isScrollEnabled = false;
-        v.backgroundColor = getTheme()!.getSurface();
         v.textColor = getTheme()!.getOnSurface();
         v.font = UIFont.systemFont(ofSize: 18)
         v.layer.borderWidth = 1;
-        v.layer.borderColor = getTheme()?.getSecondary().cgColor;
         v.layer.cornerRadius = 4
         return v;
       `,
@@ -164,6 +162,11 @@ foam.CLASS({
           getMode() == foam.u2.DisplayMode.RW);
         getView().setEnabled(
           getMode() != foam.u2.DisplayMode.DISABLED);
+        getView().getBackground().setColorFilter(
+          getMode() == foam.u2.DisplayMode.RO ?
+            android.graphics.Color.parseColor("#00000000") :
+            getTheme().getSecondary(),
+          android.graphics.PorterDuff.Mode.SRC_IN);
       `,
       swiftCode: `
         if ( getView() == nil ) { return; }
@@ -172,6 +175,8 @@ foam.CLASS({
           getMode(), foam_u2_DisplayMode.RW)
         tf.isUserInteractionEnabled = !foam_cross_platform_Lib.equals(
           getMode(), foam_u2_DisplayMode.DISABLED)
+        tf.layer.borderColor = tf.isEditable ? getTheme()!.getSecondary().cgColor : UIColor.clear.cgColor;
+        tf.backgroundColor = tf.isEditable ? getTheme()!.getSurface() : UIColor.clear
       `,
     },
     {
