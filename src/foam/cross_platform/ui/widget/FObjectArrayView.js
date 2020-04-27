@@ -144,14 +144,21 @@ foam.CLASS({
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
         v.setOrientation(android.widget.LinearLayout.HORIZONTAL);
         v.setGravity(android.view.Gravity.BOTTOM);
+
         v.addView(getLabel().getView());
         getLabel().getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+
         v.addView(getActionButton().getView());
-        getActionButton().getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+        android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 0));
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 0);
+        getActionButton().getView().setLayoutParams(lp);
+        float d = getAndroidContext().getResources().getDisplayMetrics().density;
+        lp.leftMargin = (int) (8 * d);
+        getActionButton().getView().setLayoutParams(lp);
+
         return v;
       `,
       swiftFactory: `
@@ -160,7 +167,7 @@ foam.CLASS({
         let v = UIStackView(arrangedSubviews: [lv, bv])
         v.axis = .horizontal
         v.alignment = .bottom
-        v.distribution = .equalSpacing
+        v.distribution = .fill
         v.spacing = 8;
         lv.translatesAutoresizingMaskIntoConstraints = false;
         bv.translatesAutoresizingMaskIntoConstraints = false;

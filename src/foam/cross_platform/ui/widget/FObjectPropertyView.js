@@ -25,7 +25,15 @@ foam.CLASS({
       key: 'androidContext',
       androidType: 'android.content.Context',
       flags: ['android']
-    }
+    },
+    {
+      name: 'controllerMode',
+      type: 'foam.u2.ControllerMode'
+    },
+    {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
   ],
   properties: [
     {
@@ -54,32 +62,33 @@ foam.CLASS({
     {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ui.widget.ActionButton',
-      name: 'viewButton',
+      name: 'actionButton',
       androidFactory: `
         foam.cross_platform.ui.widget.ActionButton ab = ActionButton_create().build();
-        onDetach(ab.bindData(this, VIEW_ACTION()));
+        onDetach(ab.bindData(this, SELECT()));
+        android.widget.ImageButton v = new android.widget.ImageButton(getAndroidContext());
+        ab.styleButton(v);
+        v.setImageResource(getAndroidContext().getResources().getIdentifier(
+            getControllerMode() == foam.u2.ControllerMode.VIEW ? "dv_view" : "dv_edit",
+            "drawable",
+            getAndroidContext().getPackageName()));
+        v.setColorFilter(getTheme().getOnSecondary());
+        ab.setView(v);
         return ab;
       `,
       swiftFactory: `
         let ab = ActionButton_create().build();
-        onDetach(ab.bindData(self, Self.VIEW_ACTION()));
-        return ab;
-      `
-    },
-    {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.widget.ActionButton',
-      name: 'editButton',
-      androidFactory: `
-        foam.cross_platform.ui.widget.ActionButton ab = ActionButton_create().build();
-        onDetach(ab.bindData(this, EDIT()));
+        onDetach(ab.bindData(self, Self.SELECT()));
+        ab.setLabel("")
+        let b = ab.getView() as! UIButton;
+        let i = UIImage(named: getControllerMode() === foam_u2_ControllerMode.VIEW ? "dv_view" : "dv_edit")!
+        b.setImage(i, for: .normal)
+        b.imageView?.contentMode = .center
+        b.tintColor = getTheme()!.getOnSecondary();
+        b.widthAnchor.constraint(equalToConstant: 36).isActive = true;
+        b.heightAnchor.constraint(equalToConstant: 36).isActive = true;
         return ab;
       `,
-      swiftFactory: `
-        let ab = ActionButton_create().build();
-        onDetach(ab.bindData(self, Self.EDIT()));
-        return ab;
-      `
     },
     {
       androidType: 'android.widget.LinearLayout',
@@ -90,25 +99,36 @@ foam.CLASS({
         v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-        v.setOrientation(android.widget.LinearLayout.VERTICAL);
+        v.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+        v.setGravity(android.view.Gravity.BOTTOM);
+
         v.addView(getCitationView().getView());
-        v.addView(getViewButton().getView());
-        v.addView(getEditButton().getView());
+        getCitationView().getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+
+        v.addView(getActionButton().getView());
+        android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 0);
+        getActionButton().getView().setLayoutParams(lp);
+        float d = getAndroidContext().getResources().getDisplayMetrics().density;
+        lp.leftMargin = (int) (8 * d);
+        getActionButton().getView().setLayoutParams(lp);
+
         return v;
       `,
       swiftFactory: `
-        let views = [
-          getCitationView()!.getView()!,
-          getViewButton()!.getView()!,
-          getEditButton()!.getView()!,
-        ];
-        let stack = UIStackView(arrangedSubviews: views)
-        stack.axis = .vertical
-        for v in views {
-          v.translatesAutoresizingMaskIntoConstraints = false;
-          v.widthAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 1).isActive = true;
-        }
-        return stack;
+        let lv = getCitationView()!.getView()!;
+        let bv = getActionButton()!.getView()!
+        let v = UIStackView(arrangedSubviews: [lv, bv])
+        v.axis = .horizontal
+        v.alignment = .bottom
+        v.distribution = .fill
+        v.spacing = 8;
+        lv.translatesAutoresizingMaskIntoConstraints = false;
+        bv.translatesAutoresizingMaskIntoConstraints = false;
+        return v;
       `,
     },
     {
@@ -146,22 +166,7 @@ foam.CLASS({
   ],
   actions: [
     {
-      name: 'viewAction',
-      isAvailableArgs: ['controllerMode'],
-      androidIsAvailable: 'return controllerMode == foam.u2.ControllerMode.VIEW;',
-      swiftIsAvailable: 'return controllerMode === foam_u2_ControllerMode.VIEW;',
-      androidCode: `
-        getStack().push(getDv());
-      `,
-      swiftCode: `
-        getStack()!.push(getDv());
-      `
-    },
-    {
-      name: 'edit',
-      isAvailableArgs: ['controllerMode'],
-      androidIsAvailable: 'return controllerMode != foam.u2.ControllerMode.VIEW;',
-      swiftIsAvailable: 'return controllerMode !== foam_u2_ControllerMode.VIEW;',
+      name: 'select',
       androidCode: `
         getStack().push(getDv());
       `,

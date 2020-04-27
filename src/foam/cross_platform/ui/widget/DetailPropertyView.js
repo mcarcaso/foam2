@@ -324,6 +324,7 @@ foam.CLASS({
 
         h.trailingAnchor.constraint(equalTo: v.trailingAnchor).isActive = true;
         h.topAnchor.constraint(equalTo: v.topAnchor).isActive = true;
+        h.widthAnchor.constraint(equalToConstant: 36).isActive = true;
 
         d.topAnchor.constraint(equalTo: l.bottomAnchor, constant: l.isHidden ? 0 : p).isActive = true;
         d.leadingAnchor.constraint(equalTo: v.leadingAnchor).isActive = true;
