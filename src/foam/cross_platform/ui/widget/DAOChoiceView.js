@@ -14,6 +14,10 @@ foam.CLASS({
   ],
   imports: [
     {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
+    {
       name: 'stack',
       type: 'foam.cross_platform.ui.stack.Stack',
     },
@@ -54,11 +58,27 @@ foam.CLASS({
       androidFactory: `
         foam.cross_platform.ui.widget.ActionButton ab = ActionButton_create().build();
         onDetach(ab.bindData(this, SELECT()));
+        android.widget.ImageButton v = new android.widget.ImageButton(getAndroidContext());
+        ab.styleButton(v);
+        v.setImageResource(getAndroidContext().getResources().getIdentifier(
+            "dv_edit",
+            "drawable",
+            getAndroidContext().getPackageName()));
+        v.setColorFilter(getTheme().getOnSecondary());
+        ab.setView(v);
         return ab;
       `,
       swiftFactory: `
         let ab = ActionButton_create().build();
         onDetach(ab.bindData(self, Self.SELECT()));
+        ab.setLabel("")
+        let b = ab.getView() as! UIButton;
+        let i = UIImage(named: "dv_edit")!
+        b.setImage(i, for: .normal)
+        b.imageView?.contentMode = .center
+        b.tintColor = getTheme()!.getOnSecondary();
+        b.widthAnchor.constraint(equalToConstant: 36).isActive = true;
+        b.heightAnchor.constraint(equalToConstant: 36).isActive = true;
         return ab;
       `
     },
@@ -71,9 +91,16 @@ foam.CLASS({
         v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-        v.setOrientation(android.widget.LinearLayout.VERTICAL);
+        v.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+        v.setGravity(android.view.Gravity.BOTTOM);
         v.addView(getLabel().getView());
+        getLabel().getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1));
         v.addView(getActionButton().getView());
+        getActionButton().getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 0));
         return v;
       `,
       swiftFactory: `
@@ -82,10 +109,12 @@ foam.CLASS({
           getActionButton()!.getView()!
         ]
         let v = UIStackView(arrangedSubviews: views)
-        v.axis = .vertical
+        v.axis = .horizontal
+        v.alignment = .bottom
+        v.distribution = .equalSpacing
+        v.spacing = 8;
         for sv in views {
           sv.translatesAutoresizingMaskIntoConstraints = false;
-          sv.widthAnchor.constraint(equalTo: v.widthAnchor, multiplier: 1).isActive = true;
         }
         return v;
       `,

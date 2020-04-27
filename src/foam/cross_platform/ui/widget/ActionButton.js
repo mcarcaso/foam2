@@ -71,36 +71,7 @@ foam.CLASS({
       name: 'view',
       androidFactory: `
         android.widget.Button b = new android.widget.Button(getAndroidContext());
-        b.setBackgroundColor(getTheme().getSecondary());
-        b.setTextColor(getTheme().getOnSecondary());
-        b.setMinWidth(0);
-        float density = getAndroidContext().getResources().getDisplayMetrics().density;
-        int p = (int)(density * PADDING());
-        b.setPadding(p, p, p, p);
-        b.setMinWidth(0);
-        b.setMinimumWidth(0);
-        b.setMinHeight(0);
-        b.setMinimumHeight(0);
-
-        android.graphics.drawable.GradientDrawable d = new android.graphics.drawable.GradientDrawable();
-        d.setCornerRadius(density * CORNER_RADIUS());
-        d.setColor(getTheme().getSecondary());
-        b.setBackground(d);
-
-        b.setOnTouchListener(new android.view.View.OnTouchListener() {
-          public boolean onTouch(android.view.View v, android.view.MotionEvent event) {
-            if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
-              v.getBackground().setColorFilter(0x70000000, android.graphics.PorterDuff.Mode.DARKEN);
-              v.invalidate();
-            }
-            else if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
-              v.getBackground().clearColorFilter();
-              v.invalidate();
-            }
-            return false;
-          }
-        });
-
+        styleButton(b);
         return b;
       `,
       androidPostSet: `
@@ -117,13 +88,7 @@ foam.CLASS({
       `,
       swiftFactory: `
         let b = UIButton()
-        b.backgroundColor = getTheme()!.getSecondary()
-        b.setTitleColor(getTheme()!.getOnSecondary(), for: .normal);
-        b.showsTouchWhenHighlighted = true;
-        let i = CGFloat(Self.PADDING());
-        b.contentEdgeInsets = UIEdgeInsets(top: i, left: i, bottom: i, right: i);
-        b.layer.cornerRadius = CGFloat(Self.CORNER_RADIUS());
-        b.clipsToBounds = true;
+        styleButton(b)
         return b;
       `,
       swiftPostSet: `
@@ -152,6 +117,58 @@ foam.CLASS({
       name: 'init',
       androidCode: `updateView(null, null);`,
       swiftCode: `updateView(nil, nil);`,
+    },
+    {
+      name: 'styleButton',
+      args: [
+        { name: 'b', androidType: 'android.view.View', swiftType: 'UIButton' }
+      ],
+      androidCode: `
+        b.setBackgroundColor(getTheme().getSecondary());
+        if ( b instanceof android.widget.Button ) {
+          android.widget.Button b2 = (android.widget.Button) b;
+          b2.setTextColor(getTheme().getOnSecondary());
+          b2.setMinWidth(0);
+          b2.setMinWidth(0);
+          b2.setMinHeight(0);
+        }
+
+        float density = getAndroidContext().getResources().getDisplayMetrics().density;
+        int p = (int)(density * PADDING());
+        b.setPadding(p, p, p, p);
+
+        b.setMinimumWidth(0);
+
+        b.setMinimumHeight(0);
+
+        android.graphics.drawable.GradientDrawable d = new android.graphics.drawable.GradientDrawable();
+        d.setCornerRadius(density * CORNER_RADIUS());
+        d.setColor(getTheme().getSecondary());
+        b.setBackground(d);
+
+        b.setOnTouchListener(new android.view.View.OnTouchListener() {
+          public boolean onTouch(android.view.View v, android.view.MotionEvent event) {
+            if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+              v.getBackground().setColorFilter(0x70000000, android.graphics.PorterDuff.Mode.DARKEN);
+              v.invalidate();
+            }
+            else if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
+              v.getBackground().clearColorFilter();
+              v.invalidate();
+            }
+            return false;
+          }
+        });
+      `,
+      swiftCode: `
+        b.backgroundColor = getTheme()!.getSecondary()
+        b.setTitleColor(getTheme()!.getOnSecondary(), for: .normal);
+        b.showsTouchWhenHighlighted = true;
+        let i = CGFloat(Self.PADDING());
+        b.contentEdgeInsets = UIEdgeInsets(top: i, left: i, bottom: i, right: i);
+        b.layer.cornerRadius = CGFloat(Self.CORNER_RADIUS());
+        b.clipsToBounds = true;
+      `
     },
     {
       name: 'callAction',
@@ -186,10 +203,11 @@ foam.CLASS({
         foam.core.Slot isAvailable = action.createIsAvailableSlot(getX(), data);
         foam.core.Slot isEnabled = action.createIsEnabledSlot(data);
 
+        setLabel(action.getI18nLabel());
+
         final ActionButton self = this;
         return ArrayDetachable_create()
           .setArray(new foam.core.Detachable[] {
-            getLabel$().follow(action.getI18nLabel$()),
             isEnabled == null ? null : getIsEnabled$().follow(isEnabled),
             isAvailable == null ? null : getIsAvailable$().follow(isAvailable),
             <%=detachable(\`
@@ -216,9 +234,10 @@ foam.CLASS({
         let isAvailable = action.createIsAvailableSlot(getX(), data);
         let isEnabled = action.createIsEnabledSlot(data);
 
+        setLabel(action.getI18nLabel());
+
         return ArrayDetachable_create()
           .setArray([
-            getLabel$().follow(action.getI18nLabel$()),
             isEnabled == nil ? nil : getIsEnabled$().follow(isEnabled),
             isAvailable == nil ? nil : getIsAvailable$().follow(isAvailable),
             <%=detachable(\`

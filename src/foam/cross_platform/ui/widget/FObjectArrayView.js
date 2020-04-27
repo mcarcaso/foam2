@@ -34,7 +34,11 @@ foam.CLASS({
       key: 'androidContext',
       androidType: 'android.content.Context',
       flags: ['android']
-    }
+    },
+    {
+      name: 'theme',
+      type: 'foam.cross_platform.ui.Theme',
+    },
   ],
   exports: [
     'of as fobjArrayViewOf'
@@ -105,11 +109,27 @@ foam.CLASS({
       androidFactory: `
         foam.cross_platform.ui.widget.ActionButton ab = ActionButton_create().build();
         onDetach(ab.bindData(this, SELECT()));
+        android.widget.ImageButton v = new android.widget.ImageButton(getAndroidContext());
+        ab.styleButton(v);
+        v.setImageResource(getAndroidContext().getResources().getIdentifier(
+            getControllerMode() == foam.u2.ControllerMode.VIEW ? "dv_view" : "dv_edit",
+            "drawable",
+            getAndroidContext().getPackageName()));
+        v.setColorFilter(getTheme().getOnSecondary());
+        ab.setView(v);
         return ab;
       `,
       swiftFactory: `
         let ab = ActionButton_create().build();
         onDetach(ab.bindData(self, Self.SELECT()));
+        ab.setLabel("")
+        let b = ab.getView() as! UIButton;
+        let i = UIImage(named: getControllerMode() === foam_u2_ControllerMode.VIEW ? "dv_view" : "dv_edit")!
+        b.setImage(i, for: .normal)
+        b.imageView?.contentMode = .center
+        b.tintColor = getTheme()!.getOnSecondary();
+        b.widthAnchor.constraint(equalToConstant: 36).isActive = true;
+        b.heightAnchor.constraint(equalToConstant: 36).isActive = true;
         return ab;
       `,
     },
@@ -122,20 +142,28 @@ foam.CLASS({
         v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-        v.setOrientation(android.widget.LinearLayout.VERTICAL);
+        v.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+        v.setGravity(android.view.Gravity.BOTTOM);
         v.addView(getLabel().getView());
+        getLabel().getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1));
         v.addView(getActionButton().getView());
+        getActionButton().getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 0));
         return v;
       `,
       swiftFactory: `
         let lv = getLabel()!.getView()!;
         let bv = getActionButton()!.getView()!
         let v = UIStackView(arrangedSubviews: [lv, bv])
-        v.axis = .vertical
+        v.axis = .horizontal
+        v.alignment = .bottom
+        v.distribution = .equalSpacing
+        v.spacing = 8;
         lv.translatesAutoresizingMaskIntoConstraints = false;
         bv.translatesAutoresizingMaskIntoConstraints = false;
-        lv.widthAnchor.constraint(equalTo: v.widthAnchor, multiplier: 1).isActive = true;
-        bv.widthAnchor.constraint(equalTo: v.widthAnchor, multiplier: 1).isActive = true;
         return v;
       `,
     },
@@ -267,6 +295,23 @@ foam.CLASS({
         setOf(p.getProperty("of"));
         return getData$().linkFrom(data!.getSlot(p.getName()));
       `,
+    },
+  ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Resource',
+      androidPath: 'drawable/dv_view.xml',
+      androidCode: `
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M12,4.5C7,4.5 2.73,7.61 1,12c1.73,4.39 6,7.5 11,7.5s9.27,-3.11 11,-7.5c-1.73,-4.39 -6,-7.5 -11,-7.5zM12,17c-2.76,0 -5,-2.24 -5,-5s2.24,-5 5,-5 5,2.24 5,5 -2.24,5 -5,5zM12,9c-1.66,0 -3,1.34 -3,3s1.34,3 3,3 3,-1.34 3,-3 -1.34,-3 -3,-3z"/>
+</vector>
+      `
     },
   ]
 });
