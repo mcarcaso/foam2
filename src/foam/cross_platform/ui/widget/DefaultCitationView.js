@@ -5,7 +5,8 @@ foam.CLASS({
     'foam.cross_platform.ui.widget.CitationView'
   ],
   requires: [
-    'foam.util.ArrayDetachable'
+    'foam.util.ArrayDetachable',
+    'foam.cross_platform.ui.widget.Label',
   ],
   swiftImports: [
     'SwiftUI'
@@ -66,92 +67,6 @@ foam.CLASS({
         tools:text="Time 0:00" />
 </LinearLayout>
       `.trim()
-    },
-    {
-      class: 'foam.cross_platform.code_generation.CodeSource',
-      flags: ['swift'],
-      path: 'DefaultCitationViewSwiftUI.swift',
-      body: `
-import SwiftUI
-
-public struct DefaultCitationViewSwiftUI: View {
-  let circleSize: CGFloat = 60
-  @ObservedObject var o = DefaultCitationViewObservable()
-  public var body: some View {
-    HStack {
-      if !o.initials.isEmpty {
-        ZStack {
-          Circle()
-            .frame(width: circleSize, height: circleSize)
-            .foregroundColor(Color(o.initialsBackgroundColor))
-          Text(o.initials)
-            .foregroundColor(Color(o.initialsTextColor))
-        }
-      } else if !o.imageUrl.isEmpty {
-        Circle().frame(width: circleSize, height: circleSize)
-      }
-      VStack(alignment: .leading) {
-        Text(o.title)
-          .lineLimit(1)
-          .font(.system(size: 18, weight: .bold, design: .default))
-        if ( !o.subtitle.isEmpty ) {
-          Text(o.subtitle)
-            .lineLimit(2)
-            .font(.system(size: 16, weight: .regular, design: .default))
-            .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
-        }
-      }
-      Spacer()
-      Text(o.time)
-    }
-    .background(Color.clear)
-    .frame(minHeight: 80, alignment: .center)
-  }
-}
-
-public class DefaultCitationViewObservable: ObservableObject {
-  @Published var title = ""
-  @Published var subtitle = ""
-  @Published var time = ""
-  @Published var initials = ""
-  @Published var initialsBackgroundColor = UIColor.label
-  @Published var initialsTextColor = UIColor.systemBackground
-  @Published var imageUrl = ""
-  init() {}
-}
-
-struct SwiftUIView_Previews: PreviewProvider {
-  static let noCircle: DefaultCitationViewObservable = {
-    let o = DefaultCitationViewObservable();
-    o.title = "This is a title";
-    o.subtitle = "This is a subtitle! It is long enough to go down to two lines! How about that eh?";
-    o.time = "6:26"
-    return o;
-  }()
-  static let withInitials: DefaultCitationViewObservable = {
-    let o = DefaultCitationViewObservable();
-    o.initials = "ACB"
-    o.title = "This is a title";
-    o.subtitle = "This is a subtitle!";
-    o.time = "6:26"
-    return o;
-  }()
-  static var previews: some View {
-    Group {
-      DefaultCitationViewSwiftUI(o: noCircle)
-        .previewLayout(PreviewLayout.fixed(width: 400, height: 100))
-      DefaultCitationViewSwiftUI(o: noCircle)
-        .previewLayout(PreviewLayout.fixed(width: 400, height: 100))
-        .colorScheme(.dark)
-      DefaultCitationViewSwiftUI(o: withInitials)
-        .previewLayout(PreviewLayout.fixed(width: 400, height: 100))
-      DefaultCitationViewSwiftUI(o: withInitials)
-        .previewLayout(PreviewLayout.fixed(width: 400, height: 100))
-        .colorScheme(.dark)
-    }
-  }
-}
-      `.trim()
     }
   ],
   properties: [
@@ -178,31 +93,74 @@ struct SwiftUIView_Previews: PreviewProvider {
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
         return v;
-
       `,
       swiftFactory: `
-        return getSwiftUiVc().view;
-      `
-    },
-    {
-      flags: ['swift'],
-      swiftType: 'UIHostingController<DefaultCitationViewSwiftUI>',
-      name: 'swiftUiVc',
-      swiftFactory: `
-        let vc = UIHostingController(rootView: DefaultCitationViewSwiftUI(o: DefaultCitationViewObservable()));
-        vc.view.backgroundColor = UIColor.clear;
-        return vc;
+        let v = UIStackView();
+        v.axis = .horizontal
+        v.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        v.alignment = .center
+
+        let titleView = Label_create().setView(UILabel()).build();
+        onDetach(titleView);
+        onDetach(titleView.getData$().follow(getTitle$()));
+        foam_cross_platform_ui_TextStyle
+          .foam_cross_platform_ui_TextStyleBuilder(nil)
+          .setBold(true)
+          .setSize(18)
+          .build()
+          .applyTextStyle(titleView.getView()!);
+
+        let space = UIView();
+        space.heightAnchor.constraint(equalToConstant: 8).isActive = true;
+        let spacerListener = AnonymousListener_create()
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            let slot: foam_core_SlotInterface? = args?.last as? foam_core_SlotInterface
+            space.isHidden = (slot?.slotGet() as? String)?.isEmpty ?? true;
+          })
+          .build();
+        onDetach(getSubtitle$().slotSub(spacerListener))
+        spacerListener.executeListener(nil, nil)
+
+        let subtitleView = Label_create().setView(UILabel()).build();
+        onDetach(subtitleView);
+        onDetach(subtitleView.getData$().follow(getSubtitle$()));
+        (subtitleView.getView() as! UILabel).numberOfLines = 2
+        foam_cross_platform_ui_TextStyle
+          .foam_cross_platform_ui_TextStyleBuilder(nil)
+          .setSize(16)
+          .build()
+          .applyTextStyle(subtitleView.getView()!);
+
+        let timeView = Label_create().setView(UILabel()).build();
+        onDetach(timeView);
+        onDetach(timeView.getData$().follow(getTime$()));
+
+        let mid = UIStackView()
+        mid.axis = .vertical
+        mid.alignment = .leading
+        mid.distribution = .equalSpacing
+        mid.addArrangedSubview(titleView.getView()!);
+        mid.addArrangedSubview(space);
+        mid.addArrangedSubview(subtitleView.getView()!);
+        mid.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        v.addArrangedSubview(mid)
+
+        timeView.getView()!.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        v.addArrangedSubview(timeView.getView()!);
+
+        return v;
       `
     }
   ],
   reactions: [
-    ['', 'propertyChange.title', 'updateView'],
-    ['', 'propertyChange.subtitle', 'updateView'],
-    ['', 'propertyChange.time', 'updateView'],
+    ['', 'propertyChange.title', 'updateView', ['android']],
+    ['', 'propertyChange.subtitle', 'updateView', ['android']],
+    ['', 'propertyChange.time', 'updateView', ['android']],
   ],
   listeners: [
     {
       name: 'updateView',
+      flags: ['android'],
       isFramed: true,
       androidCode: `
         int titleId = getAndroidContext().getResources().getIdentifier("title", "id", getAndroidContext().getPackageName());
@@ -217,12 +175,6 @@ struct SwiftUIView_Previews: PreviewProvider {
         int timeId = getAndroidContext().getResources().getIdentifier("time", "id", getAndroidContext().getPackageName());
         ((android.widget.TextView) getView().findViewById(timeId)).setText(getTime());
       `,
-      swiftCode: `
-        let v = getSwiftUiVc().rootView.o;
-        v.title = getTitle()!;
-        v.subtitle = getSubtitle()!;
-        v.time = getTime()!;
-      `
     }
   ],
   methods: [
