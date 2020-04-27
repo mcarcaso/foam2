@@ -119,7 +119,7 @@ foam.CLASS({
           })
           .build();
         onDetach(getSubtitle$().slotSub(spacerListener))
-        spacerListener.executeListener(nil, nil)
+        spacerListener.executeListener(nil, [getSubtitle$()])
 
         let subtitleView = Label_create().setView(UILabel()).build();
         onDetach(subtitleView);
