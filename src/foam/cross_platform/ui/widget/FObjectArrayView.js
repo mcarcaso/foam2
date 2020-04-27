@@ -19,6 +19,7 @@ foam.CLASS({
     'foam.cross_platform.ui.widget.array.FObjectArrayViewItemWrapper',
     'foam.dao.ListenerSink',
     'foam.intent.ReadOnlyDAOIntentManager',
+    'foam.intent.EditOnlyDAOIntentManager',
   ],
   imports: [
     {
@@ -195,6 +196,14 @@ foam.CLASS({
           java.util.Map m = new java.util.HashMap();
           m.put("intentManager", im);
           x = x.createSubContext(m);
+        } else {
+          im = EditOnlyDAOIntentManager_create()
+            .setEditOnlyDao(getDao())
+            .setDelegate(im)
+            .build();
+          java.util.Map m = new java.util.HashMap();
+          m.put("intentManager", im);
+          x = x.createSubContext(m);
         }
         im.launchIntent(DAOBrowseIntent_create(x)
           .setDao(getDao())
@@ -206,6 +215,14 @@ foam.CLASS({
         if ( getControllerMode() === foam_u2_ControllerMode.VIEW ) {
           im = ReadOnlyDAOIntentManager_create()
             .setReadOnlyDao(getDao())
+            .setDelegate(im)
+            .build();
+          x = x!.createSubContext([
+            "intentManager": im!
+          ]);
+        } else {
+          im = EditOnlyDAOIntentManager_create()
+            .setEditOnlyDao(getDao())
             .setDelegate(im)
             .build();
           x = x!.createSubContext([
