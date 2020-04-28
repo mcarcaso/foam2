@@ -481,7 +481,8 @@ foam.CLASS({
     {
       name: 'clone',
       androidCode: `
-        FObject clone = getCls_().createBuilder(x != null ? x : getX()).builderBuild();
+        x = x == null ? getX() : x;
+        FObject clone = getCls_().createBuilder(x).builderBuild();
         for ( FObject a : getCls_().getAxiomsByClass(foam.core.Property.CLS_()) ) {
           foam.core.Property p = (foam.core.Property) a;
           if ( ! hasPropertySet(p.getName()) ) continue;
@@ -491,7 +492,8 @@ foam.CLASS({
         return clone;
       `,
       swiftCode: `
-        let clone = getCls_()!.createBuilder(x != nil ? x : getX())!.builderBuild();
+        let x: foam_cross_platform_Context = x ?? getX();
+        let clone = getCls_()!.createBuilder(x)!.builderBuild();
         for a in getCls_()!.getAxiomsByClass(foam_core_Property.CLS_())! {
           let p = a as! foam_core_Property;
           if ( !hasPropertySet(p.getName()) ) { continue; }
@@ -517,13 +519,14 @@ foam.CLASS({
           if ( fobj.getCls_().isSubClass(getCls_()) ) {
             for ( Object a : props ) {
               foam.core.Property p = (foam.core.Property) a;
-              if ( fobj.hasPropertySet(p.getName()) ) {
+              if ( ! p.getTransient() && fobj.hasPropertySet(p.getName()) ) {
                 setProperty(p.getName(), fobj.getProperty(p.getName()));
               }
             }
           } else {
             for ( Object a : props ) {
               foam.core.Property p = (foam.core.Property) a;
+              if ( p.getTransient() ) continue;
               Object oa = fobj.getCls_().getAxiomByName(p.getName());
               if ( foam.core.Property.CLS_().isInstance(oa) ) {
                 setProperty(p.getName(), fobj.getProperty(p.getName()));
@@ -546,13 +549,14 @@ foam.CLASS({
           if fobj.getCls_()!.isSubClass(getCls_()) {
             for a in props {
               let p = a as! foam_core_Property;
-              if fobj.hasPropertySet(p.getName()) {
+              if !p.getTransient() && fobj.hasPropertySet(p.getName()) {
                 setProperty(p.getName(), fobj.getProperty(p.getName()));
               }
             }
           } else {
             for a in props {
               let p = a as! foam_core_Property;
+              if p.getTransient() { continue }
               let oa = fobj.getCls_()?.getAxiomByName(p.getName())
               if foam_core_Property.CLS_().isInstance(oa) {
                 setProperty(p.getName(), fobj.getProperty(p.getName()));

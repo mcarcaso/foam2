@@ -11,8 +11,9 @@ foam.CLASS({
     {
       name: 'DEFAULT',
       type: 'foam.cross_platform.serialize.json.Outputter',
-      androidFactory: `return OutputterBuilder(null).build();`,
-      swiftFactory: `return OutputterBuilder(nil).build();`
+      factory: function() {
+        return foam.cross_platform.serialize.json.Outputter.create();
+      }
     },
   ],
   properties: [
@@ -21,7 +22,7 @@ foam.CLASS({
       of: 'foam.cross_platform.serialize.json.internal.Outputter',
       name: 'outputter',
       androidFactory: `return Outputter_create().build();`,
-      swiftFactory: `return Outputter_create().build();`
+      swiftFactory: `foam_cross_platform_serialize_json_OutputterBuilder(nil).build();`
     },
     {
       class: 'FObjectProperty',

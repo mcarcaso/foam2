@@ -11,7 +11,7 @@ foam.CLASS({
     'foam.cross_platform.FObjectBuilder',
     'foam.cross_platform.ui.widget.DynamicCitationView',
     'foam.cross_platform.ui.widget.DynamicDetailView',
-    'foam.cross_platform.ui.stack.ScrollingWidgetView',
+    'foam.cross_platform.ui.stack.DetailView',
     'foam.cross_platform.ui.widget.ActionButton',
     'foam.cross_platform.ui.widget.Label',
   ],
@@ -133,34 +133,20 @@ foam.CLASS({
     },
     {
       class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.stack.ScrollingWidgetView',
+      of: 'foam.cross_platform.ui.stack.DetailView',
       name: 'dv',
       swiftOptional: false,
       androidFactory: `
-        foam.cross_platform.ui.stack.ScrollingWidgetView dv = ScrollingWidgetView_create()
-          .setHorizontalPadding(foam.cross_platform.ui.widget.DefaultDetailView.ITEM_HORIZONTAL_PADDING())
-          .setVerticalPadding(foam.cross_platform.ui.widget.DefaultDetailView.ITEM_VERTICAL_PADDING())
-          .setViewBuilder(FObjectBuilder_create()
-            .setCls(foam.cross_platform.ui.widget.DynamicDetailView.CLS_())
-            .setArgs(new java.util.HashMap() {{
-              put("data$", getData$());
-            }})
-            .build())
+        return DetailView_create()
+          .setData$(getData$())
+          .setControllerMode$(getControllerMode$())
           .build();
-        return dv;
       `,
       swiftFactory: `
-        let dv = ScrollingWidgetView_create()
-          .setHorizontalPadding(foam_cross_platform_ui_widget_DefaultDetailView.ITEM_HORIZONTAL_PADDING())
-          .setVerticalPadding(foam_cross_platform_ui_widget_DefaultDetailView.ITEM_VERTICAL_PADDING())
-          .setViewBuilder(FObjectBuilder_create()
-            .setCls(foam_cross_platform_ui_widget_DynamicDetailView.CLS_())
-            .setArgs([
-              "data$": getData$()
-            ])
-            .build())
+        return DetailView_create()
+          .setData$(getData$())
+          .setControllerMode$(getControllerMode$())
           .build();
-        return dv;
       `,
     }
   ],
