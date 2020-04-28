@@ -180,6 +180,9 @@ foam.CLASS({
         if ( foam.cross_platform.Lib.equals(cls, getData() == null ? null : getData().getCls_()) ) return;
         foam.cross_platform.FObject data = cls.createBuilder(getSubX()).builderBuild();
         data.copyFrom(getData());
+        if ( !getData().hasPropertySet("id") ) {
+          data.clearProperty("id");
+        }
         setData(data);
       `,
       swiftCode: `
@@ -188,6 +191,9 @@ foam.CLASS({
         if foam_cross_platform_Lib.equals(cls, getData()?.getCls_()) { return }
         let data = cls?.createBuilder(getSubX())?.builderBuild();
         data?.copyFrom(getData());
+        if ( !(getData()?.hasPropertySet("id") ?? true) ) {
+          data?.clearProperty("id");
+        }
         setData(data);
       `
     },

@@ -25,6 +25,15 @@ foam.INTERFACE({
       ]
     },
     {
+      name: 'clearProperty',
+      args: [
+        {
+          type: 'String',
+          name: 'name'
+        }
+      ]
+    },
+    {
       name: 'hasPropertySet',
       type: 'Boolean',
       args: [
