@@ -49,7 +49,9 @@ foam.CLASS({
     },
     {
       class: 'FunctionProperty',
-      name: 'isAvailableSlotInitializer'
+      name: 'isAvailableSlotInitializer',
+      androidValue: 'null',
+      swiftValue: 'nil',
     },
     {
       class: 'StringProperty',
@@ -100,10 +102,16 @@ foam.CLASS({
         { type: 'FObject', name: 'o' },
       ],
       androidCode: `
+        if ( getIsAvailableSlotInitializer() == null ) {
+          return ConstantSlot_create().setValue(true).build();
+        }
         return (foam.core.Slot) getIsAvailableSlotInitializer()
           .executeFunction(new Object[] {x, o});
       `,
       swiftCode: `
+        if ( getIsAvailableSlotInitializer() == nil ) {
+          return ConstantSlot_create().setValue(true).build();
+        }
         return getIsAvailableSlotInitializer()!.executeFunction([x, o]) as? foam_core_Slot
       `,
     },
