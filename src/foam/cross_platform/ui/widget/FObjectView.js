@@ -179,9 +179,11 @@ foam.CLASS({
         if ( cls == null ) return;
         if ( foam.cross_platform.Lib.equals(cls, getData() == null ? null : getData().getCls_()) ) return;
         foam.cross_platform.FObject data = cls.createBuilder(getSubX()).builderBuild();
-        data.copyFrom(getData());
-        if ( !getData().hasPropertySet("id") ) {
-          data.clearProperty("id");
+        if ( getData() != null ) {
+          data.copyFrom(getData());
+          if ( ! getData().hasPropertySet("id") ) {
+            data.clearProperty("id");
+          }
         }
         setData(data);
       `,
@@ -190,9 +192,11 @@ foam.CLASS({
         if cls == nil { return }
         if foam_cross_platform_Lib.equals(cls, getData()?.getCls_()) { return }
         let data = cls?.createBuilder(getSubX())?.builderBuild();
-        data?.copyFrom(getData());
-        if ( !(getData()?.hasPropertySet("id") ?? true) ) {
-          data?.clearProperty("id");
+        if getData() != nil {
+          data?.copyFrom(getData());
+          if ( !getData()!.hasPropertySet("id") ) {
+            data?.clearProperty("id");
+          }
         }
         setData(data);
       `
