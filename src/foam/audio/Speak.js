@@ -99,7 +99,6 @@ foam.CLASS({
   listeners: [
     {
       name: 'manageSessionState',
-      isFramed: true,
       androidCode: `
         // Duck currently playing audio?
       `,
@@ -137,7 +136,7 @@ foam.CLASS({
           self.setIsReady(true);
         };
         onDetach(<%=detachable(\`
-          self?.setIsActive(false);
+          try? self?.getAudioSession().setActive(false);
         \`)%>);
       `,
     }
