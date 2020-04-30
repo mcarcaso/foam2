@@ -122,7 +122,7 @@ foam.CLASS({
         // reasons (orientation change being one) so be sure to create a new one and shut
         // down the previous one when it changes.
         getTextToSpeech();
-        final WeakReference<Speak> s = new WeakReference<>(this);
+        final java.lang.ref.WeakReference<Speak> s = new java.lang.ref.WeakReference<>(this);
         onDetach(getAndroidContext$().slotSub((sub, args) -> {
           if ( s.get() == null ) return;
           s.get().getTextToSpeech().shutdown();
