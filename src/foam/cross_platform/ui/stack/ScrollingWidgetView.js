@@ -42,13 +42,14 @@ foam.CLASS({
 
             final java.lang.ref.WeakReference<ScrollingWidgetView> wrSelf = this.self;
             foam.cross_platform.Listener l = (sub, args) -> {
-              if ( this.v != null ) this.v.detach();
-              this.v = null;
+              if ( v != null ) v.detach();
+              v = null;
               sv.removeAllViews();
               ScrollingWidgetView self = wrSelf.get();
               if ( self == null ) return;
               if ( self.getViewBuilder() == null ) return;
               v = self.getViewBuilder().createBuilder(self.getX()).builderBuild();
+              self.onDetach(v);
               android.view.View view = (android.view.View) v.getProperty("view");
               int vp = self.getVerticalPadding();
               int hp = self.getHorizontalPadding();
@@ -66,7 +67,6 @@ foam.CLASS({
           public void onDestroyView() {
             super.onDestroyView();
             if ( sub != null ) sub.detach();
-            if ( v != null ) v.detach();
           }
         }
       `,
@@ -92,6 +92,7 @@ foam.CLASS({
               self!.child = nil;
               if ( this.getViewBuilder() == nil ) { return }
               self!.v = this.getViewBuilder()!.createBuilder(this.getX())?.builderBuild();
+              self!.this.onDetach(self!.v);
               self!.child = self!.v!.getProperty("view") as? UIView;
               sv.addSubview(self!.child!);
               let vp = CGFloat(this.getVerticalPadding());
@@ -111,7 +112,6 @@ foam.CLASS({
           }
           deinit {
             sub?.detach();
-            v?.detach();
           }
           override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)

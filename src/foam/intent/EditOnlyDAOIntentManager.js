@@ -29,9 +29,12 @@ foam.CLASS({
             i.setIsDeleteEnabled(true);
           }
         } else if ( foam.intent.DAOReadIntent.CLS_().isInstance(intent) ) {
-          if ( getEditOnlyDao() == ((foam.intent.DAOReadIntent) intent).getDao() ) {
-            foam.intent.DAOUpdateIntent i = DAOUpdateIntent_create().build();
-            i.copyFrom(intent);
+          foam.intent.DAOReadIntent ri = (foam.intent.DAOReadIntent) intent;
+          if ( getEditOnlyDao() == ri.getDao() ) {
+            foam.intent.DAOUpdateIntent i = DAOUpdateIntent_create()
+              .setDao(ri.getDao())
+              .setId(ri.getId())
+              .build();
             intent = i;
           }
         }
@@ -46,9 +49,12 @@ foam.CLASS({
             i.setIsDeleteEnabled(true);
           }
         } else if ( foam_intent_DAOReadIntent.CLS_().isInstance(intent) ) {
-          if ( getEditOnlyDao() === (intent as! foam_intent_DAOReadIntent).getDao() ) {
-            let i = DAOUpdateIntent_create().build();
-            i.copyFrom(intent);
+          let ri = intent as! foam_intent_DAOReadIntent;
+          if ( getEditOnlyDao() === ri.getDao() ) {
+            let i = DAOUpdateIntent_create()
+              .setDao(ri.getDao())
+              .setId(ri.getId())
+              .build();
             intent = i;
           }
         }
