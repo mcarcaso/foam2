@@ -99,6 +99,8 @@ foam.CLASS({
   listeners: [
     {
       name: 'manageSessionState',
+      isMerged: true,
+      mergeDelay: 0,
       androidCode: `
         // Duck currently playing audio?
       `,
