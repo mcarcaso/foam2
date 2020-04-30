@@ -319,7 +319,7 @@ foam.CLASS({
       weak: true,
       androidSetter: `
         obj_isSet_ = true;
-        obj_ = (foam.cross_platform.FObject) value;
+        obj_ = new java.lang.ref.WeakReference<>((foam.cross_platform.FObject) value);
       `,
       swiftSetter: `
         obj_isSet_ = true;
@@ -381,7 +381,6 @@ foam.CLASS({
     {
       type: 'foam.cross_platform.FObject',
       name: 'getParentAsFObj',
-      weak: true,
       androidCode: `
         Object o = getParent().slotGet();
         return o instanceof foam.cross_platform.FObject ?

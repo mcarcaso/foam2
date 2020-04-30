@@ -66,6 +66,7 @@ foam.CLASS({
           public void onDestroyView() {
             super.onDestroyView();
             if ( sub != null ) sub.detach();
+            if ( v != null ) v.detach();
           }
         }
       `,
@@ -110,6 +111,7 @@ foam.CLASS({
           }
           deinit {
             sub?.detach();
+            v?.detach();
           }
           override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)

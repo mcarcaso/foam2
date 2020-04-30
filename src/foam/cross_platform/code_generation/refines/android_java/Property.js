@@ -165,7 +165,7 @@ foam.CLASS({
 
       cls.field({
         visibility: 'private',
-        type: this.androidType,
+        type: this.weak ? `java.lang.ref.WeakReference<${this.androidType}>` : this.androidType,
         name: this.crossPlatformPrivateVarName
       });
 
@@ -235,7 +235,7 @@ foam.CLASS({
             setProperty("${this.name}", ${factoryName}());
             ${fipName} = false;
           }
-          return ${this.crossPlatformPrivateVarName};
+          return ${this.crossPlatformPrivateVarName}${this.weak ? '.get()' : ''};
         `;
       } else if ( this.androidExpression ) {
         var args = this.expressionArgs.map(a => {
@@ -295,11 +295,11 @@ foam.CLASS({
           if ( ! ${this.crossPlatformIsSetVarName} ) {
             return ${this.androidValue};
           }
-          return ${this.crossPlatformPrivateVarName};
+          return ${this.crossPlatformPrivateVarName}${this.weak ? '.get()' : ''};
         `;
       } else {
         getter.body = `
-          return ${this.crossPlatformPrivateVarName};
+          return ${this.crossPlatformPrivateVarName}${this.weak ? '.get()' : ''};
         `;
       }
       cls.method(getter);
@@ -363,7 +363,7 @@ castedValue = ${preSetName}(oldValue, castedValue, hasOldValue);
 
         setter.body += `
 ${this.crossPlatformIsSetVarName} = true;
-${this.crossPlatformPrivateVarName} = castedValue;
+${this.crossPlatformPrivateVarName} = ${this.weak ? 'new java.lang.ref.WeakReference<>(castedValue)' : 'castedValue'};
 ${this.androidFactory ? `
 if ( !${fipName} ) {
 `: ''}

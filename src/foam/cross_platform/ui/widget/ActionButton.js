@@ -76,7 +76,7 @@ foam.CLASS({
       `,
       androidPostSet: `
         if ( oldValue != null ) {
-          ((android.widget.Button) oldValue).setOnClickListener(null);
+          ((android.view.View) oldValue).setOnClickListener(null);
         }
         if ( newValue != null ) {
           newValue.setOnClickListener(new android.widget.Button.OnClickListener() {
@@ -98,10 +98,12 @@ foam.CLASS({
             action: #selector(Self.callAction),
             for: .touchUpInside)
         }
-        (newValue as! UIButton).addTarget(
-          self,
-          action: #selector(Self.callAction),
-          for: .touchUpInside)
+        if newValue != nil {
+          (newValue as! UIButton).addTarget(
+            self,
+            action: #selector(Self.callAction),
+            for: .touchUpInside)
+        }
       `
     },
   ],
@@ -115,8 +117,24 @@ foam.CLASS({
   methods: [
     {
       name: 'init',
-      androidCode: `updateView(null, null);`,
-      swiftCode: `updateView(nil, nil);`,
+      documentation: `
+        Nulls out the view when detaching to prevent the view from being
+        accessed in updateView because the clearProperty calls in bindData will
+        trigger updateView and if the view is touched when this is being
+        destroyed, things crash.
+      `,
+      androidCode: `
+        onDetach(<%=detachable(\`
+          setView(null);
+        \`)%>);
+        updateView(null, null);
+      `,
+      swiftCode: `
+        updateView(nil, nil);
+        onDetach(<%=detachable(\`
+          self?.setView(nil);
+        \`)%>);
+       `,
     },
     {
       name: 'styleButton',
@@ -256,6 +274,7 @@ foam.CLASS({
   listeners: [
     {
       name: 'updateView',
+      isFramed: true,
       androidCode: `
         if ( getView() == null ) return;
         getView().setVisibility(getAndroidVisibility());

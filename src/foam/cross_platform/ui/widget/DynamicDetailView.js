@@ -58,6 +58,7 @@ foam.CLASS({
           .setBuilderProperty("of", getData().getCls_())
           .setBuilderProperty("data$", getData$())
           .builderBuild());
+        onDetach(getDetailView());
         getView().addView((android.view.View) getDetailView().getProperty("view"));
       `,
       swiftCode: `
@@ -74,6 +75,7 @@ foam.CLASS({
           .setBuilderProperty("of", getData()!.getCls_())!
           .setBuilderProperty("data$", getData$())!
           .builderBuild());
+        onDetach(getDetailView());
         let v = getDetailView()!.getProperty("view") as! UIView
         getView()!.addSubview(v);
         v.translatesAutoresizingMaskIntoConstraints = false;

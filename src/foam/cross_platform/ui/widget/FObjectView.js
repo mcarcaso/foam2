@@ -88,12 +88,14 @@ foam.CLASS({
       androidFactory: `
         foam.cross_platform.ui.widget.DefaultDetailView dv = DefaultDetailView_create()
           .build();
+        onDetach(dv);
         onDetach(dv.getData$().follow(getData$()));
         return dv;
       `,
       swiftFactory: `
         let dv = DefaultDetailView_create()
           .build();
+        onDetach(dv);
         onDetach(dv.getData$().follow(getData$()));
         return dv;
       `

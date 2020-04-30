@@ -176,10 +176,6 @@ foam.CLASS({
       class: 'foam.cross_platform.code_generation.Extras',
       swiftCode: `
         deinit {
-          let s = getCls_()!.getI18nLabel()!
-          if s != "Listener List" {
-            print("Deinit " + s);
-          }
           detach();
         }
         public override var description: String { return toString() ?? "" }
@@ -205,16 +201,19 @@ foam.CLASS({
       name: 'onDetach',
       androidCode: `
         final foam.core.Detachable d = detachable;
-        sub(new String[] {"detach"}, <%=listener(\`
+        sub(new String[] {"detach"}, (sub, args) -> {
           if ( sub != null ) sub.detach();
           if ( d != null ) d.detach();
-        \`)%>);
+        });
       `,
       swiftCode: `
-        _ = sub(["detach"], <%=listener(\`
-          sub?.detach();
-          detachable?.detach();
-        \`)%>);
+        _ = sub(["detach"], foam_swift_AnonymousListener
+          .foam_swift_AnonymousListenerBuilder(nil)
+          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
+            sub?.detach();
+            detachable?.detach();
+          })
+          .build());
       `
     },
     {
