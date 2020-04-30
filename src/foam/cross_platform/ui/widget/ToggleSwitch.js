@@ -165,7 +165,6 @@ foam.CLASS({
   listeners: [
     {
       name: 'updateLabel',
-      isFramed: true,
       androidCode: `
         if ( getView() == null ) return;
         getView().setText(getLabel());
@@ -184,7 +183,6 @@ foam.CLASS({
     },
     {
       name: 'updateVisibility',
-      isFramed: true,
       androidCode: `
         if ( getView() == null ) return;
         getView().setEnabled(

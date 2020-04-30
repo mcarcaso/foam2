@@ -161,7 +161,6 @@ foam.CLASS({
     {
       name: 'updateView',
       flags: ['android'],
-      isFramed: true,
       androidCode: `
         int titleId = getAndroidContext().getResources().getIdentifier("title", "id", getAndroidContext().getPackageName());
         ((android.widget.TextView) getView().findViewById(titleId)).setText(getTitle());
@@ -170,6 +169,7 @@ foam.CLASS({
         if ( getSubtitle().isEmpty() ) {
           subtitle.setVisibility(android.view.View.GONE);
         } else {
+          subtitle.setVisibility(android.view.View.VISIBLE);
           subtitle.setText(getSubtitle());
         }
         int timeId = getAndroidContext().getResources().getIdentifier("time", "id", getAndroidContext().getPackageName());

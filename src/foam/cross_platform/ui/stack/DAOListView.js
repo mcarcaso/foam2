@@ -315,7 +315,6 @@ foam.CLASS({
   listeners: [
     {
       name: 'onDAOUpdate_',
-      isFramed: true,
       androidCode: `
         onDAOUpdate().pub(new Object[0]);
       `,

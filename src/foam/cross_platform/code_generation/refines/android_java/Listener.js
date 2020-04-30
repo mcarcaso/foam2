@@ -49,11 +49,11 @@ foam.CLASS({
         name: this.crossPlatformListenerName,
         body: `
           if ( ${fieldName} == null ) {
-            final ${cls.name} obj = this;
-            ${fieldName} = new foam.cross_platform.Listener() {
-              public void executeListener(foam.core.Detachable sub, Object[] args) {
-                obj.${this.name}(sub, args);
-              }
+            final java.lang.ref.WeakReference<${cls.name}> obj = new java.lang.ref.WeakReference<>(this);
+            ${fieldName} = (sub, args) -> {
+              ${cls.name} o = obj.get();
+              if ( o == null ) return;
+              o.${this.name}(sub, args);
             };
           }
           return ${fieldName};

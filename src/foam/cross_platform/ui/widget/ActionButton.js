@@ -256,7 +256,6 @@ foam.CLASS({
   listeners: [
     {
       name: 'updateView',
-      isFramed: true,
       androidCode: `
         if ( getView() == null ) return;
         getView().setVisibility(getAndroidVisibility());

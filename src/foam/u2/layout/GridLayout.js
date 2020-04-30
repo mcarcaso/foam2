@@ -130,7 +130,6 @@ foam.CLASS({
   listeners: [
     {
       name: 'updateView',
-      isFramed: true,
       androidCode: `
         for ( int i = 0 ; i < getView().getChildCount() ; i+=2 ) { // +2 to account for spacer.
           android.widget.LinearLayout v = (android.widget.LinearLayout) getView().getChildAt(i);

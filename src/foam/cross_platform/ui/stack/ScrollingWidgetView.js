@@ -27,12 +27,12 @@ foam.CLASS({
       androidCode: `
         public static class Fragment extends foam.cross_platform.ui.stack.Stack.ToolbarFragment {
           public foam.core.Detachable sub;
-          public ScrollingWidgetView self;
+          public java.lang.ref.WeakReference<ScrollingWidgetView> self;
           public foam.cross_platform.FObject v;
           public Fragment(
               ScrollingWidgetView self) {
             super(self.getX());
-            this.self = self;
+            this.self = new java.lang.ref.WeakReference<>(self);
           }
           public android.view.View onCreateView(
               android.view.LayoutInflater inflater,
@@ -40,10 +40,13 @@ foam.CLASS({
               android.os.Bundle savedInstanceState) {
             android.widget.ScrollView sv = new android.widget.ScrollView(getContext());
 
+            final java.lang.ref.WeakReference<ScrollingWidgetView> wrSelf = this.self;
             foam.cross_platform.Listener l = (sub, args) -> {
               if ( this.v != null ) this.v.detach();
               this.v = null;
               sv.removeAllViews();
+              ScrollingWidgetView self = wrSelf.get();
+              if ( self == null ) return;
               if ( self.getViewBuilder() == null ) return;
               v = self.getViewBuilder().createBuilder(self.getX()).builderBuild();
               android.view.View view = (android.view.View) v.getProperty("view");
@@ -52,7 +55,7 @@ foam.CLASS({
               view.setPadding(hp, vp, hp, vp);
               sv.addView(view);
             };
-            sub = self.onInvalidate().sub(null, l);
+            sub = self.get().onInvalidate().sub(null, l);
             l.executeListener(null, null);
 
             android.widget.LinearLayout v = (android.widget.LinearLayout)
@@ -199,7 +202,6 @@ foam.CLASS({
   listeners: [
     {
       name: 'invalidate',
-      isFramed: true,
       androidCode: `
         onInvalidate().pub(null);
       `,
