@@ -92,7 +92,7 @@ foam.CLASS({
               self!.child = nil;
               if ( this.getViewBuilder() == nil ) { return }
               self!.v = this.getViewBuilder()!.createBuilder(this.getX())?.builderBuild();
-              self!.this.onDetach(self!.v);
+              this.onDetach(self!.v);
               self!.child = self!.v!.getProperty("view") as? UIView;
               sv.addSubview(self!.child!);
               let vp = CGFloat(this.getVerticalPadding());
