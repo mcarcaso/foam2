@@ -122,13 +122,17 @@ foam.CLASS({
         // reasons (orientation change being one) so be sure to create a new one and shut
         // down the previous one when it changes.
         getTextToSpeech();
+        final WeakReference<Speak> s = new WeakReference<>(this);
         onDetach(getAndroidContext$().slotSub((sub, args) -> {
-          getTextToSpeech().shutdown();
-          clearProperty("textToSpeech");
+          if ( s.get() == null ) return;
+          s.get().getTextToSpeech().shutdown();
+          s.get().clearProperty("textToSpeech");
         }));
-        onDetach(<%=detachable(\`
-          getTextToSpeech().shutdown();
-        \`)%>);
+        onDetach(() -> {
+          if ( s.get() == null ) return;
+          s.get().getTextToSpeech().setOnUtteranceProgressListener(null);
+          s.get().getTextToSpeech().shutdown();
+        });
       `,
       swiftCode: `
         // Set isReady async because the AudioSession needs some time for the

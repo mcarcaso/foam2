@@ -70,28 +70,22 @@ ${type} ${name} = ${value};
             v: foam.android.tools.asAndroidValue,
             detachable: function(code) {
               return `
-new foam.core.Detachable() {
-  public void detach() {
-    ${code}
-  }
+(foam.core.Detachable) () -> {
+  ${code}
 }
               `;
             },
             listener: function(code) {
               return `
-new foam.cross_platform.Listener() {
-  public void executeListener(foam.core.Detachable sub, Object[] args) {
-    ${code}
-  }
+(foam.cross_platform.Listener) (sub, args) -> {
+  ${code}
 }
               `;
             },
             fn: function(code, argsName) {
               return `
-new foam.cross_platform.GenericFunction() {
-  public Object executeFunction(Object[] ${argsName || 'args'}) {
-    ${code}
-  }
+(foam.cross_platform.GenericFunction) (${argsName || 'args'}) -> {
+  ${code}
 }
               `;
             }
