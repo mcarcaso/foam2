@@ -127,7 +127,7 @@ foam.CLASS({
           clearProperty("textToSpeech");
         }));
         onDetach(<%=detachable(\`
-          setIsActive(false);
+          getTextToSpeech().shutdown();
         \`)%>);
       `,
       swiftCode: `
