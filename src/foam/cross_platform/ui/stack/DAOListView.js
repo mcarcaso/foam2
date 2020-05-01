@@ -166,7 +166,7 @@ foam.CLASS({
             tableView.reloadData();
             o.onDetach(o.onDAOUpdate().sub(nil, o.AnonymousListener_create()
               .setFn({ [weak self] (_: foam_core_Detachable?, args: [Any?]?) -> Void in
-                self?.tableView.reloadData();
+                DispatchQueue.main.async { self?.tableView.reloadData(); }
               })
               .build()));
           }
