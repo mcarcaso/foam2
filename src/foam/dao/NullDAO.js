@@ -29,9 +29,9 @@ foam.CLASS({
         this.pub('on', 'put', obj);
         return Promise.resolve(obj);
       },
-      swiftCode_DELETE: `
-_ = on["put"].pub([obj])
-return obj
+      swiftCode: `
+        _ = on().getSubTopic("put")!.pub([obj]);
+        return obj
       `,
       javaCode: `
 onPut(obj);
@@ -45,9 +45,9 @@ return obj;
         this.pub('on', 'remove', obj);
         return Promise.resolve();
       },
-      swiftCode_DELETE: `
-_ = on["remove"].pub([obj])
-return obj
+      swiftCode: `
+        _ = on().getSubTopic("remove")!.pub([obj]);
+        return obj
       `,
       javaCode: `
 onRemove(obj);
@@ -60,7 +60,7 @@ return null;
       code: function find_(x, id) {
         return Promise.resolve(null);
       },
-      swiftCode_DELETE: 'return nil',
+      swiftCode: 'return nil',
       javaCode: 'return null;',
     },
 
@@ -71,9 +71,9 @@ return null;
         sink.eof();
         return Promise.resolve(sink);
       },
-      swiftCode_DELETE: `
-sink?.eof()
-return sink
+      swiftCode: `
+        sink?.eof()
+        return sink
       `,
       javaCode: `
 if ( sink == null ) {
@@ -89,7 +89,7 @@ return sink;
       code: function removeAll_(x, skip, limit, order, predicate) {
         return Promise.resolve();
       },
-      swiftCode_DELETE: 'return',
+      swiftCode: 'return',
       javaCode: '// NOOP',
     },
   ]
