@@ -3,7 +3,8 @@ foam.CLASS({
   name: 'FObjectPropertyJavaRefinement',
   refines: 'foam.core.FObjectProperty',
   requires: [
-    'foam.cross_platform.ui.widget.FObjectPropertyView'
+    'foam.cross_platform.ui.widget.FObjectPropertyView',
+    'foam.cross_platform.deserialize.json.FObjectParser'
   ],
   properties: [
     {
@@ -37,6 +38,12 @@ foam.CLASS({
           })
           .build()
       `
+    },
+    {
+      name: 'crossPlatformJsonParser',
+      crossPlatformFactoryValue: {
+        class: 'foam.cross_platform.deserialize.json.FObjectParser'
+      }
     },
   ],
   methods: [

@@ -7,6 +7,63 @@ foam.CLASS({
   requires: [
     'foam.cross_platform.deserialize.ProxyPStream',
   ],
+  axioms: [
+    {
+      class: 'foam.cross_platform.code_generation.Extras',
+      swiftCode: `
+public class Instance: foam_cross_platform_deserialize_PStream {
+  public func head() -> Character {
+    return str[pos];
+  }
+
+  public func valid() -> Bool {
+    return pos < str.count;
+  }
+
+  public func tail() -> foam_cross_platform_deserialize_PStream? {
+    if tail_ == nil {
+      tail_ = Instance(str: str, pos: pos+1);
+    }
+    return tail_;
+  }
+
+  public func substring(_ end: foam_cross_platform_deserialize_PStream?) -> String? {
+    var end = end
+    while end is foam_cross_platform_deserialize_ProxyPStream {
+      end = (end as! foam_cross_platform_deserialize_ProxyPStream).getDelegate()
+    }
+    let endStr = end as! Instance;
+    let chars = endStr.str;
+    return String(chars.dropFirst(pos).dropLast(chars.count - endStr.pos))
+  }
+
+  public func value() -> Any? {
+    return value_;
+  }
+
+  public func setValue(_ value: Any?) -> foam_cross_platform_deserialize_PStream? {
+    return Instance(str: str, pos: pos, value: value);
+  }
+
+  let str: [Character];
+  let pos: Int;
+  let value_: Any?;
+  var tail_: Instance? = nil;
+  init(str: [Character], pos: Int, value: Any?) {
+    self.str = str;
+    self.pos = pos;
+    self.value_ = value
+  }
+  convenience init(str: [Character], pos: Int) {
+    self.init(str: str, pos: pos, value: nil);
+  }
+  convenience init(str: String) {
+    self.init(str: Array(str), pos: 0);
+  }
+}
+      `
+    }
+  ],
   properties: [
     {
       androidType: 'String',
@@ -33,6 +90,13 @@ foam.CLASS({
     },
   ],
   methods: [
+    {
+      name: 'init',
+      androidCode: '// NOOP',
+      swiftCode: `
+        print("Warning! StringPStream is far slower than StringPStream.Instance")
+      `
+    },
     {
       name: 'head',
       androidCode: `

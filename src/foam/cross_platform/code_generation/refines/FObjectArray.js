@@ -3,7 +3,8 @@ foam.CLASS({
   name: 'ArrayPropertyRefinement',
   refines: 'foam.core.FObjectArray',
   requires: [
-    'foam.cross_platform.ui.widget.FObjectArrayView'
+    'foam.cross_platform.ui.widget.FObjectArrayView',
+    'foam.cross_platform.deserialize.json.FObjectArrayParser',
   ],
   properties: [
     {
@@ -50,6 +51,13 @@ foam.CLASS({
           })
           .build()
       `
+    },
+    {
+      name: 'crossPlatformJsonParser',
+      crossPlatformFactoryValue: {
+        class: 'foam.cross_platform.deserialize.json.FObjectArrayParser',
+
+      }
     },
   ],
   methods: [

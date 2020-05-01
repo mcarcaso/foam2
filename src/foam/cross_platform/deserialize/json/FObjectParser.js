@@ -68,9 +68,7 @@ foam.CLASS({
         return result != null ? (foam.cross_platform.FObject) result.value() : null;
       `,
       swiftCode: `
-        let ps = StringPStream_create()
-          .setStr(str)
-          .build();
+        let ps = foam_cross_platform_deserialize_StringPStream.Instance(str: str ?? "");
         let parserContext = ParserContext_create().build();
         parserContext.pxSet("X", x != nil ? x : getSubX());
         let result = parse(ps, parserContext);
