@@ -57,7 +57,7 @@ foam.CLASS({
       androidFactory: `
         return getIsDarkMode() ? android.graphics.Color.BLACK : android.graphics.Color.WHITE;
       `,
-      swiftValue: 'UIColor.systemBackground'
+      swiftValue: 'UIColor.systemGroupedBackground'
     },
     {
       class: 'ColorProperty',
@@ -73,7 +73,7 @@ foam.CLASS({
       androidFactory: `
         return getIsDarkMode() ? android.graphics.Color.BLACK : android.graphics.Color.WHITE;
       `,
-      swiftValue: 'UIColor.systemGroupedBackground',
+      swiftValue: 'UIColor.systemBackground'
     },
     {
       class: 'ColorProperty',
