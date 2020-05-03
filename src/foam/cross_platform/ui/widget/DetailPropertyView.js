@@ -128,7 +128,7 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        return UIView();
+        return UIStackView();
       `
     },
     {
@@ -296,8 +296,12 @@ foam.CLASS({
         right.addView(getHelpView().getView());
       `,
       swiftCode: `
-        let v = getView()!
-        v.subviews.forEach { sv in
+        let v = getView() as! UIStackView;
+        v.spacing = 8;
+        v.axis = .vertical
+        v.alignment = .center
+        v.arrangedSubviews.forEach { sv in
+          v.removeArrangedSubview(sv);
           sv.removeFromSuperview();
         }
         let l = getLabelView()!.getView()!;
@@ -305,35 +309,27 @@ foam.CLASS({
         let val = getValidationView()!.getView()!;
         let h = getHelpView()!.getView()!;
 
-        v.addSubview(l);
-        v.addSubview(d);
-        v.addSubview(val);
-        v.addSubview(h);
+        let top = UIStackView();
+        top.axis = .horizontal;
+        top.alignment = .top
+        top.distribution = .equalSpacing;
+        top.addArrangedSubview(l);
+        top.addArrangedSubview(h);
 
+        v.addArrangedSubview(top);
+        v.addArrangedSubview(d);
+        v.addArrangedSubview(val);
+
+        top.translatesAutoresizingMaskIntoConstraints = false;
         v.translatesAutoresizingMaskIntoConstraints = false;
         l.translatesAutoresizingMaskIntoConstraints = false;
         d.translatesAutoresizingMaskIntoConstraints = false;
         val.translatesAutoresizingMaskIntoConstraints = false;
         h.translatesAutoresizingMaskIntoConstraints = false;
 
-        let p: CGFloat = 12;
-
-        l.topAnchor.constraint(equalTo: v.topAnchor).isActive = true;
-        l.leadingAnchor.constraint(equalTo: v.leadingAnchor).isActive = true;
-        l.trailingAnchor.constraint(equalTo: h.leadingAnchor, constant: -p).isActive = true;
-
-        h.trailingAnchor.constraint(equalTo: v.trailingAnchor).isActive = true;
-        h.topAnchor.constraint(equalTo: v.topAnchor).isActive = true;
-        h.widthAnchor.constraint(equalToConstant: 36).isActive = true;
-
-        d.topAnchor.constraint(equalTo: l.bottomAnchor, constant: l.isHidden ? 0 : p).isActive = true;
-        d.leadingAnchor.constraint(equalTo: v.leadingAnchor).isActive = true;
-        d.trailingAnchor.constraint(equalTo: h.leadingAnchor, constant: -p).isActive = true;
-
-        val.topAnchor.constraint(equalTo: d.bottomAnchor, constant: p).isActive = true;
-        val.leadingAnchor.constraint(equalTo: v.leadingAnchor).isActive = true;
-        val.trailingAnchor.constraint(equalTo: h.leadingAnchor, constant: -p).isActive = true;
-        val.bottomAnchor.constraint(equalTo: v.bottomAnchor).isActive = true;
+        top.widthAnchor.constraint(equalTo: v.widthAnchor).isActive = true;
+        d.widthAnchor.constraint(equalTo: v.widthAnchor).isActive = true;
+        val.widthAnchor.constraint(equalTo: v.widthAnchor).isActive = true;
       `,
     }
   ],
