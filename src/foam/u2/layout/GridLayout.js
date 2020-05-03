@@ -51,6 +51,10 @@ foam.CLASS({
       name: 'verticalSpacing'
     },
     {
+      class: 'ColorProperty',
+      name: 'dividerColor'
+    },
+    {
       class: 'ListProperty',
       name: 'views_',
     },
@@ -190,12 +194,23 @@ foam.CLASS({
         } while ( curViewIndex < getViews_().size() );
       `,
       swiftCode: `
+        let isDividerEnabled = hasPropertySet("dividerColor");
         let parent = getView() as! UIStackView
         for v in parent.arrangedSubviews {
           parent.removeArrangedSubview(v);
+          v.removeFromSuperview();
         }
-        parent.spacing = CGFloat(getVerticalSpacing())
-        let hp = CGFloat(getHorizontalSpacing());
+
+        let dw: CGFloat = 1;
+        let dc = getDividerColor();
+        let hp = isDividerEnabled ?
+          CGFloat(getHorizontalSpacing()) :
+          (CGFloat(getHorizontalSpacing()) / 2 - dw);
+        let vp = isDividerEnabled ?
+          CGFloat(getVerticalSpacing()) :
+          (CGFloat(getVerticalSpacing()) / 2 - dw);
+
+        parent.spacing = vp
 
         let views = getViews_()!;
         let gridColumns = getGridColumns_()!;
@@ -223,8 +238,20 @@ foam.CLASS({
             curRowCols += cols;
           }
           let rowView = UIView();
-          let totalPadding = CGFloat(rowViews.count - 1) * hp / 2
+          let totalPadding = CGFloat(rowViews.count - 1) * hp / (isDividerEnabled ? 1 : 2)
+          var lastView: UIView?;
           for i in 0..<rowViews.count {
+            if isDividerEnabled && i != 0 {
+              let divider = UIView();
+              divider.translatesAutoresizingMaskIntoConstraints = false;
+              rowView.addSubview(divider);
+              divider.heightAnchor.constraint(equalTo: rowView.heightAnchor).isActive = true;
+              divider.widthAnchor.constraint(equalToConstant: dw).isActive = true;
+              divider.backgroundColor = dc;
+              divider.leadingAnchor.constraint(equalTo: lastView!.trailingAnchor, constant: hp).isActive = true;
+              divider.topAnchor.constraint(equalTo: rowView.topAnchor).isActive = true;
+              lastView = divider;
+            }
             let v = rowViews[i];
             rowView.addSubview(v);
             rowView.heightAnchor.constraint(greaterThanOrEqualTo: v.heightAnchor).isActive = true;
@@ -233,10 +260,20 @@ foam.CLASS({
             if i == 0 {
               v.leadingAnchor.constraint(equalTo: rowView.leadingAnchor).isActive = true;
             } else {
-              v.leadingAnchor.constraint(equalTo: rowViews[i-1].trailingAnchor, constant: hp).isActive = true;
+              v.leadingAnchor.constraint(equalTo: lastView!.trailingAnchor, constant: hp).isActive = true;
             }
+            lastView = v;
           }
-          parent.addArrangedSubview(rowView);
+          if ( rowView.subviews.count > 0 ) {
+            if ( isDividerEnabled && parent.arrangedSubviews.count > 0 ) {
+              let divider = UIView();
+              parent.addArrangedSubview(divider);
+              divider.widthAnchor.constraint(equalTo: parent.widthAnchor).isActive = true;
+              divider.heightAnchor.constraint(equalToConstant: dw).isActive = true;
+              divider.backgroundColor = dc
+            }
+            parent.addArrangedSubview(rowView);
+          }
         } while curViewIndex < views.count;
       `
     }
