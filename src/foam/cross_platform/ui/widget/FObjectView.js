@@ -9,6 +9,7 @@ foam.CLASS({
     'foam.cross_platform.ui.widget.DetailPropertyView',
     'foam.cross_platform.ui.widget.DAOChoiceView',
     'foam.dao.ArrayDAO',
+    'foam.cross_platform.ui.widget.CardView',
   ],
   imports: [
     {
@@ -101,8 +102,7 @@ foam.CLASS({
       `
     },
     {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.widget.DetailPropertyView',
+      type: 'foam.cross_platform.ui.View',
       name: 'picker',
       expressionArgs: ['classes'],
       androidExpression: `
@@ -114,18 +114,23 @@ foam.CLASS({
           .setOf(foam.cross_platform.FoamClass.CLS_())
           .setArray(classes)
           .build());
-        return dpv;
       `,
       swiftExpression: `
         let dpv = DetailPropertyView_create()
           .build();
+        onDetach(dpv);
         onDetach(dpv.bindData(self, Self.OF()))
         let v = dpv.getDataView() as? foam_cross_platform_ui_widget_DAOChoiceView;
         v?.setDao(ArrayDAO_create()
           .setOf(foam_cross_platform_FoamClass.CLS_())
           .setArray(classes)
           .build());
-        return dpv;
+
+        let cv = CardView_create().build();
+        cv.wrapView(
+          dpv.getView()!,
+          foam_cross_platform_ui_widget_DefaultDetailView.ITEM_VERTICAL_PADDING())
+        return cv;
       `
     },
     {
@@ -159,6 +164,7 @@ foam.CLASS({
 
         let stack = UIStackView(arrangedSubviews: [pv, dv]);
         stack.axis = .vertical
+        stack.spacing = CGFloat(foam_cross_platform_ui_widget_DefaultDetailView.ITEM_VERTICAL_PADDING())
 
         pv.translatesAutoresizingMaskIntoConstraints = false;
         dv.translatesAutoresizingMaskIntoConstraints = false;

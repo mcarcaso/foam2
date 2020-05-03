@@ -8,6 +8,7 @@ foam.CLASS({
     'foam.util.ArrayDetachable',
     'foam.cross_platform.ui.widget.DetailPropertyView',
     'foam.cross_platform.ui.widget.ActionButton',
+    'foam.cross_platform.ui.widget.CardView',
     'foam.u2.layout.GridLayout',
   ],
   swiftImports: [
@@ -29,12 +30,12 @@ foam.CLASS({
     {
       type: 'Integer',
       name: 'itemVerticalPadding',
-      value: 16
+      value: 8
     },
     {
       type: 'Integer',
       name: 'itemHorizontalPadding',
-      value: 16
+      value: 8
     },
   ],
   properties: [
@@ -122,6 +123,7 @@ foam.CLASS({
       swiftPostSet: `
         newValue.setHorizontalSpacing(Self.ITEM_HORIZONTAL_PADDING());
         newValue.setVerticalSpacing(Self.ITEM_VERTICAL_PADDING());
+        newValue.setDividerColor(getTheme()?.getOnSurface().withAlphaComponent(0.25));
       `
     },
     {
@@ -132,7 +134,12 @@ foam.CLASS({
         return getLayout_().getView();
       `,
       swiftFactory: `
-        return getLayout_().getView();
+        let cv = CardView_create().build();
+        onDetach(cv);
+        cv.wrapView(
+          getLayout_().getView()!,
+          foam_cross_platform_ui_widget_DefaultDetailView.ITEM_VERTICAL_PADDING())
+        return cv.getView()!;
       `
     },
     {
