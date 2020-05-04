@@ -168,7 +168,8 @@ foam.CLASS({
     {
       name: 'onRowSelected',
       androidCode: `
-        foam.cross_platform.FObject o = (foam.cross_platform.FObject) args[args.length - 1];
+        foam.cross_platform.FObject o = args[args.length - 1] instanceof foam.cross_platform.FObject ?
+          (foam.cross_platform.FObject) args[args.length - 1] : null;
         if ( o == null ) return;
         getIntentManager().launchIntent(DAOReadIntent_create()
           .setDao(getData())
