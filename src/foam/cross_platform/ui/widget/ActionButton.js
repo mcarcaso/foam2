@@ -47,16 +47,6 @@ foam.CLASS({
       value: true
     },
     {
-      androidType: 'int',
-      flags: ['android'],
-      name: 'androidVisibility',
-      expressionArgs: ['isAvailable'],
-      androidExpression: `
-        return isAvailable ?
-          android.view.View.VISIBLE : android.view.View.GONE;
-      `
-    },
-    {
       class: 'BooleanProperty',
       name: 'isEnabled',
       value: true
@@ -109,8 +99,7 @@ foam.CLASS({
   ],
   reactions: [
     ['', 'propertyChange.view', 'updateView'],
-    ['', 'propertyChange.isAvailable', 'updateView', ['swift']],
-    ['', 'propertyChange.androidVisibility', 'updateView', ['android']],
+    ['', 'propertyChange.isAvailable', 'updateView'],
     ['', 'propertyChange.isEnabled', 'updateView'],
     ['', 'propertyChange.label', 'updateView'],
   ],
@@ -277,7 +266,8 @@ foam.CLASS({
       isFramed: true,
       androidCode: `
         if ( getView() == null ) return;
-        getView().setVisibility(getAndroidVisibility());
+        getView().setVisibility(getIsAvailable() ?
+          android.view.View.VISIBLE : android.view.View.GONE);
         getView().setEnabled(getIsEnabled());
         getView().setAlpha(getIsEnabled() ? 1 : 0.5f);
         if ( getView() instanceof android.widget.Button) {

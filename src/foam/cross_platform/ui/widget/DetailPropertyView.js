@@ -36,9 +36,8 @@ foam.CLASS({
         v.getView().setAlpha(0.8f);
         getTheme().getSubtitle1().applyTextStyle(v.getView());
         v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1));
         return v;
       `,
       swiftFactory: `
@@ -87,7 +86,7 @@ foam.CLASS({
         b.setColorFilter(getTheme().getOnSurface());
         b.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 0));
         foam.cross_platform.ui.widget.ActionButton v = ActionButton_create()
           .setView(b)
           .build();
@@ -123,8 +122,7 @@ foam.CLASS({
       name: 'view',
       androidFactory: `
         android.widget.LinearLayout v = new android.widget.LinearLayout(getAndroidContext());
-        v.setOrientation(android.widget.LinearLayout.HORIZONTAL);
-        v.setGravity(android.view.Gravity.CENTER);
+        v.setOrientation(android.widget.LinearLayout.VERTICAL);
         return v;
       `,
       swiftFactory: `
@@ -181,7 +179,7 @@ foam.CLASS({
         // Help
         String help = (String) axiom.getProperty("i18nHelp");
         if ( ! foam.cross_platform.type.StringType.INSTANCE().isEmpty(help) ) {
-          getHelpView().setAndroidVisibility(android.view.View.VISIBLE);
+          getHelpView().setIsAvailable(true);
           getHelpView().setData(<%=fn(\`
             foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
             com.google.android.material.snackbar.Snackbar.make(
@@ -191,7 +189,7 @@ foam.CLASS({
             return null;
           \`)%>);
         } else {
-          getHelpView().setAndroidVisibility(android.view.View.INVISIBLE);
+          getHelpView().setIsAvailable(false);
         }
 
         addViews();
@@ -269,31 +267,22 @@ foam.CLASS({
           if ( child instanceof android.view.ViewGroup == false ) continue;
           ((android.view.ViewGroup) child).removeAllViews();
         }
+        if ( getView().getChildCount() > 1 ) {
+          ((android.view.ViewGroup) getView().getChildAt(0)).removeAllViews();
+        }
         getView().removeAllViews();
 
-        android.widget.LinearLayout left = new android.widget.LinearLayout(getAndroidContext());
-        left.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+        android.widget.LinearLayout top = new android.widget.LinearLayout(getAndroidContext());
+        top.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
             android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-            1 /* weight */));
-        left.setOrientation(android.widget.LinearLayout.VERTICAL);
-        getView().addView(left);
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+        top.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+        top.addView(getLabelView().getView());
+        top.addView(getHelpView().getView());
 
-        left.addView(getLabelView().getView());
-        left.addView(getDataView().getView());
-        left.addView(getValidationView().getView());
-
-        android.widget.LinearLayout right = new android.widget.LinearLayout(getAndroidContext());
-        android.widget.LinearLayout.LayoutParams rParams = new android.widget.LinearLayout.LayoutParams(
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-            0 /* weight */);
-        rParams.gravity = android.view.Gravity.TOP;
-        right.setLayoutParams(rParams);
-        right.setOrientation(android.widget.LinearLayout.VERTICAL);
-        getView().addView(right);
-
-        right.addView(getHelpView().getView());
+        getView().addView(top);
+        getView().addView(getDataView().getView());
+        getView().addView(getValidationView().getView());
       `,
       swiftCode: `
         let v = getView() as! UIStackView;
