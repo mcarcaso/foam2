@@ -39,6 +39,8 @@ foam.CLASS({
               android.view.ViewGroup container,
               android.os.Bundle savedInstanceState) {
             android.widget.ScrollView sv = new android.widget.ScrollView(getContext());
+            sv.setClipToPadding(false);
+            sv.setClipChildren(false);
 
             final java.lang.ref.WeakReference<ScrollingWidgetView> wrSelf = this.self;
             foam.cross_platform.Listener l = (sub, args) -> {
@@ -51,10 +53,12 @@ foam.CLASS({
               v = self.getViewBuilder().createBuilder(self.getX()).builderBuild();
               self.onDetach(v);
               android.view.View view = (android.view.View) v.getProperty("view");
-              int vp = self.getVerticalPadding();
-              int hp = self.getHorizontalPadding();
-              view.setPadding(hp, vp, hp, vp);
               sv.addView(view);
+
+              float density = getContext().getResources().getDisplayMetrics().density;
+              int vp = (int) (density * self.getVerticalPadding());
+              int hp = (int) ( density * self.getHorizontalPadding());
+              sv.setPadding(hp, vp, hp, vp);
             };
             sub = self.get().onInvalidate().sub(null, l);
             l.executeListener(null, null);
