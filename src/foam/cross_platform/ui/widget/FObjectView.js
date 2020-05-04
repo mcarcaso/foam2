@@ -108,12 +108,19 @@ foam.CLASS({
       androidExpression: `
         foam.cross_platform.ui.widget.DetailPropertyView dpv = DetailPropertyView_create()
           .build();
+        onDetach(dpv);
         onDetach(dpv.bindData(this, OF()));
         foam.cross_platform.ui.widget.DAOChoiceView v = (foam.cross_platform.ui.widget.DAOChoiceView) dpv.getDataView();
         v.setDao(ArrayDAO_create()
           .setOf(foam.cross_platform.FoamClass.CLS_())
           .setArray(classes)
           .build());
+
+        foam.cross_platform.ui.widget.CardView cv = CardView_create().build();
+        cv.wrapView(
+          dpv.getView(),
+          foam.cross_platform.ui.widget.DefaultDetailView.ITEM_VERTICAL_PADDING());
+        return cv;
       `,
       swiftExpression: `
         let dpv = DetailPropertyView_create()
@@ -129,7 +136,7 @@ foam.CLASS({
         let cv = CardView_create().build();
         cv.wrapView(
           dpv.getView()!,
-          foam_cross_platform_ui_widget_DefaultDetailView.ITEM_VERTICAL_PADDING())
+          foam_cross_platform_ui_widget_DefaultDetailView.ITEM_VERTICAL_PADDING());
         return cv;
       `
     },
@@ -138,20 +145,29 @@ foam.CLASS({
       swiftType: 'UIView?',
       name: 'view',
       androidFactory: `
+        float density = getAndroidContext().getResources().getDisplayMetrics().density;
+        int spacing = (int) (density * foam.cross_platform.ui.widget.DefaultDetailView.ITEM_VERTICAL_PADDING());
+
         android.view.View pv = getPicker().getView();
+        android.widget.Space space = new android.widget.Space(getAndroidContext());
         android.view.View dv = getDetailView().getView();
 
         android.widget.LinearLayout v = new android.widget.LinearLayout(getAndroidContext());
+        v.setClipChildren(false);
         v.setOrientation(android.widget.LinearLayout.VERTICAL);
         v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
         v.addView(pv);
+        v.addView(space);
         v.addView(dv);
 
         pv.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+        space.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+            spacing));
         dv.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));

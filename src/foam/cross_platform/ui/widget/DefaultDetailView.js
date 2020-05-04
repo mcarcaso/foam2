@@ -119,26 +119,33 @@ foam.CLASS({
       androidPostSet: `
         newValue.setHorizontalSpacing(ITEM_HORIZONTAL_PADDING());
         newValue.setVerticalSpacing(ITEM_VERTICAL_PADDING());
+        newValue.setDividerColor(getTheme().getOnSurface());
       `,
       swiftPostSet: `
         newValue.setHorizontalSpacing(Self.ITEM_HORIZONTAL_PADDING());
         newValue.setVerticalSpacing(Self.ITEM_VERTICAL_PADDING());
         newValue.setDividerColor(getTheme()?.getOnSurface().withAlphaComponent(0.25));
+        newValue.setDividerColor(androidx.core.graphics.ColorUtils.setAlphaComponent(getTheme().getOnSurface(), 64));
       `
     },
     {
-      androidType: 'android.widget.LinearLayout',
+      androidType: 'android.view.ViewGroup',
       swiftType: 'UIView?',
       name: 'view',
       androidFactory: `
-        return getLayout_().getView();
+        foam.cross_platform.ui.widget.CardView cv = CardView_create().build();
+        onDetach(cv);
+        cv.wrapView(
+          getLayout_().getView(),
+          ITEM_VERTICAL_PADDING());
+        return cv.getView();
       `,
       swiftFactory: `
         let cv = CardView_create().build();
         onDetach(cv);
         cv.wrapView(
           getLayout_().getView()!,
-          foam_cross_platform_ui_widget_DefaultDetailView.ITEM_VERTICAL_PADDING())
+          Self.ITEM_VERTICAL_PADDING())
         return cv.getView()!;
       `
     },

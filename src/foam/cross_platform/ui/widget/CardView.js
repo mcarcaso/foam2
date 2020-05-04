@@ -48,18 +48,25 @@ foam.CLASS({
       class: 'ColorProperty',
       name: 'shadowColor',
       expressionArgs: ['theme$onSurface'],
+      androidExpression: `return (int) theme$onSurface;`,
       swiftExpression: `return theme$onSurface as! UIColor`
     },
     {
       class: 'ColorProperty',
       name: 'backgroundColor',
       expressionArgs: ['theme$surface'],
+      androidExpression: `return (int) theme$surface;`,
       swiftExpression: `return theme$surface as! UIColor`
     },
     {
-      androidType: 'android.widget.LinearLayout',
+      androidType: 'androidx.cardview.widget.CardView',
       swiftType: 'UIView?',
       name: 'view',
+      androidFactory: `
+        androidx.cardview.widget.CardView v = new androidx.cardview.widget.CardView(getAndroidContext());
+        styleView(v);
+        return v;
+      `,
       swiftFactory: `
         let c = CardView();
         styleView(c);
@@ -80,6 +87,9 @@ foam.CLASS({
   listeners: [
     {
       name: 'updateView',
+      androidCode: `
+        styleView(getView());
+      `,
       swiftCode: `
         styleView(getView());
       `,
@@ -89,8 +99,16 @@ foam.CLASS({
     {
       name: 'styleView',
       args: [
-        { swiftType: 'UIView?', name: 'c' }
+        {
+          androidType: 'androidx.cardview.widget.CardView',
+          swiftType: 'UIView?',
+          name: 'c'
+        }
       ],
+      androidCode: `
+        c.setCardBackgroundColor(getShadowColor());
+        c.setBackgroundColor(getBackgroundColor());
+      `,
       swiftCode: `
         let c = c as? CardView;
         c?.shadowColor = getShadowColor();
@@ -101,9 +119,15 @@ foam.CLASS({
     {
       name: 'wrapView',
       args: [
-        { swiftType: 'UIView', name: 'v' },
+        { androidType: 'android.view.View', swiftType: 'UIView', name: 'v' },
         { type: 'Integer', name: 'padding' },
       ],
+      androidCode: `
+        androidx.cardview.widget.CardView c = getView();
+        c.addView(v);
+        int p = padding;
+        c.setContentPadding(p, p, p, p);
+      `,
       swiftCode: `
         let p = CGFloat(padding);
         let c = getView()!;
