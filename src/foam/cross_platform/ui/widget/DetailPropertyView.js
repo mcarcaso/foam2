@@ -26,82 +26,17 @@ foam.CLASS({
   ],
   properties: [
     {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.widget.Label',
-      name: 'labelView',
-      androidFactory: `
-        foam.cross_platform.ui.widget.Label v = Label_create().build();
-        onDetach(v);
-        v.getView().setTextColor(getTheme().getOnSurface());
-        v.getView().setAlpha(0.8f);
-        getTheme().getSubtitle1().applyTextStyle(v.getView());
-        v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-        return v;
-      `,
-      swiftFactory: `
-        let v = Label_create().build();
-        onDetach(v);
-        let lv = v.getView() as? UILabel;
-        lv?.textColor = getTheme()!.getOnSurface().withAlphaComponent(0.8);
-        getTheme()!.getSubtitle1()!.applyTextStyle(lv!);
-        return v;
-      `
+      class: 'StringProperty',
+      name: 'label'
+    },
+    {
+      class: 'StringProperty',
+      name: 'help'
     },
     {
       class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.widget.Label',
-      name: 'validationView',
-      androidFactory: `
-        foam.cross_platform.ui.widget.Label v = Label_create().build();
-        onDetach(v);
-        v.getView().setVisibility(android.view.View.GONE);
-        v.getView().setTextColor(getTheme().getError());
-        v.getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-        return v;
-      `,
-      swiftFactory: `
-        let v = Label_create().build();
-        onDetach(v);
-        let lv = v.getView() as! UILabel;
-        lv.isHidden = true;
-        lv.textColor = getTheme()!.getError();
-        return v;
-      `
-    },
-    {
-      class: 'FObjectProperty',
-      of: 'foam.cross_platform.ui.widget.ActionButton',
-      name: 'helpView',
-      androidFactory: `
-        android.widget.ImageButton b = new android.widget.ImageButton(getAndroidContext());
-        b.setBackground(null);
-        b.setImageResource(getAndroidContext().getResources().getIdentifier(
-          "dpv_help",
-          "drawable",
-          getAndroidContext().getPackageName()));
-        b.setColorFilter(getTheme().getOnSurface());
-        b.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 0));
-        foam.cross_platform.ui.widget.ActionButton v = ActionButton_create()
-          .setView(b)
-          .build();
-        onDetach(v);
-        return v;
-      `,
-      swiftFactory: `
-        let b = UIButton(type: .infoLight);
-        b.tintColor = getTheme()!.getOnSurface()
-        let v = ActionButton_create()
-          .setView(b)
-          .build();
-        onDetach(v);
-        return v;
-      `
+      of: 'foam.core.SlotInterface',
+      name: 'validationSlot'
     },
     {
       class: 'FObjectProperty',
@@ -126,16 +61,17 @@ foam.CLASS({
         return v;
       `,
       swiftFactory: `
-        return UIStackView();
+        let v = UIStackView();
+        v.spacing = 8;
+        v.axis = .vertical
+        v.alignment = .center
+        return v;
       `
     },
     {
       class: 'BooleanProperty',
       name: 'isHidden'
     }
-  ],
-  reactions: [
-    ['validationView', 'propertyChange.data', 'updateValidationView'],
   ],
   methods: [
     {
@@ -148,9 +84,9 @@ foam.CLASS({
           foam.core.Property prop = (foam.core.Property) axiom;
           setDataView(prop.createView(getSubX()));
 
-          foam.core.SlotInterface validationSlot = prop.createValidationSlot(data);
-          if ( validationSlot != null ) {
-            subs.add(getValidationView().getData$().follow(validationSlot));
+          setValidationSlot(prop.createValidationSlot(data));
+          if ( getValidationSlot() != null ) {
+            subs.add(getValidationSlot().slotSub(updateValidationView_listener()));
           }
 
           subs.add(getIsHidden$().follow(prop.createVisibilitySlot(data).map((o) -> {
@@ -168,29 +104,8 @@ foam.CLASS({
         subs.add(getDataView().bindData(data, axiom));
         subs.add(getData$().follow(((foam.cross_platform.FObject) getDataView()).getSlot("data")));
 
-        // Label
-        if ( ! foam.cross_platform.ui.LabelledViewClass.CLS_().isInstance(getDataView()) ) {
-          getLabelView().getView().setVisibility(android.view.View.VISIBLE);
-          subs.add(getLabelView().getData$().follow(axiom.getSlot("i18nLabel")));
-        } else {
-          getLabelView().getView().setVisibility(android.view.View.GONE);
-        }
-
-        // Help
-        String help = (String) axiom.getProperty("i18nHelp");
-        if ( ! foam.cross_platform.type.StringType.INSTANCE().isEmpty(help) ) {
-          getHelpView().setIsAvailable(true);
-          getHelpView().setData(<%=fn(\`
-            foam.cross_platform.Context x = (foam.cross_platform.Context) args[0];
-            com.google.android.material.snackbar.Snackbar.make(
-              (android.view.View) x.getXProp("onClickView"),
-              help,
-              com.google.android.material.snackbar.Snackbar.LENGTH_LONG).show();
-            return null;
-          \`)%>);
-        } else {
-          getHelpView().setIsAvailable(false);
-        }
+        setLabel(axiom.getProperty("i18nLabel"));
+        setHelp(axiom.getProperty("i18nHelp"));
 
         addViews();
 
@@ -207,9 +122,9 @@ foam.CLASS({
         if let prop = axiom as? foam_core_Property {
           setDataView(prop.createView(getSubX()));
 
-          let validationSlot = prop.createValidationSlot(data);
-          if ( validationSlot != nil ) {
-            subs.append(getValidationView()?.getData$().follow(validationSlot));
+          setValidationSlot(prop.createValidationSlot(data));
+          if ( getValidationSlot() != nil ) {
+            subs.append(getValidationSlot()?.slotSub(updateValidationView_listener()));
           }
 
           subs.append(getIsHidden$().follow(prop.createVisibilitySlot(data)!.map(<%=fn(\`
@@ -226,29 +141,8 @@ foam.CLASS({
         subs.append(getDataView()!.bindData(data, axiom));
         subs.append(getData$().follow((getDataView() as? foam_cross_platform_FObject)?.getSlot("data")));
 
-        // Label
-        if ( !foam_cross_platform_ui_LabelledViewClass.CLS_().isInstance(getDataView()) ) {
-          getLabelView()!.getView()?.isHidden = false;
-          subs.append(getLabelView()?.getData$().follow(axiom?.getSlot("i18nLabel")));
-        } else {
-          getLabelView()!.getView()?.isHidden = true;
-        }
-
-        // Help
-        let help = axiom?.getProperty("i18nHelp") as? String;
-        if ( !foam_cross_platform_type_StringType.INSTANCE().isEmpty(help) ) {
-          getHelpView()!.setIsAvailable(true);
-          getHelpView()!.setData(<%=fn(\`
-            let x = args![0] as! foam_cross_platform_Context;
-            let alertController = UIAlertController(title: "", message: help, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-            (x.getXProp("stack") as? foam_cross_platform_ui_stack_Stack)?.getNavController()
-              .present(alertController, animated: true, completion: nil)
-            return nil;
-          \`)%>);
-        } else {
-          getHelpView()!.setIsAvailable(false);
-        }
+        setLabel(axiom?.getProperty("i18nLabel"));
+        setHelp(axiom?.getProperty("i18nHelp"));
 
         addViews();
 
@@ -261,99 +155,115 @@ foam.CLASS({
       name: 'addViews',
       androidCode: `
         if ( getView() == null ) return;
-
-        for ( int i = 0; i < getView().getChildCount(); i++ ) {
-          android.view.View child = getView().getChildAt(i);
-          if ( child instanceof android.view.ViewGroup == false ) continue;
-          ((android.view.ViewGroup) child).removeAllViews();
-        }
-        if ( getView().getChildCount() > 1 ) {
-          ((android.view.ViewGroup) getView().getChildAt(0)).removeAllViews();
-        }
         getView().removeAllViews();
 
-        android.widget.LinearLayout top = new android.widget.LinearLayout(getAndroidContext());
-        top.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+        if ( ! foam.cross_platform.ui.LabelledViewClass.CLS_().isInstance(getDataView()) ) {
+          android.widget.TextView lv = new android.widget.TextView(getAndroidContext());
+          lv.setTextColor(getTheme().getOnSurface());
+          lv.setText(getLabel());
+          lv.setAlpha(0.8f);
+          getTheme().getSubtitle1().applyTextStyle(lv);
+          lv.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
             android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-        top.setOrientation(android.widget.LinearLayout.HORIZONTAL);
-        top.addView(getLabelView().getView());
-        top.addView(getHelpView().getView());
+          getView().addView(lv);
+          lv.setOnClickListener((v) -> showHelp(v));
+        }
 
-        getView().addView(top);
+        getDataView().getView().setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+          android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+          android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
         getView().addView(getDataView().getView());
-        getView().addView(getValidationView().getView());
+
+        updateValidationView(null, null);
       `,
       swiftCode: `
         let v = getView() as! UIStackView;
-        v.spacing = 8;
-        v.axis = .vertical
-        v.alignment = .center
         v.arrangedSubviews.forEach { sv in
           v.removeArrangedSubview(sv);
           sv.removeFromSuperview();
         }
-        let l = getLabelView()!.getView()!;
+
+        if ( !foam_cross_platform_ui_LabelledViewClass.CLS_().isInstance(getDataView()) ) {
+          let lv = UILabel();
+          lv.textColor = getTheme()!.getOnSurface().withAlphaComponent(0.8);
+          lv.text = getLabel()!;
+          getTheme()!.getSubtitle1()!.applyTextStyle(lv);
+          lv.isUserInteractionEnabled = true;
+          lv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showHelp)))
+          v.addArrangedSubview(lv);
+          lv.translatesAutoresizingMaskIntoConstraints = false;
+          lv.widthAnchor.constraint(equalTo: v.widthAnchor).isActive = true;
+        }
+
         let d = getDataView()!.getView()!;
-        let val = getValidationView()!.getView()!;
-        let h = getHelpView()!.getView()!;
-
-        let top = UIStackView();
-        top.axis = .horizontal;
-        top.alignment = .top
-        top.distribution = .equalSpacing;
-        top.addArrangedSubview(l);
-        top.addArrangedSubview(h);
-
-        v.addArrangedSubview(top);
         v.addArrangedSubview(d);
-        v.addArrangedSubview(val);
-
-        top.translatesAutoresizingMaskIntoConstraints = false;
-        v.translatesAutoresizingMaskIntoConstraints = false;
-        l.translatesAutoresizingMaskIntoConstraints = false;
         d.translatesAutoresizingMaskIntoConstraints = false;
-        val.translatesAutoresizingMaskIntoConstraints = false;
-        h.translatesAutoresizingMaskIntoConstraints = false;
-
-        top.widthAnchor.constraint(equalTo: v.widthAnchor).isActive = true;
         d.widthAnchor.constraint(equalTo: v.widthAnchor).isActive = true;
-        val.widthAnchor.constraint(equalTo: v.widthAnchor).isActive = true;
+
+        updateValidationView(nil, nil);
       `,
+    },
+    {
+      swiftAnnotations: ['@objc'],
+      name: 'showHelp',
+      args: [
+        { androidType: 'android.view.View', swiftType: 'UITapGestureRecognizer', name: 'v' }
+      ],
+      androidCode: `
+        String help = getHelp();
+        if ( help.isEmpty() ) return;
+        com.google.android.material.snackbar.Snackbar.make(
+          v, help, com.google.android.material.snackbar.Snackbar.LENGTH_LONG).show();
+      `,
+      swiftCode: `
+        let help = getHelp() ?? ""
+        if help.isEmpty { return }
+        let alertController = UIAlertController(title: "", message: help, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        (getX().getXProp("stack") as? foam_cross_platform_ui_stack_Stack)?.getNavController()
+          .present(alertController, animated: true, completion: nil)
+      `
     }
   ],
   listeners: [
     {
       name: 'updateValidationView',
       androidCode: `
-        boolean isEmpty = foam.cross_platform.type.StringType.INSTANCE()
-          .isEmpty((String) getValidationView().getData());
-        getValidationView().getView().setVisibility(
-          isEmpty ? android.view.View.GONE : android.view.View.VISIBLE);
+        android.view.ViewGroup v = getView();
+        if ( v.getChildCount() == 0 ) return;
+        android.view.View lastChild = v.getChildAt(v.getChildCount() - 1);
+        android.widget.TextView validationView = lastChild == getDataView().getView() ?
+            null : (android.widget.TextView) lastChild;
+        String validation = getValidationSlot() == null ? "" : (String) getValidationSlot().slotGet();
+        if ( validation.isEmpty() && validationView != null ) {
+          v.removeViewAt(v.getChildCount() - 1);
+        } else if ( ! validation.isEmpty() ) {
+          if ( validationView == null ) {
+            validationView = new android.widget.TextView(getAndroidContext());
+            validationView.setTextColor(getTheme().getError());
+            v.addView(validationView);
+          }
+          validationView.setText(validation);
+        }
       `,
       swiftCode: `
-        let isEmpty = foam_cross_platform_type_StringType.INSTANCE()
-          .isEmpty(getValidationView()?.getData() as? String);
-        let v = getValidationView()!.getView()!
-        v.isHidden = isEmpty;
+        let v = getView() as! UIStackView;
+        if v.arrangedSubviews.count == 0 { return }
+        var validationView: UILabel? = v.arrangedSubviews.last == getDataView()?.getView()
+          ? nil : v.arrangedSubviews.last as? UILabel;
+        let validation = getValidationSlot()?.slotGet() as? String ?? "";
+        if validation.isEmpty && validationView != nil {
+          v.removeArrangedSubview(validationView!);
+        } else if !validation.isEmpty {
+          if validationView == nil {
+            validationView = UILabel();
+            validationView?.textColor = getTheme()!.getError();
+            v.addArrangedSubview(validationView!);
+          }
+          validationView!.text = validation;
+        }
       `,
     }
-  ],
-  axioms: [
-    {
-      class: 'foam.cross_platform.code_generation.Resource',
-      androidPath: 'drawable/dpv_help.xml',
-      androidCode: `
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-        android:width="24dp"
-        android:height="24dp"
-        android:viewportWidth="24.0"
-        android:viewportHeight="24.0">
-    <path
-        android:fillColor="#FF000000"
-        android:pathData="M11,17h2v-6h-2v6zM12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM12,20c-4.41,0 -8,-3.59 -8,-8s3.59,-8 8,-8 8,3.59 8,8 -3.59,8 -8,8zM11,9h2L13,7h-2v2z"/>
-</vector>
-      `
-    },
   ]
 });

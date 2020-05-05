@@ -143,14 +143,17 @@ foam.CLASS({
         }
         getView().removeAllViews();
 
+        float density = getAndroidContext().getResources().getDisplayMetrics().density;
         int dw = 1;
         int dc = getDividerColor();
         int hp = ! isDividerEnabled ?
             getHorizontalSpacing() :
             (getHorizontalSpacing() / 2 - dw);
+        hp = (int)(hp * density);
         int vp = ! isDividerEnabled ?
             getVerticalSpacing() :
             (getVerticalSpacing() / 2 - dw);
+        vp = (int)(vp * density);
 
         int curViewIndex = 0;
         do {
@@ -179,8 +182,10 @@ foam.CLASS({
               if ( isDividerEnabled ) {
                 android.view.View divider = new android.view.View(getAndroidContext());
                 divider.setBackgroundColor(dc);
-                divider.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-                    dw, android.widget.LinearLayout.LayoutParams.MATCH_PARENT));
+                android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(
+                    dw, android.widget.LinearLayout.LayoutParams.MATCH_PARENT);
+                lp.setMargins(0, vp, 0, vp);
+                divider.setLayoutParams(lp);
                 curRow.addView(divider);
                 android.widget.Space space2 = new android.widget.Space(getAndroidContext());
                 space2.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
@@ -212,8 +217,10 @@ foam.CLASS({
             if ( isDividerEnabled ) {
               android.view.View divider = new android.view.View(getAndroidContext());
               divider.setBackgroundColor(dc);
-              divider.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-                  android.widget.LinearLayout.LayoutParams.MATCH_PARENT, dw));
+              android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(
+                  android.widget.LinearLayout.LayoutParams.MATCH_PARENT, dw);
+              lp.setMargins(hp, 0, hp, 0);
+              divider.setLayoutParams(lp);
               getView().addView(divider);
               android.widget.Space space2 = new android.widget.Space(getAndroidContext());
               space2.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
@@ -232,7 +239,7 @@ foam.CLASS({
           v.removeFromSuperview();
         }
 
-        let dw: CGFloat = 1;
+        let dw: CGFloat = 0.5;
         let dc = getDividerColor();
         let hp = !isDividerEnabled ?
           CGFloat(getHorizontalSpacing()) :
@@ -284,6 +291,7 @@ foam.CLASS({
               lastView = divider;
             }
             let v = rowViews[i];
+            v.translatesAutoresizingMaskIntoConstraints = false;
             rowView.addSubview(v);
             rowView.heightAnchor.constraint(greaterThanOrEqualTo: v.heightAnchor).isActive = true;
             v.topAnchor.constraint(equalTo: rowView.topAnchor).isActive = true;

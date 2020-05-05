@@ -123,9 +123,10 @@ foam.CLASS({
         { type: 'Integer', name: 'padding' },
       ],
       androidCode: `
+        float d = getAndroidContext().getResources().getDisplayMetrics().density;
         androidx.cardview.widget.CardView c = getView();
         c.addView(v);
-        int p = padding;
+        int p = (int) (padding * d);
         c.setContentPadding(p, p, p, p);
       `,
       swiftCode: `

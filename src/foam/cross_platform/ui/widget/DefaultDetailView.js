@@ -30,12 +30,12 @@ foam.CLASS({
     {
       type: 'Integer',
       name: 'itemVerticalPadding',
-      value: 8
+      value: 16
     },
     {
       type: 'Integer',
       name: 'itemHorizontalPadding',
-      value: 8
+      value: 16
     },
   ],
   properties: [
@@ -119,13 +119,12 @@ foam.CLASS({
       androidPostSet: `
         newValue.setHorizontalSpacing(ITEM_HORIZONTAL_PADDING());
         newValue.setVerticalSpacing(ITEM_VERTICAL_PADDING());
-        newValue.setDividerColor(getTheme().getOnSurface());
+        newValue.setDividerColor(androidx.core.graphics.ColorUtils.setAlphaComponent(getTheme().getOnSurface(), 64));
       `,
       swiftPostSet: `
         newValue.setHorizontalSpacing(Self.ITEM_HORIZONTAL_PADDING());
         newValue.setVerticalSpacing(Self.ITEM_VERTICAL_PADDING());
         newValue.setDividerColor(getTheme()?.getOnSurface().withAlphaComponent(0.25));
-        newValue.setDividerColor(androidx.core.graphics.ColorUtils.setAlphaComponent(getTheme().getOnSurface(), 64));
       `
     },
     {
@@ -183,11 +182,6 @@ foam.CLASS({
               dpv.bindData(getData(), p)
             })
             .build();
-          dpv.getView().setPadding(
-            ITEM_HORIZONTAL_PADDING(),
-            ITEM_VERTICAL_PADDING(),
-            ITEM_HORIZONTAL_PADDING(),
-            ITEM_VERTICAL_PADDING());
           getLayout_().addView(dpv, p.getGridColumns());
         }
 
