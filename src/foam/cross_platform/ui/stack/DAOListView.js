@@ -76,9 +76,11 @@ foam.CLASS({
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
                     android.widget.LinearLayout.LayoutParams.MATCH_PARENT));
 
-            androidx.recyclerview.widget.ItemTouchHelper itemTouchHelper = new androidx.recyclerview.widget.ItemTouchHelper(
-              new foam.cross_platform.ui.android.SwipeHelper(getContext(), rv, o.getActions()));
-            itemTouchHelper.attachToRecyclerView(rv);
+            if (o.getActions().length > 0) {
+              androidx.recyclerview.widget.ItemTouchHelper itemTouchHelper = new androidx.recyclerview.widget.ItemTouchHelper(
+                  new foam.cross_platform.ui.android.SwipeHelper(getContext(), rv, o.getActions()));
+              itemTouchHelper.attachToRecyclerView(rv);
+            }
 
             androidx.recyclerview.widget.LinearLayoutManager lm =
               new androidx.recyclerview.widget.LinearLayoutManager(getActivity());
