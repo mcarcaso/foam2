@@ -11,6 +11,36 @@ foam.CLASS({
   swiftImports: [
     'SwiftUI'
   ],
+  constants: [
+    {
+      type: 'foam.cross_platform.ui.TextStyle',
+      name: 'TITLE_STYLE',
+      factory: function() {
+        return foam.cross_platform.ui.TextStyle.create({
+          bold: true,
+          size: 18,
+        })
+      }
+    },
+    {
+      type: 'foam.cross_platform.ui.TextStyle',
+      name: 'SUBTITLE_STYLE',
+      factory: function () {
+        return foam.cross_platform.ui.TextStyle.create({
+          size: 16,
+        })
+      }
+    },
+    {
+      type: 'foam.cross_platform.ui.TextStyle',
+      name: 'TIME_STYLE',
+      factory: function () {
+        return foam.cross_platform.ui.TextStyle.create({
+          size: 16,
+        })
+      }
+    },
+  ],
   imports: [
     {
       name: 'theme',
@@ -33,6 +63,10 @@ foam.CLASS({
     android:orientation="horizontal"
     android:gravity="center"
     android:layout_gravity="center"
+    android:paddingTop="10dp"
+    android:paddingLeft="4dp"
+    android:paddingBottom="11dp"
+    android:paddingRight="4dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -47,16 +81,17 @@ foam.CLASS({
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"
-            android:textSize="18dp"
-            android:textStyle="bold"
+            android:ellipsize="end"
             tools:text="This is where the title goes" />
 
         <android.widget.TextView
             android:id="@+id/subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:paddingTop="8dp"
+            android:maxLines="2"
+            android:minLines="0"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
             tools:text="This is where the subtitle goes" />
     </LinearLayout>
 
@@ -92,88 +127,113 @@ foam.CLASS({
         v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
           android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        int titleId = getAndroidContext().getResources().getIdentifier("title", "id", getAndroidContext().getPackageName());
+        android.widget.TextView titleView = v.findViewById(titleId);
+        titleView.setTextColor(getTheme().getOnSurface());
+        TITLE_STYLE().applyTextStyle(titleView);
+
+        int subtitleId = getAndroidContext().getResources().getIdentifier("subtitle", "id", getAndroidContext().getPackageName());
+        android.widget.TextView subtitleView = v.findViewById(subtitleId);
+        subtitleView.setTextColor(getTheme().getOnSurface());
+        SUBTITLE_STYLE().applyTextStyle(subtitleView);
+
+        int timeId = getAndroidContext().getResources().getIdentifier("time", "id", getAndroidContext().getPackageName());
+        android.widget.TextView timeView = v.findViewById(timeId);
+        timeView.setTextColor(getTheme().getOnSurface());
+        TIME_STYLE().applyTextStyle(timeView);
+
         return v;
       `,
       swiftFactory: `
-        let v = UIStackView();
-        v.axis = .horizontal
-        v.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        v.alignment = .center
+        let top: CGFloat = 8;
+        let left: CGFloat = 5;
+        let right: CGFloat = 5;
+        let bottom: CGFloat = 8;
+        let space: CGFloat = 8;
 
-        let titleView = Label_create().setView(UILabel()).build();
-        onDetach(titleView);
-        onDetach(titleView.getData$().follow(getTitle$()));
-        foam_cross_platform_ui_TextStyle
-          .foam_cross_platform_ui_TextStyleBuilder(nil)
-          .setBold(true)
-          .setSize(18)
-          .build()
-          .applyTextStyle(titleView.getView()!);
+        let v = UIView();
 
-        let space = UIView();
-        space.heightAnchor.constraint(equalToConstant: 8).isActive = true;
-        let spacerListener = AnonymousListener_create()
-          .setFn({(sub: foam_core_Detachable?, args: [Any?]?) -> Void in
-            let slot: foam_core_SlotInterface? = args?.last as? foam_core_SlotInterface
-            space.isHidden = (slot?.slotGet() as? String)?.isEmpty ?? true;
-          })
-          .build();
-        onDetach(getSubtitle$().slotSub(spacerListener))
-        spacerListener.executeListener(nil, [getSubtitle$()])
+        let leftView = UIView();
+        leftView.translatesAutoresizingMaskIntoConstraints = false;
+        v.addSubview(leftView);
 
-        let subtitleView = Label_create().setView(UILabel()).build();
-        onDetach(subtitleView);
-        onDetach(subtitleView.getData$().follow(getSubtitle$()));
-        (subtitleView.getView() as! UILabel).numberOfLines = 2
-        foam_cross_platform_ui_TextStyle
-          .foam_cross_platform_ui_TextStyleBuilder(nil)
-          .setSize(16)
-          .build()
-          .applyTextStyle(subtitleView.getView()!);
+        let titleView = UILabel();
+        titleView.textColor = getTheme()?.getOnSurface();
+        titleView.numberOfLines = 1;
+        Self.TITLE_STYLE().applyTextStyle(titleView);
+        titleView.translatesAutoresizingMaskIntoConstraints = false;
+        leftView.addSubview(titleView);
 
-        let timeView = Label_create().setView(UILabel()).build();
-        onDetach(timeView);
-        onDetach(timeView.getData$().follow(getTime$()));
+        let subtitleView = UILabel();
+        subtitleView.textColor = getTheme()?.getOnSurface();
+        subtitleView.numberOfLines = 2;
+        Self.SUBTITLE_STYLE().applyTextStyle(subtitleView);
+        subtitleView.translatesAutoresizingMaskIntoConstraints = false;
+        leftView.addSubview(subtitleView);
 
-        let mid = UIStackView()
-        mid.axis = .vertical
-        mid.alignment = .leading
-        mid.distribution = .equalSpacing
-        mid.addArrangedSubview(titleView.getView()!);
-        mid.addArrangedSubview(space);
-        mid.addArrangedSubview(subtitleView.getView()!);
-        mid.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        v.addArrangedSubview(mid)
+        let timeView = UILabel();
+        timeView.textColor = getTheme()?.getOnSurface();
+        timeView.numberOfLines = 1;
+        Self.TIME_STYLE().applyTextStyle(subtitleView);
+        timeView.translatesAutoresizingMaskIntoConstraints = false;
+        v.addSubview(timeView);
 
-        timeView.getView()!.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        v.addArrangedSubview(timeView.getView()!);
+        titleView.topAnchor.constraint(equalTo: leftView.topAnchor).isActive = true;
+        titleView.leadingAnchor.constraint(equalTo: leftView.leadingAnchor).isActive = true;
+        titleView.widthAnchor.constraint(equalTo: leftView.widthAnchor).isActive = true;
+
+        subtitleView.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: space).isActive = true;
+        subtitleView.leadingAnchor.constraint(equalTo: leftView.leadingAnchor).isActive = true;
+        subtitleView.widthAnchor.constraint(equalTo: leftView.widthAnchor).isActive = true;
+        subtitleView.bottomAnchor.constraint(equalTo: leftView.bottomAnchor).isActive = true;
+
+        leftView.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true;
+        leftView.topAnchor.constraint(greaterThanOrEqualTo: v.topAnchor, constant: top).isActive = true;
+        leftView.leadingAnchor.constraint(equalTo: v.leadingAnchor, constant: left).isActive = true;
+        leftView.trailingAnchor.constraint(lessThanOrEqualTo: timeView.leadingAnchor, constant: -space).isActive = true;
+        leftView.bottomAnchor.constraint(lessThanOrEqualTo: v.bottomAnchor, constant: -bottom).isActive = true;
+
+        timeView.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true;
+        timeView.trailingAnchor.constraint(equalTo: v.trailingAnchor, constant: -right).isActive = true;
 
         return v;
       `
     }
   ],
   reactions: [
-    ['', 'propertyChange.title', 'updateView', ['android']],
-    ['', 'propertyChange.subtitle', 'updateView', ['android']],
-    ['', 'propertyChange.time', 'updateView', ['android']],
+    ['', 'propertyChange.title', 'updateView'],
+    ['', 'propertyChange.subtitle', 'updateView'],
+    ['', 'propertyChange.time', 'updateView'],
   ],
   listeners: [
     {
       name: 'updateView',
-      flags: ['android'],
+      isMerged: true,
+      mergeDelay: 0,
       androidCode: `
         int titleId = getAndroidContext().getResources().getIdentifier("title", "id", getAndroidContext().getPackageName());
         ((android.widget.TextView) getView().findViewById(titleId)).setText(getTitle());
+
         int subtitleId = getAndroidContext().getResources().getIdentifier("subtitle", "id", getAndroidContext().getPackageName());
         android.widget.TextView subtitle = (android.widget.TextView) getView().findViewById(subtitleId);
-        if ( getSubtitle().isEmpty() ) {
-          subtitle.setVisibility(android.view.View.GONE);
-        } else {
-          subtitle.setVisibility(android.view.View.VISIBLE);
-          subtitle.setText(getSubtitle());
-        }
+        subtitle.setText(getSubtitle());
+        subtitle.setVisibility(getSubtitle().isEmpty() ?
+          android.view.View.GONE : android.view.View.VISIBLE);
+
         int timeId = getAndroidContext().getResources().getIdentifier("time", "id", getAndroidContext().getPackageName());
         ((android.widget.TextView) getView().findViewById(timeId)).setText(getTime());
+      `,
+      swiftCode: `
+        let titleView = getView()!.subviews[0].subviews[0] as! UILabel;
+        titleView.text = getTitle();
+
+        let subtitleView = getView()!.subviews[0].subviews[1] as! UILabel;
+        subtitleView.text = getSubtitle();
+        subtitleView.isHidden = getSubtitle()!.isEmpty;
+
+        let timeView = getView()!.subviews[1] as! UILabel;
+        timeView.text = getTime();
       `,
     }
   ],

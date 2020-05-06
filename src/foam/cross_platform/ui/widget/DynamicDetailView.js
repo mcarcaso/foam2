@@ -30,6 +30,7 @@ foam.CLASS({
       androidFactory: `
         android.widget.LinearLayout v = new android.widget.LinearLayout(getAndroidContext());
         v.setClipChildren(false);
+        v.setClipToPadding(false);
         v.setOrientation(android.widget.LinearLayout.VERTICAL);
         v.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
           android.widget.LinearLayout.LayoutParams.MATCH_PARENT,

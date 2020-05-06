@@ -22,7 +22,7 @@ foam.CLASS({
     {
       type: 'Integer',
       name: 'HORIZONTAL_PADDING',
-      value: 18
+      value: 12
     }
   ],
   imports: [

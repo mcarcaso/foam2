@@ -55,6 +55,8 @@ foam.CLASS({
         }
         if ( v is UILabel ) {
           (v as! UILabel).font = f;
+        } else if ( v is UITextView ) {
+          (v as! UITextView).font = f;
         } else {
           fatalError("Dont know how to apply font to " + String(describing: v));
         }

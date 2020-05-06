@@ -58,7 +58,7 @@ foam.CLASS({
               float density = getContext().getResources().getDisplayMetrics().density;
               int vp = (int) (density * self.getVerticalPadding());
               int hp = (int) ( density * self.getHorizontalPadding());
-              sv.setPadding(hp, vp, hp, vp);
+              view.setPadding(hp, vp, hp, vp);
             };
             sub = self.get().onInvalidate().sub(null, l);
             l.executeListener(null, null);

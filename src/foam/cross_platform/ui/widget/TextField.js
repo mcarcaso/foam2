@@ -81,7 +81,7 @@ foam.CLASS({
         let v = UITextView();
         v.isScrollEnabled = false;
         v.textColor = getTheme()!.getOnSurface();
-        v.font = UIFont.systemFont(ofSize: 18)
+        getTheme()?.getWidgetTextStyle()?.applyTextStyle(v);
         v.layer.borderWidth = 1;
         v.layer.cornerRadius = 4
         return v;
