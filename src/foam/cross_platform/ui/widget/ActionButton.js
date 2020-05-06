@@ -207,7 +207,9 @@ foam.CLASS({
         };
         setData(fn);
 
+        clearProperty("isAvailable");
         foam.core.Slot isAvailable = action.createIsAvailableSlot(getX(), data);
+        clearProperty("isEnabled");
         foam.core.Slot isEnabled = action.createIsEnabledSlot(data);
 
         setLabel(action.getI18nLabel());
@@ -217,14 +219,6 @@ foam.CLASS({
           .setArray(new foam.core.Detachable[] {
             isEnabled == null ? null : getIsEnabled$().follow(isEnabled),
             isAvailable == null ? null : getIsAvailable$().follow(isAvailable),
-            <%=detachable(\`
-              self.clearProperty("label");
-              self.clearProperty("isEnabled");
-              self.clearProperty("isAvailable");
-              if ( foam.cross_platform.Lib.equals(self.getData(), fn) ) {
-                self.clearProperty("data");
-              }
-            \`)%>
           })
           .build();
       `,
@@ -238,7 +232,9 @@ foam.CLASS({
           .build();
         setData(fn);
 
+        clearProperty("isAvailable");
         let isAvailable = action.createIsAvailableSlot(getX(), data);
+        clearProperty("isEnabled");
         let isEnabled = action.createIsEnabledSlot(data);
 
         setLabel(action.getI18nLabel());
@@ -247,14 +243,6 @@ foam.CLASS({
           .setArray([
             isEnabled == nil ? nil : getIsEnabled$().follow(isEnabled),
             isAvailable == nil ? nil : getIsAvailable$().follow(isAvailable),
-            <%=detachable(\`
-              self!.clearProperty("label");
-              self!.clearProperty("isEnabled");
-              self!.clearProperty("isAvailable");
-              if ( foam_cross_platform_Lib.equals(self!.getData(), fn) ) {
-                self!.clearProperty("data");
-              }
-            \`)%>
           ])
           .build();
       `
