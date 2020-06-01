@@ -18,6 +18,7 @@ foam.CLASS({
       name: 'required_',
       value: [
         'foam.core.Export',
+        'foam.cross_platform.Builder',
         'foam.cross_platform.FoamClass',
         'foam.cross_platform.AbstractFObject',
       ]
@@ -32,6 +33,10 @@ foam.CLASS({
     {
       class: 'StringProperty',
       name: 'sourcePath'
+    },
+    {
+      class: 'StringProperty',
+      name: 'resourcePath'
     },
     {
       class: 'StringProperty',
@@ -100,6 +105,7 @@ foam.CLASS({
         Object.values(classes)
           .map(cls => cls[this.platform.buildResourcesMethod]({
             sources: [],
+            resources: [],
             tests: []
           }, cls))
           .flat()
@@ -107,6 +113,9 @@ foam.CLASS({
             resources.sources
               .map(s => s.toSource())
               .forEach(s => writeResource(s.body, s.path, this.sourcePath));
+            resources.resources
+              .map(s => s.toSource())
+              .forEach(s => writeResource(s.body, s.path, this.resourcePath));
             resources.tests
               .map(s => s.toSource())
               .forEach(s => {

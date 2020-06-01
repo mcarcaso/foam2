@@ -4,18 +4,40 @@ foam.CLASS({
   ids: ['fullName'],
   properties: [
     {
-      class: 'StringProperty',
-      name: 'firstName',
-      help: 'The Person\'s first name'
+      class: 'BooleanProperty',
+      name: 'isMale',
+      help: 'Dont get triggered by this question'
     },
     {
       class: 'StringProperty',
-      name: 'lastName'
+      name: 'firstName',
+      placeholder: 'This is a placeholder',
+      help: 'This is help text'
+    },
+    {
+      class: 'StringProperty',
+      name: 'lastName',
+      validationExpressionArgs: ['lastName'],
+      androidValidationExpression: `
+        return foam.cross_platform.type.StringType.INSTANCE().isEmpty(lastName) ?
+          "Last name cannot be empty" : null;
+      `,
+      swiftValidationExpression: `
+        return foam_cross_platform_type_StringType.INSTANCE().isEmpty(lastName) ?
+          "Last name cannot be empty" : nil;
+      `
     },
     {
       class: 'StringProperty',
       name: 'fullName',
       expressionArgs: ['lastName', 'firstName'],
+      visibilityExpressionArgs: ['errors_'],
+      androidVisibilityExpression: `
+        return errors_.length > 0 ? foam.u2.Visibility.HIDDEN : foam.u2.Visibility.RO;
+      `,
+      swiftVisibilityExpression: `
+        return errors_!.count > 0 ? foam_u2_Visibility.HIDDEN : foam_u2_Visibility.RO;
+      `,
       androidExpression: `
         return (firstName + " " + lastName).trim();
       `,
@@ -25,7 +47,68 @@ foam.CLASS({
       `
     },
   ],
+  actions: [
+    {
+      name: 'appendToFirstName',
+      androidCode: `
+        setFirstName(getFirstName() + "0");
+      `,
+      swiftCode: `
+        setFirstName(getFirstName()! + "0");
+      `
+    },
+    {
+      name: 'clear',
+      isEnabledExpressionArgs: ['firstName', 'lastName'],
+      androidIsEnabled: `
+        return !foam.cross_platform.type.StringType.INSTANCE().isEmpty(lastName) ||
+          !foam.cross_platform.type.StringType.INSTANCE().isEmpty(firstName);
+      `,
+      swiftIsEnabled: `
+        return !foam_cross_platform_type_StringType.INSTANCE().isEmpty(lastName) ||
+          !foam_cross_platform_type_StringType.INSTANCE().isEmpty(firstName);
+      `,
+      crossPlatformCode: `
+        clearProperty("firstName");
+        clearProperty("lastName");
+      `
+    },
+    {
+      name: 'giveLastName',
+      isAvailableExpressionArgs: ['lastName'],
+      androidIsAvailable: `
+        return foam.cross_platform.type.StringType.INSTANCE().isEmpty(lastName);
+      `,
+      swiftIsAvailable: `
+        return foam_cross_platform_type_StringType.INSTANCE().isEmpty(lastName);
+      `,
+      crossPlatformCode: `setLastName("Smith");`
+    },
+  ],
   tests: [
+    {
+      name: 'testValidation',
+      androidCode: `
+        Person p = Person_create()
+          .setFirstName("Mike")
+          .setLastName("Car")
+          .build();
+        assertEquals(0, p.getErrors_().length);
+
+        p.setLastName("");
+        assertEquals(1, p.getErrors_().length);
+      `,
+      swiftCode: `
+        let p = Person_create()
+          .setFirstName("Mike")
+          .setLastName("Car")
+          .build();
+        XCTAssertEqual(0, p.getErrors_()?.count);
+
+        p.setLastName("");
+        XCTAssertEqual(1, p.getErrors_()?.count);
+      `,
+    },
     {
       name: 'testFullName',
       androidCode: `
@@ -230,5 +313,5 @@ foam.CLASS({
         XCTAssertEqual(o.getFullName(), "C");
       `
     }
-  ]
+  ],
 });

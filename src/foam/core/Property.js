@@ -61,7 +61,7 @@ foam.CLASS({
     'order',
 
     /* Hidden properties to not appear in GUI's by default. */
-    { class: 'BooleanProperty', name: 'hidden' },
+    'hidden',
 
     /**
       The default-value of this property.

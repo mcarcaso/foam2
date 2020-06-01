@@ -1,4 +1,4 @@
-foam.CLASS({
+foam.INTERFACE({
   package: 'foam.cross_platform.code_generation.ios_swift',
   name: 'BuilderInterface',
   methods: [

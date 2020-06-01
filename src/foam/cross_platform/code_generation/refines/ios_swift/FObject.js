@@ -2,11 +2,7 @@ foam.LIB({
   name: 'foam.core.FObject',
   flags: ['swift'],
   methods: [
-    function buildSwiftResources() {
-      var resources = {
-        tests: [],
-        sources: []
-      };
+    function buildSwiftResources(resources) {
       var flagFilter = foam.util.flagFilter(['swift']);
       this.getAxioms()
         .filter(flagFilter)
@@ -21,6 +17,7 @@ foam.LIB({
       cls.visibility = 'public';
       cls.name = this.model_.swiftName;
       cls.extends = this.model_.swiftExtends;
+      cls.implements = this.model_.swiftImplements;
       cls.documentation = this.model_.documentation;
       cls.imports = cls.imports.concat(
         'Foundation',

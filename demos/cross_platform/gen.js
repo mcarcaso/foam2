@@ -14,6 +14,7 @@
     android: {
       sourcePath: dir + '/android/project/app/src/foam_gen',
       testPath: dir + '/android/project/app/src/test/java',
+      resourcePath: dir + '/android/project/app/src/foam_res',
     }
   };
 
@@ -22,6 +23,7 @@
     var cmd = `rm -rf \\
       "${platforms.swift.sourcePath}" \\
       "${platforms.android.sourcePath}" \\
+      "${platforms.android.resourcePath}" \\
       "${platforms.swift.testPath}" \\
       "${platforms.android.testPath}"`;
     console.log(cmd);
@@ -63,10 +65,15 @@
         'demo.Person',
         'demo.Reaction',
         'demo.Slot',
-        'foam.cross_platform.ui.DetailPropertyViewModel',
+        'foam.cross_platform.ui.SimpleViewFactory',
+        'foam.cross_platform.ui.Theme',
+        'foam.cross_platform.ui.stack.DAOView',
+        'foam.cross_platform.ui.stack.Stack',
+        'foam.cross_platform.ui.widget.EmailCitationView',
       ],
       sourcePath: platformArgs.sourcePath,
       testPath: platformArgs.testPath,
+      resourcePath: platformArgs.resourcePath,
       swiftAppName: platformArgs.swiftAppName,
     }
   };

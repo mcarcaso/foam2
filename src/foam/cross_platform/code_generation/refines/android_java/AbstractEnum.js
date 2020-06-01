@@ -17,7 +17,7 @@ foam.CLASS({
               static: true,
               type: self.id,
               name: v.name,
-              initializer: v.asAndroidValue()
+              initializer: foam.core.FObject.getAxiomByName('asAndroidValue').code.call(v)
             });
           });
           if ( this.model_.id != 'foam.core.AbstractEnum' ) {
@@ -43,6 +43,11 @@ ${self.VALUES.map(v => `
           return cls
         };
       }
+    }
+  ],
+  methods: [
+    function asAndroidValue() {
+      return this.cls_.id + '.' + this.name;
     }
   ]
 });

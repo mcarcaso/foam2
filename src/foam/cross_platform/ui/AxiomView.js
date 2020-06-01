@@ -1,6 +1,7 @@
 foam.INTERFACE({
   package: 'foam.cross_platform.ui',
   name: 'AxiomView',
+  implements: ['foam.cross_platform.ui.View'],
   methods: [
     {
       type: 'foam.core.Detachable',
@@ -9,6 +10,6 @@ foam.INTERFACE({
         { name: 'data', type: 'FObject' },
         { name: 'axiom', type: 'FObject' }
       ]
-    }
+    },
   ]
 });

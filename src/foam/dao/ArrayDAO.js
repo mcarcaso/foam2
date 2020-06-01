@@ -222,7 +222,7 @@ foam.CLASS({
       androidCode: `
         foam.core.Property p = (foam.core.Property) getOf().getAxiomByName("id");
         for ( Object o : getArray() ) {
-          if ( p.compareValues(p.f(o), id) == 0 ) {
+          if ( foam.cross_platform.Lib.equals(p.f(o), id) ) {
             return (foam.cross_platform.FObject) o;
           }
         }
@@ -231,7 +231,7 @@ foam.CLASS({
       swiftCode: `
         let p = getOf().getAxiomByName("id") as! foam_core_Property;
         for o in getArray()! {
-          if p.compareValues(p.f(o), id) == 0 {
+          if foam_cross_platform_Lib.equals(p.f(o), id) {
             return o as? foam_cross_platform_FObject;
           }
         }

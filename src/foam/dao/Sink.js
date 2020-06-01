@@ -462,6 +462,13 @@ foam.CLASS({
 
         this.delegate.put(obj, sub);
       },
+      androidCode: `
+        if ( getCount() < getSkip() ) {
+          setCount(getCount() + 1);
+          return;
+        }
+        getDelegate().put(obj, sub);
+      `,
       swiftCode_DELETE: `if count < skip {
   count += 1
   return

@@ -537,7 +537,7 @@ foam.CLASS({
   properties: [
     {
       class: 'FObjectArray',
-      of: 'foam.core.Slot',
+      of: 'foam.core.SlotInterface',
       name: 'slots'
     }
   ],

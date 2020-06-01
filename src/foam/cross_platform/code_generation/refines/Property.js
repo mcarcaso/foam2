@@ -3,10 +3,26 @@ foam.CLASS({
   name: 'PropertyRefinement',
   refines: 'foam.core.Property',
   requires: [
+    'foam.core.ExpressionSlot',
     'foam.cross_platform.Lib',
-    'foam.core.ExpressionSlot'
   ],
   properties: [
+    {
+      class: 'StringArrayProperty',
+      name: 'validationExpressionArgs'
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'validationSlotInitializer'
+    },
+    {
+      class: 'StringArrayProperty',
+      name: 'visibilityExpressionArgs'
+    },
+    {
+      class: 'FunctionProperty',
+      name: 'visibilitySlotInitializer'
+    },
     {
       class: 'StringArrayProperty',
       name: 'expressionArgs'
@@ -82,13 +98,52 @@ foam.CLASS({
         return name + '_expression_sub_';
       }
     },
-    {
-      class: 'ClassProperty',
-      name: 'crossPlatformView',
-      value: 'foam.cross_platform.ui.widget.Label',
-    },
   ],
   methods: [
+    {
+      name: 'createView',
+      type: 'foam.cross_platform.ui.AxiomView',
+      args: [
+        { type: 'Context', name: 'x' },
+      ],
+      androidCode: `
+        return (foam.cross_platform.ui.AxiomView) getViewInitializer()
+          .executeFunction(new Object[] {x});
+      `,
+      swiftCode: `
+        return getViewInitializer()!.executeFunction([x]) as? foam_cross_platform_ui_AxiomView;
+      `,
+    },
+    {
+      name: 'createVisibilitySlot',
+      type: 'foam.core.Slot',
+      args: [
+        { type: 'FObject', name: 'o' },
+      ],
+      androidCode: `
+        return (foam.core.Slot) getVisibilitySlotInitializer()
+          .executeFunction(new Object[] {o});
+      `,
+      swiftCode: `
+        return getVisibilitySlotInitializer()?.executeFunction([o]) as? foam_core_Slot;
+      `,
+    },
+    {
+      name: 'createValidationSlot',
+      type: 'foam.core.Slot',
+      args: [
+        { type: 'FObject', name: 'o' },
+      ],
+      androidCode: `
+        foam.cross_platform.GenericFunction f = getValidationSlotInitializer();
+        return f == null ? null :
+          (foam.core.Slot) f.executeFunction(new Object[] {o});
+      `,
+      swiftCode: `
+        let f = getValidationSlotInitializer();
+        return f?.executeFunction([o]) as? foam_core_Slot;
+      `,
+    },
     {
       name: 'f',
       type: 'Any',
@@ -101,20 +156,6 @@ foam.CLASS({
       swiftCode: `
         return (o as! foam_cross_platform_FObject?)?.getProperty(getName());
       `
-    },
-    {
-      name: 'compareValues',
-      type: 'Integer',
-      args: [
-        { type: 'Any', name: 'a' },
-        { type: 'Any', name: 'b' },
-      ],
-      androidCode: `
-        return (int) getComparePropertyValues().executeFunction(new Object[] {a, b});
-      `,
-      swiftCode: `
-        return getComparePropertyValues()!.executeFunction([a, b]) as! Int;
-      `,
     }
   ]
 });

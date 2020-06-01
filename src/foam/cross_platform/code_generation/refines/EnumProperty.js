@@ -1,8 +1,7 @@
 foam.CLASS({
   package: 'foam.cross_platform.code_generation.refines',
-  name: 'EnumPropertyJavaRefinement',
+  name: 'EnumPropertyRefine',
   refines: 'foam.core.Enum',
-  flags: ['android'],
   methods: [
     {
       name: 'getDeps',
@@ -11,6 +10,37 @@ foam.CLASS({
         if ( ! this.of ) return;
         deps[this.of.id] = true;
       }
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.refines',
+  name: 'AbstractEnumRefine',
+  refines: 'foam.core.AbstractEnum',
+  methods: [
+    {
+      name: 'toString',
+      androidCode: `
+        return super.toString();
+      `
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.cross_platform.code_generation.refines',
+  name: 'EnumValueAxiom',
+  refines: 'foam.core.internal.EnumValueAxiom',
+  properties: [
+    {
+      name: 'name',
+      androidGetter: `
+        return getDefinition().get("name");
+      `,
+      swiftGetter: `
+        return getDefinition()!["name"]!;
+      `
     }
   ]
 });

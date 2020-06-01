@@ -11,73 +11,62 @@ import SwiftUI
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   var window: UIWindow?
-
+  var dv: foam_cross_platform_ui_widget_DetailView? = nil;
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-    // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-    // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-    // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
-    // Create the SwiftUI view that provides the window contents.
-
-    let v = Bundle.main.loadNibNamed("BasicDetailPropertyView", owner: self, options: nil)?.first as? foam_cross_platform_ui_DetailPropertyViewModelDetailView
-    let vc = UIViewController();
-    vc.view.addSubview(v!);
-
-    let p = demo_Person.demo_PersonBuilder(nil)
-      .setFirstName("Mike")
-      .setLastName("Car")
+    let theme = foam_cross_platform_ui_Theme
+      .foam_cross_platform_ui_ThemeBuilder(foam_cross_platform_Context.GLOBAL())
       .build();
+    var x = theme.getSubX();
 
-    v?.setData(foam_cross_platform_ui_DetailPropertyViewModel.foam_cross_platform_ui_DetailPropertyViewModelBuilder(nil)
-      .setData(p)
-      .setProp(demo_Person.FIRST_NAME())
+    let navVc = UINavigationController();
+    navVc.navigationBar.isTranslucent = false;
+    let s = foam_cross_platform_ui_stack_Stack
+      .foam_cross_platform_ui_stack_StackBuilder(x)
+      .setNavController(navVc)
+      .build();
+    x = s.getSubX();
+
+    let d = foam_dao_ArrayDAO.foam_dao_ArrayDAOBuilder(x)
+      .setOf(demo_Person.CLS_())
+      .build();
+    for i in 0..<1000 {
+      _ = d.put(demo_Person.demo_PersonBuilder(x)
+        .setFirstName("Mike")
+        .setLastName("Car" + String(i))
+        .build());
+    }
+/*
+    s.push(foam_cross_platform_ui_stack_DAOView
+      .foam_cross_platform_ui_stack_DAOViewBuilder(x)
+      .setData(d)
+      .setCitationView(foam_cross_platform_ui_SimpleViewFactory
+        .foam_cross_platform_ui_SimpleViewFactoryBuilder(x)
+        .setViewArgs([
+          "fromExpr": demo_Person.FIRST_NAME(),
+          "subjectExpr": demo_Person.LAST_NAME(),
+          "bodyExpr": demo_Person.FULL_NAME(),
+        ])
+        .build())
+      .build())
+*/
+
+    s.push(foam_cross_platform_ui_stack_DetailView
+      .foam_cross_platform_ui_stack_DetailViewBuilder(x)
+      .setData(demo_Person.demo_PersonBuilder(x)
+        .setFirstName("Mike")
+        .setLastName("Car")
+        .build())
       .build());
-
-    let views = ["v" : v!]
-    let formatString = "|-[v]-|"
-    let constraints = NSLayoutConstraint.constraints(
-      withVisualFormat:formatString, options: .alignAllTop, metrics: nil, views: views)
-    NSLayoutConstraint.activate(constraints)
 
     // Use a UIHostingController as window root view controller.
     if let windowScene = scene as? UIWindowScene {
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = vc
+        window.rootViewController = navVc;
         self.window = window
         window.makeKeyAndVisible()
     }
 
   }
-
-  func sceneDidDisconnect(_ scene: UIScene) {
-    // Called as the scene is being released by the system.
-    // This occurs shortly after the scene enters the background, or when its session is discarded.
-    // Release any resources associated with this scene that can be re-created the next time the scene connects.
-    // The scene may re-connect later, as its session was not neccessarily discarded (see `application:didDiscardSceneSessions` instead).
-  }
-
-  func sceneDidBecomeActive(_ scene: UIScene) {
-    // Called when the scene has moved from an inactive state to an active state.
-    // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-  }
-
-  func sceneWillResignActive(_ scene: UIScene) {
-    // Called when the scene will move from an active state to an inactive state.
-    // This may occur due to temporary interruptions (ex. an incoming phone call).
-  }
-
-  func sceneWillEnterForeground(_ scene: UIScene) {
-    // Called as the scene transitions from the background to the foreground.
-    // Use this method to undo the changes made on entering the background.
-  }
-
-  func sceneDidEnterBackground(_ scene: UIScene) {
-    // Called as the scene transitions from the foreground to the background.
-    // Use this method to save data, release shared resources, and store enough scene-specific state information
-    // to restore the scene back to its current state.
-  }
-
-
 }
-

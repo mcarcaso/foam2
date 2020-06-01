@@ -7,6 +7,7 @@ foam.CLASS({
     'foam.cross_platform.FObject'
   ],
   requires: [
+    'foam.core.ArraySlot',
     'foam.core.internal.PropertySlot',
     'foam.cross_platform.ListenerList',
     'foam.cross_platform.ZeroFunction',
@@ -25,15 +26,56 @@ foam.CLASS({
   ],
   properties: [
     {
+      class: 'StringArrayProperty',
+      name: 'errors_',
+      hidden: true,
+      transient: true,
+      androidComparePropertyValues: `null`,
+      swiftComparePropertyValues: `nil`,
+      androidFactory: `
+        foam.core.SlotInterface slot = ArraySlot_create()
+          .setSlots(java.util.Arrays.stream(getCls_().getAxiomsByClass(foam.core.Property.CLS_()))
+            .map(p -> ((foam.core.Property) p).createValidationSlot(this))
+            .filter(p -> p != null)
+            .toArray(foam.core.SlotInterface[]::new))
+          .build()
+          .map((args -> {
+            return java.util.Arrays.stream((Object[])args[0])
+              .filter(s -> s != null)
+              .map(s -> s.toString())
+              .toArray(String[]::new);
+          }));
+        errors__isSet_ = true;
+        errors__ = (String[]) slot.slotGet();
+        onDetach(getErrors_$().follow(slot));
+        return errors__;
+      `,
+      swiftFactory: `
+        let slot = ArraySlot_create()
+          .setSlots(getCls_()!.getAxiomsByClass(foam_core_Property.CLS_())!
+            .map({ ($0 as! foam_core_Property).createValidationSlot(self) })
+            .filter({ $0 != nil; }))
+          .build()
+          .map(AnonymousGenericFunction_create()
+            .setFn({(args: [Any?]?) -> Any? in
+              return (args![0] as! [String?])
+                .filter({$0 != nil})
+                .map({String(describing: $0)});
+            })
+            .build())!;
+        errors__isSet_ = true;
+        errors__ = slot.slotGet() as? [String];
+        onDetach(getErrors_$().follow(slot));
+        return errors__;
+      `
+    },
+    {
       class: 'FObjectProperty',
       of: 'foam.cross_platform.ListenerList',
       name: 'listeners__',
-      androidComparePropertyValues: `
-        foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
-      `,
-      swiftComparePropertyValues: `
-        foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
-      `,
+      hidden: true,
+      androidComparePropertyValues: `null`,
+      swiftComparePropertyValues: 'nil',
       androidFactory: `
         return ListenerList_create().build();
       `,
@@ -54,6 +96,7 @@ foam.CLASS({
       of: 'foam.cross_platform.Context',
       swiftOptional: false,
       name: 'x',
+      hidden: true,
       androidSetter: `
         x_ = value instanceof foam.cross_platform.Context ?
           (foam.cross_platform.Context) value : null;
@@ -63,12 +106,8 @@ foam.CLASS({
         x_ = value as? foam_cross_platform_Context;
         clearProperty("subX");
       `,
-      androidComparePropertyValues: `
-        foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
-      `,
-      swiftComparePropertyValues: `
-        foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
-      `,
+      androidComparePropertyValues: `null`,
+      swiftComparePropertyValues: `nil`,
       androidGetter: `
         if ( x_ == null ) {
           return foam.cross_platform.Context.GLOBAL();
@@ -86,21 +125,22 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.cross_platform.Context',
       name: 'subX',
+      hidden: true,
       swiftOptional: false,
-      androidComparePropertyValues: `
-        foam.cross_platform.ZeroFunction.ZeroFunctionBuilder(null).build()
-      `,
+      androidComparePropertyValues: `null`,
       swiftComparePropertyValues: `
         foam_cross_platform_ZeroFunction.foam_cross_platform_ZeroFunctionBuilder(nil).build()
       `,
       androidFactory: `
         Object[] exports = getCls_().getAxiomsByClass(foam.core.Export.CLS_());
         if ( exports.length == 0 ) return getX();
+        foam.cross_platform.type.StringType st = foam.cross_platform.type.StringType.INSTANCE();
 
         java.util.Map exportMap = new java.util.HashMap();
         for ( Object eO : exports ) {
           foam.core.Export e = (foam.core.Export) eO;
-          exportMap.put(e.getExportName(), getSlot(e.getKey()));
+          exportMap.put(e.getExportName(), st.isEmpty(e.getKey()) ?
+            this : getSlot(e.getKey()));
         }
 
         return getX().createSubContext(exportMap);
@@ -108,11 +148,13 @@ foam.CLASS({
       swiftFactory: `
         let exports = getCls_()!.getAxiomsByClass(foam_core_Export.CLS_())!;
         if exports.count == 0 { return getX(); }
+        let st = foam_cross_platform_type_StringType.INSTANCE();
 
         var exportMap: [AnyHashable:Any?] = [:];
         for eO in exports {
           let e = eO as! foam_core_Export;
-          exportMap[e.getExportName()!] = getSlot(e.getKey());
+          exportMap[e.getExportName()!] = st.isEmpty(e.getKey()) ?
+            self : getSlot(e.getKey());
         }
 
         return getX().createSubContext(exportMap)!;
@@ -391,7 +433,8 @@ foam.CLASS({
         }
         for ( Object a : data.getCls_().getAxiomsByClass(foam.core.Property.CLS_()) ) {
           foam.core.Property p = (foam.core.Property) a;
-          int diff = p.compareValues(p.f(this), p.f(data));
+          if ( p.getComparePropertyValues() == null ) continue;
+          int diff = (int) p.getComparePropertyValues().executeFunction(new Object[] {p.f(this), p.f(data)});
           if ( diff != 0 ) return diff;
         }
         return 0;
@@ -405,8 +448,9 @@ foam.CLASS({
         }
         for a in data.getCls_()!.getAxiomsByClass(foam_core_Property.CLS_())! {
           let p = a as! foam_core_Property
-          let diff = p.compareValues(p.f(self), p.f(data))
-          if diff != 0 { return diff }
+          if p.getComparePropertyValues() == nil { continue; }
+          let diff = p.getComparePropertyValues()!.executeFunction([p.f(self), p.f(data)]) as! Int;
+          if diff != 0 { return diff; }
         }
         return 0
       `

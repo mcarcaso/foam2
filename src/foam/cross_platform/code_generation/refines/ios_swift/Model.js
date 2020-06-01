@@ -24,5 +24,9 @@ foam.CLASS({
       class: 'StringArrayProperty',
       name: 'swiftImports'
     },
+    {
+      class: 'StringArrayProperty',
+      name: 'swiftImplements'
+    },
   ],
 });
