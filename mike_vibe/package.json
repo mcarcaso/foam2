@@ -1,0 +1,9 @@
+{
+  "name": "mike_vibe",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "framework",
+    "example-app"
+  ]
+}
