@@ -15,7 +15,9 @@ export type IR =
   | { kind: 'not';    arg: IR }
   | { kind: 'if';     cond: IR; then: IR; else?: IR }
   | { kind: 'seq';    stmts: IR[] }
-  | { kind: 'pub';    topic: string; payload?: IR };              // emit a topic event
+  | { kind: 'pub';    topic: string; payload?: IR }               // emit a topic event
+  | { kind: 'contains' | 'startsWith' | 'endsWith'; haystack: IR; needle: IR; ignoreCase?: boolean }
+  | { kind: 'in';     value: IR; values: IR[] };
 
 export const expr = {
   lit:    (v: string | number | boolean | null): IR => ({ kind: 'lit', value: v }),
@@ -44,4 +46,12 @@ export const expr = {
   if:  (cond: IR, then: IR, _else?: IR): IR => ({ kind: 'if', cond, then, else: _else }),
   seq: (...stmts: IR[]): IR                  => ({ kind: 'seq', stmts }),
   pub: (topic: string, payload?: IR): IR     => ({ kind: 'pub', topic, payload }),
+
+  contains:   (haystack: IR, needle: IR, ignoreCase = false): IR =>
+    ({ kind: 'contains',   haystack, needle, ignoreCase }),
+  startsWith: (haystack: IR, needle: IR, ignoreCase = false): IR =>
+    ({ kind: 'startsWith', haystack, needle, ignoreCase }),
+  endsWith:   (haystack: IR, needle: IR, ignoreCase = false): IR =>
+    ({ kind: 'endsWith',   haystack, needle, ignoreCase }),
+  in: (value: IR, ...values: IR[]): IR => ({ kind: 'in', value, values }),
 };

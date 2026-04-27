@@ -1,78 +1,94 @@
-// Demo: imports generated modules, exercises the data + namespace style,
-// shows reflection via Module.properties + the Symbol-keyed identity.
+// Todo app demo — exercises the InMemoryDao + mLang on top of the
+// generated Todo namespace.
 
-import { User } from '../gen/User.ts';
-import { Task } from '../gen/Task.ts';
-import { properties as runtimeProperties, modelOf, kindOf } from '@mike_vibe/framework/runtime';
+import { InMemoryDao, LoggingDao, asc, desc } from '@mike_vibe/framework/dao';
+import { AND, EQ, GT, CONTAINS, NOT } from '@mike_vibe/framework/mlang';
+import { Todo } from '../gen/Todo.ts';
 
-const ctx = {};   // empty Ctx for the demo
+const ctx = {};
 
-// 1. Construct values via the namespace's create()
-let alice = User.create({
-  id: 'u_1', firstName: 'Alice', lastName: 'Hopper',
-  email: 'alice@example.com', role: 'admin', active: true,
-});
+// 1) Build the DAO stack: memory + logging decorator
+const todos = new LoggingDao(new InMemoryDao(Todo));
 
-let task = Task.create({
-  id: 't_1', title: 'pay rent', priority: 7, done: false, ownerId: 'u_1',
-});
-
-console.log('--- values look like POJOs ---');
-console.log('alice:', alice);
-console.log('task: ', task);
-
-// 2. JSON serialization is clean — Symbol KIND is invisible
-console.log('\n--- JSON.stringify is clean ---');
-console.log(JSON.stringify(task));        // no __kind, no model, just the data
-
-// 3. Object.keys is also clean
-console.log('\n--- Object.keys is clean ---');
-console.log(Object.keys(task));
-
-// 4. But the runtime can identify the value
-console.log('\n--- runtime identity via Symbol ---');
-console.log('kindOf(task):  ', kindOf(task));
-console.log('modelOf(task):', modelOf(task)?.fqn);
-
-// 5. Computed property (an `expression:`) — emitted as a function
-console.log('\n--- computed property ---');
-console.log('User.fullName: ', User.fullName(ctx, alice));
-console.log('Task.summary:  ', Task.summary(ctx, task));
-
-// 6. Immutable setter
-console.log('\n--- immutable setters return a new value ---');
-const renamed = User.setFirstName(ctx, alice, 'Alicia');
-console.log('renamed:', renamed.firstName, '| original still:', alice.firstName);
-
-// 7. Action with isEnabled gate (returns same self if disabled)
-console.log('\n--- actions ---');
-console.log('Task.complete_isEnabled:', Task.complete_isEnabled(ctx, task));
-const completed = Task.complete(ctx, task);
-console.log('after complete:        ', completed.done);
-console.log('Task.complete_isEnabled (now):', Task.complete_isEnabled(ctx, completed));
-
-// 8. Two ways to iterate properties
-console.log('\n--- typed iteration via Module.properties ---');
-for (const { name, value } of Task.properties(task)) {
-  console.log(`  ${name} = ${JSON.stringify(value)}`);
+// 2) Seed a few todos
+async function seed(): Promise<void> {
+  const rows = [
+    Todo.create({ id: 't1', title: 'Pay rent',           notes: '',                  done: false, priority: 9, createdAt: '2026-04-20T08:00:00Z' }),
+    Todo.create({ id: 't2', title: 'Buy groceries',      notes: 'Milk, eggs, bread', done: false, priority: 4, createdAt: '2026-04-21T10:00:00Z' }),
+    Todo.create({ id: 't3', title: 'Call dentist',       notes: '',                  done: true,  priority: 2, createdAt: '2026-04-19T12:00:00Z' }),
+    Todo.create({ id: 't4', title: 'Finish framework',   notes: 'Almost there',      done: false, priority: 10, createdAt: '2026-04-25T09:00:00Z' }),
+    Todo.create({ id: 't5', title: 'Read paper on FOAM', notes: '',                  done: false, priority: 3, createdAt: '2026-04-22T14:00:00Z' }),
+  ];
+  for (const r of rows) await todos.put(ctx, r);
 }
 
-console.log('\n--- generic iteration via runtime properties() ---');
-const polymorphic: unknown = task;
-for (const { name, value } of runtimeProperties(polymorphic)!) {
-  console.log(`  ${name} = ${JSON.stringify(value)}`);
+async function main(): Promise<void> {
+  await seed();
+
+  // ---- 3) basic find ----
+  console.log('\n--- find by id ---');
+  const t1 = await todos.find(ctx, 't1');
+  console.log('t1 ->', t1);
+
+  // ---- 4) typed predicate query ----
+  console.log('\n--- where done=false AND priority>=4, ordered by priority desc ---');
+  const open = await todos
+    .where(AND(EQ(Todo.fields.done, false), GT(Todo.fields.priority, 3)))
+    .orderBy(desc(Todo.fields.priority))
+    .select(ctx);
+  for (const t of open) console.log(`  P${t.priority}  ${t.title}`);
+
+  // ---- 5) string predicate ----
+  console.log('\n--- where title CONTAINS "framework" (ic) ---');
+  const matches = await todos
+    .where(CONTAINS(Todo.fields.title, 'framework', /*ignoreCase*/ true))
+    .select(ctx);
+  for (const t of matches) console.log(`  - ${t.title}`);
+
+  // ---- 6) skip/limit ----
+  console.log('\n--- skip 1, limit 2, ordered by createdAt asc ---');
+  const page = await todos
+    .orderBy(asc(Todo.fields.createdAt))
+    .skip(1)
+    .limit(2)
+    .select(ctx);
+  for (const t of page) console.log(`  ${t.createdAt}  ${t.title}`);
+
+  // ---- 7) action + write-back: complete the highest-priority open todo ----
+  console.log('\n--- action: complete highest-priority open todo ---');
+  const [next] = await todos
+    .where(AND(EQ(Todo.fields.done, false), NOT(EQ(Todo.fields.priority, 0))))
+    .orderBy(desc(Todo.fields.priority))
+    .limit(1)
+    .select(ctx);
+  if (next) {
+    console.log(`  before: ${next.title} done=${next.done} priority=${next.priority}`);
+    const completed = Todo.complete(ctx, next);
+    await todos.put(ctx, completed);
+    const refetched = await todos.find(ctx, next.id);
+    console.log(`  after:  ${refetched?.title} done=${refetched?.done}`);
+  }
+
+  // ---- 8) computed property + reflection ----
+  console.log('\n--- computed Todo.summary + reflection over generated model ---');
+  const all = await todos.orderBy(asc(Todo.fields.createdAt)).select(ctx);
+  for (const t of all) {
+    console.log(`  ${Todo.summary(ctx, t)}  done=${t.done}`);
+  }
+
+  console.log('\n--- model.axioms (reflection) ---');
+  for (const a of Todo.model.axioms) {
+    console.log(`  ${a.kind}::${a.name}`);
+  }
+
+  // ---- 9) JSON.stringify is clean — no Symbol KIND, no model leak ----
+  console.log('\n--- wire payload of one todo ---');
+  console.log(JSON.stringify(all[0]));
+
+  // ---- 10) the predicate itself is data ----
+  const sharedPredicate = AND(EQ(Todo.fields.done, false), GT(Todo.fields.priority, 5));
+  console.log('\n--- predicate-as-data (JSON-shippable) ---');
+  console.log(JSON.stringify(sharedPredicate, null, 2));
 }
 
-// 9. Identity check
-console.log('\n--- type guards ---');
-console.log('Task.is(task):  ', Task.is(task));
-console.log('Task.is(alice): ', Task.is(alice));
-console.log('User.is(alice): ', User.is(alice));
-
-// 10. Reflection — the model itself is data on the namespace
-console.log('\n--- reflection ---');
-console.log('Task.model.fqn:        ', Task.model.fqn);
-console.log('Task.model.axioms[..]:');
-for (const a of Task.model.axioms) {
-  console.log(`  ${a.kind} :: ${a.name}`);
-}
+main().catch((e) => { console.error(e); process.exit(1); });

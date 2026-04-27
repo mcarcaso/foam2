@@ -16,7 +16,8 @@ export function emitTS(model: Model): string {
   const out: string[] = [];
   out.push(banner());
   out.push(`import { KIND, type Tagged } from '@mike_vibe/framework/runtime';`);
-  out.push(`import { register, type Ctx } from '@mike_vibe/framework';`);
+  out.push(`import { register, type Ctx, type Model } from '@mike_vibe/framework';`);
+  out.push(`import type { Field } from '@mike_vibe/framework/dao';`);
   out.push(``);
 
   // 1) the record type
@@ -30,8 +31,8 @@ export function emitTS(model: Model): string {
 
   // 2) the model literal — embedded as data so reflection works.
   //    Register on import so runtime modelOf()/properties() can find it.
-  out.push(`const MODEL = ${stringifyModel(model)} as const;`);
-  out.push(`register(MODEL as any);`);
+  out.push(`const MODEL = ${stringifyModel(model)} as unknown as Model;`);
+  out.push(`register(MODEL);`);
   out.push(``);
 
   // 3) the namespace (operations)
@@ -67,6 +68,31 @@ export function emitTS(model: Model): string {
   out.push(`      .filter(([, p]) => !(p as any).expression)`);
   out.push(`      .map(([name]) => ({ name, value: (self as any)[name] }));`);
   out.push(`  },`);
+  out.push(``);
+
+  // ID extraction — for DAO use. Fall back to .id by convention if no
+  // property is flagged. Throws at runtime if there's no id field.
+  const idProp = findIdProperty(model);
+  out.push(`  // Primary key extraction — used by DAOs.`);
+  if (idProp) {
+    out.push(`  idOf(self: ${N}): string {`);
+    out.push(`    return String((self as any).${idProp});`);
+    out.push(`  },`);
+  } else {
+    out.push(`  idOf(_self: ${N}): string {`);
+    out.push(`    throw new Error('${fqn} has no primary key declared (use prop.*({ id: true }) or name a property "id")');`);
+    out.push(`  },`);
+  }
+  out.push(``);
+
+  // Field references — typed IR nodes used by mLang predicates and ordering.
+  out.push(`  // Typed field references for queries: User.fields.email`);
+  out.push(`  fields: {`);
+  for (const [name, p] of Object.entries(model.properties)) {
+    if (p.expression) continue;
+    out.push(`    ${name}: { kind: 'get', name: ${j(name)} } as Field<${N}, ${j(name)}, ${tsType(p)}>,`);
+  }
+  out.push(`  } as const,`);
   out.push(``);
 
   // 4) generated immutable setters per stored property
@@ -150,6 +176,16 @@ function tsType(p: Property): string {
 function j(s: unknown): string { return JSON.stringify(s); }
 function cap(s: string): string { return s[0]!.toUpperCase() + s.slice(1); }
 
+// Returns the property name flagged with `id: true`, or 'id' if such a
+// property exists, otherwise undefined.
+function findIdProperty(model: Model): string | undefined {
+  for (const [name, p] of Object.entries(model.properties)) {
+    if ((p as any).id === true) return name;
+  }
+  if ('id' in model.properties) return 'id';
+  return undefined;
+}
+
 // IR -> TS expression. `selfVar` controls how `get`/`set` resolve;
 // pure expressions read from `self`, action bodies read/write `_self`.
 function emitIRExpr(ir: IR, selfVar: string): string {
@@ -177,6 +213,10 @@ function emitIRExpr(ir: IR, selfVar: string): string {
     case 'seq':    return `(${ir.stmts.map(E).join(', ')})`;
     case 'call':   return `${ir.target}(${ir.args.map(E).join(', ')})`;
     case 'pub':    return `/* pub:${ir.topic} */ undefined`;
+    case 'contains':   return `String(${E(ir.haystack)} ?? '')${ir.ignoreCase ? '.toLowerCase()' : ''}.includes(String(${E(ir.needle)} ?? '')${ir.ignoreCase ? '.toLowerCase()' : ''})`;
+    case 'startsWith': return `String(${E(ir.haystack)} ?? '')${ir.ignoreCase ? '.toLowerCase()' : ''}.startsWith(String(${E(ir.needle)} ?? '')${ir.ignoreCase ? '.toLowerCase()' : ''})`;
+    case 'endsWith':   return `String(${E(ir.haystack)} ?? '')${ir.ignoreCase ? '.toLowerCase()' : ''}.endsWith(String(${E(ir.needle)} ?? '')${ir.ignoreCase ? '.toLowerCase()' : ''})`;
+    case 'in':         return `[${ir.values.map(E).join(', ')}].includes(${E(ir.value)})`;
   }
 }
 

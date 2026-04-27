@@ -15,7 +15,9 @@
       "@mike_vibe/framework":          ["../framework/src/index.ts"],
       "@mike_vibe/framework/runtime":  ["../framework/src/runtime/index.ts"],
       "@mike_vibe/framework/codegen":  ["../framework/src/codegen/index.ts"],
-      "@mike_vibe/framework/schema":   ["../framework/src/schema/index.ts"]
+      "@mike_vibe/framework/schema":   ["../framework/src/schema/index.ts"],
+      "@mike_vibe/framework/dao":      ["../framework/src/dao/index.ts"],
+      "@mike_vibe/framework/mlang":    ["../framework/src/mlang/index.ts"]
     }
   },
   "include": ["models/**/*.ts", "scripts/**/*.ts", "src/**/*.ts", "gen/**/*.ts"]

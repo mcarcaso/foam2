@@ -61,5 +61,25 @@ export function evalIR(ir: IR, env: EvalEnv): any {
       env.emit?.(ir.topic, payload);
       return undefined;
     }
+    case 'contains': {
+      const h = String(evalIR(ir.haystack, env) ?? '');
+      const n = String(evalIR(ir.needle,   env) ?? '');
+      return ir.ignoreCase ? h.toLowerCase().includes(n.toLowerCase()) : h.includes(n);
+    }
+    case 'startsWith': {
+      const h = String(evalIR(ir.haystack, env) ?? '');
+      const n = String(evalIR(ir.needle,   env) ?? '');
+      return ir.ignoreCase ? h.toLowerCase().startsWith(n.toLowerCase()) : h.startsWith(n);
+    }
+    case 'endsWith': {
+      const h = String(evalIR(ir.haystack, env) ?? '');
+      const n = String(evalIR(ir.needle,   env) ?? '');
+      return ir.ignoreCase ? h.toLowerCase().endsWith(n.toLowerCase()) : h.endsWith(n);
+    }
+    case 'in': {
+      const v  = evalIR(ir.value, env);
+      const vs = ir.values.map((x) => evalIR(x, env));
+      return vs.some((x) => x === v);
+    }
   }
 }

@@ -8,6 +8,8 @@
     ".":          "./src/index.ts",
     "./schema":   "./src/schema/index.ts",
     "./runtime":  "./src/runtime/index.ts",
-    "./codegen":  "./src/codegen/index.ts"
+    "./codegen":  "./src/codegen/index.ts",
+    "./dao":      "./src/dao/index.ts",
+    "./mlang":    "./src/mlang/index.ts"
   }
 }

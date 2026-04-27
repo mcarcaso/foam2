@@ -19,6 +19,7 @@ export interface PropertyBase<T> {
   readonly _ts:        T;                 // phantom — never set, only inferred
   readonly kind:       PropKind;
   readonly name?:      string;            // filled in by defineClass from the record key
+  readonly id?:        boolean;           // marks this property as the primary key
   readonly required?:  boolean;
   readonly hidden?:    boolean;
   readonly label?:     string;
