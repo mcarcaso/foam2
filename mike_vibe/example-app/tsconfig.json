@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "types": ["node"],
+    "paths": {
+      "@mike_vibe/framework":          ["../framework/src/index.ts"],
+      "@mike_vibe/framework/runtime":  ["../framework/src/runtime/index.ts"],
+      "@mike_vibe/framework/codegen":  ["../framework/src/codegen/index.ts"],
+      "@mike_vibe/framework/schema":   ["../framework/src/schema/index.ts"]
+    }
+  },
+  "include": ["models/**/*.ts", "scripts/**/*.ts", "src/**/*.ts", "gen/**/*.ts"]
+}
